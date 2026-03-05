@@ -16,7 +16,8 @@ public enum Variable
     Ranunculus,
     Delphinium,
     Chrysanthemum,
-    Gerbera
+    Gerbera,
+    Hydrangea
 };
 
 public enum FColor
@@ -34,6 +35,11 @@ public enum FColor
     Rainbow
 };
 
+public enum Floriography
+{
+
+};
+
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/SpawnManagerScriptableObject", order = 1)]
 public class FlowerData : ScriptableObject
 {
@@ -42,6 +48,7 @@ public class FlowerData : ScriptableObject
     public string FlowerName;
     public Variable FlowerVar;
     public FColor FlowerColor;
+    public Floriography FlowerMean;
     public int Amount = 0;
     public int Price;
 }
