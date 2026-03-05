@@ -1,13 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UIElements;
+
+
+
+public class Flower
+{
+    public float grade; // 꽃의 등급, 
+    public int growth; // 꽃이 성장 단계 0: 씨앗 1, 2, 3(수확가능)
+    public int itemNumber; // 
+    public int worth; //
+    public int amount;//
+}
+
+public class Soil
+{
+    public Flower flower;
+    public bool isWatered;
+
+    public void grow()
+    {
+
+    }
+}
+
+
+public class Sickle : Item 
+{
+    public  override void onUse()
+    {
+
+
+
+    }
+    protected override void useItem()
+    {
+        UnityEngine.Debug.Log("아이템 사용됨");
+    }
+}
+
 
 public class PlayerController : MonoBehaviour
 {
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public bool canInteractive = false;
+
+    public Item item;
+    public PlayerInput IA;
+
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -25,6 +71,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
+
     }
 
     public void OnMove(InputValue value)
@@ -59,38 +107,18 @@ public class PlayerController : MonoBehaviour
             if (canInteractive == true)
 
             {
-                Debug.Log("상호작용 버튼 ON");
+                UnityEngine.Debug.Log("상호작용 버튼 ON");
                 this.GetComponent<SpriteRenderer>().color = Color.blue;
             }
 
             else if (canInteractive == false)
             {
-                Debug.Log("주변에 상호작용할만한거 없음");
+                UnityEngine.Debug.Log("주변에 상호작용할만한거 없음");
 
                 if (quickSlotitem != null && quickSlotitem is IUsable)
                 {
                 }
-
-
             }
         }
-
-        
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

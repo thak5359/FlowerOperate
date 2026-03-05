@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 
 
@@ -13,17 +14,25 @@ public interface IInteractable
 
 public interface IItem
 {
-    enum ItemType
+    Image Image { get; set; }
+}
+
+public class Item
+{
+    public int amount;
+    
+    public Image image { get; set; }
+    virtual protected void useItem()
     {
-        Gear,
-        Consumable,
-        QuestItem,
-        Flower,
+        //기능 구현
     }
 
-    ItemType Type { get; set; }
-
+    virtual public void onUse()
+    {
+        useItem();
+    }
 }
+
 public interface IUsable : IItem
 {
     public void OnUse();
