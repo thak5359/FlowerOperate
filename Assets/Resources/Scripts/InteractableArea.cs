@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractableArea : MonoBehaviour
 {
-    private PlayerMovement pMovement;
+    private PlayerController pMovement;
     private SpriteRenderer pRenderer;
 
     private void OnTriggerEnter(Collider other)
@@ -12,7 +12,7 @@ public class InteractableArea : MonoBehaviour
         Debug.Log("무언가 들어옴");
         if (other.CompareTag("Player"))
         {
-            pMovement = other.GetComponent<PlayerMovement>();
+            pMovement = other.GetComponent<PlayerController>();
             if (pMovement != null)
             {
                 pMovement.canInteractive = true;
@@ -31,7 +31,7 @@ public class InteractableArea : MonoBehaviour
         Debug.Log("무언가 나감");
         if (other.CompareTag("Player"))
         {
-            pMovement = other.GetComponent<PlayerMovement>();
+            pMovement = other.GetComponent<PlayerController>();
             if (pMovement != null)
             {
                 pMovement.canInteractive = false;

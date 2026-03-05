@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
+using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -10,6 +12,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody rb;
     private SpriteRenderer spriteRenderer;
+
+
+    IItem quickSlotitem;
+
+
+
 
     void Awake()
     {
@@ -42,18 +50,47 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnInteraction(InputValue value)
+    protected void OnInteraction(InputValue value)
     {
-        if(canInteractive == true)
-        {if (value.isPressed == true)
+
+        // 상호작용 버튼이 눌렸을 때만 동작.
+        if (value.isPressed == true)
+        {
+            if (canInteractive == true)
+
             {
                 Debug.Log("상호작용 버튼 ON");
                 this.GetComponent<SpriteRenderer>().color = Color.blue;
             }
+
+            else if (canInteractive == false)
+            {
+                Debug.Log("주변에 상호작용할만한거 없음");
+
+                if (quickSlotitem != null && quickSlotitem is IUsable)
+                {
+                }
+
+
+            }
         }
-        else if(canInteractive == false)
-        {
-            Debug.Log("주변에 상호작용할만한거 없음");
-        }
+
+        
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
