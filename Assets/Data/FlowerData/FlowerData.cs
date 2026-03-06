@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum Variable
+public enum Species
 {
     None,
     Rose,
@@ -61,13 +61,12 @@ public enum Floriography
     Hope
 };
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/SpawnManagerScriptableObject", order = 1)]
-public class FlowerData : ScriptableObject
+[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/FlowerData", order = 1)]
+public class FlowerData : ItemData
 {
     [Header("Á¤º¸")]
-    public Sprite Sprite;
     public string FlowerName;
-    public Variable FlowerVar;
+    public Species FlowerVar;
     public FColor FlowerColor;
     public Floriography FlowerMean;
     public int Price;

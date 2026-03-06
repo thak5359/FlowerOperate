@@ -5,12 +5,11 @@ using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Item
+public class Item : MonoBehaviour
 {
-    public readonly ItemData itemData;
+    [SerializeField] protected ItemData itemData;
     public int amount =1;
-    [SerializeField]private int level = 0; 
-    public readonly int maxLv; 
+    [SerializeField] private int level = 0; 
 
 
     public string GetName()
@@ -39,11 +38,6 @@ public class Item
     public void LevelUp()
     {
         level++;
-    }
-
-    public void ResetLevel()
-    {
-        level = 0;
     }
     
     public int GetLevel()
