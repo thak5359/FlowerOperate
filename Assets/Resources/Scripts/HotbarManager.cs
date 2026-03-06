@@ -22,26 +22,39 @@ public class HotbarManager : MonoBehaviour
     }
 
     
-    void OnScrollMouse(InputValue value)
+    public void OnScrollMouse(InputAction.CallbackContext value)
     {
-        Debug.Log("Scroll is dected");
-        Vector2 scrollDelta = value.Get<Vector2>();
+        Vector2 scrollDelta = value.ReadValue<Vector2>();
 
         if (scrollDelta.y > 0)
-        { pointSlot(++pointingSlot); }
+        {
+            if (pointingSlot < slots.Count)
+            {
+                pointSlot(++pointingSlot);
+            }
+            Debug.Log("ScrollUP is dected");
+        }
         else
-        {pointSlot(--pointingSlot); }
+        {
+            if (pointingSlot > 0)
+            {
+                pointSlot(--pointingSlot);
+            }
+            Debug.Log("ScrollDown is dected");
+        }
+
     }
 
-    void pointSlot(int i)
+    public void pointSlot(int i)
     {
         slots[i].toggle.isOn = true;
+        UnityEngine.Debug.Log($"{i} is pressed");
     }
 
-    void OnClickMouse(InputValue value)
+    void OnClickMouse(InputAction.CallbackContext value)
     {
 
-        if (value.isPressed == true)
+        if (value.started == true)
         {
             Debug.Log("Mouse click is detected");
         }

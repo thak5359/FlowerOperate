@@ -16,6 +16,7 @@ public class InteractableArea : MonoBehaviour
             if (pMovement != null)
             {
                 pMovement.canInteractive = true;
+                //Debug.Log("Player Tag is dectected");
             }
 
             pRenderer = other.GetComponentInChildren<SpriteRenderer>();

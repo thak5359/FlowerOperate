@@ -11,7 +11,7 @@ public class HotBarSlot : MonoBehaviour
     public TextMeshProUGUI tmp;
     public Toggle toggle;
 
-
+    public Image bg_img;
     public Item item;
 
     public Item changeItem(Item draggedItem)
@@ -22,11 +22,8 @@ public class HotBarSlot : MonoBehaviour
             item = draggedItem;
 
 
-            // 표기 변환
-            ItemIcon = item.image;
             tmp.text = item.amount.ToString();
-
-
+            ItemIcon.sprite = item.GetSprite();
 
 
             return returnvalue;
@@ -35,5 +32,19 @@ public class HotBarSlot : MonoBehaviour
             item = null;
         return null;
     }
+   
+    
+    private void Start()
+    {
+        UpdateColor(toggle.isOn);
+        toggle.onValueChanged.AddListener(UpdateColor);
+    }
+
+    private void UpdateColor(bool isOn)
+    {
+        bg_img.color = isOn ? Color.yellow : Color.black;
+    }
+    
+
 
 }
