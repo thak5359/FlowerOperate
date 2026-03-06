@@ -37,7 +37,28 @@ public enum FColor
 
 public enum Floriography
 {
-
+    Conflict,
+    Gratitude,
+    Noble,
+    Confession,
+    Coldness,
+    Charm,
+    Revenge,
+    Apology,
+    Love,
+    Flutter,
+    Diligence,
+    Purity,
+    Mystery,
+    Passion,
+    Friendship,
+    Farewell,
+    Sincerity,
+    Memory,
+    Abundance,
+    Happiness,
+    Fortune,
+    Hope
 };
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/SpawnManagerScriptableObject", order = 1)]
@@ -49,6 +70,5 @@ public class FlowerData : ScriptableObject
     public Variable FlowerVar;
     public FColor FlowerColor;
     public Floriography FlowerMean;
-    public int Amount = 0;
     public int Price;
 }
