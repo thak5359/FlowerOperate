@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -33,9 +32,9 @@ public class PlayerController : MonoBehaviour
         trans = GetComponent<Transform>();
     }
 
+
     public void OnMove(InputAction.CallbackContext context)
     {
-
         moveInput = context.ReadValue<Vector2>();
     }
 

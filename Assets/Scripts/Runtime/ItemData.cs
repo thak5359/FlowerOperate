@@ -10,7 +10,7 @@ public class ItemData : ScriptableObject
     public int itemID;
     [SerializeField] protected List<string> itemName; // 아이템 이름 목록
     [SerializeField] protected List<string> description; // 아이템 설명 목록
-    [SerializeField] protected List<Sprite> imageList; // 아이템 이미지 목록
+    [SerializeField] protected List<string> imageList; // 아이템 이미지 목록
 
     protected bool isStackable; // 아이템을 겹쳐서 보관할 수 있음
     protected bool isUsable; // 핫 키에 있을 떄 사용할 수 있음
@@ -28,7 +28,7 @@ public class ItemData : ScriptableObject
         int index = Mathf.Clamp(lv, 0, description.Count - 1);
         return description[index];
     }
-    public Sprite GetSprite(int lv)
+    public string GetSpriteAddress(int lv)
     {
         int index = Mathf.Clamp(lv, 0, imageList.Count - 1);
         return imageList[index];

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.Playables;
@@ -14,7 +15,7 @@ public class HotBarSlot : MonoBehaviour
     public Image bg_img;
     public Item item;
 
-    public Item changeItem(Item draggedItem)
+    public async Task<Item> changeItem(Item draggedItem)
     {
         if (draggedItem != null)
         {
@@ -23,8 +24,8 @@ public class HotBarSlot : MonoBehaviour
 
 
             tmp.text = item.amount.ToString();
-            ItemIcon.sprite = item.GetSprite();
-
+            ItemIcon.sprite = await item.GetSprite(); 
+              
 
             return returnvalue;
         }

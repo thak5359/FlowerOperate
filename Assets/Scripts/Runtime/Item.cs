@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +9,14 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     [SerializeField] protected ItemData itemData;
-    public int amount =1;
-    [SerializeField] protected int level = 0; 
+    public int amount = 1;
+    [SerializeField] protected int level = 0;
 
+    private Sprite cachedSprite;
     virtual public void loadData(ItemData input_itemData, int input_amount, int input_level)
     {
         itemData = input_itemData;
-        amount= input_amount;
+        amount = input_amount;
         level = input_level;
     }
 
@@ -32,17 +34,23 @@ public class Item : MonoBehaviour
             return itemData.GetDescription(level);
         else return null;
     }
-    virtual public Sprite GetSprite()
+    public virtual async Task<Sprite> GetSprite()
     {
         if (itemData != null)
-            return itemData.GetSprite(level);
+        {
+            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(itemData.GetSpriteAddress(level));
+            if (cachedSprite != null)
+            {
+                return cachedSprite;
+            }
+        }
 
-        else return null;
+        return null;
     }
-    
+
     virtual public void OnUse(Vector2 heading, Vector3 pos)
     {
-        
+
     }
 
     virtual protected void Use()
@@ -61,5 +69,5 @@ public class Item : MonoBehaviour
 }
 
 
-    
+
 
