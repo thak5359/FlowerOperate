@@ -10,69 +10,101 @@ using UnityEngine.UI;
 
 public struct UseParam
 {
-    Vector2 heading;
-    Vector3 pos;
-    int efficiency;
-    
+    public readonly Vector2 heading;
+    public readonly Vector3 pos;
+    public readonly int efficiency;
+    public readonly float elapsedTime; // 추가된 필드
 
+    public UseParam(Vector2 input_heading, Vector3 input_pos, int input_efficiency, float input_elapsed)
+    {
+        heading = input_heading;
+        pos = input_pos;
+        efficiency = input_efficiency;
+        elapsedTime = input_elapsed;
+    }
 }
 
-public class SlotItem : MonoBehaviour
+[System.Serializable] // 인스펙터나 디버깅 확인을 위해 직렬화 가능하게 설정
+public class SlotItem
 {
-    [SerializeField] protected ItemIdData itemData;
+    public int? itemId = null;
     public int amount = 1;
 
-    public Sprite cachedSprite; //현재 선택되어있는 스프라이트
-    private int maxCharging; // 최대 차징 가능 횟수
+    public Sprite cachedSprite;
+    protected ItemManager itemManager;
 
-
-    virtual public void loadData(ItemIdData input_itemData, int input_amount)
+    // 1. 생성자: MonoBehaviour의 Awake 역할을 대신함
+    public SlotItem(int? id, int count)
     {
-        itemData = input_itemData;
+        itemManager = ItemManager.Instance;
+        this.itemId = id;
+        this.amount = count;
+    }
+
+    // 2. 초기 로드 로직 (데이터가 할당된 후 수동으로 호출)
+    public virtual async void LoadData(int input_itemId, int input_amount)
+    {
+        itemId = input_itemId;
         amount = input_amount;
-    }
 
-    private void OnEnable()
-    {
-#if UNITY_EDITOR
-        if (itemData == null)
+        if (itemId != -1 && itemId != null)
         {
-            Debug.LogAssertion("itemData is null");
+            await RefreshSprite();
         }
-#endif
     }
 
-    private async void Start()
+    // 3. 리소스 해제 로직 (슬롯이 파괴되거나 아이템이 바뀔 때 '수동' 호출)
+    public virtual void Cleanup()
     {
-        await GetSprite();
+        if (cachedSprite != null)
+        {
+            AddressableManager.ReleaseAsset(cachedSprite);
+            cachedSprite = null;
+            Debug.Log($"Item {itemId} 리소스 해제 완료");
+        }
     }
 
-    private void OnDisable()
+    public virtual async Task<Sprite> RefreshSprite()
     {
-        AddressableManager.ReleaseAsset(itemData.SpriteAddress);
+        if (itemId != null && itemId != -1)
+        {
+            if (cachedSprite != null) AddressableManager.ReleaseAsset(cachedSprite);
+
+            string addr = itemManager.GetItemAddress((int)itemId);
+            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(addr);
+            return cachedSprite;
+        }
+        return null;
     }
+
+
 
     virtual public string GetName()
     {
-        if (itemData != null)
-            return itemData.ItemName;
+        if (itemId != -1)
+            return itemManager.GetItemName((int)itemId);
 
         else return null;
     }
     virtual public string GetDescription()
     {
-        if (itemData != null)
-            return itemData.Description;
+        if (itemId != -1)
+            return itemManager.GetItemDescription((int)itemId);
         else return null;
     }
     public virtual async Task<Sprite> GetSprite()
     {
-        if (itemData != null)
+        if (itemId != -1)
         {
-            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(itemData.SpriteAddress);
+            // 중복 로드를 방지하기 위해 기존 스프라이트가 있다면 해제하고 시작하는 것이 안전합니다.
+            if (cachedSprite != null) AddressableManager.ReleaseAsset(cachedSprite);
+
+            string addr = itemManager.GetItemAddress((int)itemId);
+            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(addr);
+
             if (cachedSprite == null)
             {
-                Debug.LogAssertion($"Sprite on {itemData} is missing");
+                Debug.LogAssertion($"Sprite on {itemId} is missing at address: {addr}");
                 return null;
             }
             return cachedSprite;
@@ -84,6 +116,8 @@ public class SlotItem : MonoBehaviour
     {
 
     }
+
+
 
     virtual public int? GetLevel()
     {

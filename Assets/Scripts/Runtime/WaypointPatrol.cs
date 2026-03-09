@@ -16,7 +16,6 @@ public class WaypointPatrol : MonoBehaviour
         {
             Debug.Log("navMeshAgent or waypoint is Null!");
         }
-
     }
 
     // Update is called once per frame
