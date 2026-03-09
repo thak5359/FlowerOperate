@@ -2,27 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flower : Item
+public class Flower : SlotItem
 {
     new FlowerData itemData;
     protected int grade;
-
-
-    override public void OnUse(Vector2 heading, Vector3 pos)
-    {
-
-    }
-
-    override protected void Use()
-    {
-
-    }
-
-    override public void LevelUp()
-    {
-        
-    }
-    
 
     public int GetGrade()
     {
@@ -39,6 +22,4 @@ public class Flower : Item
         else
             return false;
     }
-
-
 }

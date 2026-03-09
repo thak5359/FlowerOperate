@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public Item item;
+    public SlotItem item;
 
     private Vector2 moveInput;
     private Transform trans;

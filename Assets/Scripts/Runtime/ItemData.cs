@@ -1,39 +1,83 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "ItemData")]
-public class ItemData : ScriptableObject
+public class ItemIdData : ScriptableObject
 {
     public int itemID;
-    [SerializeField] protected List<string> itemName; // 아이템 이름 목록
-    [SerializeField] protected List<string> description; // 아이템 설명 목록
-    [SerializeField] protected List<string> imageList; // 아이템 이미지 목록
 
-    protected bool isStackable; // 아이템을 겹쳐서 보관할 수 있음
-    protected bool isUsable; // 핫 키에 있을 떄 사용할 수 있음
-    protected bool canDump; // 아이템을 버릴 수 있음
-    protected bool canSold; // 아이템을 상점에 팔 수 있음
-    protected int maxLevel; // 아이템 최대 레벨
+    [Header("기본 정보")]
+    [SerializeField] protected string itemName;
+    [SerializeField] protected string description;
+    [SerializeField] protected string spriteAddress;
 
-    public string GetName(int lv)
-    {
-        int index = Mathf.Clamp(lv, 0, itemName.Count - 1);
-        return itemName[index];
-    }
-    public string GetDescription(int lv)
-    {
-        int index = Mathf.Clamp(lv, 0, description.Count - 1);
-        return description[index];
-    }
-    public string GetSpriteAddress(int lv)
-    {
-        int index = Mathf.Clamp(lv, 0, imageList.Count - 1);
-        return imageList[index];
-    }
+    public string ItemName => itemName;
+    public string Description => description;
+    public string SpriteAddress => spriteAddress;
 
+
+
+    [Header("상태 설정")]
+    [SerializeField] protected bool isStackable; // 저장 여부만 기록  (최대 스택은 각 저장 위치에서)
+    [SerializeField] protected bool canDump;
+    [SerializeField] protected bool canSold;
+    [SerializeField] protected int maxLevel;
+
+    public bool IsStackable => isStackable;
+    public bool CanDump => canDump;
+    public bool CanSold => canSold;
+
+    [Header("차징 설정")]
+    [SerializeField] protected int maxCharging;
+    [SerializeField] protected int chargeTime1st;
+    [SerializeField] protected int chargeTime2nd;
+    [SerializeField] protected int chargeTime3rd;
+
+
+    public int MaxLevel => maxLevel;
+    public int MaxCharging => maxCharging;
+    public int ChargeTime1st => chargeTime1st;
+    public int ChargeTime2nd => chargeTime2nd;
+    public int ChargeTime3rd => chargeTime3rd;
 }
 
 
+[CreateAssetMenu(fileName = "ItemData", menuName = "ItemData")]
+public class ItemDetailData: ScriptableObject
+{
+    public int itemID;
+
+    [Header("기본 정보")]
+    [SerializeField] protected string itemName;
+    [SerializeField] protected string description;
+    [SerializeField] protected string spriteAddress;
+
+    public string ItemName => itemName;
+    public string Description => description;
+    public string SpriteAddress => spriteAddress;
+
+
+
+    [Header("상태 설정")]
+    [SerializeField] protected bool isStackable; // 저장 여부만 기록  (최대 스택은 각 저장 위치에서)
+    [SerializeField] protected bool canDump;
+    [SerializeField] protected bool canSold;
+    [SerializeField] protected int maxLevel;
+
+    public bool IsStackable => isStackable;
+    public bool CanDump => canDump;
+    public bool CanSold => canSold;
+
+    [Header("차징 설정")]
+    [SerializeField] protected int maxCharging;
+    [SerializeField] protected int chargeTime1st;
+    [SerializeField] protected int chargeTime2nd;
+    [SerializeField] protected int chargeTime3rd;
+
+
+    public int MaxLevel => maxLevel;
+    public int MaxCharging => maxCharging;
+    public int ChargeTime1st => chargeTime1st;
+    public int ChargeTime2nd => chargeTime2nd;
+    public int ChargeTime3rd => chargeTime3rd;
+}

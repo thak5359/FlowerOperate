@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Plot : MonoBehaviour
 {
-
     public SpriteRenderer plotRenderer;
     public SpriteRenderer flowerRenderer;
     public FlowerData flowerdata;
-
-
+    
     // 토지의 마지막 활성화된 날짜와 페이즈(또는 시간)
     private int LastActivedDay;
-    private int LastActivedPhase;
+    private int cachedDay;
 
     //토지의 위치 정보(데이터 처리용)
     [SerializeField] public readonly int ChunkNumber;
@@ -38,11 +36,25 @@ public class Plot : MonoBehaviour
     }
     
     //TODO : 다시 활성화 되었을때에 지난 시간만큼 식물을 성장시키거나, 죽이는 코드 작성! 실행은 부모 오브젝트에서 OnDisabled일때 List로 실행시키기.
-    private void Refresh()
+    private void Refresh(int currentDay)
     {
-        
-    }
+        if(itemId != 0)
+        {
+            cachedDay = currentDay - LastActivedDay;
+            if (cachedDay > 0)
+            {
 
+                for (int i = 0; i < cachedDay; i++)
+                {
+                    if ( growth < flowerdata.MaxLevel)
+                    {
+                        growth++;
+                    }
+                }
+            }
+        }
+
+    }
 
 
     public int sowSeed(int input_itemId)

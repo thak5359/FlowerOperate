@@ -13,13 +13,13 @@ public class HotBarSlot : MonoBehaviour
     public Toggle toggle;
     public Image slotFrame;
     public Image bg_img;
-    public Item item;
+    public SlotItem item;
 
-    public async Task<Item> changeItem(Item draggedItem)
+    public async Task<SlotItem> changeItem(SlotItem draggedItem)
     {
         if (draggedItem != null)
         {
-            Item returnvalue = item;
+            SlotItem returnvalue = item;
             item = draggedItem;
 
 

@@ -66,10 +66,11 @@ public enum Floriography
 public class FlowerData : ScriptableObject
 {
     [Header("Á¤º¸")]
-    public Sprite Sprite;
+    public string SpriteAddress;
     public string FlowerName;
     public Variable FlowerVar;
     public FColor FlowerColor;
     public Floriography FlowerMean;
     public int Price;
+    public int MaxLevel;
 }
