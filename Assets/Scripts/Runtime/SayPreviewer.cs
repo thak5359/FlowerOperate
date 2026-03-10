@@ -75,8 +75,10 @@ public class SayPreviewer : MonoBehaviour
                 sb.Append(c);
                 previewText.text = sb.ToString();
 
-                float speed = OptionManager.Instance.settings.writingSpeed;
-                float puncPause = (OptionManager.Instance.settings.puncSliderRaw + 1)*0.05f;
+                float speed = // OptionManager.Instance.settings.writingSpeed;
+                    30;
+                float puncPause = //(OptionManager.Instance.settings.puncSliderRaw + 1)*0.05f;
+                    0.2f;
                 float charDelay = 1f / Mathf.Max(speed, 1f);
 
                 // 구두점 체크
@@ -92,10 +94,11 @@ public class SayPreviewer : MonoBehaviour
 
             float finalWaitTime = 1.5f; // 기본값
 
-            if (OptionManager.Instance != null && OptionManager.Instance.settings.isAutoMode == true)
+            if (OptionManager.Instance != null //&& OptionManager.Instance.settings.isAutoMode == true)
+                )
             {
                 // 오토 모드라면 슬라이더로 설정한 값을 가져옴
-                finalWaitTime = OptionManager.Instance.settings.autoWaitTime;
+               // finalWaitTime = OptionManager.Instance.settings.autoWaitTime;
             }
 
             // 문장 종료 후 대기 시간 (다음 문장 넘어가기 전)
@@ -105,7 +108,7 @@ public class SayPreviewer : MonoBehaviour
             float elapsed = 0f;
             while (true)
             {
-                float currentTargetWait = OptionManager.Instance.settings.autoWaitTime;
+                float currentTargetWait = 0.2f; //OptionManager.Instance.settings.autoWaitTime;
                    
 
                 elapsed += Time.deltaTime;

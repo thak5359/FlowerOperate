@@ -313,7 +313,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1000}
   m_SizeDelta: {x: 600, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5759489750221714725
@@ -757,6 +757,7 @@ GameObject:
   - component: {fileID: 436807115258588549}
   - component: {fileID: 5337037355272982016}
   - component: {fileID: 6498775975542042967}
+  - component: {fileID: 7153734847663369298}
   m_Layer: 0
   m_Name: PauseUI
   m_TagString: Untagged
@@ -847,6 +848,22 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &7153734847663369298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561289654763114685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac53403b4645f34eb3cd2b4095fcd48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movablePart: {fileID: 2614901355892535098}
+  showPos: {x: 0, y: 0}
+  hidePos: {x: 1000, y: 0}
+  duration: 0.5
 --- !u!1 &6932808322105890705
 GameObject:
   m_ObjectHideFlags: 0
