@@ -7,15 +7,15 @@ using UnityEngine.UI;
 
 public class HotbarManager : MonoBehaviour
 {
-    [SerializeField]
+    
     [Header("핫키 슬롯을 등록해주세요")]
-    List<HotBarSlot> slots;
-    PlayerController player;
+    [SerializeField] List<HotBarSlot> slots;
+    [SerializeField] PlayerController player;
 
     [SerializeField] private int pointingSlot = -1;
 
     private float scrollCooldown = 0.15f;
-    private float lastScrollTime;
+    private float lastScrollTime = 0.0f;
 
     void Awake()
     {
@@ -74,7 +74,7 @@ public class HotbarManager : MonoBehaviour
         }
 
         pointingSlot = i;
-
+        SyncPlayerItem();
         slots[i].toggle.isOn = true;
         slots[i].slotFrame.enabled = true;
 
@@ -84,5 +84,15 @@ public class HotbarManager : MonoBehaviour
         }
 
         Debug.Log($"{i}번 슬롯 선택됨");
+    }
+    public void SyncPlayerItem()
+    {
+        if (pointingSlot < 0 || pointingSlot >= slots.Count) return;
+
+        // 플레이어에게 현재 슬롯이 가진 'SlotItem'의 참조만 넘깁니다.
+        if (player != null)
+        {
+            player.SetItem(slots[pointingSlot].item);
+        }
     }
 }

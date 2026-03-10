@@ -1,83 +1,95 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "ItemData")]
+
+[CreateAssetMenu(fileName = "IdData", menuName = "ItemData/IdData")]
 public class ItemIdData : ScriptableObject
 {
-    public int itemID;
 
     [Header("기본 정보")]
-    [SerializeField] protected string itemName;
-    [SerializeField] protected string description;
-    [SerializeField] protected string spriteAddress;
+    private int itemID;
+    [SerializeField] protected List<string> itemName;
+    [SerializeField] protected List<string> description;
+    [SerializeField] protected List<string> spriteAddress;
 
-    public string ItemName => itemName;
-    public string Description => description;
-    public string SpriteAddress => spriteAddress;
+    public int ItemID => itemID;
+    public string ItemName(int i) => itemName[i];
+    public string Description(int i) => description[i];
+    public string Address(int i) => spriteAddress[i];
+}
 
+public class ItemDetailData : ScriptableObject
+{
 
+}
 
-    [Header("상태 설정")]
-    [SerializeField] protected bool isStackable; // 저장 여부만 기록  (최대 스택은 각 저장 위치에서)
-    [SerializeField] protected bool canDump;
-    [SerializeField] protected bool canSold;
-    [SerializeField] protected int maxLevel;
+[CreateAssetMenu(fileName = "FlowerIdData", menuName = "FlowerData/IdData")]
+public class FlowerIdData : ItemIdData
+{
+    [Header("꽃의 구성 인덱스 [품종 번호, 색상 번호, 꽃말 번호]")]
+    [SerializeField] protected int speciesIndex;
+    [SerializeField] protected int colorIndex;
+    [SerializeField] protected List<int> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
 
-    public bool IsStackable => isStackable;
-    public bool CanDump => canDump;
-    public bool CanSold => canSold;
-
-    [Header("차징 설정")]
-    [SerializeField] protected int maxCharging;
-    [SerializeField] protected int chargeTime1st;
-    [SerializeField] protected int chargeTime2nd;
-    [SerializeField] protected int chargeTime3rd;
-
-
-    public int MaxLevel => maxLevel;
-    public int MaxCharging => maxCharging;
-    public int ChargeTime1st => chargeTime1st;
-    public int ChargeTime2nd => chargeTime2nd;
-    public int ChargeTime3rd => chargeTime3rd;
+    public int SpeciesIndex => speciesIndex;
+    public int ColorIndex => ColorIndex;
+    public List<int> FloroIndex => floroIndex;
 }
 
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "ItemData")]
-public class ItemDetailData: ScriptableObject
+[CreateAssetMenu(fileName = "FlowerData", menuName = "FlowerData/DetailData")]
+public class FlowerDetailData : ItemDetailData
 {
-    public int itemID;
+    [SerializeField] protected List<string> speciesList;
+    [SerializeField] protected List<string> colorList;
+    [SerializeField] protected List<string> floroList;
 
-    [Header("기본 정보")]
-    [SerializeField] protected string itemName;
-    [SerializeField] protected string description;
-    [SerializeField] protected string spriteAddress;
-
-    public string ItemName => itemName;
-    public string Description => description;
-    public string SpriteAddress => spriteAddress;
+    public string Species(int index) => speciesList[index];
+    public string Color(int index) => colorList[index];
+    public string Floro(int index) => floroList[index];
+}
 
 
+[CreateAssetMenu(fileName = "UsableIdData", menuName = "UsableData/IdData")]
 
-    [Header("상태 설정")]
-    [SerializeField] protected bool isStackable; // 저장 여부만 기록  (최대 스택은 각 저장 위치에서)
-    [SerializeField] protected bool canDump;
-    [SerializeField] protected bool canSold;
-    [SerializeField] protected int maxLevel;
+public class UsableIdData : ItemIdData
+{
+    [SerializeField] protected int durationIndex;
+    [SerializeField] protected int chargeIndex;
+    [SerializeField] protected int powerIndex;
 
-    public bool IsStackable => isStackable;
-    public bool CanDump => canDump;
-    public bool CanSold => canSold;
-
-    [Header("차징 설정")]
-    [SerializeField] protected int maxCharging;
-    [SerializeField] protected int chargeTime1st;
-    [SerializeField] protected int chargeTime2nd;
-    [SerializeField] protected int chargeTime3rd;
+    public int DuratIndex => durationIndex;
+    public int ChargeIndex => chargeIndex;
+    public int PowerIndex => powerIndex;
 
 
-    public int MaxLevel => maxLevel;
-    public int MaxCharging => maxCharging;
-    public int ChargeTime1st => chargeTime1st;
-    public int ChargeTime2nd => chargeTime2nd;
-    public int ChargeTime3rd => chargeTime3rd;
+}
+
+[CreateAssetMenu(fileName = "UsableDetailData", menuName = "UsableData/DetailData")]
+
+public class UsableDetailData : ItemDetailData
+{
+    [SerializeField] protected List<int> durationList;
+    [SerializeField] protected List<int> powerList;
+    [SerializeField] protected List<ChargeInfo> chargeInfoList;
+
+    public int Duration(int index) => durationList[index];
+    public int Power(int index) => powerList[index];
+    public ChargeInfo ChargeInfo(int index) => chargeInfoList[index];
+
+}
+
+public struct ChargeInfo
+{
+    public readonly float ChargeTime;
+    public readonly int maxChargeCount;
+
+    public ChargeInfo(float time, int count)
+    {
+        ChargeTime = time;
+        maxChargeCount = count;
+    }
+
+    
 }

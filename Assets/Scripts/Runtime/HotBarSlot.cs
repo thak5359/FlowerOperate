@@ -14,24 +14,29 @@ public class HotBarSlot : MonoBehaviour
     public Image slotFrame;
     public Image bg_img;
     public SlotItem item;
-
-    public async Task<SlotItem> changeItem(SlotItem draggedItem)
+    private void OnDisable()
     {
-        if (draggedItem != null)
+        item?.Cleanup();
+    }
+    public async Task ChangeItem(SlotItem newItem)
+    {
+        // 1. 기존 아이템 리소스 정리
+        item?.Cleanup();
+
+        // 2. 새 아이템 할당
+        item = newItem;
+
+        // 3. UI 업데이트
+        if (item != null)
         {
-            SlotItem returnvalue = item;
-            item = draggedItem;
-
-
+            ItemIcon.sprite = await item.RefreshSprite();
             tmp.text = item.amount.ToString();
-            ItemIcon.sprite = await item.GetSprite(); 
-              
-
-            return returnvalue;
         }
         else
-            item = null;
-        return null;
+        {
+            ItemIcon.sprite = null;
+            tmp.text = "0";
+        }
     }
 
     private void Start()
