@@ -33,7 +33,7 @@ public class FlowerIdData : ItemIdData
     [SerializeField] protected List<int> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
 
     public int SpeciesIndex => speciesIndex;
-    public int ColorIndex => colorIndex;
+    public int ColorIndex => ColorIndex;
     public List<int> FloroIndex => floroIndex;
 }
 

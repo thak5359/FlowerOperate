@@ -13,7 +13,7 @@ public struct UseParam
     public readonly Vector2 heading;
     public readonly Vector3 pos;
     public readonly int efficiency;
-    public readonly float elapsedTime; // 추가된 필드
+    public readonly float elapsedTime; 
 
     public UseParam(Vector2 input_heading, Vector3 input_pos, int input_efficiency, float input_elapsed)
     {
@@ -33,7 +33,7 @@ public class SlotItem
     public Sprite cachedSprite;
     protected ItemManager itemManager;
 
-    // 1. 생성자: MonoBehaviour의 Awake 역할을 대신함
+
     public SlotItem(int? id, int count)
     {
         itemManager = ItemManager.Instance;
@@ -41,7 +41,7 @@ public class SlotItem
         this.amount = count;
     }
 
-    // 2. 초기 로드 로직 (데이터가 할당된 후 수동으로 호출)
+    // 2.로드 ( 수동 호출)
     public virtual async void LoadData(int input_itemId, int input_amount)
     {
         itemId = input_itemId;
@@ -53,7 +53,7 @@ public class SlotItem
         }
     }
 
-    // 3. 리소스 해제 로직 (슬롯이 파괴되거나 아이템이 바뀔 때 '수동' 호출)
+    // 3. 리소스 해제 ( 수동 호출)
     public virtual void Cleanup()
     {
         if (cachedSprite != null)
