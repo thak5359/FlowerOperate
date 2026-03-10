@@ -30,7 +30,7 @@ public class HotBarSlot : MonoBehaviour
         if (item != null)
         {
             ItemIcon.sprite = await item.RefreshSprite();
-            tmp.text = item.amount.ToString();
+            tmp.text = item.Amount.ToString();
         }
         else
         {
