@@ -8,10 +8,10 @@ public class ItemIdData : ScriptableObject
 {
 
     [Header("기본 정보")]
-    private int itemID;
-    [SerializeField] protected List<string> itemName;
-    [SerializeField] protected List<string> description;
-    [SerializeField] protected List<string> spriteAddress;
+    public int itemID;
+    [SerializeField] public List<string> itemName;
+    [SerializeField] public List<string> description;
+    [SerializeField] public List<string> spriteAddress;
 
     public int ItemID => itemID;
     public string ItemName(int i) => itemName[i];
@@ -28,9 +28,9 @@ public class ItemDetailData : ScriptableObject
 public class FlowerIdData : ItemIdData
 {
     [Header("꽃의 구성 인덱스 [품종 번호, 색상 번호, 꽃말 번호]")]
-    [SerializeField] protected int speciesIndex;
-    [SerializeField] protected int colorIndex;
-    [SerializeField] protected List<int> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
+    [SerializeField] public int speciesIndex;
+    [SerializeField] public int colorIndex;
+    [SerializeField] public List<int> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
 
     public int SpeciesIndex => speciesIndex;
     public int ColorIndex => ColorIndex;
@@ -41,9 +41,9 @@ public class FlowerIdData : ItemIdData
 [CreateAssetMenu(fileName = "FlowerData", menuName = "FlowerData/DetailData")]
 public class FlowerDetailData : ItemDetailData
 {
-    [SerializeField] protected List<string> speciesList;
-    [SerializeField] protected List<string> colorList;
-    [SerializeField] protected List<string> floroList;
+    [SerializeField] public List<string> speciesList;
+    [SerializeField] public List<string> colorList;
+    [SerializeField] public List<string> floroList;
 
     public string Species(int index) => speciesList[index];
     public string Color(int index) => colorList[index];
@@ -55,9 +55,9 @@ public class FlowerDetailData : ItemDetailData
 
 public class UsableIdData : ItemIdData
 {
-    [SerializeField] protected int durationIndex;
-    [SerializeField] protected int chargeIndex;
-    [SerializeField] protected int powerIndex;
+    [SerializeField] public int durationIndex;
+    [SerializeField] public int chargeIndex;
+    [SerializeField] public int powerIndex;
 
     public int DuratIndex => durationIndex;
     public int ChargeIndex => chargeIndex;
@@ -70,9 +70,9 @@ public class UsableIdData : ItemIdData
 
 public class UsableDetailData : ItemDetailData
 {
-    [SerializeField] protected List<int> durationList;
-    [SerializeField] protected List<int> powerList;
-    [SerializeField] protected List<ChargeInfo> chargeInfoList;
+    [SerializeField] public List<int> durationList;
+    [SerializeField] public List<int> powerList;
+    [SerializeField] public List<ChargeInfo> chargeInfoList;
 
     public int Duration(int index) => durationList[index];
     public int Power(int index) => powerList[index];
