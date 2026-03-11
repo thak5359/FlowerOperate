@@ -5052,6 +5052,7 @@ GameObject:
   - component: {fileID: 8601988936563432359}
   - component: {fileID: 8456782491950362646}
   - component: {fileID: 713061044319089592}
+  - component: {fileID: 4972762585608371547}
   m_Layer: 0
   m_Name: SettingUI
   m_TagString: Untagged
@@ -5161,6 +5162,32 @@ MonoBehaviour:
   showPos: {x: 0, y: 0}
   hidePos: {x: 1600, y: 0}
   duration: 0.5
+--- !u!114 &4972762585608371547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6301784745649717062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c95efab34e82a4a4cab8ab8f32080c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterMixer: {fileID: 24100000, guid: 5f171e3c1cd39ff488490da837375068, type: 2}
+  settings:
+    masterVol: 100
+    bgmVol: 100
+    sfxVol: 100
+    voiceVol: 100
+    resWidth: 1920
+    resHeight: 1080
+    isFullScreen: 1
+  masterVolumeSlider: {fileID: 6215956806776166156}
+  bgmVolumeSlider: {fileID: 2857691623283890131}
+  sfxVolumeSlider: {fileID: 6339291380264371182}
+  voiceVolumeSlider: {fileID: 5695604216270876599}
+  resolutionDropdown: {fileID: 4622392862999087507}
 --- !u!1 &6468424095399912431
 GameObject:
   m_ObjectHideFlags: 0
@@ -5727,7 +5754,6 @@ GameObject:
   - component: {fileID: 3187849175326735656}
   - component: {fileID: 2583567646049619122}
   - component: {fileID: 3681705724536899311}
-  - component: {fileID: 4460537005250568131}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -5795,32 +5821,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4460537005250568131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6716091658336652761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c95efab34e82a4a4cab8ab8f32080c85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  masterMixer: {fileID: 24100000, guid: 5f171e3c1cd39ff488490da837375068, type: 2}
-  settings:
-    masterVol: 100
-    bgmVol: 100
-    sfxVol: 100
-    voiceVol: 100
-    resWidth: 1920
-    resHeight: 1080
-    isFullScreen: 1
-  masterVolumeSlider: {fileID: 6215956806776166156}
-  bgmVolumeSlider: {fileID: 2857691623283890131}
-  sfxVolumeSlider: {fileID: 6339291380264371182}
-  voiceVolumeSlider: {fileID: 5695604216270876599}
-  resolutionDropdown: {fileID: 4622392862999087507}
 --- !u!1 &6759272396124518192
 GameObject:
   m_ObjectHideFlags: 0

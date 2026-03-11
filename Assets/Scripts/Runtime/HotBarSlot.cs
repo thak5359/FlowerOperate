@@ -20,13 +20,10 @@ public class HotBarSlot : MonoBehaviour
     }
     public async Task ChangeItem(SlotItem newItem)
     {
-        // 1. 기존 아이템 리소스 정리
         item?.Cleanup();
 
-        // 2. 새 아이템 할당
         item = newItem;
 
-        // 3. UI 업데이트
         if (item != null)
         {
             ItemIcon.sprite = await item.RefreshSprite();
@@ -39,11 +36,4 @@ public class HotBarSlot : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if(slotFrame.IsActive() == true)
-        {
-            slotFrame.enabled = false;
-        }
-    }
 }

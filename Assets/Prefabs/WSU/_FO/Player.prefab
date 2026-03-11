@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   canInteractive: 0
-  IA: {fileID: 7009285364308266149}
+  selectionArea: {fileID: 0}
 --- !u!65 &5226812122644088705
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -251,7 +251,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -267,7 +268,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot1[/Keyboard/1]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -283,7 +285,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot2[/Keyboard/2]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -299,7 +302,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot3[/Keyboard/3]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -315,7 +319,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot4[/Keyboard/4]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -331,7 +336,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot5[/Keyboard/5]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -347,7 +353,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot6[/Keyboard/6]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -363,7 +370,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot7[/Keyboard/7]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -379,7 +387,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot8[/Keyboard/8]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -395,7 +404,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot9[/Keyboard/9]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: pointSlot
         m_Mode: 3
@@ -411,7 +421,8 @@ MonoBehaviour:
     m_ActionName: Player/HotSlot10[/Keyboard/0]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
+          type: 3}
         m_TargetAssemblyTypeName: HotbarManager, Assembly-CSharp
         m_MethodName: OnScrollMouse
         m_Mode: 0
@@ -433,6 +444,34 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f6984632-3cf7-4048-a99f-7422b10caf7f
     m_ActionName: Player/OpenInventory[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7b3cfebe-d412-4878-b21b-f4f5485e1f0d
+    m_ActionName: Player/Pause
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 67642b45-06a8-4feb-a789-16573ea4f6f1
+    m_ActionName: FlowerShop/Drag[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e5499a1d-e3a0-4666-805b-85b721284297
+    m_ActionName: FlowerShop/Confirm[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ff32fa58-1ee4-4b0c-8b78-414c7cd6ea56
+    m_ActionName: Settings/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8653d504-88e9-465f-8e22-b219c7c3b52b
+    m_ActionName: Settings/SoundPanel[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0a07e9ce-2166-429e-8a79-4bf2229f44d4
+    m_ActionName: Settings/GraphicPanel[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2db17683-4f3c-44be-9fd8-f013a50eb15e
+    m_ActionName: Settings/EtcPanel[/Keyboard/3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
