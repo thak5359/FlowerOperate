@@ -7,7 +7,7 @@ using UnityEngine;
 public class ItemIdData : ScriptableObject
 {
 
-    [Header("±âº» Á¤º¸")]
+    [Header("ê¸°ë³¸ ì •ë³´")]
     public int itemID;
     [SerializeField] public List<string> itemName;
     [SerializeField] public List<string> description;
@@ -21,62 +21,6 @@ public class ItemIdData : ScriptableObject
 
 public class ItemDetailData : ScriptableObject
 {
-
-}
-
-[CreateAssetMenu(fileName = "FlowerIdData", menuName = "FlowerData/IdData")]
-public class FlowerIdData : ItemIdData
-{
-    [Header("²ÉÀÇ ±¸¼º ÀÎµ¦½º [Ç°Á¾ ¹øÈ£, »ö»ó ¹øÈ£, ²É¸» ¹øÈ£]")]
-    [SerializeField] public int speciesIndex;
-    [SerializeField] public int colorIndex;
-    [SerializeField] public List<int> floroIndex; // ÇÑ ²É¿¡ º¹¼öÀÇ ²É¸»ÀÌ Á¸ÀçÇÔ > List·Î °ü¸®
-
-    public int SpeciesIndex => speciesIndex;
-    public int ColorIndex => ColorIndex;
-    public List<int> FloroIndex => floroIndex;
-}
-
-
-[CreateAssetMenu(fileName = "FlowerData", menuName = "FlowerData/DetailData")]
-public class FlowerDetailData : ItemDetailData
-{
-    [SerializeField] public List<string> speciesList;
-    [SerializeField] public List<string> colorList;
-    [SerializeField] public List<string> floroList;
-
-    public string Species(int index) => speciesList[index];
-    public string Color(int index) => colorList[index];
-    public string Floro(int index) => floroList[index];
-}
-
-
-[CreateAssetMenu(fileName = "UsableIdData", menuName = "UsableData/IdData")]
-
-public class UsableIdData : ItemIdData
-{
-    [SerializeField] public int durationIndex;
-    [SerializeField] public int chargeIndex;
-    [SerializeField] public int powerIndex;
-
-    public int DuratIndex => durationIndex;
-    public int ChargeIndex => chargeIndex;
-    public int PowerIndex => powerIndex;
-
-
-}
-
-[CreateAssetMenu(fileName = "UsableDetailData", menuName = "UsableData/DetailData")]
-
-public class UsableDetailData : ItemDetailData
-{
-    [SerializeField] public List<int> durationList;
-    [SerializeField] public List<int> powerList;
-    [SerializeField] public List<ChargeInfo> chargeInfoList;
-
-    public int Duration(int index) => durationList[index];
-    public int Power(int index) => powerList[index];
-    public ChargeInfo ChargeInfo(int index) => chargeInfoList[index];
 
 }
 

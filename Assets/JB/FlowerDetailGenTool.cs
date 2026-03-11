@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public enum DropDownMenu
@@ -25,13 +26,13 @@ public class FlowerDetailGenTool : EditorWindow
     {
         DropDownMenu menu = DropDownMenu.Flower;
         itemDetailData = (ItemDetailData)EditorGUILayout.ObjectField(
-            "µ≈◊¿œ µ•¿Ã≈Õ",
+            "ÎîîÌÖåÏùº Îç∞Ïù¥ÌÑ∞",
             itemDetailData,
-            typeof(FlowerDetailData),
+            typeof(ItemDetailData),
             false);
 
-        menu = (DropDownMenu)EditorGUILayout.EnumPopup("¡æ∑˘", menu);
-        if (GUILayout.Button("ª˝º∫"))
+        menu = (DropDownMenu)EditorGUILayout.EnumPopup("Ï¢ÖÎ•ò", menu);
+        if (GUILayout.Button("ÏÉùÏÑ±"))
         {
             switch (menu)
             {
@@ -40,7 +41,7 @@ public class FlowerDetailGenTool : EditorWindow
                     if (SO != null)
                         FlowerOperateFunc(SO);
                     else
-                        Debug.Log("¿ﬂ∏¯µ» º≥¡§");
+                        Debug.Log("ÏûòÎ™ªÎêú ÏÑ§Ï†ï");
                         break;
                 case DropDownMenu.Usable:
                     Debug.Log("Usable");
@@ -52,12 +53,33 @@ public class FlowerDetailGenTool : EditorWindow
     private void FlowerOperateFunc(FlowerDetailData SO)
     {
         string[] lines = File.ReadAllLines(path);
+
+        foreach (string line in lines)
+        {
+            SO.speciesList.Add("");
+            SO.colorList.Add("");
+            SO.floroList.Add("");
+        }
         foreach (string line in lines)
         {
             string[] data = line.Split(',');
             SO.speciesList[int.Parse(data[1])] = data[3];
             SO.colorList[int.Parse(data[1])] = data[6];
             SO.floroList[int.Parse(data[1])] = data[10];
+        }
+        FlowerDetailData flowerData = ScriptableObject.CreateInstance<FlowerDetailData>();
+        flowerData.speciesList = SO.speciesList;
+        flowerData.colorList = SO.colorList;
+        flowerData.floroList = SO.floroList;
+        
+        AssetDatabase.Refresh();
+    }
+
+    private void FlowerOperateFunc(UsableDetailData SO)
+    {
+        string[] lines = File.ReadAllLines(path);
+        foreach (string line in lines)
+        {
         }
     }
 }
