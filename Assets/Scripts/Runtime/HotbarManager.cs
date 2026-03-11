@@ -63,7 +63,7 @@ public class HotbarManager : MonoBehaviour
         slots[i].slotFrame.enabled = true;
         
 
-        // 5. 플레이어에게 정보 갱신
+        // 플레이어에게 정보 갱신
         //SyncPlayerItem();
 
         Debug.Log($"{i+1}번 슬롯 선택됨");

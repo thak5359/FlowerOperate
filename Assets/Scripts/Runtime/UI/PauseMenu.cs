@@ -8,35 +8,46 @@ public class PauseMenu : MonoBehaviour
     public RectTransform movablePart;
     public Vector2 showPos;
     public Vector2 hidePos;
-    public float duration = 0.5f;
+    [SerializeField]protected const float defaultDuration = 0.5f;
 
+    private bool isShowing = false; 
     private Coroutine moveCoroutine;
 
-    // 설정 창 숨기기/보이기 (이동 연출 포함) 
-    public void MoveSettings(bool Toggle)
+    private string prevIAmap = null;
+
+    //호출용, PauseMenu 숨기기/보이기 (이동 연출 포함) 
+    public void showUI(float input_duration = defaultDuration)
     {
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
-        if (Toggle == true)
+        IMapChangable input = IAmapManager.Instance; // IA맵 변경 함수 접근 권한 취득
+
+        if (isShowing == false) // 보이기
         {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-            // 켜질 때 슬롯 갱신 등 기존 로직 수행
+            moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
+
+            prevIAmap = input.getCurrentIAmap();
+            input.changeIAmapPauseMenu();
         }
-        else
+        else // 숨기기
         {
-            moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
+            moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
+            prevIAmap = null;
+            input.changeIAmap(prevIAmap);
         }
+
+        isShowing = !isShowing; // UI 이동 후 상태 전환
     }
 
-    private IEnumerator MoveRoutine(Vector2 targetPos)
+    private IEnumerator MoveRoutine(Vector2 targetPos, float input_duration)
     {
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
 
-        while (elapsed < duration)
+        while (elapsed < defaultDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            float t = elapsed / defaultDuration;
             // 부드러운 가감속을 위해 SmoothStep 적용
             t = t * t * (3f - 2f * t);
 
@@ -45,5 +56,10 @@ public class PauseMenu : MonoBehaviour
         }
 
         movablePart.anchoredPosition = targetPos;
+    }
+
+    public void OnClickCloseButton()
+    {
+        SettingMenuManager.instance.showUI();
     }
 }

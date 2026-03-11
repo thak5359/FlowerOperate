@@ -285,7 +285,7 @@ public class OptionManager : MonoBehaviour
         string json = JsonUtility.ToJson(settings);
         PlayerPrefs.SetString("GameSettings", json);
         PlayerPrefs.Save();
-         Debug.Log("저장된 JSON: " + json); // 확인용
+         //Debug.Log("저장된 JSON: " + json); // 확인용
     }
 
     private void LoadSettings()

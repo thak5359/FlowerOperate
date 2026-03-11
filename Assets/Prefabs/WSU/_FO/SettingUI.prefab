@@ -2447,8 +2447,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5097,7 +5097,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -5158,9 +5158,9 @@ MonoBehaviour:
   SoundPanel: {fileID: 6940015340830407881}
   DisplayPanel: {fileID: 3438180938742808119}
   EtcPanel: {fileID: 6117419655116612568}
-  movablePart: {fileID: 0}
+  movablePart: {fileID: 5928730029540319403}
   showPos: {x: 0, y: 0}
-  hidePos: {x: 1600, y: 0}
+  hidePos: {x: 0, y: 1000}
   duration: 0.5
 --- !u!114 &4972762585608371547
 MonoBehaviour:
@@ -5336,9 +5336,9 @@ GameObject:
   - component: {fileID: 3366467457088032117}
   - component: {fileID: 1447732366996552006}
   - component: {fileID: 3944802096675011996}
-  - component: {fileID: 7942262278648357374}
+  - component: {fileID: 4767080515088393552}
   m_Layer: 0
-  m_Name: CloseButton
+  m_Name: CloseToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5402,7 +5402,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7942262278648357374
+--- !u!114 &4767080515088393552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5411,7 +5411,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6485798523200670212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -5443,13 +5443,16 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 3944802096675011996}
-  m_OnClick:
+  toggleTransition: 1
+  graphic: {fileID: 0}
+  m_Group: {fileID: 0}
+  onValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 713061044319089592}
         m_TargetAssemblyTypeName: SettingMenuManager, Assembly-CSharp
-        m_MethodName: MoveSettings
-        m_Mode: 6
+        m_MethodName: showUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5458,6 +5461,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_IsOn: 1
 --- !u!1 &6536456447915799859
 GameObject:
   m_ObjectHideFlags: 0
