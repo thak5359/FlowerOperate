@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         if (isCharging)
         {
             float currentElapsed = Time.time - chargeStartTime;
-            UpdateSelectionVisual(currentElapsed);
+            //UpdateSelectionVisual(currentElapsed);
         }
     }
 

@@ -52,7 +52,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.size
-    value: 25
+    value: 32
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
@@ -295,7 +295,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -352,7 +352,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -409,7 +409,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -466,7 +466,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -523,7 +523,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -580,7 +580,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -637,7 +637,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -694,7 +694,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -751,7 +751,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -808,7 +808,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -865,7 +865,7 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[22].m_PersistentCalls.m_Calls.Array.data[0].m_Target
     value: 
-    objectReference: {fileID: 1930240390247185072, guid: ccd6193e429d6ca4a932948c8985d31f,
+    objectReference: {fileID: 6787530221356675286, guid: 307bcc3ad6268324392103e29d3f81d9,
       type: 3}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[22].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -938,6 +938,90 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[24].m_ActionName
     value: Player/OpenInventory[/Keyboard/q]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[25].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[25].m_ActionId
+    value: 7b3cfebe-d412-4878-b21b-f4f5485e1f0d
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[25].m_ActionName
+    value: Player/Pause
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[26].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[26].m_ActionId
+    value: 67642b45-06a8-4feb-a789-16573ea4f6f1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[26].m_ActionName
+    value: FlowerShop/Drag[/Mouse/delta]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[27].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[27].m_ActionId
+    value: e5499a1d-e3a0-4666-805b-85b721284297
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[27].m_ActionName
+    value: FlowerShop/Confirm[/Mouse/leftButton]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[28].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[28].m_ActionId
+    value: ff32fa58-1ee4-4b0c-8b78-414c7cd6ea56
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[28].m_ActionName
+    value: Settings/Cancel[/Keyboard/escape]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[29].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[29].m_ActionId
+    value: 8653d504-88e9-465f-8e22-b219c7c3b52b
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[29].m_ActionName
+    value: Settings/SoundPanel[/Keyboard/1]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[30].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[30].m_ActionId
+    value: 0a07e9ce-2166-429e-8a79-4bf2229f44d4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[30].m_ActionName
+    value: Settings/GraphicPanel[/Keyboard/2]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_ActionId
+    value: 2db17683-4f3c-44be-9fd8-f013a50eb15e
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_ActionName
+    value: Settings/EtcPanel[/Keyboard/3]
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_NeverAutoSwitchControlSchemes

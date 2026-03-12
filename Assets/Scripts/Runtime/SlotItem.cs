@@ -28,9 +28,9 @@ public struct UseParam
 public class SlotItem
 {
     public int? itemId = null;
-    public int amount = 1;
+    protected int amount = 1;
 
-    public Sprite cachedSprite;
+    protected Sprite cachedSprite;
     protected ItemManager itemManager;
 
 
@@ -77,7 +77,7 @@ public class SlotItem
         return null;
     }
 
-
+    public int Amount => amount;
 
     virtual public string GetName()
     {
@@ -111,7 +111,6 @@ public class SlotItem
         }
         return null;
     }
-
     virtual public void OnUse(UseParam param)
     {
 
