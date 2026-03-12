@@ -13,7 +13,6 @@ public class PauseMenu : MonoBehaviour
     private bool isShowing = false; 
     private Coroutine moveCoroutine;
 
-    private string prevIAmap = null;
 
     //호출용, PauseMenu 숨기기/보이기 (이동 연출 포함) 
     public void showUI(float input_duration = defaultDuration)
@@ -22,20 +21,24 @@ public class PauseMenu : MonoBehaviour
 
         IMapChangable input = IAmapManager.Instance; // IA맵 변경 함수 접근 권한 취득
 
+
+        if(input == null)
+        {
+            Debug.Log("input is null!");
+            return;
+        }
+
         if (isShowing == false) // 보이기
         {
             moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
 
-            prevIAmap = input.getCurrentIAmap();
             input.changeIAmapPauseMenu();
         }
         else // 숨기기
         {
             moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
-            prevIAmap = null;
-            input.changeIAmap(prevIAmap);
+            input.changeIAmapPrev();
         }
-
         isShowing = !isShowing; // UI 이동 후 상태 전환
     }
 
@@ -58,8 +61,8 @@ public class PauseMenu : MonoBehaviour
         movablePart.anchoredPosition = targetPos;
     }
 
-    public void OnClickCloseButton()
+    public void OnClickCloseButton(int time)
     {
-        SettingMenuManager.instance.showUI();
+        SettingMenuManager.instance.showUI(time);
     }
 }

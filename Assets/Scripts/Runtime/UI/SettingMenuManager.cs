@@ -110,6 +110,11 @@ public class SettingMenuManager : MonoBehaviour
     // 설정 창 숨기기/보이기 (이동 연출 포함) 
     public void showUI(float input_duration = defaultDuration)
     {
+        if (input_duration == 0)
+        {
+            input_duration = defaultDuration;
+        }
+
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
         IMapChangable input = IAmapManager.Instance; // IA맵 변경 함수 접근 권한 취득
         if (isShowing == false) // 보이기
