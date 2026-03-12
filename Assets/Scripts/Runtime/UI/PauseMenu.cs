@@ -1,48 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     public RectTransform movablePart;
-    public Vector2 showPos;
     public Vector2 hidePos;
-    [SerializeField]protected const float defaultDuration = 0.5f;
+    public Vector2 showPos;
+    public Vector2 settingPos;
+    [SerializeField] protected const float defaultDuration = 0.5f;
 
-    private bool isShowing = false; 
     private Coroutine moveCoroutine;
 
-
-    //호출용, PauseMenu 숨기기/보이기 (이동 연출 포함) 
-    public void showUI(float input_duration = defaultDuration)
+    //테스트 기능 A
+    public void TogglePauseIA(InputAction.CallbackContext context)
     {
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-
-        IMapChangable input = IAmapManager.Instance; // IA맵 변경 함수 접근 권한 취득
-
-
-        if(input == null)
+        if (context.ReadValueAsButton() &&context.performed) 
         {
-            Debug.Log("input is null!");
-            return;
+            showPausedUI();
         }
-
-        if (isShowing == false) // 보이기
+    }
+    public void ToggleSettingIA(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton() && context.performed)
         {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
-
-            input.changeIAmapPauseMenu();
+            showSettingMenu();
         }
-        else // 숨기기
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
-            input.changeIAmapPrev();
-        }
-        isShowing = !isShowing; // UI 이동 후 상태 전환
     }
 
-    private IEnumerator MoveRoutine(Vector2 targetPos, float input_duration)
+    public void showPausedUI()
+    {
+        if (moveCoroutine != null) return;
+        IMapChangable input = IAmapManager.Instance;
+        string current = input.getCurrentIAmap();
+
+        // 1. 농장에서 ESC -> 퍼즈 메뉴 열기
+        if (current == "MAP_FARM")
+        {
+            moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+            input.changeIAmapPauseMenu();
+        }
+        // 2. 퍼즈 메뉴에서 ESC -> 농장으로 (메뉴 닫기)
+        else if (current == "MAP_PAUSE")
+        {
+            moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
+            input.changeIAmapPrev();
+        }
+    }
+
+    public void showSettingMenu()
+    {
+        if (moveCoroutine != null) return;
+        IMapChangable input = IAmapManager.Instance;
+        string current = input.getCurrentIAmap();
+
+        // 1. 퍼즈 메뉴에서 세팅 열기 (주로 버튼 클릭으로 호출)
+        if (current == "MAP_PAUSE")
+        {
+            moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+            input.changeIAmapSetting();
+        }
+        // 2. 세팅 메뉴에서 ESC -> 퍼즈 메뉴 메인으로
+        else if (current == "MAP_SETTING")
+        {
+            moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+            input.changeIAmapPrev();
+        }
+    }
+
+
+    private IEnumerator MoveRoutine(Vector2 targetPos)
     {
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
@@ -59,6 +88,7 @@ public class PauseMenu : MonoBehaviour
         }
 
         movablePart.anchoredPosition = targetPos;
+        moveCoroutine = null;
     }
 
     public void OnClickCloseButton(int time)

@@ -23,7 +23,6 @@ public class SettingMenuManager : MonoBehaviour
     [SerializeField] private const float defaultDuration = 0.5f;    // 이동 시간
 
 
-    private string prevIAmap; // 이전에 사용한 맵 저장용
 
     private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
 
@@ -49,57 +48,77 @@ public class SettingMenuManager : MonoBehaviour
                     SoundPanel.SetActive(true);
                     DisplayPanel.SetActive(false);
                     EtcPanel.SetActive(false);
+
+                    usingPanel = num;
                     break;
                 }
             case 2:
                 {
                     SoundPanel.SetActive(false);
-                    DisplayPanel.SetActive(false);
-                    EtcPanel.SetActive(true);
+                    DisplayPanel.SetActive(true);
+                    EtcPanel.SetActive(false);
+
+                    usingPanel = num;
                     break;
                 }
             case 3:
                 {
-                    SoundPanel.SetActive(true);
+                    SoundPanel.SetActive(false);
                     DisplayPanel.SetActive(false);
-                    EtcPanel.SetActive(false);
+                    EtcPanel.SetActive(true);
+
+                    usingPanel = num;
                     break;
                 }
         }
     }
-    // 1. 세이브/로드 버튼을 눌렀을 때 호출
-    public void OpenSoundPanel(bool Toggle)
+
+
+
+    public void OnClickSoundButton()
     {
-        if (Toggle == true)
+        PanelChange(1);
+    }
+    public void OnClikcDisplayButton()
+    {
+        PanelChange(2);
+    }
+    public void OnClikcEtcButton()
+    {
+        PanelChange(3);
+    }
+
+    public void OpenSoundPanel(InputAction.CallbackContext context)
+    {
+        if (context.ReadValueAsButton() && context.performed)
         {
             if (usingPanel != 1)
             {
                 PanelChange(1);
-                usingPanel = 1;
             }
         }
     }
 
-    public void OpenDisplayPanel(bool Toggle)
+   
+
+    public void OpenDisplayPanel(InputAction.CallbackContext context)
     {
-        if (Toggle == true)
+        if (context.ReadValueAsButton() && context.performed)
         {
             if (usingPanel != 2)
             {
                 PanelChange(2);
-                usingPanel = 2;
             }
         }
     }
 
-    public void OpenEtcPanel(bool Toggle)
+    public void OpenEtcPanel(InputAction.CallbackContext context)
     {
-        if (Toggle == true)
+        if (context.ReadValueAsButton() && context.performed)
         {
             if (usingPanel != 3)
             {
                 PanelChange(3);
-                usingPanel = 3;
             }
         }
     }
@@ -127,15 +146,13 @@ public class SettingMenuManager : MonoBehaviour
         {
             moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
 
-            prevIAmap = input.getCurrentIAmap();
-            input.changeIAmapPauseMenu();
+            input.changeIAmapPrev();
         }
         else // 숨기기
         {
             moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
 
-            prevIAmap = null;
-            input.changeIAmap(prevIAmap);
+            input.changeIAmapPrev();
         }
         isShowing = !isShowing;
     }
