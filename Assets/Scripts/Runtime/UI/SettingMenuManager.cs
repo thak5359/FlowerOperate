@@ -105,6 +105,12 @@ public class SettingMenuManager : MonoBehaviour
     }
 
 
+    public void OffUI() // 끄기
+    {
+        movablePart.anchoredPosition = hidePos;
+    }
+
+
     private Coroutine moveCoroutine;
 
     // 설정 창 숨기기/보이기 (이동 연출 포함) 

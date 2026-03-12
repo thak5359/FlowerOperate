@@ -35,7 +35,7 @@ public class HotbarManager : MonoBehaviour
         if (Mathf.Abs(scrollDelta.y) < 0.1f) return;
 
         int newIndex = pointingSlot + (scrollDelta.y > 0 ? -1 : 1);
-        newIndex = Mathf.Clamp(newIndex, 0, slots.Count - 1);
+        newIndex = (newIndex + slots.Count) % slots.Count; // 순환 방식
 
         pointSlot(newIndex);
     }

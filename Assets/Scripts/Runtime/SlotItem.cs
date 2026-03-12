@@ -24,6 +24,7 @@ public struct UseParam
     }
 }
 
+
 [System.Serializable] // 인스펙터나 디버깅 확인을 위해 직렬화 가능하게 설정
 public class SlotItem
 {
@@ -115,7 +116,6 @@ public class SlotItem
     {
 
     }
-
 
 
     virtual public int? GetLevel()

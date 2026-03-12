@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public interface IMapChangable // 컨트롤 방법을을 변경하는 기능은 이 인터페이스를 포함.
+public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 포함.
 {
     string getCurrentIAmap();
     void changeIAmap(string targetMap);
