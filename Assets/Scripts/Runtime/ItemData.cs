@@ -8,12 +8,10 @@ public class ItemIdData : ScriptableObject
 {
 
     [Header("기본 정보")]
-    public int itemID;
     [SerializeField] public List<string> itemName;
     [SerializeField] public List<string> description;
     [SerializeField] public List<string> spriteAddress;
 
-    public int ItemID => itemID;
     public string ItemName(int i) => itemName[i];
     public string Description(int i) => description[i];
     public string Address(int i) => spriteAddress[i];

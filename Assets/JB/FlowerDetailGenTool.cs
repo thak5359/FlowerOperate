@@ -14,7 +14,8 @@ public enum DropDownMenu
 public class FlowerDetailGenTool : EditorWindow
 {
     public ItemDetailData itemDetailData;
-    public string path = "Assets/JB/CSV/FlowerID.csv";
+    public TextAsset csvFile;
+    DropDownMenu menu = DropDownMenu.Flower;
 
     [MenuItem("Tools/DetailGenerator")]
     static void MyMenu()
@@ -24,11 +25,16 @@ public class FlowerDetailGenTool : EditorWindow
 
     private void OnGUI()
     {
-        DropDownMenu menu = DropDownMenu.Flower;
         itemDetailData = (ItemDetailData)EditorGUILayout.ObjectField(
             "디테일 데이터",
             itemDetailData,
             typeof(ItemDetailData),
+            false);
+
+        csvFile = (TextAsset)EditorGUILayout.ObjectField(
+            "csv 데이터",
+            csvFile,
+            typeof(TextAsset),
             false);
 
         menu = (DropDownMenu)EditorGUILayout.EnumPopup("종류", menu);
@@ -42,7 +48,7 @@ public class FlowerDetailGenTool : EditorWindow
                         FlowerOperateFunc(SO);
                     else
                         Debug.Log("잘못된 설정");
-                        break;
+                    break;
                 case DropDownMenu.Usable:
                     Debug.Log("Usable");
                     break;
@@ -52,32 +58,40 @@ public class FlowerDetailGenTool : EditorWindow
 
     private void FlowerOperateFunc(FlowerDetailData SO)
     {
-        string[] lines = File.ReadAllLines(path);
+        ClearSOlist(SO);
+        string[] lines = csvFile.ToString().Split('\n');
 
         foreach (string line in lines)
         {
-            SO.speciesList.Add("");
-            SO.colorList.Add("");
-            SO.floroList.Add("");
-        }
-        foreach (string line in lines)
-        {
             string[] data = line.Split(',');
-            SO.speciesList[int.Parse(data[1])] = data[3];
-            SO.colorList[int.Parse(data[1])] = data[6];
-            SO.floroList[int.Parse(data[1])] = data[10];
+            if (int.TryParse(data[0], out int speciesIdx))
+                SO.speciesList.Add(data[1]);
+            if (int.TryParse(data[4], out int colorIdx))
+                SO.colorList.Add(data[5]);
+            if (int.TryParse(data[8], out int floroIdx))
+                SO.floroList.Add(data[9]);
         }
+            
         FlowerDetailData flowerData = ScriptableObject.CreateInstance<FlowerDetailData>();
         flowerData.speciesList = SO.speciesList;
         flowerData.colorList = SO.colorList;
         flowerData.floroList = SO.floroList;
-        
+
+        AssetDatabase.CreateAsset(flowerData, "Assets/ScriptableObjects/Flower/FlowerDetailSO.asset");
+        AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+
+    private static void ClearSOlist(FlowerDetailData SO)
+    {
+        SO.speciesList.Clear();
+        SO.colorList.Clear();
+        SO.floroList.Clear();
     }
 
     private void FlowerOperateFunc(UsableDetailData SO)
     {
-        string[] lines = File.ReadAllLines(path);
+        string[] lines = csvFile.ToString().Split('\n');
         foreach (string line in lines)
         {
         }
