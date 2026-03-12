@@ -31,17 +31,24 @@ public class ItemIdContainerGenTool : EditorWindow
 
         menu = (DropDownMenu)EditorGUILayout.EnumPopup("종류", menu);
 
-        switch(menu)
+        if (GUILayout.Button("SO 생성"))
         {
-            case DropDownMenu.Flower:
-                break;
-            case DropDownMenu.Usable:
-                break;
+            switch (menu)
+            {
+                case DropDownMenu.Flower:
+                    FlowerIdData SO = baseIdData as FlowerIdData;
+                    OperateFunc(SO);
+                    break;
+                case DropDownMenu.Usable:
+                    break;
+            }
         }
     }
 
     private void OperateFunc(FlowerIdData SO)
     {
+        ClearSO(SO);
+
         string[] lines = csvFile.ToString().Split('\n');
 
         foreach (string line in lines)
@@ -64,6 +71,15 @@ public class ItemIdContainerGenTool : EditorWindow
         AssetDatabase.CreateAsset(flowerId, "Assets/ScriptableObjects/Flower/FlowerIdData.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+    }
+
+    private static void ClearSO(FlowerIdData SO)
+    {
+        SO.itemName.Clear();
+        SO.speciesIndex.Clear();
+        SO.colorIndex.Clear();
+        SO.floroIndex.Clear();
+        SO.floroIndex2.Clear();
     }
 
     private static FlowerIdData CreateSOAsset(FlowerIdData SO)

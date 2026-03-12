@@ -24,24 +24,24 @@ public class ItemManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            InitializeDatabases();
+            //InitializeDatabases();
         }
         else { Destroy(gameObject); }
     }
 
-    private void InitializeDatabases()
-    {
-        System.Array.Clear(masterDb, 0, masterDb.Length);
+    //private void InitializeDatabases()
+    //{
+    //    System.Array.Clear(masterDb, 0, masterDb.Length);
 
-        foreach (var data in itemIdDatas)
-        {
-            if (data != null && data.ItemID >= 0 && data.ItemID <= LAST_ID)
-            {
-                masterDb[data.ItemID] = data;
-            }
-        }
-        Debug.Log("ItemManager: 데이터베이스 초기화 완료!");
-    }
+    //    foreach (var data in itemIdDatas)
+    //    {
+    //        if (data != null && data.ItemID >= 0 && data.ItemID <= LAST_ID)
+    //        {
+    //            masterDb[data.ItemID] = data;
+    //        }
+    //    }
+    //    Debug.Log("ItemManager: 데이터베이스 초기화 완료!");
+    //}
 
     // --- 데이터 접근 엔진 ---
 
@@ -61,23 +61,23 @@ public class ItemManager : MonoBehaviour
     #region 2. 꽃 데이터 
 
     // 꽃 전체 이름 (색상 + 품종 조합) 시범적 기능
-    public string GetFlowerFullName(int id)
-    {
-        var data = GetIdData<FlowerIdData>(id);
-        if (data == null) return "알 수 없는 꽃";
+    //public string GetFlowerFullName(int id)
+    //{
+    //    var data = GetIdData<FlowerIdData>(id);
+    //    if (data == null) return "알 수 없는 꽃";
 
-        // 기획 가이드: Color에 '붉은', '푸른' 등으로 저장되어 있어야 자연스럽습니다.
-        return $"{flowerDetail.Color(data.ColorIndex)} {flowerDetail.Species(data.SpeciesIndex)}";
-    }
+    //    // 기획 가이드: Color에 '붉은', '푸른' 등으로 저장되어 있어야 자연스럽습니다.
+    //    return $"{flowerDetail.Color(data.ColorIndex)} {flowerDetail.Species(data.SpeciesIndex)}";
+    //}
 
     // 꽃 이름
-    public string GetFlowerColor(int id)
-    {
-        var data = GetIdData<FlowerIdData>(id);
-        if (data == null) return "알 수 없는 꽃";
+    //public string GetFlowerColor(int id)
+    //{
+    //    var data = GetIdData<FlowerIdData>(id);
+    //    if (data == null) return "알 수 없는 꽃";
 
-        return flowerDetail.Color(data.ColorIndex);
-    }
+    //    return flowerDetail.Color(data.ColorIndex);
+    //}
 
     // 꽃말 리스트 가져오기
     public List<string> GetFlowerFloros(int id)

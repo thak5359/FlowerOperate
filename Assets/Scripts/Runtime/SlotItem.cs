@@ -13,7 +13,7 @@ public struct UseParam
     public readonly Vector2 heading;
     public readonly Vector3 pos;
     public readonly int efficiency;
-    public readonly float elapsedTime; 
+    public readonly float elapsedTime;
 
     public UseParam(Vector2 input_heading, Vector3 input_pos, int input_efficiency, float input_elapsed)
     {
@@ -124,6 +124,6 @@ public class SlotItem
         return null;
     }
 
-    
+
 
 }
