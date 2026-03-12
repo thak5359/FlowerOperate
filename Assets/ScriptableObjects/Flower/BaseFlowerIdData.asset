@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 828af6ab65946f8498f7f0e03dcfb4a0, type: 3}
-  m_Name: FlowerData
+  m_Script: {fileID: 11500000, guid: df48aa7b6aba44545aa3955be6dc6251, type: 3}
+  m_Name: BaseFlowerIdData
   m_EditorClassIdentifier: 
-  speciesList: []
-  colorList: []
-  floroList: []
+  itemID: 0
+  itemName: []
+  description: []
+  spriteAddress: []
+  speciesIndex: 0
+  colorIndex: 0
+  floroIndex: 
