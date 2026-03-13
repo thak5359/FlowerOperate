@@ -34,8 +34,6 @@ public class OptionManager : MonoBehaviour
     public AudioMixer masterMixer;
     public GameSettings settings = new GameSettings();
 
-
-
     //[Header("Writer UI References")]
     //public Slider writingSpeedSlider;
     //public Slider punctuationSpeedSlider;

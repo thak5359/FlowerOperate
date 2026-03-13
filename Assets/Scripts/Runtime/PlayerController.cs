@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private float chargeStartTime;
     private bool isCharging = false;
 
-    public SlotItem item;
+    public Item item;
 
     private Vector2 moveInput;
     private Transform trans;
@@ -129,9 +129,9 @@ public class PlayerController : MonoBehaviour
             selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 2.4f);
         }
     }
-    public SlotItem currentItem; // 현재 쥔 아이템
+    public Item currentItem; // 현재 쥔 아이템
 
-    public void SetItem(SlotItem newItem)
+    public void SetItem(Item newItem)
     {
         currentItem = newItem;
         UnityEngine.Debug.Log(currentItem != null ? $"{currentItem.GetName()} 장착됨" : "맨손 상태");

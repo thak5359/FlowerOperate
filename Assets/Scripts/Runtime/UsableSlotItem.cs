@@ -5,7 +5,7 @@ using UnityEngine;
 // # 아이템 사용 알고리즘은 향후 변경될 수 있음.
 
 [System.Serializable]
-public class HoeItem : SlotItem
+public class HoeItem : Item
 {
     public int currentDuration = 100; // 내구도 기본값
 
@@ -44,7 +44,7 @@ public class HoeItem : SlotItem
     }
 }
 
-public class HammerItem : SlotItem
+public class HammerItem : Item
 {
     public int currentDuration = 100;
     public HammerItem(int? id, int count) : base(id, count)
@@ -80,7 +80,7 @@ public class HammerItem : SlotItem
     }
 }
 
-public class WateringCanItem : SlotItem
+public class WateringCanItem : Item
 {
     public int currentDuration = 100;
     public WateringCanItem(int? id, int count) : base(id, count)
@@ -115,7 +115,7 @@ public class WateringCanItem : SlotItem
 
 
 }
-public class ConsumableSlotItem : SlotItem
+public class ConsumableSlotItem : Item
 {
     public ConsumableSlotItem(int? id, int count) : base(id, count)
     {

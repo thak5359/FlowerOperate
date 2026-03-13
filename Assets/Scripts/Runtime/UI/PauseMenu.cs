@@ -12,6 +12,8 @@ public class PauseMenu : MonoBehaviour
     public Vector2 settingPos;
     [SerializeField] protected const float defaultDuration = 0.5f;
 
+
+
     private Coroutine moveCoroutine;
 
     //테스트 기능 A
@@ -36,11 +38,12 @@ public class PauseMenu : MonoBehaviour
         IMapChangable input = IAmapManager.Instance;
         string current = input.getCurrentIAmap();
 
-        // 1. 농장에서 ESC -> 퍼즈 메뉴 열기
-        if (current == "MAP_FARM")
+        // 농장, 경영 맵에서 ESC -> 퍼즈 메뉴 열기
+        if (current == "MAP_FARM" /*||  current == "MAP_SHOP"*/)
         {
             moveCoroutine = StartCoroutine(MoveRoutine(showPos));
             input.changeIAmapPauseMenu();
+            Time.timeScale = 0.0f;
         }
         // 2. 퍼즈 메뉴에서 ESC -> 농장으로 (메뉴 닫기)
         else if (current == "MAP_PAUSE")
@@ -61,6 +64,7 @@ public class PauseMenu : MonoBehaviour
         {
             moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
             input.changeIAmapSetting();
+            
         }
         // 2. 세팅 메뉴에서 ESC -> 퍼즈 메뉴 메인으로
         else if (current == "MAP_SETTING")
