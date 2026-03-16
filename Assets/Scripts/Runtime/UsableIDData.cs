@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class UsableIdData : ItemIdData
 {
-    [SerializeField] public int durationIndex;
-    [SerializeField] public int chargeIndex;
-    [SerializeField] public int powerIndex;
+    [SerializeField] public List<int> durationIndex;
+    [SerializeField] public List<int> powerIndex;
+    [SerializeField] public List<int> chargeIndex;
 
-    public int DuratIndex => durationIndex;
-    public int ChargeIndex => chargeIndex;
-    public int PowerIndex => powerIndex;
+    public List<int> DuratIndex => durationIndex;
+    public List<int> ChargeIndex => chargeIndex;
+    public List<int> PowerIndex => powerIndex;
 
 
 }

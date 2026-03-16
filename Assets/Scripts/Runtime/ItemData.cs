@@ -22,15 +22,21 @@ public class ItemDetailData : ScriptableObject
 
 }
 
+[System.Serializable]
 public struct ChargeInfo
 {
-    public readonly float ChargeTime;
-    public readonly int maxChargeCount;
+    public float ChargeTime;
+    public int maxChargeCount;
 
     public ChargeInfo(float time, int count)
     {
         ChargeTime = time;
         maxChargeCount = count;
+    }
+
+    public void ReadValue()
+    {
+        Debug.Log($"chargeTime : ${ChargeTime}, maxChargeCont : ${maxChargeCount}");
     }
 
     

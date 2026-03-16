@@ -9,7 +9,7 @@ public class UsableDetailData : ItemDetailData
 {
     [SerializeField] public List<int> durationList;
     [SerializeField] public List<int> powerList;
-    [SerializeField] public List<ChargeInfo> chargeInfoList;
+    [SerializeField] public List<ChargeInfo> chargeInfoList = new List<ChargeInfo>();
 
     public int Duration(int index) => durationList[index];
     public int Power(int index) => powerList[index];

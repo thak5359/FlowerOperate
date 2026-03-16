@@ -102,21 +102,21 @@ public class ItemManager : MonoBehaviour
     {
         var data = GetIdData<UsableIdData>(id);
         // ID 데이터에서 찾은 chargeIndex로 Detail 테이블에서 ChargeInfo 구조체를 가져옵니다.
-        return (data != null) ? usableDetail.ChargeInfo(data.ChargeIndex) : new ChargeInfo(0, 0);
+        return (data != null) ? usableDetail.ChargeInfo(data.ChargeIndex[id]) : new ChargeInfo(0, 0);
     }
 
     // 도구 파워 (곡갱이 파워 등)
     public int GetUsablePower(int id)
     {
         var data = GetIdData<UsableIdData>(id);
-        return (data != null) ? usableDetail.Power(data.PowerIndex) : 0;
+        return (data != null) ? usableDetail.Power(data.PowerIndex[id]) : 0;
     }
 
     // 도구 내구도 (기본 최대치)
     public int GetMaxDuration(int id)
     {
         var data = GetIdData<UsableIdData>(id);
-        return (data != null) ? usableDetail.Duration(data.DuratIndex) : 0;
+        return (data != null) ? usableDetail.Duration(data.DuratIndex[id]) : 0;
     }
 
     #endregion

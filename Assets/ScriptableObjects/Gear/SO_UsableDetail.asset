@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c9ed3f66c512a4b9f49ff1bcb986b8, type: 3}
+  m_Name: SO_UsableDetail
+  m_EditorClassIdentifier: 
+  durationList: 0a000000c8000000f4010000e8030000d007000088130000581b000010270000
+  powerList: 010000000200000005000000070000000a0000000f0000001400000019000000
+  chargeInfoList:
+  - ChargeTime: 0
+    maxChargeCount: 0
+  - ChargeTime: 1
+    maxChargeCount: 0
+  - ChargeTime: 1
+    maxChargeCount: 1
+  - ChargeTime: 1
+    maxChargeCount: 2
+  - ChargeTime: 1
+    maxChargeCount: 3
+  - ChargeTime: 1.5
+    maxChargeCount: 0
+  - ChargeTime: 1.5
+    maxChargeCount: 1
+  - ChargeTime: 1.5
+    maxChargeCount: 2
+  - ChargeTime: 1.5
+    maxChargeCount: 3
+  - ChargeTime: 1.75
+    maxChargeCount: 0
+  - ChargeTime: 1.75
+    maxChargeCount: 1
+  - ChargeTime: 1.75
+    maxChargeCount: 2
+  - ChargeTime: 1.75
+    maxChargeCount: 3
+  - ChargeTime: 2
+    maxChargeCount: 0
+  - ChargeTime: 2
+    maxChargeCount: 1
+  - ChargeTime: 2
+    maxChargeCount: 2
+  - ChargeTime: 2
+    maxChargeCount: 3
+  - ChargeTime: 3
+    maxChargeCount: 0
+  - ChargeTime: 3
+    maxChargeCount: 1
+  - ChargeTime: 3
+    maxChargeCount: 2
