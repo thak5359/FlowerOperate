@@ -12,71 +12,89 @@ public class PauseMenu : MonoBehaviour
     public Vector2 settingPos;
     [SerializeField] protected const float defaultDuration = 0.5f;
 
-
-
+    private Canvas pauseCanvas;
     private Coroutine moveCoroutine;
 
+
+    private void Awake()
+    {
+        pauseCanvas = GetComponent<Canvas>();
+    }
+
+
+
     //테스트 기능 A
-    public void TogglePauseIA(InputAction.CallbackContext context)
+    public void OnBackAction(InputAction.CallbackContext context)
     {
-        if (context.ReadValueAsButton() &&context.performed) 
-        {
-            showPausedUI();
-        }
-    }
-    public void ToggleSettingIA(InputAction.CallbackContext context)
-    {
-        if (context.ReadValueAsButton() && context.performed)
-        {
-            showSettingMenu();
-        }
-    }
+        // 1. 공통 방어 로직
+        if (moveCoroutine != null || !context.performed || !context.ReadValueAsButton()) return;
 
-    public void showPausedUI()
-    {
-        if (moveCoroutine != null) return;
         IMapChangable input = IAmapManager.Instance;
         string current = input.getCurrentIAmap();
 
-        // 농장, 경영 맵에서 ESC -> 퍼즈 메뉴 열기
-        if (current == "MAP_FARM" /*||  current == "MAP_SHOP"*/)
+        // 2. 현재 상태에 따른 "길 찾기" (State Machine)
+        switch (current)
         {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-            input.changeIAmapPauseMenu();
-            Time.timeScale = 0.0f;
-        }
-        // 2. 퍼즈 메뉴에서 ESC -> 농장으로 (메뉴 닫기)
-        else if (current == "MAP_PAUSE")
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
-            input.changeIAmapPrev();
+            case "MAP_FARM":
+            case "MAP_SHOP":
+                // 농장이나 상점 -> 퍼즈 메뉴 열기
+                OpenPauseMain();
+                break;
+
+            case "MAP_PAUSE":
+                // 퍼즈 메인 -> 메뉴 닫고 복귀
+                ClosePauseMain();
+                break;
+
+            case "MAP_SETTING":
+                // 세팅 화면 -> 퍼즈 메인으로 돌아가기
+                BackToPauseFromSetting();
+                break;
+
+            default:
+                Debug.Log($"[PauseMenu] {current} 맵에서는 ESC 동작이 정의되지 않았습니다.");
+                break;
         }
     }
 
-    public void showSettingMenu()
+    private void OpenPauseMain()
     {
-        if (moveCoroutine != null) return;
+        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
         IMapChangable input = IAmapManager.Instance;
-        string current = input.getCurrentIAmap();
-
-        // 1. 퍼즈 메뉴에서 세팅 열기 (주로 버튼 클릭으로 호출)
-        if (current == "MAP_PAUSE")
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
-            input.changeIAmapSetting();
             
-        }
-        // 2. 세팅 메뉴에서 ESC -> 퍼즈 메뉴 메인으로
-        else if (current == "MAP_SETTING")
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-            input.changeIAmapPrev();
-        }
+         input.changeIAmapPauseMenu();
+    }
+
+    public void ClosePauseMain()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapPrev();
+    }
+
+    public void BackToPauseFromSetting()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapPrev();
+    }
+
+    // 세팅 버튼 클릭 시 호출용 (인풋용 아님)
+    public void OpenSettingMenu()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapSetting();
     }
 
 
     private IEnumerator MoveRoutine(Vector2 targetPos)
     {
+
+        if (targetPos == showPos) { pauseCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
 
@@ -92,6 +110,8 @@ public class PauseMenu : MonoBehaviour
         }
 
         movablePart.anchoredPosition = targetPos;
+        if (targetPos == hidePos) { pauseCanvas.enabled = false; }
+
         moveCoroutine = null;
     }
 

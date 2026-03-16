@@ -2,12 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractableArea : MonoBehaviour
+public class TransparentWall : MonoBehaviour
 {
     protected PlayerController pMovement;
     protected SpriteRenderer pRenderer;
 
-    virtual protected void OnTriggerEnter(Collider other)
+   
+    virtual protected void OnCollisonEnter(Collision other)
+    {
+        other.collider.CompareTag("Player");
+        Debug.Log("무언가 들어옴");
+        if (other.collider.CompareTag("Player"))
+        {
+            pMovement = other.collider.GetComponent<PlayerController>();
+            if (pMovement != null)
+            {
+
+                Debug.Log("Player Tag is dectected");
+            }
+
+            pRenderer = other.collider.GetComponentInChildren<SpriteRenderer>();
+            if (pRenderer != null)
+            {
+                pRenderer.color = Color.red;
+            }
+        }
+
+    }
+
+
+    virtual protected void OnTriggerEnter(Collider other )
     {
         Debug.Log("무언가 들어옴");
         if (other.CompareTag("Player"))
@@ -15,8 +39,8 @@ public class InteractableArea : MonoBehaviour
             pMovement = other.GetComponent<PlayerController>();
             if (pMovement != null)
             {
-                pMovement.canInteractive = true;
-                //Debug.Log("Player Tag is dectected");
+                
+                Debug.Log("Player Tag is dectected");
             }
 
             pRenderer = other.GetComponentInChildren<SpriteRenderer>();

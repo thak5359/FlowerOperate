@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LegacyTextEdtior : MonoBehaviour
+public class TextValueEdtior : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Text targetText;
+    public TextMeshProUGUI targetText;
 
     public void changeTextPuncPause(float value)
     {
@@ -15,7 +16,7 @@ public class LegacyTextEdtior : MonoBehaviour
 
     public void changeTextValueInt(float value)
     {
-        targetText.text = ((int)value).ToString();
+        targetText.text = (((int)value).ToString()+ "%");
     }
 
 

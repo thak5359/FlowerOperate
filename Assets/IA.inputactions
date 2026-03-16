@@ -7,7 +7,7 @@
             "id": "47ce86ed-e602-4fef-9d0e-4ac810267e81",
             "actions": [
                 {
-                    "name": "CancelPause",
+                    "name": "Escape",
                     "type": "Button",
                     "id": "67924621-769b-4810-af29-c70675761ed5",
                     "expectedControlType": "",
@@ -23,8 +23,8 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "CancelPause",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -34,6 +34,15 @@
             "name": "MAP_SETTING",
             "id": "5432b34c-4c05-4b43-85e4-059f24e6f335",
             "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "39f62572-91e6-4204-8028-0a47323c3ac0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
                 {
                     "name": "SoundPanel",
                     "type": "Button",
@@ -95,6 +104,17 @@
                     "action": "EtcPanel",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e91a8ee6-7689-408a-8ba2-010eaa0f4809",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -103,7 +123,7 @@
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [
                 {
-                    "name": "CallPause",
+                    "name": "Escape",
                     "type": "Button",
                     "id": "7b3cfebe-d412-4878-b21b-f4f5485e1f0d",
                     "expectedControlType": "",
@@ -510,7 +530,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CallPause",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
