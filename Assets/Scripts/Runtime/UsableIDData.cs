@@ -7,8 +7,8 @@ using UnityEngine;
 public class UsableIdData : ItemIdData
 {
     [SerializeField] public int durationIndex;
-    [SerializeField] public int chargeIndex;
     [SerializeField] public int powerIndex;
+    [SerializeField] public int chargeIndex;
 
     public int DuratIndex => durationIndex;
     public int ChargeIndex => chargeIndex;

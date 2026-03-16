@@ -21,6 +21,4 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandle
         
     }
     //TODO : Panel 하나 잡아서 아이템 데이터 띄우는 거 만들기
-
-
 }

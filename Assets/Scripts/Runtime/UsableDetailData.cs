@@ -14,5 +14,4 @@ public class UsableDetailData : ItemDetailData
     public int Duration(int index) => durationList[index];
     public int Power(int index) => powerList[index];
     public ChargeInfo ChargeInfo(int index) => chargeInfoList[index];
-
 }
