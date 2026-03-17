@@ -1,8 +1,10 @@
 using Fungus;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static IAmapManager;
 
 
 public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 포함.
@@ -23,6 +25,7 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 
     void changeIAmapShop();
 
     void changeIAmapFarm();
+    void changeIAmapChatBox();
 
     void changeIAmapPrev();
 }
@@ -35,6 +38,8 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     [SerializeField] PlayerInput playerInput;
     [SerializeField] private Stack<string> prevMapStack = new Stack<string>();
 
+    public event Action onMapChange;
+
     const string TITLE_MAP_NAME = "MAP_TITLE";
 
     const string SETTING_MAP_NAME = "MAP_SETTING";
@@ -45,6 +50,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
     const string STORAGE_MAP_NAME = "MAP_STORAGE";
+    const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
 
     private void Start()
     {
@@ -53,6 +59,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             instance = this;
         }
         else { Destroy(this.gameObject); }
+
 
     }
     public static IAmapManager Instance => instance;
@@ -71,6 +78,8 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         }
 
         playerInput.SwitchCurrentActionMap(targetMap);
+        
+        onMapChange?.Invoke();
     }
 
 
@@ -82,16 +91,14 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     // 인터페이스 구현들
     void IMapChangable.changeIAmapPauseMenu() => PushAndChange(PAUSEMENU_MAP_NAME);
     void IMapChangable.changeIAmapSetting() => PushAndChange(SETTING_MAP_NAME);
-
     void IMapChangable.changeIAmapTitle() => PushAndChange(TITLE_MAP_NAME);
-
     void IMapChangable.changeIAmapInventory() => PushAndChange(INVENTORY_MAP_NAME);
     void IMapChangable.changeIAmapStorage() => PushAndChange(STORAGE_MAP_NAME);
     void IMapChangable.changeIAmapShop() => PushAndChange(SHOP_MAP_NAME);
-
     void IMapChangable.changeIAmapFarm() => PushAndChange(FARM_MAP_NAME);
 
-
+    void IMapChangable.changeIAmapChatBox() => PushAndChange(CHATBOX_MAP_NAME);
+    
 
     void IMapChangable.changeIAmapPrev()
     {
@@ -100,6 +107,8 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             string target = prevMapStack.Pop();
             playerInput.SwitchCurrentActionMap(target);
             Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
+
+            onMapChange?.Invoke();
         }
     }
 
@@ -109,6 +118,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         {
             playerInput.SwitchCurrentActionMap(targetMap);
 
+            onMapChange?.Invoke();
         }
     }
 

@@ -21,29 +21,15 @@ namespace Fungus
 
         }
 
-
-
         virtual protected void OnTriggerExit(Collider other)
         {
-            Debug.Log("무언가 나감");
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Interactable"))
             {
-                playerCtrl = other.GetComponent<PlayerController>();
-                if (playerCtrl != null)
-                {
-                    playerCtrl.canInteractive = false;
-                }
+                Debug.Log("무언가 나감");
 
-                pRenderer = other.GetComponentInChildren<SpriteRenderer>();
-                if (pRenderer != null)
-                {
-                    pRenderer.color = Color.white;
-                }
+                playerCtrl.setTag(string.Empty);
+                playerCtrl.canInteractive = false;
             }
-
-            playerCtrl = null;
-            pRenderer = null;
         }
     }
-
 }

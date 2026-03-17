@@ -74,7 +74,7 @@ public class HotbarManager : MonoBehaviour
         if (pointingSlot < 0 || pointingSlot >= slots.Count) return;
         if (player != null)
         {
-            player.SetItem(slots[pointingSlot].item);
+            //player.SetItem(slots[pointingSlot].item);
         }
     }
 }

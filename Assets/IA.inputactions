@@ -639,6 +639,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MAP_CHATBOX",
+            "id": "c01d8be1-0c6f-43cf-9e31-2be3b2fcb3c4",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "d8e3d9c2-036e-43f0-a0eb-254b2bd0c1ae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ec7d482f-2cc9-4428-bb6a-02d7742be27c",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
