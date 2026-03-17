@@ -77,7 +77,8 @@ public class ItemIdContainerGenTool : EditorWindow
 
     private void OperateFunc(UsableIdData SO)
     {
-        ClearSO(SO);
+        if(SO.itemName.Count > 0)
+            ClearSO(SO);
 
         string[] lines = csvFile.ToString().Split('\n');
 
@@ -89,7 +90,7 @@ public class ItemIdContainerGenTool : EditorWindow
 
             SO.durationIndex.Add(int.Parse(data[2]));
             SO.powerIndex.Add(int.Parse(data[3]));
-            SO.chargeIndex.Add(int.Parse(data[5]));
+            SO.chargeIndex.Add(int.Parse(data[6]));
         }
 
         UsableIdData usableId = CreateSOAsset(SO);

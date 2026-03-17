@@ -10,9 +10,9 @@ public class UsableIdData : ItemIdData
     [SerializeField] public List<int> powerIndex;
     [SerializeField] public List<int> chargeIndex;
 
-    public List<int> DuratIndex => durationIndex;
-    public List<int> ChargeIndex => chargeIndex;
-    public List<int> PowerIndex => powerIndex;
+    public int DuratIndex(int idx) => durationIndex[idx];
+    public int ChargeIndex(int idx) => chargeIndex[idx];
+    public int PowerIndex(int idx) => powerIndex[idx];
 
 
 }
