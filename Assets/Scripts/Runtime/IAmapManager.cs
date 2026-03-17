@@ -35,6 +35,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 {
     //컨트롤 방식을 관리하는 매니저
     private static IAmapManager instance;
+    [SerializeField] List<InputAction> iaList = new List<InputAction>(3);
     [SerializeField] PlayerInput playerInput;
     [SerializeField] private Stack<string> prevMapStack = new Stack<string>();
 
@@ -51,6 +52,11 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
     const string STORAGE_MAP_NAME = "MAP_STORAGE";
     const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
+
+    void Awake()
+    {
+
+    }
 
     private void Start()
     {

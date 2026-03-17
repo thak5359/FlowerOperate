@@ -74,8 +74,6 @@ public class PauseMenu : MonoBehaviour
             cachedFloat += Time.unscaledDeltaTime;
             float warpedT = Mathf.Sin(cachedFloat / 1.0f * Mathf.PI * 0.5f);
 
-
-
             Time.timeScale = Mathf.SmoothStep(1, 0, warpedT);
             yield return null;
             
