@@ -40,6 +40,8 @@ public class ItemIdContainerGenTool : EditorWindow
                     OperateFunc(SO);
                     break;
                 case DropDownMenu.Usable:
+                    UsableIdData so = baseIdData as UsableIdData;
+                    OperateFunc(so);
                     break;
             }
         }
@@ -73,6 +75,32 @@ public class ItemIdContainerGenTool : EditorWindow
         AssetDatabase.Refresh();
     }
 
+    private void OperateFunc(UsableIdData SO)
+    {
+        if(SO.itemName.Count > 0)
+            ClearSO(SO);
+
+        string[] lines = csvFile.ToString().Split('\n');
+
+        foreach(string line in lines)
+        {
+            string[] data = line.Split(',');
+
+            SO.itemName.Add(data[1]);
+
+            SO.durationIndex.Add(int.Parse(data[2]));
+            SO.powerIndex.Add(int.Parse(data[3]));
+            SO.chargeIndex.Add(int.Parse(data[6]));
+        }
+
+        UsableIdData usableId = CreateSOAsset(SO);
+
+        AssetDatabase.CreateAsset(usableId, "Assets/ScriptableObjects/Gear/UsableIdData.asset");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+    }
+
     private static void ClearSO(FlowerIdData SO)
     {
         SO.itemName.Clear();
@@ -80,6 +108,14 @@ public class ItemIdContainerGenTool : EditorWindow
         SO.colorIndex.Clear();
         SO.floroIndex.Clear();
         SO.floroIndex2.Clear();
+    }
+
+    private static void ClearSO(UsableIdData SO)
+    {
+        SO.itemName.Clear();
+        SO.durationIndex.Clear();
+        SO.powerIndex.Clear();
+        SO.chargeIndex.Clear();
     }
 
     private static FlowerIdData CreateSOAsset(FlowerIdData SO)
@@ -90,6 +126,16 @@ public class ItemIdContainerGenTool : EditorWindow
         temp.colorIndex = SO.colorIndex;
         temp.floroIndex = SO.floroIndex;
         temp.floroIndex2 = SO.floroIndex2;
+        return temp;
+    }
+
+    private static UsableIdData CreateSOAsset(UsableIdData SO)
+    {
+        UsableIdData temp = ScriptableObject.CreateInstance<UsableIdData>();
+        temp.itemName = SO.itemName;
+        temp.durationIndex = SO.durationIndex;
+        temp.powerIndex = SO.powerIndex;
+        temp.chargeIndex = SO.chargeIndex;
         return temp;
     }
 }
