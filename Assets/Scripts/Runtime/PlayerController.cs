@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         public void OnMove(InputAction.CallbackContext context)
         {
             moveInput = context.ReadValue<Vector2>();
-            UnityEngine.Debug.Log($"{moveInput}");
+            //UnityEngine.Debug.Log($"{moveInput}");
         }
 
         void FixedUpdate()

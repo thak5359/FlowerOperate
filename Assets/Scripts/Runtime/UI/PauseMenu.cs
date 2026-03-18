@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,6 +14,11 @@ public class PauseMenu : MonoBehaviour
     public Vector2 hidePos;
     public Vector2 showPos;
     public Vector2 settingPos;
+
+    public Button ButtonResume;
+    public Button ButtonPause;
+    public Button ButtonTitle;
+    public Button ButtonEnd;
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
@@ -23,9 +31,10 @@ public class PauseMenu : MonoBehaviour
         pauseCanvas = GetComponent<Canvas>();
     }
 
+    // 시작시에 버튼 할당하는 기능 만들어줘!
 
+    #region PauseMenu, SettingMenu 호출/종료 기능
 
-    //테스트 기능 A
     public void OnBackAction(InputAction.CallbackContext context)
     {
         // 1. 공통 방어 로직
@@ -100,16 +109,6 @@ public class PauseMenu : MonoBehaviour
         input.changeIAmapPrev();
     }
 
-    // 세팅 버튼 클릭 시 호출용 (인풋용 아님)
-    public void OpenSettingMenu()
-    {
-        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
-        IMapChangable input = IAmapManager.Instance;
-
-        input.changeIAmapSetting();
-    }
-
-
     private IEnumerator MoveRoutine(Vector2 targetPos)
     {
 
@@ -134,8 +133,38 @@ public class PauseMenu : MonoBehaviour
         moveCoroutine = null;
     }
 
-    public void OnClickCloseButton(int time)
+    #endregion
+
+    #region 버튼 클릭 기능
+
+    public void OnClickResumeButton()
     {
-        SettingMenuManager.instance.showUI(time);
+
     }
+
+    public void OnClickSettingButton()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapSetting();
+    }
+
+    public void OnClickTitleButton()
+    {
+        Debug.Log("타이틀 화면 돌아가는거 만들기!!!!!");
+    }
+
+    public void OnClickGameEndButton()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+    }
+   
+
+
+#endregion
 }

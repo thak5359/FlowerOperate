@@ -11,7 +11,7 @@ namespace Fungus
 
         virtual protected void OnTriggerEnter(Collider other)
         {
-            Debug.Log("무언가 들어옴");
+            //Debug.Log("무언가 들어옴");
 
             if (other != null && other.CompareTag("Interactable"))
             {
@@ -25,7 +25,7 @@ namespace Fungus
         {
             if (other.CompareTag("Interactable"))
             {
-                Debug.Log("무언가 나감");
+                //Debug.Log("무언가 나감");
 
                 playerCtrl.setTag(string.Empty);
                 playerCtrl.canInteractive = false;
