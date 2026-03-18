@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Weather
+public enum Season
 {
     SPRING,
     SUMMER,
@@ -12,6 +12,7 @@ public enum Weather
 
 public class ProgressManager : MonoBehaviour
 {
+    List<int> list;
     //시간을 관리하는 매니저
     public static ProgressManager Instance;
 
@@ -21,9 +22,14 @@ public class ProgressManager : MonoBehaviour
     // 일정 관리하는 SO 데이터
     // 날짜 관리하는 알고리즘
 
-    public string getDay() //날짜 반환
+    public string getDate() //날짜 반환
     {
         return $"{(Day / 364)+ 1}년차, {(Day - 1) / 28 + 1}월 {(Day - 1) % 28 + 1}일";
+    }
+
+    public int getDay()
+    {
+        return Day;
     }
 
     public void nextDay()
@@ -31,18 +37,41 @@ public class ProgressManager : MonoBehaviour
         Day = Day + 1;
     }
 
-    public Weather getWeather(int day)  //날씨 enum 반환
+    private List<int> list2()
+    {
+        list = new List<int>();
+        list.Add(1);
+        list.Add(2);
+        list.Add(3);
+
+        return list;
+    }
+
+    private void listref(ref List<int> ints)
+    {
+        list = ints;
+    }
+
+    private void Awake()
+    {
+        List<int> ints = list2();
+        listref(ref ints);
+
+        Debug.Log(list.Count);
+    }
+
+    public Season getSeason(int day)  //날씨 enum 반환
     {
         float dayRatio = (day%totalDay)/totalDay;
 
         if (dayRatio > 3.25f && dayRatio <= 6.5f)
-            return Weather.SUMMER;
+            return Season.SUMMER;
         else if(dayRatio <= 9.75f)
-            return Weather.AUTUMN;
+            return Season.AUTUMN;
         else if (dayRatio <= 13f)
-            return Weather.WINTER;
+            return Season.WINTER;
         else
-            return Weather.SPRING;
+            return Season.SPRING;
     }
 
     public struct ProgressData
