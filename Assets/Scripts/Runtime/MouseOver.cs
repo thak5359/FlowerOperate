@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Fungus;
 
 public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandler, IPointerExitHandler
 {
@@ -18,7 +19,10 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandle
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
-        
+
     }
     //TODO : Panel 하나 잡아서 아이템 데이터 띄우는 거 만들기
 }
+
+
+

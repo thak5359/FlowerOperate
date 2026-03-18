@@ -69,6 +69,7 @@ public class HotbarManager : MonoBehaviour
         Debug.Log($"{i+1}¹ø ½½·Ô ¼±ÅÃµÊ");
     }
 
+
     public void SyncPlayerItem()
     {
         if (pointingSlot < 0 || pointingSlot >= slots.Count) return;

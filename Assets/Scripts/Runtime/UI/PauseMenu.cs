@@ -120,7 +120,6 @@ public class PauseMenu : MonoBehaviour
         {
             elapsed += Time.unscaledDeltaTime;
             float t = elapsed / defaultDuration;
-            // 부드러운 가감속을 위해 SmoothStep 적용
             t = t * t * (3f - 2f * t);
 
             movablePart.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
