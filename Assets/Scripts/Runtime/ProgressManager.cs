@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Weather
+{
+    SPRING,
+    SUMMER,
+    AUTUMN,
+    WINTER
+}
+
 public class ProgressManager : MonoBehaviour
 {
     //시간을 관리하는 매니저
@@ -9,6 +17,7 @@ public class ProgressManager : MonoBehaviour
 
     //13개월, 월 28일
     private int Day = 1; // 몇일차
+    private int totalDay = 364;
     // 일정 관리하는 SO 데이터
     // 날짜 관리하는 알고리즘
 
@@ -20,6 +29,20 @@ public class ProgressManager : MonoBehaviour
     public void nextDay()
     {
         Day = Day + 1;
+    }
+
+    public Weather getWeather(int day)  //날씨 enum 반환
+    {
+        float dayRatio = (day%totalDay)/totalDay;
+
+        if (dayRatio > 3.25f && dayRatio <= 6.5f)
+            return Weather.SUMMER;
+        else if(dayRatio <= 9.75f)
+            return Weather.AUTUMN;
+        else if (dayRatio <= 13f)
+            return Weather.WINTER;
+        else
+            return Weather.SPRING;
     }
 
     public struct ProgressData
