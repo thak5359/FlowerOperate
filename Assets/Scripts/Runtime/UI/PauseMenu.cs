@@ -1,55 +1,124 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     public RectTransform movablePart;
-    public Vector2 showPos;
     public Vector2 hidePos;
-    [SerializeField]protected const float defaultDuration = 0.5f;
+    public Vector2 showPos;
+    public Vector2 settingPos;
 
-    private bool isShowing = false; 
+    public Button ButtonResume;
+    public Button ButtonPause;
+    public Button ButtonTitle;
+    public Button ButtonEnd;
+
+    [SerializeField] protected const float defaultDuration = 0.5f;
+
+    private Canvas pauseCanvas;
     private Coroutine moveCoroutine;
+    private float cachedFloat = 0.0f;
 
-
-    //호출용, PauseMenu 숨기기/보이기 (이동 연출 포함) 
-    public void showUI(float input_duration = defaultDuration)
+    private void Awake()
     {
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-
-        IMapChangable input = IAmapManager.Instance; // IA맵 변경 함수 접근 권한 취득
-
-
-        if(input == null)
-        {
-            Debug.Log("input is null!");
-            return;
-        }
-
-        if (isShowing == false) // 보이기
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
-
-            input.changeIAmapPauseMenu();
-        }
-        else // 숨기기
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
-            input.changeIAmapPrev();
-        }
-        isShowing = !isShowing; // UI 이동 후 상태 전환
+        pauseCanvas = GetComponent<Canvas>();
     }
 
-    private IEnumerator MoveRoutine(Vector2 targetPos, float input_duration)
+    // 시작시에 버튼 할당하는 기능 만들어줘!
+
+    #region PauseMenu, SettingMenu 호출/종료 기능
+
+    public void OnBackAction(InputAction.CallbackContext context)
     {
+        // 1. 공통 방어 로직
+        if (moveCoroutine != null || !context.performed || !context.ReadValueAsButton()) return;
+
+        IMapChangable input = IAmapManager.Instance;
+        string current = input.getCurrentIAmap();
+
+        // 2. 현재 상태에 따른 "길 찾기" (State Machine)
+        switch (current)
+        {
+            case "MAP_FARM":
+            case "MAP_SHOP":
+                // 농장이나 상점 -> 퍼즈 메뉴 열기
+                StartCoroutine(OpenPauseMain());
+                break;
+
+            case "MAP_PAUSE":
+                // 퍼즈 메인 -> 메뉴 닫고 복귀
+                ClosePauseMain();
+                break;
+
+            case "MAP_SETTING":
+                // 세팅 화면 -> 퍼즈 메인으로 돌아가기
+                BackToPauseFromSetting();
+                break;
+
+            default:
+                Debug.Log($"[PauseMenu] {current} 맵에서는 ESC 동작이 정의되지 않았습니다.");
+                break;
+        }
+    }
+
+    private IEnumerator OpenPauseMain()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        IMapChangable input = IAmapManager.Instance;
+
+
+        Debug.Log("시간을 멈춰라 마이 월드야~!");
+
+
+        cachedFloat = 0.0f;
+        while (cachedFloat < 1.0f )
+        {
+            cachedFloat += Time.unscaledDeltaTime;
+            float warpedT = Mathf.Sin(cachedFloat / 1.0f * Mathf.PI * 0.5f);
+
+            Time.timeScale = Mathf.SmoothStep(1, 0, warpedT);
+            yield return null;
+            
+        }
+
+        input.changeIAmapPauseMenu();
+    }
+
+    public void ClosePauseMain()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
+        IMapChangable input = IAmapManager.Instance;
+
+        Debug.Log("시간은 다시 움직인다");
+        Time.timeScale = 1.0f;
+        input.changeIAmapPrev();
+    }
+
+    public void BackToPauseFromSetting()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapPrev();
+    }
+
+    private IEnumerator MoveRoutine(Vector2 targetPos)
+    {
+
+        if (targetPos == showPos) { pauseCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
 
         while (elapsed < defaultDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float t = elapsed / defaultDuration;
             // 부드러운 가감속을 위해 SmoothStep 적용
             t = t * t * (3f - 2f * t);
@@ -59,10 +128,43 @@ public class PauseMenu : MonoBehaviour
         }
 
         movablePart.anchoredPosition = targetPos;
+        if (targetPos == hidePos) { pauseCanvas.enabled = false; }
+
+        moveCoroutine = null;
     }
 
-    public void OnClickCloseButton(int time)
+    #endregion
+
+    #region 버튼 클릭 기능
+
+    public void OnClickResumeButton()
     {
-        SettingMenuManager.instance.showUI(time);
+
     }
+
+    public void OnClickSettingButton()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        IMapChangable input = IAmapManager.Instance;
+
+        input.changeIAmapSetting();
+    }
+
+    public void OnClickTitleButton()
+    {
+        Debug.Log("타이틀 화면 돌아가는거 만들기!!!!!");
+    }
+
+    public void OnClickGameEndButton()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+    }
+   
+
+
+#endregion
 }

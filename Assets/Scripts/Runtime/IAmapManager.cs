@@ -1,18 +1,20 @@
 using Fungus;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static IAmapManager;
 
 
-public interface IMapChangable // 컨트롤 방법을을 변경하는 기능은 이 인터페이스를 포함.
+public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 포함.
 {
     string getCurrentIAmap();
     void changeIAmap(string targetMap);
 
     void changeIAmapTitle();
 
-    void changeIAmapUI();
+    void changeIAmapSetting();
 
     void changeIAmapInventory();
 
@@ -23,6 +25,7 @@ public interface IMapChangable // 컨트롤 방법을을 변경하는 기능은 이 인터페이스�
     void changeIAmapShop();
 
     void changeIAmapFarm();
+    void changeIAmapChatBox();
 
     void changeIAmapPrev();
 }
@@ -32,8 +35,11 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 {
     //컨트롤 방식을 관리하는 매니저
     private static IAmapManager instance;
+    [SerializeField] List<InputAction> iaList = new List<InputAction>(3);
     [SerializeField] PlayerInput playerInput;
-    [SerializeField] private string prevIAMap;
+    [SerializeField] private Stack<string> prevMapStack = new Stack<string>();
+
+    public event Action onMapChange;
 
     const string TITLE_MAP_NAME = "MAP_TITLE";
 
@@ -45,23 +51,71 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
     const string STORAGE_MAP_NAME = "MAP_STORAGE";
-    
+    const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
+
+    void Awake()
+    {
+
+    }
+
     private void Start()
     {
         if (instance == null)
         {
             instance = this;
-            prevIAMap = null;
         }
-        else { Destroy(this); }
+        else { Destroy(this.gameObject); }
+
+
     }
     public static IAmapManager Instance => instance;
 
+    private void PushAndChange(string targetMap)
+    {
+        if (playerInput == null) return;
+
+        string currentMap = playerInput.currentActionMap.name;
+
+        // 똑같은 맵을 또 스택에 넣는 것을 방지 
+        if (currentMap != targetMap)
+        {
+            prevMapStack.Push(currentMap);
+            Debug.Log($"[IA Manager] Push: {currentMap} / 현재 스택 크기: {prevMapStack?.Count??null}");
+        }
+
+        playerInput.SwitchCurrentActionMap(targetMap);
+        
+        onMapChange?.Invoke();
+    }
+
+
     string IMapChangable.getCurrentIAmap()
     {
+        return (playerInput?.currentActionMap?.name ?? "nothing");
+    }
 
+    // 인터페이스 구현들
+    void IMapChangable.changeIAmapPauseMenu() => PushAndChange(PAUSEMENU_MAP_NAME);
+    void IMapChangable.changeIAmapSetting() => PushAndChange(SETTING_MAP_NAME);
+    void IMapChangable.changeIAmapTitle() => PushAndChange(TITLE_MAP_NAME);
+    void IMapChangable.changeIAmapInventory() => PushAndChange(INVENTORY_MAP_NAME);
+    void IMapChangable.changeIAmapStorage() => PushAndChange(STORAGE_MAP_NAME);
+    void IMapChangable.changeIAmapShop() => PushAndChange(SHOP_MAP_NAME);
+    void IMapChangable.changeIAmapFarm() => PushAndChange(FARM_MAP_NAME);
 
-        return playerInput.currentActionMap.name;
+    void IMapChangable.changeIAmapChatBox() => PushAndChange(CHATBOX_MAP_NAME);
+    
+
+    void IMapChangable.changeIAmapPrev()
+    {
+        if (playerInput != null && prevMapStack.Count > 0)
+        {
+            string target = prevMapStack.Pop();
+            playerInput.SwitchCurrentActionMap(target);
+            Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
+
+            onMapChange?.Invoke();
+        }
     }
 
     void IMapChangable.changeIAmap(string targetMap) // 직접 키고 싶은 맵 요청
@@ -70,76 +124,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         {
             playerInput.SwitchCurrentActionMap(targetMap);
 
-        }
-    }
-
-    void IMapChangable.changeIAmapTitle()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(TITLE_MAP_NAME);
-            prevIAMap = TITLE_MAP_NAME;
-        }
-    }
-    void IMapChangable.changeIAmapUI()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(SETTING_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-
-    void IMapChangable.changeIAmapInventory()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(INVENTORY_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-
-    void IMapChangable.changeIAmapStorage()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(STORAGE_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-
-    void IMapChangable.changeIAmapPauseMenu()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(PAUSEMENU_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-
-    void IMapChangable.changeIAmapShop()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(SHOP_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-
-    void IMapChangable.changeIAmapFarm()
-    {
-        if (playerInput != null)
-        {
-            playerInput.SwitchCurrentActionMap(FARM_MAP_NAME);
-            prevIAMap = SETTING_MAP_NAME;
-        }
-    }
-    void IMapChangable.changeIAmapPrev()
-    {
-        if (playerInput != null && prevIAMap != null)
-        {
-            playerInput.SwitchCurrentActionMap(prevIAMap);
-            prevIAMap = null;
+            onMapChange?.Invoke();
         }
     }
 
