@@ -1,123 +1,7 @@
 {
     "version": 1,
-    "name": "IA2",
+    "name": "IA",
     "maps": [
-        {
-            "name": "MAP_PAUSE",
-            "id": "47ce86ed-e602-4fef-9d0e-4ac810267e81",
-            "actions": [
-                {
-                    "name": "Escape",
-                    "type": "Button",
-                    "id": "67924621-769b-4810-af29-c70675761ed5",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "87cccad6-cef0-4511-bf47-45fe7c4835d1",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Escape",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "MAP_SETTING",
-            "id": "5432b34c-4c05-4b43-85e4-059f24e6f335",
-            "actions": [
-                {
-                    "name": "Escape",
-                    "type": "Button",
-                    "id": "39f62572-91e6-4204-8028-0a47323c3ac0",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SoundPanel",
-                    "type": "Button",
-                    "id": "8653d504-88e9-465f-8e22-b219c7c3b52b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "GraphicPanel",
-                    "type": "Button",
-                    "id": "0a07e9ce-2166-429e-8a79-4bf2229f44d4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "EtcPanel",
-                    "type": "Button",
-                    "id": "2db17683-4f3c-44be-9fd8-f013a50eb15e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "2c8eb8a4-68e5-4b28-a37a-a3a492b39dff",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SoundPanel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3e2a637f-6961-479e-a103-bf65b6589d8e",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "GraphicPanel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "05bcfd1d-2508-4a25-a03f-03db595169eb",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "EtcPanel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e91a8ee6-7689-408a-8ba2-010eaa0f4809",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Escape",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
         {
             "name": "MAP_FARM",
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
@@ -148,6 +32,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PrevHotSlot",
+                    "type": "Button",
+                    "id": "e1863544-4010-459f-9dd2-fad0a228c5dc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "NextHotSlot",
+                    "type": "Button",
+                    "id": "cc2e2469-9f9a-41c4-b926-1128fb1d7465",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "HotSlot1",
@@ -240,10 +142,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ScrollMouse",
-                    "type": "PassThrough",
-                    "id": "3bf7c13c-6a47-4147-b991-e53187d2f60d",
-                    "expectedControlType": "Vector2",
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "7b3cfebe-d412-4878-b21b-f4f5485e1f0d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -292,135 +194,16 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Escape",
-                    "type": "Button",
-                    "id": "7b3cfebe-d412-4878-b21b-f4f5485e1f0d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "WASD",
-                    "id": "00ca640b-d935-4593-8157-c05846ea39b3",
-                    "path": "Dpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "e2062cb9-1b15-46a2-838c-2f8d72a0bdd9",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "up",
-                    "id": "8180e8bd-4097-4f4e-ab88-4523101a6ce9",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "320bffee-a40b-4347-ac70-c210eb8bc73a",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "1c5327b5-f71c-4f60-99c7-4e737386f1d1",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "d2581a9b-1d11-4566-b27d-b92aff5fabbc",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "2e46982e-44cc-431b-9f0b-c11910bf467a",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "fcfe95b8-67b9-4526-84b5-5d0bc98d6400",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "77bff152-3580-4b21-b6de-dcd0c7e41164",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8",
-                    "path": "<XRController>/{Primary2DAxis}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "XR",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "cbac6039-9c09-46a1-b5f2-4e5124ccb5ed",
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot2",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -431,7 +214,7 @@
                     "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot3",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -442,7 +225,7 @@
                     "path": "<Keyboard>/4",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot4",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -453,7 +236,7 @@
                     "path": "<Keyboard>/5",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot5",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -464,7 +247,7 @@
                     "path": "<Keyboard>/6",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot6",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -475,7 +258,7 @@
                     "path": "<Keyboard>/7",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot7",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -486,7 +269,7 @@
                     "path": "<Keyboard>/8",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot8",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -497,7 +280,7 @@
                     "path": "<Keyboard>/9",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot9",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -508,7 +291,7 @@
                     "path": "<Keyboard>/0",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot0",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -519,7 +302,7 @@
                     "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "HotSlot1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -527,22 +310,22 @@
                 {
                     "name": "",
                     "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;WASD_Scheme",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "22520d89-7896-4e97-b498-28fb4a1fa321",
-                    "path": "<Mouse>/scroll",
+                    "id": "049c533c-295c-4f8a-b0d6-7279c74f5074",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "ScrollMouse",
+                    "groups": "Keyboard&Mouse;Arrow_Scheme",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -552,7 +335,7 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "OpenInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -563,7 +346,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -574,7 +357,7 @@
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "ShowBind",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -585,7 +368,7 @@
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
                     "action": "ShowItemDetail",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -596,7 +379,7 @@
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "Phone",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -607,19 +390,289 @@
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "SwapHotBar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "5765e593-b1ef-48e7-bdbc-51bd6dcff27e",
+                    "id": "652708c9-3fc2-47b1-ae88-62d78c661516",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme",
                     "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5765e593-b1ef-48e7-bdbc-51bd6dcff27e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "d0bd4c52-5d2c-4a8b-9992-f46637a48073",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "be73bbb0-aa40-43e2-a1a5-920253fa13a7",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "9aed5899-fc14-48c6-a071-0d80d538a50e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "e49d9057-1ab5-4d93-a167-f276543e85d5",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "b2b8a79a-059c-42fb-8b7f-eda9b304555f",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "up",
+                    "id": "84972ab6-b58d-463c-995c-9d1eae6ec55e",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "fa36587a-7ef0-401b-8641-00475b09f995",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "fbadd1c3-b558-4e52-8ac0-35043b8a1d00",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "f64eb6bd-88f0-4a3a-9e2c-eef0bab1c8e6",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "03c72c03-912e-4f3f-8a10-74bd53a45be0",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme",
+                    "action": "PrevHotSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "abc932f9-b343-4687-aa27-69f9d06fb741",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrow_Scheme",
+                    "action": "PrevHotSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c533712-42c8-4e33-a184-9a5f2b720d25",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextHotSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f201ba4-8031-4809-afbd-1da376c158d5",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NextHotSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MAP_PAUSE",
+            "id": "47ce86ed-e602-4fef-9d0e-4ac810267e81",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "67924621-769b-4810-af29-c70675761ed5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "87cccad6-cef0-4511-bf47-45fe7c4835d1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MAP_SETTING",
+            "id": "5432b34c-4c05-4b43-85e4-059f24e6f335",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "39f62572-91e6-4204-8028-0a47323c3ac0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SoundPanel",
+                    "type": "Button",
+                    "id": "8653d504-88e9-465f-8e22-b219c7c3b52b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GraphicPanel",
+                    "type": "Button",
+                    "id": "0a07e9ce-2166-429e-8a79-4bf2229f44d4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EtcPanel",
+                    "type": "Button",
+                    "id": "2db17683-4f3c-44be-9fd8-f013a50eb15e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2c8eb8a4-68e5-4b28-a37a-a3a492b39dff",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "SoundPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e2a637f-6961-479e-a103-bf65b6589d8e",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "GraphicPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05bcfd1d-2508-4a25-a03f-03db595169eb",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "EtcPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e91a8ee6-7689-408a-8ba2-010eaa0f4809",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -655,7 +708,7 @@
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "Drag",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -666,7 +719,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -694,7 +747,7 @@
                     "path": "",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -722,7 +775,7 @@
                     "path": "",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -750,7 +803,7 @@
                     "path": "",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -760,8 +813,8 @@
     ],
     "controlSchemes": [
         {
-            "name": "Keyboard&Mouse",
-            "bindingGroup": "Keyboard&Mouse",
+            "name": "WASD_Scheme",
+            "bindingGroup": "WASD_Scheme",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
@@ -776,44 +829,16 @@
             ]
         },
         {
-            "name": "Gamepad",
-            "bindingGroup": "Gamepad",
+            "name": "Arrow_Scheme",
+            "bindingGroup": "Arrow_Scheme",
             "devices": [
                 {
-                    "devicePath": "<Gamepad>",
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "Touch",
-            "bindingGroup": "Touch",
-            "devices": [
+                },
                 {
-                    "devicePath": "<Touchscreen>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "Joystick",
-            "bindingGroup": "Joystick",
-            "devices": [
-                {
-                    "devicePath": "<Joystick>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "XR",
-            "bindingGroup": "XR",
-            "devices": [
-                {
-                    "devicePath": "<XRController>",
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }

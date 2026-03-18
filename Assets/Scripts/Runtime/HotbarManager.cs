@@ -8,6 +8,7 @@ public class HotbarManager : MonoBehaviour
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
+    private int cachedInt;
     private int pointingSlot = -1;
 
     private float scrollCooldown = 0.15f;
@@ -27,26 +28,35 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
-    public void OnScrollMouse(InputAction.CallbackContext value)
+    public void OnPrevHotSlot(InputAction.CallbackContext context)
     {
-        if (!value.performed) return;
-
-        Vector2 scrollDelta = value.ReadValue<Vector2>();
-        if (Mathf.Abs(scrollDelta.y) < 0.1f) return;
-
-        int newIndex = pointingSlot + (scrollDelta.y > 0 ? -1 : 1);
-        newIndex = (newIndex + slots.Count) % slots.Count; // 순환 방식
-
-        pointSlot(newIndex);
+        // 버튼을 눌렀을 때(performed)만 실행
+        if (context.performed)
+        {
+            // 현재 위치에서 -1 한 곳으로 이동 (순환 로직은 pointSlot이 처리)
+            pointSlot(pointingSlot - 1);
+        }
     }
-
+    public void OnNextHotSlot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // 현재 위치에서 +1 한 곳으로 이동
+            pointSlot(pointingSlot + 1);
+        }
+    }
     public void pointSlot(int i)
     {
-        //  범위 및 중복 체크
-        if (i < 0 || i >= slots.Count) return;
-        if (i == pointingSlot && slots[i].slotFrame.enabled) return;
+        // 수정 위치: i 대신 cachedInt를 끝까지 활용해야 합니다.
+        cachedInt = (i + slots.Count) % slots.Count;
 
-        //  쿨타임 체크
+        // 1. 범위 체크 (이미 순환 로직을 썼으므로 사실상 통과하지만 안전장치로 유지)
+        if (cachedInt < 0 || cachedInt >= slots.Count) return;
+
+        // 2. 중복 체크 (i 대신 cachedInt 사용)
+        if (cachedInt == pointingSlot && slots[cachedInt].slotFrame.enabled) return;
+
+        // 3. 쿨타임 체크
         if (Time.time < lastScrollTime + scrollCooldown) return;
 
         // 이전 슬롯 끄기
@@ -56,17 +66,14 @@ public class HotbarManager : MonoBehaviour
         }
 
         // 새 슬롯 켜기
-        pointingSlot = i;
-        lastScrollTime = Time.time; // 시간 업데이트 필수!
+        pointingSlot = cachedInt;
+        lastScrollTime = Time.time;
 
-        slots[i].toggle.isOn = true;
-        slots[i].slotFrame.enabled = true;
-        
+        // ★ 수정: slots[i]가 아니라 slots[cachedInt]를 써야 i가 -1일 때 에러가 안 납니다!
+        slots[cachedInt].toggle.isOn = true;
+        slots[cachedInt].slotFrame.enabled = true;
 
-        // 플레이어에게 정보 갱신
-        //SyncPlayerItem();
-
-        Debug.Log($"{i+1}번 슬롯 선택됨");
+        Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
 

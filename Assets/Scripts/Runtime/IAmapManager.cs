@@ -38,7 +38,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     //컨트롤 방식을 관리하는 매니저
     [Header("1번째는 화살표인 InputActionAsset을, 2번째는 wasd용 InputActionAsset")]
-    [SerializeField] public List<InputActionAsset> iaList = new List<InputActionAsset>(2);
+    [SerializeField] public InputActionAsset IA;
     
     private PauseMenu pauseMenu;
     private PlayerInput playerInput;
@@ -93,8 +93,15 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     public void changeKeySetting(bool isWASD)
     {
-        playerInput.actions = (isWASD == true) ? iaList[0] : iaList[1];
         isWASDKeySetting = isWASD;
+        string targetScheme = isWASD ? "WASD_Scheme" : "Arrow_Scheme";
+        const string commonScheme = "Common_Scheme";
+
+        // 수정 위치: bindMask -> bindingMask
+        // 이 속성은 'InputBinding?' 타입을 받기 때문에 MaskByGroups가 반환하는 값과 일치합니다.
+        playerInput.actions.bindingMask = InputBinding.MaskByGroups(targetScheme, commonScheme);
+
+        Debug.Log($"[IA Manager] {targetScheme}와 {commonScheme}이 함께 활성화되었습니다, 파트너!");
     }
     #endregion
 
@@ -209,10 +216,10 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             }
         }
 
-        var actionScrollMouse = map.FindAction("ScrollMouse");
-        actionScrollMouse.started += hotbarManager.OnScrollMouse;
-        actionScrollMouse.performed += hotbarManager.OnScrollMouse;
-        actionScrollMouse.canceled += hotbarManager.OnScrollMouse;
+        //var actionScrollMouse = map.FindAction("ScrollMouse");
+        //actionScrollMouse.started += hotbarManager.OnChangeSlotKey;
+        //actionScrollMouse.performed += hotbarManager.OnChangeSlotKey;
+        //actionScrollMouse.canceled += hotbarManager.OnChangeSlotKey;
 
         var actionOpenInventory = map.FindAction("OpenInventory");
         // actionOpenInventory.performed +=   //TODO : 인벤토리 UI를 여는 함수 할당하기
