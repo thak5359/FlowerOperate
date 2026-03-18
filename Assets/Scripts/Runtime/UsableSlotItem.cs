@@ -28,6 +28,7 @@ public class HoeItem : SlotItem
 
         // 차징 시간에 따른 범위 계산 로직 (아래 PlayerController와 연동)
         ExecuteHoeAction(param);
+
     }
 
     private void ExecuteHoeAction(UseParam param)

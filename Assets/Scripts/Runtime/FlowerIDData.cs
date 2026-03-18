@@ -11,9 +11,9 @@ public class FlowerIdData : ItemIdData
     [SerializeField] public List<int> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
     [SerializeField] public List<int> floroIndex2; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
 
-    public List<int> SpeciesIndex => speciesIndex;
-    public List<int> ColorIndex => ColorIndex;
-    public List<int> FloroIndex => floroIndex;
-    public List<int> FloroIndex2 => floroIndex2;
+    public int SpeciesIndex(int i) => speciesIndex[i];
+    public int ColorIndex(int i) => colorIndex[i];
+    public int FloroIndex(int i) => floroIndex[i];
+    public int FloroIndex2(int i) => floroIndex2[i];
 }
 

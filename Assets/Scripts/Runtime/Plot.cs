@@ -21,7 +21,6 @@ public class Plot : MonoBehaviour
     // 토지의 인스턴스 데이터 = 저장해야하는거
     public bool isTilled = false; // 땅이 갈렸는가
     public bool isWatered = false; // 물을 뿌렸는가
-    public int itemId; // 꽃이 없다면 0, 있다면 몇번 아이템인지
     public bool isFertilized; // 비료를 뿌렸는가
     public int growth; // 꽃의 성장 단계 == item.level
     public int elapsed; // 심고 경과한 날짜 또는 페이즈.
@@ -34,7 +33,7 @@ public class Plot : MonoBehaviour
     {
         isTilled = input_isTilled;
         isWatered = input_isWatered;
-        itemId = input_itemID;
+        flowerId = input_itemID;
         growth = input_growth;
         elapsed = input_elapsed;
     }
@@ -54,7 +53,7 @@ public class Plot : MonoBehaviour
 
     public void turnOn(int currentDay)
     {
-        if (itemId != 0)
+        if (flowerId != 0)
         {
             cachedDay = currentDay - LastActivedDay;
             if (cachedDay > 0)
@@ -73,7 +72,7 @@ public class Plot : MonoBehaviour
     }
     public void turnOff(int currentDay)
     {
-        if (itemId != 0)
+        if (flowerId != 0)
         {
             LastActivedDay = currentDay;
         }
@@ -82,9 +81,9 @@ public class Plot : MonoBehaviour
 
     public int sowSeed(int input_itemId)
     {
-        if (itemId == 0)
+        if (flowerId == 0)
         {
-            itemId = input_itemId;
+            flowerId = input_itemId;
             return 1;
         }
         else
