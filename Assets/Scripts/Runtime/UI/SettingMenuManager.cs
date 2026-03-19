@@ -153,7 +153,7 @@ public class SettingMenuManager : MonoBehaviour
         }
 
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-        IMapChangable input = IAmapManager.Instance; 
+        IMapChangable input = IAmapManager.Instance(); 
         if (isShowing == false) // ∫∏¿Ã±‚
         {
             moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));

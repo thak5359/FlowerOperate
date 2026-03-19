@@ -11,7 +11,7 @@ namespace Fungus
     {
         public override void OnEnter()
         {
-            IMapChangable input = IAmapManager.Instance;
+            IMapChangable input = IAmapManager.Instance();
             input.changeIAmapChatBox();
             
             Continue();

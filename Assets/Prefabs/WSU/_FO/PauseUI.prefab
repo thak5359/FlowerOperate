@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 6105007935845407944}
   - component: {fileID: 3365176511089016516}
   m_Layer: 0
-  m_Name: SoundToggle
+  m_Name: SoundButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -723,6 +723,10 @@ MonoBehaviour:
   hidePos: {x: 0, y: 1000}
   showPos: {x: 0, y: 0}
   settingPos: {x: 0, y: -1000}
+  ButtonResume: {fileID: 4450142663958862797}
+  ButtonPause: {fileID: 6003409180730904690}
+  ButtonTitle: {fileID: 4267137857659543049}
+  ButtonEnd: {fileID: 3758727621298458278}
 --- !u!114 &7303586965115007400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,9 +739,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074289017cc25d64298600db0d519794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundPanel: {fileID: 3329266189251202371}
-  DisplayPanel: {fileID: 1116618072751449612}
-  EtcPanel: {fileID: 1219984852118244613}
+  soundButton: {fileID: 3365176511089016516}
+  displayButton: {fileID: 9125679945715177223}
+  etcButton: {fileID: 1501948724684797963}
+  soundPanel: {fileID: 3329266189251202371}
+  displayPanel: {fileID: 1116618072751449612}
+  etcPanel: {fileID: 1219984852118244613}
   movablePart: {fileID: 1499429285044949158}
   showPos: {x: 0, y: 0}
   hidePos: {x: 0, y: 1000}
@@ -4727,7 +4734,7 @@ GameObject:
   - component: {fileID: 177846902197191845}
   - component: {fileID: 1501948724684797963}
   m_Layer: 0
-  m_Name: EtcToggle
+  m_Name: EtcButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5269,7 +5276,7 @@ GameObject:
   - component: {fileID: 950379533402143390}
   - component: {fileID: 9125679945715177223}
   m_Layer: 0
-  m_Name: GraphicToggle
+  m_Name: DisplayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,44 +11,36 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 
 {
     string getCurrentIAmap();
     void changeIAmap(string targetMap);
-
     void changeIAmapTitle();
-
     void changeIAmapSetting();
-
     void changeIAmapInventory();
-
     void changeIAmapStorage();
-
     void changeIAmapPauseMenu();
-
     void changeIAmapShop();
-
     void changeIAmapFarm();
     void changeIAmapChatBox();
-
     void changeIAmapPrev();
 }
 
 
 public class IAmapManager : MonoBehaviour, IMapChangable
 {
-    
     private static IAmapManager instance;
 
-    //컨트롤 방식을 관리하는 매니저
-    [Header("1번째는 화살표인 InputActionAsset을, 2번째는 wasd용 InputActionAsset")]
+    [Header("InputAction Asset 파일을 할당해주세요. 위치는 Asset/Settings입니다")]
     [SerializeField] public InputActionAsset IA;
-    
+
+    [Header("Wasd키로 조작하신다면 체크해주세요!")]
+    [SerializeField] public bool isWASDKeySetting = true;
+
     private PauseMenu pauseMenu;
     private PlayerInput playerInput;
     private PlayerController playerController;
     private HotbarManager hotbarManager;
+
     private Stack<string> prevMapStack = new Stack<string>();
 
-    public event Action onMapChange;
-
-    bool isWASDKeySetting = false;
+    public event Action OnMapChange;
 
     const string TITLE_MAP_NAME = "MAP_TITLE";
     const string SETTING_MAP_NAME = "MAP_SETTING";
@@ -58,34 +50,51 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
     const string STORAGE_MAP_NAME = "MAP_STORAGE";
     const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
-
+    const string WASD_SCHEME_NAME = "WASD_Scheme";
+    const string ARROW_SCHEME_NAME = "Arrow_Scheme";
 
     void Awake()
     {
-
-    }
-
-    void OnEnable()
-    {
-        changeKeySetting(isWASDKeySetting);
-    }
-
-
-    #region 싱글톤 패턴
-    private void Start()
-    {
-
-
 
         if (instance == null)
         {
             instance = this;
         }
-        else { Destroy(this.gameObject); }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        playerInput = GetComponent<PlayerInput>();
 
+        if (playerInput != null)
+            playerInput.actions = IA;
     }
-    public static IAmapManager Instance => instance;
+
+    #region 싱글톤 패턴
+    private void Start()
+    {
+        playerController = PlayerController.Instance();
+        pauseMenu = PauseMenu.Instance();
+        hotbarManager = HotbarManager.Instance();
+
+
+        if (playerController == null)
+        {
+            Debug.LogError("[IA Manager] 파트너! PlayerController 인스턴스를 찾을 수 없어!");
+            return;
+        }
+
+        changeKeySetting(isWASDKeySetting);
+        FarmMapActionAllocator();
+    }
+    public static IAmapManager Instance()
+    {
+        if (instance != null)
+            return instance;
+        else return null;
+    }
 
     #endregion
 
@@ -94,14 +103,11 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     public void changeKeySetting(bool isWASD)
     {
         isWASDKeySetting = isWASD;
-        string targetScheme = isWASD ? "WASD_Scheme" : "Arrow_Scheme";
-        const string commonScheme = "Common_Scheme";
+        string targetScheme = isWASD ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
 
-        // 수정 위치: bindMask -> bindingMask
-        // 이 속성은 'InputBinding?' 타입을 받기 때문에 MaskByGroups가 반환하는 값과 일치합니다.
-        playerInput.actions.bindingMask = InputBinding.MaskByGroups(targetScheme, commonScheme);
+        playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
 
-        Debug.Log($"[IA Manager] {targetScheme}와 {commonScheme}이 함께 활성화되었습니다, 파트너!");
+        Debug.Log($"[IA Manager] {targetScheme}이 활성화되었습니다, 파트너!");
     }
     #endregion
 
@@ -122,7 +128,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         playerInput.SwitchCurrentActionMap(targetMap);
         
-        onMapChange?.Invoke();
+        OnMapChange?.Invoke();
     }
 
     string IMapChangable.getCurrentIAmap()
@@ -147,7 +153,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             playerInput.SwitchCurrentActionMap(target);
             Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
 
-            onMapChange?.Invoke();
+            OnMapChange?.Invoke();
         }
     }
     void IMapChangable.changeIAmap(string targetMap) // 직접 키고 싶은 맵 요청
@@ -155,8 +161,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         if (playerInput != null)
         {
             playerInput.SwitchCurrentActionMap(targetMap);
-
-            onMapChange?.Invoke();
+            OnMapChange?.Invoke();
         }
     }
     #endregion
@@ -169,38 +174,69 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
 
-    // 정지 메뉴 키 할당
+    #region 정지 메뉴 키 할당
     void PauseMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(PAUSEMENU_MAP_NAME); // 현재 맵에서 사용중인 IA에서 특정 맵을 가져옴
         var actionEscape = map.FindAction("Escape"); // 거기서 어떤키를 눌렀을때에 동작을 할당하는 곳을 찾음
         actionEscape.performed += pauseMenu.OnBackAction; // 함수 할당
     }
+    #endregion
 
-    // 세팅 메뉴 키 할당
+    #region 세팅 메뉴 키 할당
     void SettingMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
         var actionEscape = map.FindAction("Escape");
     }
+    #endregion
 
-    // 농장 조작 키 할당
+    #region 농장 조작 키 할당
     void FarmMapActionAllocator()
     {
-        playerController = PlayerController.Instance;
+        if (playerInput == null || playerInput.actions == null) return;
 
-        var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        InputActionMap map = playerInput.actions.FindActionMap(FARM_MAP_NAME);
+        if (map == null) return;
 
-        var actionEscape = map.FindAction("Escape");
-        actionEscape.performed += pauseMenu.OnBackAction;
+        map.Disable();
 
-        var actionMove = map.FindAction("Move");
+        // 2. 액션을 찾습니다. (직접 경로를 쓰는 방식이 더 정확할 때가 있습니다)
+        InputAction actionMove = map.FindAction("Move");
 
-        var actionInteract = map.FindAction("Interact");
+        if (actionMove != null)
+        {
+            // 3. 중복 구독 방지를 위해 -= 후 += (매우 권장)
+            actionMove.performed -= playerController.OnMove;
+            actionMove.canceled -= playerController.OnMove;
+
+            actionMove.performed += playerController.OnMove;
+            actionMove.canceled += playerController.OnMove;
+        }
+
+        InputAction actionUse = map.FindAction("Use");
+        actionUse.started += playerController.OnUse;
+        actionUse.performed += playerController.OnUse;
+        actionUse.canceled += playerController.OnUse;
+
+        InputAction actionInteract = map.FindAction("Interact");
         actionInteract.started += playerController.OnInteract;
         actionInteract.performed += playerController.OnInteract;
         actionInteract.canceled += playerController.OnInteract;
 
+        #region  핫 슬롯 좌우 이동
+        InputAction actionPrevHotSlot = map.FindAction("PrevHotSlot");
+        actionPrevHotSlot.performed += hotbarManager.OnPrevHotSlot;
+
+        InputAction actionNextHotSlot = map.FindAction("NextHotSlot");
+        actionNextHotSlot.performed += hotbarManager.OnNextHotSlot;
+
+        InputAction actionEscape = map.FindAction("Escape");
+        actionEscape.performed += pauseMenu.OnBackAction;
+        #endregion
+
+        # region 핫슬롯 1~0번 바로 이동
+        
         for (int i = 0; i < 10; i++)
         {
             int slotIndex = i;
@@ -208,47 +244,48 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             int displayNum = (i == 9) ? 0 : i + 1;
             string actionName = $"HotSlot{displayNum}";
 
-            var action = map.FindAction(actionName);
+            InputAction action = map.FindAction(actionName);
             if(action != null)
             {
                 //ctx로 InputAction.callbackContext를 처리
                 action.performed += ctx => hotbarManager.pointSlot(slotIndex);
             }
         }
-
-        //var actionScrollMouse = map.FindAction("ScrollMouse");
-        //actionScrollMouse.started += hotbarManager.OnChangeSlotKey;
-        //actionScrollMouse.performed += hotbarManager.OnChangeSlotKey;
-        //actionScrollMouse.canceled += hotbarManager.OnChangeSlotKey;
+        #endregion
 
         var actionOpenInventory = map.FindAction("OpenInventory");
         // actionOpenInventory.performed +=   //TODO : 인벤토리 UI를 여는 함수 할당하기
-    }
 
-    // 인벤토리 조작 키 할당
+        map.Enable();
+
+    }
+    #endregion
+
+    #region 인벤토리 조작 키 할당
     void InventoryMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
+    #endregion
 
-    // 가게 경영 조작 키 할당
+    #region 가게 경영 조작 키 할당
     void ShopMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
+    #endregion
 
-    // 대화창 조작 키 할당... 일단 써놔
+
+    #region 대화창 조작 키 할당... 일단 써놔
     void ChatboxMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
     #endregion
     
+    #endregion
+
     #region 액션 바인딩 커스텀아이즈
-
-
-
-
 
     #endregion
 }

@@ -15,7 +15,7 @@ public interface IInteractable
 
 public class PlayerController : MonoBehaviour, IInteractable
 {
-    public static PlayerController Instance;
+    private static PlayerController instance;
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     private Vector2 moveInput;
     private Transform trans;
     private Rigidbody rb;
-    private SpriteRenderer spriteRenderer;
     private Animation anim;
 
     [SerializeField] private string messageTarget;
@@ -37,20 +36,35 @@ public class PlayerController : MonoBehaviour, IInteractable
     public void setTag(string input_tag) => messageTarget = input_tag;
     Vector2 heading; // 캐릭터가 보고 있는 방향 ( 아이템 사용)
 
-
+    public static PlayerController Instance()
+    {
+        if (instance != null)
+        { 
+            return instance;
+        }
+        else return null;
+    }
 
     void Awake()
     {
-        Instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         rb = GetComponent<Rigidbody>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         trans = GetComponent<Transform>();
     }
 
     void OnDestroy()
     {
-        Instance = null;
+        instance = null;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -71,7 +85,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
         if (moveInput.x != 0)
         {
-            spriteRenderer.flipX = (moveInput.x < 0);
+            //spriteRenderer.flipX = (moveInput.x < 0);
         }
         // 4방향 애니메이션이 예정되어있다는 가정하의 조건문. 
         if (moveInput.x > 0)
@@ -101,39 +115,40 @@ public class PlayerController : MonoBehaviour, IInteractable
             // 나 자신(this)을 IInteractable로 형변환해서 호출해야 합니다.
             ((IInteractable)this).Interact(this.messageTarget);
         }
+    }
 
+    public void OnUse(InputAction.CallbackContext context)
+    {
+        //   if (currentItem == null) return;
 
+        // 1. 버튼을 누르기 시작했을 때 (Started)
+        if (context.started)
+        {
+            isCharging = true;
+            chargeStartTime = Time.time;
+            //selectionArea.SetActive(true);
+        }
 
-        //if (currentItem == null ) return;
+        // 2. 버튼을 떼었을 때 (Canceled)
+        if (context.canceled)
+        {
+            float totalChargeTime = Time.time - chargeStartTime;
+            isCharging = false;
 
-        //// 1. 버튼을 누르기 시작했을 때 (Started)
-        //if (context.started)
-        //{
-        //    isCharging = true;
-        //    chargeStartTime = Time.time;
-        //    //selectionArea.SetActive(true);
-        //}
+            // 차징 시간을 포함하여 UseParam 생성
+            UseParam param = new UseParam(
+                heading,
+                transform.position,
+                10, // 효율
+                totalChargeTime // 소요 시간 추가
+            );
 
-        //// 2. 버튼을 떼었을 때 (Canceled)
-        //if (context.canceled)
-        //{
-        //    float totalChargeTime = Time.time - chargeStartTime;
-        //    isCharging = false;
+            //currentItem.OnUse(param);
+            //selectionArea.SetActive(false);
 
-        //    // 차징 시간을 포함하여 UseParam 생성
-        //    UseParam param = new UseParam(
-        //        heading,
-        //        transform.position,
-        //        10, // 효율
-        //        totalChargeTime // 소요 시간 추가
-        //    );
-
-        //    currentItem.OnUse(param);
-        //    selectionArea.SetActive(false);
-
-        //    // SelectionArea 스케일 초기화
-        //    selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
-        //}
+            //// SelectionArea 스케일 초기화
+            //selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
+        }
     }
 
     void IInteractable.Interact(string Tag)

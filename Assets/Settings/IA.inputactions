@@ -544,7 +544,7 @@
                     "path": "<Mouse>/scroll/down",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD_Scheme",
                     "action": "NextHotSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -555,7 +555,7 @@
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Arrow_Scheme",
                     "action": "NextHotSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
