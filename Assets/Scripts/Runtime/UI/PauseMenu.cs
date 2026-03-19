@@ -27,6 +27,7 @@ public class PauseMenu : MonoBehaviour
     private Canvas pauseCanvas;
     private Coroutine moveCoroutine;
     private float cachedFloat = 0.0f;
+    private IMapChangable input;
 
     private void Awake()
     {
@@ -43,10 +44,10 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    // 시작시에 버튼 할당하는 기능 만들어줘!
     private void Start()
     {
-        
+
+       input = IAmapManager.Instance();
     }
 
     public static PauseMenu Instance()
@@ -57,7 +58,6 @@ public class PauseMenu : MonoBehaviour
     }
 
 
-
     #region PauseMenu, SettingMenu 호출/종료 기능
 
     public void OnBackAction(InputAction.CallbackContext context)
@@ -65,7 +65,6 @@ public class PauseMenu : MonoBehaviour
         // 1. 공통 방어 로직
         if (moveCoroutine != null || !context.performed || !context.ReadValueAsButton()) return;
 
-        IMapChangable input = IAmapManager.Instance();
         string current = input.getCurrentIAmap();
 
         // 2. 현재 상태에 따른 "길 찾기" (State Machine)
@@ -96,8 +95,6 @@ public class PauseMenu : MonoBehaviour
     private IEnumerator OpenPauseMain()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-        IMapChangable input = IAmapManager.Instance();
-
 
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
@@ -119,7 +116,6 @@ public class PauseMenu : MonoBehaviour
     public void ClosePauseMain()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
-        IMapChangable input = IAmapManager.Instance();
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
@@ -129,8 +125,6 @@ public class PauseMenu : MonoBehaviour
     public void BackToPauseFromSetting()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-        IMapChangable input = IAmapManager.Instance();
-
         input.changeIAmapPrev();
     }
 
@@ -161,15 +155,9 @@ public class PauseMenu : MonoBehaviour
 
     #region 버튼 클릭 기능
 
-    public void OnClickResumeButton()
-    {
-
-    }
-
     public void OnClickSettingButton()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
-        IMapChangable input = IAmapManager.Instance();
 
         input.changeIAmapSetting();
     }

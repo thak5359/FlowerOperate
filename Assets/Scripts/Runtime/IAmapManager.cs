@@ -55,7 +55,6 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
@@ -65,7 +64,6 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             Destroy(gameObject);
             return;
         }
-
         playerInput = GetComponent<PlayerInput>();
 
         if (playerInput != null)

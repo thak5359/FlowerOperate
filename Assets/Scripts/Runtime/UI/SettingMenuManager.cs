@@ -53,21 +53,10 @@ public class SettingMenuManager : MonoBehaviour
         }
     }
 
-
-
-
-    public void OnClickSoundButton()
-    {
-        PanelChange(1);
-    }
-    public void OnClickDisplayButton()
-    {
-        PanelChange(2);
-    }
-    public void OnClickEtcButton()
-    {
-        PanelChange(3);
-    }
+    public void OnClickSoundButton() => PanelChange(1);
+    public void OnClickDisplayButton() => PanelChange(2);
+    public void OnClickEtcButton() => PanelChange(3);
+    
 
     // Æ¯Á¤ ÆÇ³Ú·Î °¥¾Æ³¢¿ì±â
     private void PanelChange(int num)
@@ -163,7 +152,6 @@ public class SettingMenuManager : MonoBehaviour
         else // ¼û±â±â
         {
             moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
-
             input.changeIAmapPrev();
         }
         isShowing = !isShowing;

@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour, IInteractable
             return;
         }
         rb = GetComponent<Rigidbody>();
-        //spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         trans = GetComponent<Transform>();
     }
@@ -70,7 +69,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        //UnityEngine.Debug.Log($"{moveInput}");
     }
 
     void FixedUpdate()
@@ -85,7 +83,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
         if (moveInput.x != 0)
         {
-            //spriteRenderer.flipX = (moveInput.x < 0);
+            //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
         }
         // 4방향 애니메이션이 예정되어있다는 가정하의 조건문. 
         if (moveInput.x > 0)
@@ -106,7 +104,6 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-    //[SerializeField] private GameObject selectionArea;
 
     public void OnInteract(InputAction.CallbackContext context)
     {
