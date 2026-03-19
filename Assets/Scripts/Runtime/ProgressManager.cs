@@ -24,7 +24,7 @@ public class ProgressManager : MonoBehaviour
 
     public string getDate() //날짜 반환
     {
-        return $"{(Day / 364)+ 1}년차, {(Day - 1) / 28 + 1}월 {(Day - 1) % 28 + 1}일";
+        return $"{(Day / totalDay)+ 1}년차, {(Day - 1) / 28 + 1}월 {(Day - 1) % 28 + 1}일";
     }
 
     public int getDay()
@@ -35,29 +35,6 @@ public class ProgressManager : MonoBehaviour
     public void nextDay()
     {
         Day = Day + 1;
-    }
-
-    private List<int> list2()
-    {
-        list = new List<int>();
-        list.Add(1);
-        list.Add(2);
-        list.Add(3);
-
-        return list;
-    }
-
-    private void listref(ref List<int> ints)
-    {
-        list = ints;
-    }
-
-    private void Awake()
-    {
-        List<int> ints = list2();
-        listref(ref ints);
-
-        Debug.Log(list.Count);
     }
 
     public Season getSeason(int day)  //날씨 enum 반환

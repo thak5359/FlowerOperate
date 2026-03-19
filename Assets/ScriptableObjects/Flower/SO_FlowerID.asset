@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df48aa7b6aba44545aa3955be6dc6251, type: 3}
   m_Name: SO_FlowerID
   m_EditorClassIdentifier: 
-  startId: 0
+  startId: 300
   itemName:
   - "\uBD89\uC740\uC0C9 \uAC70\uBCA0\uB77C"
   - "\uC8FC\uD669\uC0C9 \uAC70\uBCA0\uB77C"
