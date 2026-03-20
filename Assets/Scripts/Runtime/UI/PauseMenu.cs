@@ -2,36 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    private static PauseMenu instance;
+
     [Header("Pause Menu")]
     public RectTransform movablePart;
     public Vector2 hidePos;
     public Vector2 showPos;
     public Vector2 settingPos;
 
-    public Button ButtonResume;
-    public Button ButtonPause;
-    public Button ButtonTitle;
-    public Button ButtonEnd;
+    public Button buttonResume;
+    public Button buttonSetting;
+    public Button buttonTitle;
+    public Button buttonEnd;
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
     private Coroutine moveCoroutine;
     private float cachedFloat = 0.0f;
+    private IMapChangable input;
 
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
+
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
-    // 시작시에 버튼 할당하는 기능 만들어줘!
+    private void Start()
+    {
+
+       input = IAmapManager.Instance();
+
+        buttonResume.onClick.AddListener(() => ClosePauseMain());
+        buttonSetting.onClick.AddListener(() => OpenSettingMenu());
+        buttonTitle.onClick.AddListener(() => OnClickTitleButton());
+        buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
+    }
+
+    public static PauseMenu Instance()
+    {
+        if (instance != null)
+            return instance;
+        else return null;
+    }
+
 
     #region PauseMenu, SettingMenu 호출/종료 기능
 
@@ -40,7 +72,6 @@ public class PauseMenu : MonoBehaviour
         // 1. 공통 방어 로직
         if (moveCoroutine != null || !context.performed || !context.ReadValueAsButton()) return;
 
-        IMapChangable input = IAmapManager.Instance;
         string current = input.getCurrentIAmap();
 
         // 2. 현재 상태에 따른 "길 찾기" (State Machine)
@@ -71,9 +102,8 @@ public class PauseMenu : MonoBehaviour
     private IEnumerator OpenPauseMain()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-        IMapChangable input = IAmapManager.Instance;
 
-
+        input.changeIAmapPauseMenu();
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
 
@@ -88,13 +118,17 @@ public class PauseMenu : MonoBehaviour
             
         }
 
-        input.changeIAmapPauseMenu();
+    }
+
+    public void OpenSettingMenu()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        input.changeIAmapSetting();
     }
 
     public void ClosePauseMain()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
-        IMapChangable input = IAmapManager.Instance;
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
@@ -104,8 +138,6 @@ public class PauseMenu : MonoBehaviour
     public void BackToPauseFromSetting()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(showPos));
-        IMapChangable input = IAmapManager.Instance;
-
         input.changeIAmapPrev();
     }
 
@@ -120,7 +152,6 @@ public class PauseMenu : MonoBehaviour
         {
             elapsed += Time.unscaledDeltaTime;
             float t = elapsed / defaultDuration;
-            // 부드러운 가감속을 위해 SmoothStep 적용
             t = t * t * (3f - 2f * t);
 
             movablePart.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
@@ -137,22 +168,16 @@ public class PauseMenu : MonoBehaviour
 
     #region 버튼 클릭 기능
 
-    public void OnClickResumeButton()
-    {
-
-    }
-
     public void OnClickSettingButton()
     {
         moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
-        IMapChangable input = IAmapManager.Instance;
 
         input.changeIAmapSetting();
     }
 
     public void OnClickTitleButton()
     {
-        Debug.Log("타이틀 화면 돌아가는거 만들기!!!!!");
+        SceneManager.LoadScene("Main");
     }
 
     public void OnClickGameEndButton()

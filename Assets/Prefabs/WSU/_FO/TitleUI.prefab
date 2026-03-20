@@ -386,7 +386,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1510255589370932029}
   m_OnClick:
     m_PersistentCalls:
@@ -664,7 +664,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2224162626474490097}
   m_OnClick:
     m_PersistentCalls:
@@ -956,6 +956,7 @@ GameObject:
   - component: {fileID: 8123043892629020213}
   - component: {fileID: 3014887687534900203}
   - component: {fileID: 8349895801779359490}
+  - component: {fileID: 4229323124132389499}
   m_Layer: 0
   m_Name: TitleUI
   m_TagString: Untagged
@@ -1001,7 +1002,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1047,6 +1048,22 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &4229323124132389499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963097232693206972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c28643a32102c2f44a3e95cf23ca333e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startButton: {fileID: 0}
+  loadButton: {fileID: 0}
+  settingButton: {fileID: 0}
+  endButton: {fileID: 0}
 --- !u!1 &5971033547487960901
 GameObject:
   m_ObjectHideFlags: 0

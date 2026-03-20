@@ -1274,9 +1274,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6316539834662793773}
-  - component: {fileID: 1549652268451342968}
+  - component: {fileID: 951378808570070774}
   m_Layer: 0
-  m_Name: EtcToggle
+  m_Name: EtcButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1302,7 +1302,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1549652268451342968
+--- !u!114 &951378808570070774
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1311,7 +1311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1750340987987359210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -1342,26 +1342,10 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4659959663806023601}
-  toggleTransition: 1
-  graphic: {fileID: 0}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 713061044319089592}
-        m_TargetAssemblyTypeName: SettingMenuManager, Assembly-CSharp
-        m_MethodName: OpenEtcPanel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_IsOn: 1
+      m_Calls: []
 --- !u!1 &1816497708519486273
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,7 +2118,7 @@ GameObject:
   - component: {fileID: 6752549095844808723}
   - component: {fileID: 1489724655082051016}
   m_Layer: 0
-  m_Name: Toggles
+  m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3810,9 +3794,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4515205812359141643}
-  - component: {fileID: 1281798562512504345}
+  - component: {fileID: 4371566447799888960}
   m_Layer: 0
-  m_Name: SoundToggle
+  m_Name: SoundButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3838,7 +3822,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1281798562512504345
+--- !u!114 &4371566447799888960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3847,7 +3831,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4356400716377549651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -3878,26 +3862,10 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4069959066499553592}
-  toggleTransition: 1
-  graphic: {fileID: 0}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 713061044319089592}
-        m_TargetAssemblyTypeName: SettingMenuManager, Assembly-CSharp
-        m_MethodName: OpenSoundPanel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_IsOn: 1
+      m_Calls: []
 --- !u!1 &4367091294525944496
 GameObject:
   m_ObjectHideFlags: 0
@@ -5155,13 +5123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074289017cc25d64298600db0d519794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundPanel: {fileID: 6940015340830407881}
-  DisplayPanel: {fileID: 3438180938742808119}
-  EtcPanel: {fileID: 6117419655116612568}
+  soundButton: {fileID: 4371566447799888960}
+  displayButton: {fileID: 8454143541882847103}
+  etcButton: {fileID: 951378808570070774}
+  soundPanel: {fileID: 6940015340830407881}
+  displayPanel: {fileID: 3438180938742808119}
+  etcPanel: {fileID: 6117419655116612568}
   movablePart: {fileID: 5928730029540319403}
   showPos: {x: 0, y: 0}
   hidePos: {x: 0, y: 1000}
-  duration: 0.5
 --- !u!114 &4972762585608371547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7927,9 +7897,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5244620556626213176}
-  - component: {fileID: 4213548814326449236}
+  - component: {fileID: 8454143541882847103}
   m_Layer: 0
-  m_Name: GraphicToggle
+  m_Name: DisplayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7955,7 +7925,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4213548814326449236
+--- !u!114 &8454143541882847103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7964,7 +7934,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9004286552912636914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -7995,23 +7965,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 6570337909797894036}
-  toggleTransition: 1
-  graphic: {fileID: 0}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 713061044319089592}
-        m_TargetAssemblyTypeName: SettingMenuManager, Assembly-CSharp
-        m_MethodName: OpenDisplayPanel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_IsOn: 1
+      m_Calls: []

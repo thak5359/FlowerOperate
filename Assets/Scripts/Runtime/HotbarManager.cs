@@ -4,10 +4,13 @@ using UnityEngine.InputSystem;
 
 public class HotbarManager : MonoBehaviour
 {
+    public static HotbarManager instance;
+
     [Header("핫키 슬롯을 등록해주세요")]
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
+    private int cachedInt;
     private int pointingSlot = -1;
 
     private float scrollCooldown = 0.15f;
@@ -15,6 +18,14 @@ public class HotbarManager : MonoBehaviour
 
     void Awake()
     {
+        if(instance == null)
+            instance = this;
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (slots == null || slots.Count == 0)
         {
             Debug.LogError("Hotbar slots is NULL or Empty!");
@@ -27,8 +38,9 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
-    public void OnScrollMouse(InputAction.CallbackContext value)
+    public static HotbarManager Instance()
     {
+<<<<<<< HEAD
         if (!value.performed) return;
 
         Vector2 scrollDelta = value.ReadValue<Vector2>();
@@ -38,36 +50,57 @@ public class HotbarManager : MonoBehaviour
         newIndex = Mathf.Clamp(newIndex, 0, slots.Count - 1);
 
         pointSlot(newIndex);
+=======
+        if (instance != null)
+        {
+            return instance;
+        }
+        else return null;
+>>>>>>> Mingi
     }
 
+
+    public void OnPrevHotSlot(InputAction.CallbackContext context)
+    {
+        // 버튼을 눌렀을 때(performed)만 실행
+        if (context.performed)
+        {
+            // 현재 위치에서 -1 한 곳으로 이동 (순환 로직은 pointSlot이 처리)
+            pointSlot(pointingSlot - 1);
+        }
+    }
+    public void OnNextHotSlot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // 현재 위치에서 +1 한 곳으로 이동
+            pointSlot(pointingSlot + 1);
+        }
+    }
     public void pointSlot(int i)
     {
-        //  범위 및 중복 체크
-        if (i < 0 || i >= slots.Count) return;
-        if (i == pointingSlot && slots[i].slotFrame.enabled) return;
+        cachedInt = (i + slots.Count) % slots.Count;
 
-        //  쿨타임 체크
+        if (cachedInt < 0 || cachedInt >= slots.Count) return;
+
+        if (cachedInt == pointingSlot && slots[cachedInt].slotFrame.enabled) return;
+
         if (Time.time < lastScrollTime + scrollCooldown) return;
 
-        // 이전 슬롯 끄기
         if (pointingSlot >= 0 && pointingSlot < slots.Count)
         {
             slots[pointingSlot].slotFrame.enabled = false;
         }
 
-        // 새 슬롯 켜기
-        pointingSlot = i;
-        lastScrollTime = Time.time; // 시간 업데이트 필수!
+        pointingSlot = cachedInt;
+        lastScrollTime = Time.time;
 
-        slots[i].toggle.isOn = true;
-        slots[i].slotFrame.enabled = true;
-        
+        slots[cachedInt].toggle.isOn = true;
+        slots[cachedInt].slotFrame.enabled = true;
 
-        // 플레이어에게 정보 갱신
-        //SyncPlayerItem();
-
-        Debug.Log($"{i+1}번 슬롯 선택됨");
+        Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
+
 
     public void SyncPlayerItem()
     {
