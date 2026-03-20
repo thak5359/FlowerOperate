@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
@@ -17,10 +19,10 @@ public class PauseMenu : MonoBehaviour
     public Vector2 showPos;
     public Vector2 settingPos;
 
-    public Button ButtonResume;
-    public Button ButtonPause;
-    public Button ButtonTitle;
-    public Button ButtonEnd;
+    public Button buttonResume;
+    public Button buttonSetting;
+    public Button buttonTitle;
+    public Button buttonEnd;
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
@@ -48,6 +50,11 @@ public class PauseMenu : MonoBehaviour
     {
 
        input = IAmapManager.Instance();
+
+        buttonResume.onClick.AddListener(() => ClosePauseMain());
+        buttonSetting.onClick.AddListener(() => OpenSettingMenu());
+        buttonTitle.onClick.AddListener(() => OnClickTitleButton());
+        buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
     }
 
     public static PauseMenu Instance()
@@ -96,6 +103,7 @@ public class PauseMenu : MonoBehaviour
     {
         moveCoroutine = StartCoroutine(MoveRoutine(showPos));
 
+        input.changeIAmapPauseMenu();
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
 
@@ -110,7 +118,12 @@ public class PauseMenu : MonoBehaviour
             
         }
 
-        input.changeIAmapPauseMenu();
+    }
+
+    public void OpenSettingMenu()
+    {
+        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        input.changeIAmapSetting();
     }
 
     public void ClosePauseMain()
@@ -164,7 +177,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnClickTitleButton()
     {
-        Debug.Log("타이틀 화면 돌아가는거 만들기!!!!!");
+        SceneManager.LoadScene("Main");
     }
 
     public void OnClickGameEndButton()

@@ -166,11 +166,12 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
     #region  맵 별 액션에 함수 할당
 
-    // 타이틀 키 할당
+    #region 타이틀 키 할당
     void TitleMapActionAllocator()
     {
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
+    #endregion
 
     #region 정지 메뉴 키 할당
     void PauseMapActionAllocator()
@@ -199,7 +200,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         map.Disable();
 
-        // 2. 액션을 찾습니다. (직접 경로를 쓰는 방식이 더 정확할 때가 있습니다)
+        // 2. 액션을 찾습니다. (직접 경로를 쓰는 방식이 더 정확할 때가 있음)
         InputAction actionMove = map.FindAction("Move");
 
         if (actionMove != null)
@@ -228,10 +229,10 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         InputAction actionNextHotSlot = map.FindAction("NextHotSlot");
         actionNextHotSlot.performed += hotbarManager.OnNextHotSlot;
+        #endregion
 
         InputAction actionEscape = map.FindAction("Escape");
         actionEscape.performed += pauseMenu.OnBackAction;
-        #endregion
 
         # region 핫슬롯 1~0번 바로 이동
         
