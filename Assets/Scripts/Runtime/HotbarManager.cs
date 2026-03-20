@@ -40,23 +40,11 @@ public class HotbarManager : MonoBehaviour
 
     public static HotbarManager Instance()
     {
-<<<<<<< HEAD
-        if (!value.performed) return;
-
-        Vector2 scrollDelta = value.ReadValue<Vector2>();
-        if (Mathf.Abs(scrollDelta.y) < 0.1f) return;
-
-        int newIndex = pointingSlot + (scrollDelta.y > 0 ? -1 : 1);
-        newIndex = Mathf.Clamp(newIndex, 0, slots.Count - 1);
-
-        pointSlot(newIndex);
-=======
         if (instance != null)
         {
             return instance;
         }
         else return null;
->>>>>>> Mingi
     }
 
 

@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     private float chargeStartTime;
     private bool isCharging = false;
 
-    public Item item;
+    //public Item item;
 
     private Vector2 moveInput;
     private Transform trans;

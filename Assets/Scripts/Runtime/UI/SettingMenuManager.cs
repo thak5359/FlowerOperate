@@ -105,28 +105,28 @@ public class SettingMenuManager : MonoBehaviour
         }
     }
 
-    public void OpenDisplayPanel(InputAction.CallbackContext context)
-    {
-        if (Toggle == true)
-        {
-            if (usingPanel != 2)
-            {
-                PanelChange(2);
-                usingPanel = 2;
-            }
-        }
-    }
-    public void OpenEtcPanel(bool Toggle)
-    {
-        if (Toggle == true)
-        {
-            if (usingPanel != 3)
-            {
-                PanelChange(3);
-                usingPanel = 3;
-            }
-        }
-    }
+    //public void OpenDisplayPanel(InputAction.CallbackContext context)
+    //{
+    //    if (Toggle == true)
+    //    {
+    //        if (usingPanel != 2)
+    //        {
+    //            PanelChange(2);
+    //            usingPanel = 2;
+    //        }
+    //    }
+    //}
+    //public void OpenEtcPanel(bool Toggle)
+    //{
+    //    if (Toggle == true)
+    //    {
+    //        if (usingPanel != 3)
+    //        {
+    //            PanelChange(3);
+    //            usingPanel = 3;
+    //        }
+    //    }
+    //}
 
     public void OffUI() // ²ô±â
     {
