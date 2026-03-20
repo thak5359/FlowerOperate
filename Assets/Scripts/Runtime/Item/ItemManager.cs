@@ -57,6 +57,8 @@ public class ItemManager : MonoBehaviour
             }
         }
         Debug.Log("ItemManager: 데이터베이스 초기화 완료!");
+        int randId = Random.Range(300, masterDb.Length);
+        Debug.Log(masterDb[randId]);
     }
 
     #region 데이터 타입별 InsertDataToMasterDB 함수
@@ -207,7 +209,7 @@ public class FlowerDataBase : MasterData
         this.floro2 = Floro2;
     }
 
-    public string GetSpecies => species;
+    public string GetSpecies() => species;
     public string GetColor() => color;
     public string Getfloro() => floro;
     public string GetFloro2() => floro2;

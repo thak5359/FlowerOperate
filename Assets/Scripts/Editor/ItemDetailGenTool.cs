@@ -7,6 +7,7 @@ using UnityEngine;
 
 public enum DropDownMenu
 {
+    None,
     Flower,
     Usable
 };
@@ -63,8 +64,6 @@ public class ItemDetailGenTool : EditorWindow
                     break;
             }
         }
-
-        
     }
 
     private void OperateFunc(FlowerDetailData SO)
