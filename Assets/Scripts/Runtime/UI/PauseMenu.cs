@@ -31,6 +31,7 @@ public class PauseMenu : MonoBehaviour
     private float cachedFloat = 0.0f;
     private IMapChangable input;
 
+    private bool isTransitioning;
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
@@ -70,11 +71,11 @@ public class PauseMenu : MonoBehaviour
     public void OnBackAction(InputAction.CallbackContext context)
     {
         // 1. 공통 방어 로직
-        if (moveCoroutine != null || !context.performed || !context.ReadValueAsButton()) return;
+        if (isTransitioning == true || !context.performed) return;
 
         string current = input.getCurrentIAmap();
 
-        // 2. 현재 상태에 따른 "길 찾기" (State Machine)
+
         switch (current)
         {
             case "MAP_FARM":
@@ -85,25 +86,28 @@ public class PauseMenu : MonoBehaviour
 
             case "MAP_PAUSE":
                 // 퍼즈 메인 -> 메뉴 닫고 복귀
-                ClosePauseMain();
+                StartCoroutine(ClosePauseMain());
                 break;
 
             case "MAP_SETTING":
                 // 세팅 화면 -> 퍼즈 메인으로 돌아가기
-                BackToPauseFromSetting();
+                StartCoroutine(BackToPauseFromSetting());
                 break;
 
             default:
-                Debug.Log($"[PauseMenu] {current} 맵에서는 ESC 동작이 정의되지 않았습니다.");
+                Debug.Log($"[PauseMenu] {current} 맵에서는 해당 동작이 정의되지 않았습니다.");
                 break;
         }
     }
 
     private IEnumerator OpenPauseMain()
     {
-        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        isTransitioning = true;
 
         input.changeIAmapPauseMenu();
+
+        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
 
@@ -117,28 +121,45 @@ public class PauseMenu : MonoBehaviour
             yield return null;
             
         }
+        Time.timeScale = 0f;
 
+        isTransitioning = false;
     }
 
-    public void OpenSettingMenu()
+    public IEnumerator OpenSettingMenu()
     {
-        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
+        isTransitioning = true;
+
+
+        yield return StartCoroutine(MoveRoutine(settingPos));
         input.changeIAmapSetting();
+
+
+        isTransitioning = false;
     }
 
-    public void ClosePauseMain()
+    public IEnumerator ClosePauseMain()
     {
-        moveCoroutine = StartCoroutine(MoveRoutine(hidePos));
+        isTransitioning = true;
+
+
+        yield return StartCoroutine(MoveRoutine(hidePos));
+
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
         input.changeIAmapPrev();
+
+
+        isTransitioning = false;
     }
 
-    public void BackToPauseFromSetting()
+    public IEnumerator BackToPauseFromSetting()
     {
-        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        isTransitioning = true;
+        yield return StartCoroutine(MoveRoutine(showPos));
         input.changeIAmapPrev();
+        isTransitioning = false;
     }
 
     private IEnumerator MoveRoutine(Vector2 targetPos)
@@ -170,9 +191,11 @@ public class PauseMenu : MonoBehaviour
 
     public void OnClickSettingButton()
     {
+        isTransitioning = true;
         moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
 
         input.changeIAmapSetting();
+        isTransitioning = false;
     }
 
     public void OnClickTitleButton()
@@ -182,6 +205,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OnClickGameEndButton()
     {
+    
     #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
     #else

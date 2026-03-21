@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -20,6 +20,13 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public bool canInteractive = false;
+
+
+    [Header("캐릭터가 상호작용 가능한 위치")]
+    [SerializeField]public  Transform interactableArea;
+    Vector3 cachedVec3;
+
+
 
     private float chargeStartTime;
     private bool isCharging = false;
@@ -89,18 +96,26 @@ public class PlayerController : MonoBehaviour, IInteractable
         if (moveInput.x > 0)
         {
             heading.Set(1.0f, 0.0f);
+            cachedVec3.Set(1.0f, 0.0f, 0.0f);
+            interactableArea.localPosition = cachedVec3;
         }
         else if (moveInput.x < 0)
         {
             heading.Set(-1.0f, 0.0f);
+            cachedVec3.Set(-1.0f, 0.0f, 0.0f);
+            interactableArea.localPosition = cachedVec3;
         }
         else if (moveInput.y > 0)
         {
             heading.Set(0.0f, 1.0f);
+            cachedVec3.Set(0.0f, 0.0f, 1.0f);
+            interactableArea.localPosition = cachedVec3;
         }
         else if (moveInput.y < 0)
         {
             heading.Set(0.0f, -1.0f);
+            cachedVec3.Set(0.0f, 0.0f, -1.0f);
+            interactableArea.localPosition = cachedVec3;
         }
     }
 
@@ -118,27 +133,35 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
         //   if (currentItem == null) return;
 
+
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
             isCharging = true;
             chargeStartTime = Time.time;
-            //selectionArea.SetActive(true);
+            Debug.Log("<color=yellow>[Item]</color> 차징 시작...!");
+
+            // TODO: 차징 시작 애니메이션이나 이펙트 트리거
         }
 
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
+            if (!isCharging) return;
+
             float totalChargeTime = Time.time - chargeStartTime;
             isCharging = false;
 
             // 차징 시간을 포함하여 UseParam 생성
             UseParam param = new UseParam(
-                heading,
-                transform.position,
-                10, // 효율
-                totalChargeTime // 소요 시간 추가
-            );
+             heading,            // 캐릭터가 바라보는 2D 방향 (Vector2)
+             transform.position, // 현재 플레이어의 3D 위치
+             10,                 // 기본 효율 (나중에 아이템 등급에 따라 변경 가능)
+             totalChargeTime     // 실제 버튼을 누르고 있었던 시간
+         );
+
+            // 결과 출력
+            PrintUseResult(param);
 
             //currentItem.OnUse(param);
             //selectionArea.SetActive(false);
@@ -147,6 +170,27 @@ public class PlayerController : MonoBehaviour, IInteractable
             //selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
         }
     }
+
+    private void PrintUseResult(UseParam param)
+    {
+        string directionName = GetDirectionName(param.heading);
+        Debug.Log($"<color=cyan><b>[Item Use Result]</b></color>\n" +
+                  $"방향: {directionName} ({param.heading})\n" +
+                  $"위치: {param.pos}\n" +
+                  $"차징 시간: {param.elapsedTime:F2}초\n" +
+                  $"효율: {param.efficiency}");
+    }
+
+    // --- [추가] 방향 벡터를 읽기 쉬운 텍스트로 변환 ---
+    private string GetDirectionName(Vector2 h)
+    {
+        if (h == Vector2.up) return "위(North)";
+        if (h == Vector2.down) return "아래(South)";
+        if (h == Vector2.left) return "왼쪽(West)";
+        if (h == Vector2.right) return "오른쪽(East)";
+        return "방향 알 수 없음";
+    }
+
 
     void IInteractable.Interact(string Tag)
     {

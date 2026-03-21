@@ -20,6 +20,7 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 
     void changeIAmapFarm();
     void changeIAmapChatBox();
     void changeIAmapPrev();
+
 }
 
 
