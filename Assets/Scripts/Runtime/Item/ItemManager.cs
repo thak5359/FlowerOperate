@@ -92,7 +92,17 @@ public class ItemManager : MonoBehaviour
                 data.ItemName(i),flowerDetail.Species(data.SpeciesIndex(i)),
                 flowerDetail.Color(data.ColorIndex(i)), flowerDetail.Floro(data.FloroIndex(i)), flowerDetail.Floro(data.FloroIndex2(i)));
             if (flower != null)
-                masterDb[data.startId + (i*2 + 1)] = flower;
+            {
+                var seed = new FlowerDataBase(flower);
+                seed.SetItemName(data.itemName[i] + " 씨앗");
+                seed.SetIsSeed(true);
+
+                masterDb[data.startId + (i * 2 + 1)] = flower;
+                masterDb[data.startId + (i * 2)] = seed;
+
+                if (seed != null)
+                    Debug.Log(seed.GetItemName);
+            }
         }
         return true;
     }
@@ -108,9 +118,9 @@ public class ItemManager : MonoBehaviour
     }
 
     #region 1. 공통 정보
-    public string GetItemName(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemName() ?? "알 수 없는 아이템";
-    public string GetItemDescription(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemDescription() ?? "";
-    public string GetItemAddress(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemSpriteAddress() ?? "";
+    public string GetItemName(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemName ?? "알 수 없는 아이템";
+    public string GetItemDescription(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemDescription ?? "";
+    public string GetItemAddress(int id, int level = 0) => GetIdData<MasterData>(id)?.GetItemSpriteAddress ?? "";
     #endregion
 
     #region 2. 꽃 데이터 
@@ -131,7 +141,7 @@ public class ItemManager : MonoBehaviour
         var data = GetIdData<FlowerDataBase>(id);
         if (data == null) return "알 수 없는 꽃";
 
-        return data.GetColor();
+        return data.GetColor;
     }
 
     // 꽃말 리스트 가져오기
@@ -142,10 +152,10 @@ public class ItemManager : MonoBehaviour
 
         if (data != null)
         {
-            result.Add(data.Getfloro());
+            result.Add(data.Getfloro);
             
             if(data != null)
-                result.Add(data.Getfloro());
+                result.Add(data.Getfloro);
         }
         return result;
     }
@@ -157,21 +167,21 @@ public class ItemManager : MonoBehaviour
     {
         var data = GetIdData<UsableDataBase>(id);
         // ID 데이터에서 찾은 chargeIndex로 Detail 테이블에서 ChargeInfo 구조체를 가져옵니다.
-        return (data != null) ? data.GetChargeInfo() : new ChargeInfo(0, 0);
+        return (data != null) ? data.GetChargeInfo : new ChargeInfo(0, 0);
     }
 
     // 도구 파워 (곡갱이 파워 등)
     public int GetUsablePower(int id)
     {
         var data = GetIdData<UsableDataBase>(id);
-        return (data != null) ? data.GetPower() : 0;
+        return (data != null) ? data.GetPower : 0;
     }
 
     // 도구 내구도 (기본 최대치)
     public int GetMaxDuration(int id)
     {
         var data = GetIdData<UsableDataBase>(id);
-        return (data != null) ? data.GetDuration() : 0;
+        return (data != null) ? data.GetDuration : 0;
     }
 
     #endregion
@@ -185,9 +195,11 @@ public class MasterData
     [SerializeField] protected string description;
     [SerializeField] protected string spriteAddress;
 
-    public string GetItemName() => itemName;
-    public string GetItemDescription() => description;
-    public string GetItemSpriteAddress() => spriteAddress;
+    public string GetItemName => itemName;
+    public string GetItemDescription => description;
+    public string GetItemSpriteAddress => spriteAddress;
+    public void SetItemName(string itemName) => this.itemName = itemName;
+    public void SetItemDescription(string description) => this.description = description;
 }
 
 [System.Serializable]
@@ -197,8 +209,9 @@ public class FlowerDataBase : MasterData
     [SerializeField] private string color;
     [SerializeField] private string floro;
     [SerializeField] private string floro2;
+    [SerializeField] private bool isSeed = false;
 
-    public FlowerDataBase(string Name, string Species, string Color, string Floro, string Floro2 = null)
+    public FlowerDataBase(string Name = "Empty", string Species = "Empty", string Color = "Empty", string Floro = "Empty", string Floro2 = null)
     {
         this.itemName = Name;
         //this.description = Description;
@@ -209,10 +222,22 @@ public class FlowerDataBase : MasterData
         this.floro2 = Floro2;
     }
 
-    public string GetSpecies() => species;
-    public string GetColor() => color;
-    public string Getfloro() => floro;
-    public string GetFloro2() => floro2;
+    public FlowerDataBase(FlowerDataBase other)
+    {
+        this.itemName = other.itemName;
+        this.species = other.species;
+        this.color = other.color;
+        this.floro = other.floro;
+        this.floro2 = other.floro2;
+    }
+
+    public string GetSpecies => species;
+    public string GetColor => color;
+    public string Getfloro => floro;
+    public string GetFloro2 => floro2;
+    public bool GetIsSeed => isSeed;
+
+    public void SetIsSeed(bool isSeed = false) => this.isSeed = isSeed;
 }
 
 [System.Serializable]
@@ -232,7 +257,7 @@ public class UsableDataBase : MasterData
         this.chargeInfo = info;
     }
 
-    public int GetDuration() => duration;
-    public int GetPower() => power;
-    public ChargeInfo GetChargeInfo() => chargeInfo;
+    public int GetDuration => duration;
+    public int GetPower => power;
+    public ChargeInfo GetChargeInfo => chargeInfo;
 }
