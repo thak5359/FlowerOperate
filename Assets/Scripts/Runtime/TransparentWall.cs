@@ -6,8 +6,8 @@ public class TransparentWall : MonoBehaviour
 {
     protected PlayerController pMovement;
     protected SpriteRenderer pRenderer;
-
    
+
     virtual protected void OnCollisonEnter(Collision other)
     {
         other.collider.CompareTag("Player");

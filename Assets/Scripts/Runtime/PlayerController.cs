@@ -1,3 +1,5 @@
+using Fungus;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,21 +19,32 @@ public class PlayerController : MonoBehaviour, IInteractable
 {
     private static PlayerController instance;
 
+    private Item item;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public bool canInteractive = false;
 
 
     [Header("캐릭터가 상호작용 가능한 위치")]
-    [SerializeField]public  Transform interactableArea;
+    [SerializeField] public Transform interactableArea;
     Vector3 cachedVec3;
 
+    [SerializeField] public GameObject UseArea;
 
+
+    // 상호작용 연속 방지용 
+    private float interactCooldown = 0.2f;
+    private float lastInteractTime = 0f;
+
+
+
+    private List<GameObject> useAreaList = new List<GameObject>();
 
     private float chargeStartTime;
     private bool isCharging = false;
+    float cachedSign;
 
-    public Item item;
 
     private Vector2 moveInput;
     private Transform trans;
@@ -46,7 +59,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     public static PlayerController Instance()
     {
         if (instance != null)
-        { 
+        {
             return instance;
         }
         else return null;
@@ -65,12 +78,25 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        trans = GetComponent<Transform>();
     }
+
+
+    void Start()
+    {
+        if (UseArea.activeSelf == true)
+        {
+            UseArea.SetActive(false);
+        }
+
+
+
+    }
+
 
     void OnDestroy()
     {
         instance = null;
+
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -81,6 +107,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
+        interactableArea.localPosition = cachedVec3;
+        SnapToWorldGrid(UseArea.transform, cachedVec3);
     }
 
     void Move()
@@ -92,38 +120,42 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
             //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
         }
-        // 4방향 애니메이션이 예정되어있다는 가정하의 조건문. 
-        if (moveInput.x > 0)
+
+        if(moveInput != Vector2.zero)
         {
-            heading.Set(1.0f, 0.0f);
-            cachedVec3.Set(1.0f, 0.0f, 0.0f);
-            interactableArea.localPosition = cachedVec3;
+            if (moveInput.x != 0)
+            {
+                cachedSign = (moveInput.x > 0 )? 1 : -1f;
+                heading.Set(cachedSign, 0.0f);
+                cachedVec3.Set(cachedSign, 0.0f, 0.0f);
+            }
+            else 
+            {
+                cachedSign = (moveInput.y > 0) ? 1 : -1f;
+                heading.Set(0.0f, cachedSign);
+                cachedVec3.Set(0.0f, 0.0f, cachedSign);
+            }
+          
         }
-        else if (moveInput.x < 0)
-        {
-            heading.Set(-1.0f, 0.0f);
-            cachedVec3.Set(-1.0f, 0.0f, 0.0f);
-            interactableArea.localPosition = cachedVec3;
-        }
-        else if (moveInput.y > 0)
-        {
-            heading.Set(0.0f, 1.0f);
-            cachedVec3.Set(0.0f, 0.0f, 1.0f);
-            interactableArea.localPosition = cachedVec3;
-        }
-        else if (moveInput.y < 0)
-        {
-            heading.Set(0.0f, -1.0f);
-            cachedVec3.Set(0.0f, 0.0f, -1.0f);
-            interactableArea.localPosition = cachedVec3;
-        }
+
     }
 
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (canInteractive == true)
+       
+
+        if (canInteractive == true && context.canceled)
         {
+
+            if (Time.time < lastInteractTime + interactCooldown)
+            {
+                #if UNITY_EDITOR
+                Debug.Log("좀 살살 좀 눌러주세요...");
+                #endif
+                return;
+            }
+
             // 나 자신(this)을 IInteractable로 형변환해서 호출해야 합니다.
             ((IInteractable)this).Interact(this.messageTarget);
         }
@@ -137,6 +169,14 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
+            if (UseArea.activeSelf == true)
+            {
+                Debug.LogAssertion("오류! 키입력이 잘못됨!");
+                return;
+            }
+
+            UseArea.SetActive(true);
+
             isCharging = true;
             chargeStartTime = Time.time;
             Debug.Log("<color=yellow>[Item]</color> 차징 시작...!");
@@ -160,17 +200,32 @@ public class PlayerController : MonoBehaviour, IInteractable
              totalChargeTime     // 실제 버튼을 누르고 있었던 시간
          );
 
+            #if UNITY_EDITOR
             // 결과 출력
             PrintUseResult(param);
-
-            //currentItem.OnUse(param);
-            //selectionArea.SetActive(false);
-
-            //// SelectionArea 스케일 초기화
-            //selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 0.8f);
+            #endif
+           
+            UseArea.SetActive(false);
         }
     }
 
+
+    private void SnapToWorldGrid(Transform targetPos, Vector3 offset)
+    {
+        Vector3 targetWorldPos = transform.position + offset;
+
+        float snappedX = Mathf.Round(targetWorldPos.x);
+        float snappedZ = Mathf.Round(targetWorldPos.z);
+
+        targetPos.position = new Vector3(snappedX, 0.15f, snappedZ);
+
+
+
+    }
+
+
+
+#if UNITY_EDITOR
     private void PrintUseResult(UseParam param)
     {
         string directionName = GetDirectionName(param.heading);
@@ -181,7 +236,6 @@ public class PlayerController : MonoBehaviour, IInteractable
                   $"효율: {param.efficiency}");
     }
 
-    // --- [추가] 방향 벡터를 읽기 쉬운 텍스트로 변환 ---
     private string GetDirectionName(Vector2 h)
     {
         if (h == Vector2.up) return "위(North)";
@@ -191,6 +245,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         return "방향 알 수 없음";
     }
 
+#endif
 
     void IInteractable.Interact(string Tag)
     {
@@ -226,5 +281,42 @@ public class PlayerController : MonoBehaviour, IInteractable
     //    UnityEngine.Debug.Log(currentItem != null ? $"{currentItem.GetName()} 장착됨" : "맨손 상태");
     //}
 
+    private async void SampleItemUseCode()
+    {
+        // TODO :: 나중에 item 자식 클래스로 각 장비별 클래스를 만든 뒤에 as로 검사 방식을 좀 더 똑똑하게 하기!
 
+        switch (item.itemId)
+        {
+            case (3):
+
+
+            case (4):
+                break;
+
+            case (5):
+
+            case (6):
+                break;
+
+            case (7):
+
+            case (8):
+            case (9):
+                break;
+
+
+
+
+        }
+
+
+        for (int i = 0; i < 10; i++)
+        {
+            useAreaList[i] = await AddressableManager.LoadAssetAsync<GameObject>("UseArea");
+        }
+
+
+
+
+    }
 }

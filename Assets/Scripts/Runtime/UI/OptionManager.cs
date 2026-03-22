@@ -61,7 +61,6 @@ public class OptionManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             LoadSettings();
         }
         else { Destroy(gameObject); }

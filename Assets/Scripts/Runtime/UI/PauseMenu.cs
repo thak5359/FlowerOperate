@@ -27,7 +27,6 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
-    private Coroutine moveCoroutine;
     private float cachedFloat = 0.0f;
     private IMapChangable input;
 
@@ -52,8 +51,8 @@ public class PauseMenu : MonoBehaviour
 
        input = IAmapManager.Instance();
 
-        buttonResume.onClick.AddListener(() => ClosePauseMain());
-        buttonSetting.onClick.AddListener(() => OpenSettingMenu());
+        buttonResume.onClick.AddListener(() => StartCoroutine(ClosePauseMain()));
+        buttonSetting.onClick.AddListener(() => StartCoroutine(OnClickSettingMenu()));
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
     }
@@ -106,7 +105,7 @@ public class PauseMenu : MonoBehaviour
 
         input.changeIAmapPauseMenu();
 
-        moveCoroutine = StartCoroutine(MoveRoutine(showPos));
+        StartCoroutine(MoveRoutine(showPos));
 
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
@@ -126,17 +125,7 @@ public class PauseMenu : MonoBehaviour
         isTransitioning = false;
     }
 
-    public IEnumerator OpenSettingMenu()
-    {
-        isTransitioning = true;
-
-
-        yield return StartCoroutine(MoveRoutine(settingPos));
-        input.changeIAmapSetting();
-
-
-        isTransitioning = false;
-    }
+   
 
     public IEnumerator ClosePauseMain()
     {
@@ -182,19 +171,20 @@ public class PauseMenu : MonoBehaviour
         movablePart.anchoredPosition = targetPos;
         if (targetPos == hidePos) { pauseCanvas.enabled = false; }
 
-        moveCoroutine = null;
     }
 
     #endregion
 
     #region 버튼 클릭 기능
 
-    public void OnClickSettingButton()
+    public IEnumerator OnClickSettingMenu()
     {
         isTransitioning = true;
-        moveCoroutine = StartCoroutine(MoveRoutine(settingPos));
 
         input.changeIAmapSetting();
+
+        yield return StartCoroutine(MoveRoutine(settingPos));
+
         isTransitioning = false;
     }
 

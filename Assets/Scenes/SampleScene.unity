@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 6079452}
   m_Layer: 0
   m_Name: PlotLain_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 14908574}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,7 +451,7 @@ Transform:
   m_GameObject: {fileID: 46257262}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.31, y: 0, z: -1}
+  m_LocalPosition: {x: -2.31, y: 0.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 53150901}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 57104586}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -682,7 +682,7 @@ GameObject:
   - component: {fileID: 60811092}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -787,7 +787,7 @@ GameObject:
   - component: {fileID: 65034500}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 76851478}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1096,7 +1096,7 @@ GameObject:
   - component: {fileID: 97105657}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1198,7 +1198,7 @@ GameObject:
   - component: {fileID: 97498603}
   m_Layer: 0
   m_Name: PlotLain_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 98929917}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1352,7 +1352,7 @@ GameObject:
   - component: {fileID: 106846392}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1457,7 +1457,7 @@ GameObject:
   - component: {fileID: 108047311}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1562,7 +1562,7 @@ GameObject:
   - component: {fileID: 109632999}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1667,7 +1667,7 @@ GameObject:
   - component: {fileID: 110456040}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1907,7 +1907,7 @@ GameObject:
   - component: {fileID: 130249205}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2012,7 +2012,7 @@ GameObject:
   - component: {fileID: 138102156}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2117,7 +2117,7 @@ GameObject:
   - component: {fileID: 138768067}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2222,7 +2222,7 @@ GameObject:
   - component: {fileID: 156027302}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2327,7 +2327,7 @@ GameObject:
   - component: {fileID: 169699428}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2429,7 +2429,7 @@ GameObject:
   - component: {fileID: 171288180}
   m_Layer: 0
   m_Name: PlotLain_12
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2478,7 +2478,7 @@ GameObject:
   - component: {fileID: 172328532}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2583,7 +2583,7 @@ GameObject:
   - component: {fileID: 187167690}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2688,7 +2688,7 @@ GameObject:
   - component: {fileID: 203419724}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2790,7 +2790,7 @@ GameObject:
   - component: {fileID: 210879563}
   m_Layer: 0
   m_Name: PlotLain_14
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2839,7 +2839,7 @@ GameObject:
   - component: {fileID: 227838688}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3090,7 +3090,7 @@ GameObject:
   - component: {fileID: 242709407}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3195,7 +3195,7 @@ GameObject:
   - component: {fileID: 244156917}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3300,7 +3300,7 @@ GameObject:
   - component: {fileID: 249681132}
   m_Layer: 0
   m_Name: plot1_1 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3490,7 +3490,7 @@ Transform:
   m_GameObject: {fileID: 253619107}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.44, y: 0, z: -1}
+  m_LocalPosition: {x: 3.44, y: 0.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3511,7 +3511,7 @@ GameObject:
   - component: {fileID: 256399092}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3616,7 +3616,7 @@ GameObject:
   - component: {fileID: 259924825}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3721,7 +3721,7 @@ GameObject:
   - component: {fileID: 271085081}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3826,7 +3826,7 @@ GameObject:
   - component: {fileID: 271803018}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3931,7 +3931,7 @@ GameObject:
   - component: {fileID: 288192062}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4036,7 +4036,7 @@ GameObject:
   - component: {fileID: 289903440}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4141,7 +4141,7 @@ GameObject:
   - component: {fileID: 298056797}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4246,7 +4246,7 @@ GameObject:
   - component: {fileID: 302595413}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4348,7 +4348,7 @@ GameObject:
   - component: {fileID: 305357987}
   m_Layer: 0
   m_Name: PlotLain_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4397,7 +4397,7 @@ GameObject:
   - component: {fileID: 317519957}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4488,6 +4488,112 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 317519955}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &319397225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319397229}
+  - component: {fileID: 319397228}
+  - component: {fileID: 319397227}
+  - component: {fileID: 319397226}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &319397226
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319397225}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &319397227
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319397225}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 57dd7e4d95d217d48b85a6d42ac480fc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &319397228
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319397225}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &319397229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319397225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 150, y: 1, z: 150}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &323032906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4502,7 +4608,7 @@ GameObject:
   - component: {fileID: 323032908}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4800,7 +4906,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: -0.93, y: 5.42, z: -6.5}
+  m_LocalPosition: {x: -0.976, y: 5.42, z: -6.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4895,7 +5001,7 @@ GameObject:
   - component: {fileID: 336714556}
   m_Layer: 0
   m_Name: PlotLain_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4944,7 +5050,7 @@ GameObject:
   - component: {fileID: 350590595}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5168,7 +5274,7 @@ GameObject:
   - component: {fileID: 374011513}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5273,7 +5379,7 @@ GameObject:
   - component: {fileID: 402215384}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5502,7 +5608,7 @@ GameObject:
   - component: {fileID: 416004317}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5607,7 +5713,7 @@ GameObject:
   - component: {fileID: 419740027}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5712,7 +5818,7 @@ GameObject:
   - component: {fileID: 428482802}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5817,7 +5923,7 @@ GameObject:
   - component: {fileID: 438150265}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5922,7 +6028,7 @@ GameObject:
   - component: {fileID: 448602574}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6027,7 +6133,7 @@ GameObject:
   - component: {fileID: 450431621}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6132,7 +6238,7 @@ GameObject:
   - component: {fileID: 454719557}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6454,7 +6560,7 @@ GameObject:
   - component: {fileID: 466482939}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6559,7 +6665,7 @@ GameObject:
   - component: {fileID: 475613451}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6664,7 +6770,7 @@ GameObject:
   - component: {fileID: 478401328}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6769,7 +6875,7 @@ GameObject:
   - component: {fileID: 478421816}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6874,7 +6980,7 @@ GameObject:
   - component: {fileID: 484054344}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7046,7 +7152,7 @@ GameObject:
   - component: {fileID: 505043239}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7151,7 +7257,7 @@ GameObject:
   - component: {fileID: 505772178}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7256,7 +7362,7 @@ GameObject:
   - component: {fileID: 523219594}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7361,7 +7467,7 @@ GameObject:
   - component: {fileID: 541353586}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7466,7 +7572,7 @@ GameObject:
   - component: {fileID: 543517139}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7571,7 +7677,7 @@ GameObject:
   - component: {fileID: 553302093}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7676,7 +7782,7 @@ GameObject:
   - component: {fileID: 553393737}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7781,7 +7887,7 @@ GameObject:
   - component: {fileID: 555595468}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7886,7 +7992,7 @@ GameObject:
   - component: {fileID: 555959628}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7991,7 +8097,7 @@ GameObject:
   - component: {fileID: 560702262}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8096,7 +8202,7 @@ GameObject:
   - component: {fileID: 575810000}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8201,7 +8307,7 @@ GameObject:
   - component: {fileID: 582354016}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8306,7 +8412,7 @@ GameObject:
   - component: {fileID: 593605966}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8411,7 +8517,7 @@ GameObject:
   - component: {fileID: 610699272}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8516,7 +8622,7 @@ GameObject:
   - component: {fileID: 619474776}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8621,7 +8727,7 @@ GameObject:
   - component: {fileID: 621797922}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8726,7 +8832,7 @@ GameObject:
   - component: {fileID: 633518128}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8937,7 +9043,7 @@ GameObject:
   - component: {fileID: 639444108}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9042,7 +9148,7 @@ GameObject:
   - component: {fileID: 645913210}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9147,7 +9253,7 @@ GameObject:
   - component: {fileID: 657857263}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9252,7 +9358,7 @@ GameObject:
   - component: {fileID: 662326954}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9357,7 +9463,7 @@ GameObject:
   - component: {fileID: 673583897}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9462,7 +9568,7 @@ GameObject:
   - component: {fileID: 688276269}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9567,7 +9673,7 @@ GameObject:
   - component: {fileID: 688600333}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9672,7 +9778,7 @@ GameObject:
   - component: {fileID: 696818456}
   m_Layer: 0
   m_Name: plot1_14
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9912,7 +10018,7 @@ GameObject:
   - component: {fileID: 708870573}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10017,7 +10123,7 @@ GameObject:
   - component: {fileID: 713880895}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10122,7 +10228,7 @@ GameObject:
   - component: {fileID: 714117393}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10227,7 +10333,7 @@ GameObject:
   - component: {fileID: 721493953}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10383,7 +10489,7 @@ Transform:
   m_GameObject: {fileID: 721851051}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: -0.93, y: 5.42, z: -6.5}
+  m_LocalPosition: {x: -0.976, y: 5.42, z: -6.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10404,7 +10510,7 @@ GameObject:
   - component: {fileID: 728803330}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10506,7 +10612,7 @@ GameObject:
   - component: {fileID: 730422776}
   m_Layer: 0
   m_Name: PlotLain_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10555,7 +10661,7 @@ GameObject:
   - component: {fileID: 739081498}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10660,7 +10766,7 @@ GameObject:
   - component: {fileID: 742443274}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10765,7 +10871,7 @@ GameObject:
   - component: {fileID: 748297123}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11227,7 +11333,7 @@ GameObject:
   - component: {fileID: 753484122}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11332,7 +11438,7 @@ GameObject:
   - component: {fileID: 753523435}
   m_Layer: 0
   m_Name: plot1_12
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11434,7 +11540,7 @@ GameObject:
   - component: {fileID: 776725095}
   m_Layer: 0
   m_Name: PlotChunk
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11484,7 +11590,7 @@ GameObject:
   - component: {fileID: 778713074}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11589,7 +11695,7 @@ GameObject:
   - component: {fileID: 783618493}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11694,7 +11800,7 @@ GameObject:
   - component: {fileID: 793033152}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11799,7 +11905,7 @@ GameObject:
   - component: {fileID: 798658425}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11904,7 +12010,7 @@ GameObject:
   - component: {fileID: 817445513}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12009,7 +12115,7 @@ GameObject:
   - component: {fileID: 818466526}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12114,7 +12220,7 @@ GameObject:
   - component: {fileID: 830305687}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12219,7 +12325,7 @@ GameObject:
   - component: {fileID: 831532611}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12373,7 +12479,7 @@ GameObject:
   - component: {fileID: 842699951}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12475,7 +12581,7 @@ GameObject:
   - component: {fileID: 854473344}
   m_Layer: 0
   m_Name: PlotLain_11
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12675,7 +12781,7 @@ GameObject:
   - component: {fileID: 887140479}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12780,7 +12886,7 @@ GameObject:
   - component: {fileID: 893009880}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12885,7 +12991,7 @@ GameObject:
   - component: {fileID: 925997422}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12990,7 +13096,7 @@ GameObject:
   - component: {fileID: 931020836}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13095,7 +13201,7 @@ GameObject:
   - component: {fileID: 935011787}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13200,7 +13306,7 @@ GameObject:
   - component: {fileID: 937668428}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13442,7 +13548,7 @@ GameObject:
   - component: {fileID: 950671319}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13547,7 +13653,7 @@ GameObject:
   - component: {fileID: 956125926}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13652,7 +13758,7 @@ GameObject:
   - component: {fileID: 973842878}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13757,7 +13863,7 @@ GameObject:
   - component: {fileID: 974369932}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13859,7 +13965,7 @@ GameObject:
   - component: {fileID: 977950818}
   m_Layer: 0
   m_Name: PlotLain_0
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14096,7 +14202,7 @@ GameObject:
   - component: {fileID: 983835454}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14201,7 +14307,7 @@ GameObject:
   - component: {fileID: 984055274}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14306,7 +14412,7 @@ GameObject:
   - component: {fileID: 989223660}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14408,7 +14514,7 @@ GameObject:
   - component: {fileID: 991041247}
   m_Layer: 0
   m_Name: PlotLain_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14558,7 +14664,7 @@ GameObject:
   - component: {fileID: 1022072305}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14663,7 +14769,7 @@ GameObject:
   - component: {fileID: 1023927018}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14768,7 +14874,7 @@ GameObject:
   - component: {fileID: 1036095323}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14873,7 +14979,7 @@ GameObject:
   - component: {fileID: 1037432515}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15113,7 +15219,7 @@ GameObject:
   - component: {fileID: 1041151688}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15215,7 +15321,7 @@ GameObject:
   - component: {fileID: 1047350044}
   m_Layer: 0
   m_Name: PlotLain_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15264,7 +15370,7 @@ GameObject:
   - component: {fileID: 1051401102}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15369,7 +15475,7 @@ GameObject:
   - component: {fileID: 1061272946}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15474,7 +15580,7 @@ GameObject:
   - component: {fileID: 1065141483}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15579,7 +15685,7 @@ GameObject:
   - component: {fileID: 1080883575}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15684,7 +15790,7 @@ GameObject:
   - component: {fileID: 1082630718}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15789,7 +15895,7 @@ GameObject:
   - component: {fileID: 1096536976}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15894,7 +16000,7 @@ GameObject:
   - component: {fileID: 1097331535}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16089,7 +16195,7 @@ GameObject:
   - component: {fileID: 1119879093}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16194,7 +16300,7 @@ GameObject:
   - component: {fileID: 1125123930}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16299,7 +16405,7 @@ GameObject:
   - component: {fileID: 1129018621}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16401,7 +16507,7 @@ GameObject:
   - component: {fileID: 1137538111}
   m_Layer: 0
   m_Name: PlotLain_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16450,7 +16556,7 @@ GameObject:
   - component: {fileID: 1139873369}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16555,7 +16661,7 @@ GameObject:
   - component: {fileID: 1143426416}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16660,7 +16766,7 @@ GameObject:
   - component: {fileID: 1145475733}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16765,7 +16871,7 @@ GameObject:
   - component: {fileID: 1164572959}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16870,7 +16976,7 @@ GameObject:
   - component: {fileID: 1180399543}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16975,7 +17081,7 @@ GameObject:
   - component: {fileID: 1187984554}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17080,7 +17186,7 @@ GameObject:
   - component: {fileID: 1189022137}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17185,7 +17291,7 @@ GameObject:
   - component: {fileID: 1190323325}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17290,7 +17396,7 @@ GameObject:
   - component: {fileID: 1190777467}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17395,7 +17501,7 @@ GameObject:
   - component: {fileID: 1221360629}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17500,7 +17606,7 @@ GameObject:
   - component: {fileID: 1232026383}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17723,7 +17829,7 @@ GameObject:
   - component: {fileID: 1263450178}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17828,7 +17934,7 @@ GameObject:
   - component: {fileID: 1264516758}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18029,7 +18135,7 @@ GameObject:
   - component: {fileID: 1273613007}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18134,7 +18240,7 @@ GameObject:
   - component: {fileID: 1274529475}
   m_Layer: 0
   m_Name: plot1_15
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18239,7 +18345,7 @@ GameObject:
   - component: {fileID: 1281995555}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18344,7 +18450,7 @@ GameObject:
   - component: {fileID: 1289039866}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18449,7 +18555,7 @@ GameObject:
   - component: {fileID: 1296204417}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18554,7 +18660,7 @@ GameObject:
   - component: {fileID: 1296954036}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18713,7 +18819,7 @@ GameObject:
   - component: {fileID: 1326159999}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18818,7 +18924,7 @@ GameObject:
   - component: {fileID: 1328000374}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18923,7 +19029,7 @@ GameObject:
   - component: {fileID: 1335317568}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19028,7 +19134,7 @@ GameObject:
   - component: {fileID: 1340576679}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19133,7 +19239,7 @@ GameObject:
   - component: {fileID: 1358565120}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19238,7 +19344,7 @@ GameObject:
   - component: {fileID: 1361012268}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19440,7 +19546,7 @@ GameObject:
   - component: {fileID: 1375917899}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19545,7 +19651,7 @@ GameObject:
   - component: {fileID: 1387160710}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19650,7 +19756,7 @@ GameObject:
   - component: {fileID: 1389044545}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19755,7 +19861,7 @@ GameObject:
   - component: {fileID: 1394491968}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19860,7 +19966,7 @@ GameObject:
   - component: {fileID: 1409020667}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19965,7 +20071,7 @@ GameObject:
   - component: {fileID: 1412108584}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20070,7 +20176,7 @@ GameObject:
   - component: {fileID: 1425694926}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20175,7 +20281,7 @@ GameObject:
   - component: {fileID: 1429311874}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20280,7 +20386,7 @@ GameObject:
   - component: {fileID: 1443816707}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20385,7 +20491,7 @@ GameObject:
   - component: {fileID: 1462874026}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20820,7 +20926,7 @@ GameObject:
   - component: {fileID: 1494435173}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20925,7 +21031,7 @@ GameObject:
   - component: {fileID: 1500887588}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21030,7 +21136,7 @@ GameObject:
   - component: {fileID: 1501035459}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21135,7 +21241,7 @@ GameObject:
   - component: {fileID: 1502036115}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21240,7 +21346,7 @@ GameObject:
   - component: {fileID: 1507704957}
   m_Layer: 0
   m_Name: plot1_11
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21345,7 +21451,7 @@ GameObject:
   - component: {fileID: 1512176083}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21450,7 +21556,7 @@ GameObject:
   - component: {fileID: 1526538419}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21555,7 +21661,7 @@ GameObject:
   - component: {fileID: 1536085532}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21660,7 +21766,7 @@ GameObject:
   - component: {fileID: 1536170503}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21765,7 +21871,7 @@ GameObject:
   - component: {fileID: 1541474873}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21870,7 +21976,7 @@ GameObject:
   - component: {fileID: 1557816931}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21975,7 +22081,7 @@ GameObject:
   - component: {fileID: 1558586402}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22080,7 +22186,7 @@ GameObject:
   - component: {fileID: 1560194813}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22185,7 +22291,7 @@ GameObject:
   - component: {fileID: 1567183504}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22290,7 +22396,7 @@ GameObject:
   - component: {fileID: 1584264930}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22395,7 +22501,7 @@ GameObject:
   - component: {fileID: 1589822518}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22500,7 +22606,7 @@ GameObject:
   - component: {fileID: 1590397601}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22605,7 +22711,7 @@ GameObject:
   - component: {fileID: 1599326538}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22777,7 +22883,7 @@ GameObject:
   - component: {fileID: 1600310769}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22882,7 +22988,7 @@ GameObject:
   - component: {fileID: 1600775017}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22987,7 +23093,7 @@ GameObject:
   - component: {fileID: 1602517246}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23092,7 +23198,7 @@ GameObject:
   - component: {fileID: 1603947291}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23318,7 +23424,7 @@ GameObject:
   - component: {fileID: 1616055574}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23430,6 +23536,8 @@ GameObject:
   - component: {fileID: 1618246213}
   - component: {fileID: 1618246214}
   - component: {fileID: 1618246215}
+  - component: {fileID: 1618246217}
+  - component: {fileID: 1618246216}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -23450,7 +23558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 140.81914, y: 153.81818}
+  scrollPos: {x: 243.81915, y: 157.81818}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 588
@@ -23461,8 +23569,7 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks:
-  - {fileID: 1618246208}
+  selectedBlocks: []
   selectedCommands: []
   variables: []
   description: 
@@ -23489,8 +23596,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 85
-    y: 92
+    x: -58
+    y: 8
     width: 174
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -23501,7 +23608,9 @@ MonoBehaviour:
   eventHandler: {fileID: 1618246205}
   commandList:
   - {fileID: 1618246210}
+  - {fileID: 1618246217}
   - {fileID: 1618246209}
+  - {fileID: 1618246216}
   - {fileID: 1618246211}
   suppressAllAutoSelections: 0
 --- !u!114 &1618246205
@@ -23563,8 +23672,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 290
-    y: 93
+    x: 135
+    y: 9
     width: 136
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -23741,6 +23850,66 @@ MonoBehaviour:
   move: 0
   shiftIntoPlace: 0
   waitUntilFinished: 0
+--- !u!114 &1618246216
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac5ce55bc698fa4290939ef6e426501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  display: 2
+  stage: {fileID: 0}
+  character: {fileID: 1310150799}
+  replacedCharacter: {fileID: 0}
+  portrait: {fileID: 0}
+  offset: 0
+  fromPosition: {fileID: 0}
+  toPosition: {fileID: 0}
+  facing: 0
+  useDefaultSettings: 1
+  fadeDuration: 0.5
+  moveDuration: 1
+  shiftOffset: {x: 0, y: 0}
+  move: 0
+  shiftIntoPlace: 0
+  waitUntilFinished: 0
+--- !u!114 &1618246217
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac5ce55bc698fa4290939ef6e426501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 10
+  indentLevel: 0
+  display: 1
+  stage: {fileID: 0}
+  character: {fileID: 1310150799}
+  replacedCharacter: {fileID: 0}
+  portrait: {fileID: 21300000, guid: c96db461b68b88b46aedfe1f05e25ba2, type: 3}
+  offset: 0
+  fromPosition: {fileID: 0}
+  toPosition: {fileID: 2112609738}
+  facing: 0
+  useDefaultSettings: 1
+  fadeDuration: 0.5
+  moveDuration: 1
+  shiftOffset: {x: 0, y: 0}
+  move: 0
+  shiftIntoPlace: 0
+  waitUntilFinished: 0
 --- !u!1 &1627967999
 GameObject:
   m_ObjectHideFlags: 0
@@ -23755,7 +23924,7 @@ GameObject:
   - component: {fileID: 1627968001}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23860,7 +24029,7 @@ GameObject:
   - component: {fileID: 1635089319}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23965,7 +24134,7 @@ GameObject:
   - component: {fileID: 1652926901}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24070,7 +24239,7 @@ GameObject:
   - component: {fileID: 1670007189}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24161,111 +24330,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670007187}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1677428321
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1677428324}
-  - component: {fileID: 1677428323}
-  - component: {fileID: 1677428322}
-  - component: {fileID: 1677428325}
-  m_Layer: 0
-  m_Name: Ground
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &1677428322
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677428321}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 1bd3fc9f0993dbc458bed69303b7553e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1677428323
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677428321}
-  m_Mesh: {fileID: 4300000, guid: ca740b36c5bff1440817ba32614db447, type: 2}
---- !u!4 &1677428324
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677428321}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 150, y: 150, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!65 &1677428325
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677428321}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.3461535, y: 2.1445317, z: 0}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1680181795
 GameObject:
   m_ObjectHideFlags: 0
@@ -24277,7 +24341,7 @@ GameObject:
   - component: {fileID: 1680181796}
   m_Layer: 0
   m_Name: PlotLain_15
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24401,7 +24465,7 @@ GameObject:
   - component: {fileID: 1740085799}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24506,7 +24570,7 @@ GameObject:
   - component: {fileID: 1745297060}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24611,7 +24675,7 @@ GameObject:
   - component: {fileID: 1746132197}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24716,7 +24780,7 @@ GameObject:
   - component: {fileID: 1747619085}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24821,7 +24885,7 @@ GameObject:
   - component: {fileID: 1754771210}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24926,7 +24990,7 @@ GameObject:
   - component: {fileID: 1757183657}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25031,7 +25095,7 @@ GameObject:
   - component: {fileID: 1759846508}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25136,7 +25200,7 @@ GameObject:
   - component: {fileID: 1760295597}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25241,7 +25305,7 @@ GameObject:
   - component: {fileID: 1790674358}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25346,7 +25410,7 @@ GameObject:
   - component: {fileID: 1792137289}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25451,7 +25515,7 @@ GameObject:
   - component: {fileID: 1792616485}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25854,7 +25918,7 @@ GameObject:
   - component: {fileID: 1805684361}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25959,7 +26023,7 @@ GameObject:
   - component: {fileID: 1806635213}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26148,7 +26212,7 @@ GameObject:
   - component: {fileID: 1813550292}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26337,7 +26401,7 @@ GameObject:
   - component: {fileID: 1836388773}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26442,7 +26506,7 @@ GameObject:
   - component: {fileID: 1838480226}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26622,7 +26686,7 @@ GameObject:
   - component: {fileID: 1849473980}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26727,7 +26791,7 @@ GameObject:
   - component: {fileID: 1855605613}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26832,7 +26896,7 @@ GameObject:
   - component: {fileID: 1862843545}
   m_Layer: 0
   m_Name: plot1_10 (3)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26937,7 +27001,7 @@ GameObject:
   - component: {fileID: 1868441008}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27042,7 +27106,7 @@ GameObject:
   - component: {fileID: 1871181829}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27147,7 +27211,7 @@ GameObject:
   - component: {fileID: 1872027612}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27252,7 +27316,7 @@ GameObject:
   - component: {fileID: 1877611299}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27357,7 +27421,7 @@ GameObject:
   - component: {fileID: 1884441058}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27462,7 +27526,7 @@ GameObject:
   - component: {fileID: 1889920059}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27567,7 +27631,7 @@ GameObject:
   - component: {fileID: 1892653753}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27672,7 +27736,7 @@ GameObject:
   - component: {fileID: 1907638702}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27852,7 +27916,7 @@ GameObject:
   - component: {fileID: 1913721685}
   m_Layer: 0
   m_Name: plot1_10 (4)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27957,7 +28021,7 @@ GameObject:
   - component: {fileID: 1916855780}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28062,7 +28126,7 @@ GameObject:
   - component: {fileID: 1922230448}
   m_Layer: 0
   m_Name: plot1_3
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28167,7 +28231,7 @@ GameObject:
   - component: {fileID: 1925365383}
   m_Layer: 0
   m_Name: plot1_8
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28272,7 +28336,7 @@ GameObject:
   - component: {fileID: 1928639481}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28456,7 +28520,7 @@ GameObject:
   - component: {fileID: 1932332215}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28561,7 +28625,7 @@ GameObject:
   - component: {fileID: 1933761881}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28666,7 +28730,7 @@ GameObject:
   - component: {fileID: 1941817431}
   m_Layer: 0
   m_Name: plot1_10
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28771,7 +28835,7 @@ GameObject:
   - component: {fileID: 1944474611}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28873,7 +28937,7 @@ GameObject:
   - component: {fileID: 1948917687}
   m_Layer: 0
   m_Name: PlotLain_13
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28922,7 +28986,7 @@ GameObject:
   - component: {fileID: 1975999196}
   m_Layer: 0
   m_Name: plot1_7
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29027,7 +29091,7 @@ GameObject:
   - component: {fileID: 1978206770}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29132,7 +29196,7 @@ GameObject:
   - component: {fileID: 1988018237}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29234,7 +29298,7 @@ GameObject:
   - component: {fileID: 1988718793}
   m_Layer: 0
   m_Name: PlotLain_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29283,7 +29347,7 @@ GameObject:
   - component: {fileID: 2003398022}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29388,7 +29452,7 @@ GameObject:
   - component: {fileID: 2011454400}
   m_Layer: 0
   m_Name: plot1_10 (1)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29493,7 +29557,7 @@ GameObject:
   - component: {fileID: 2013282468}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29598,7 +29662,7 @@ GameObject:
   - component: {fileID: 2013819746}
   m_Layer: 0
   m_Name: plot1_13
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29703,7 +29767,7 @@ GameObject:
   - component: {fileID: 2018495462}
   m_Layer: 0
   m_Name: plot1_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29808,7 +29872,7 @@ GameObject:
   - component: {fileID: 2020547891}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29913,7 +29977,7 @@ GameObject:
   - component: {fileID: 2027436698}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30018,7 +30082,7 @@ GameObject:
   - component: {fileID: 2035997655}
   m_Layer: 0
   m_Name: plot1_10 (2)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30123,7 +30187,7 @@ GameObject:
   - component: {fileID: 2037470463}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30228,7 +30292,7 @@ GameObject:
   - component: {fileID: 2043896377}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30333,7 +30397,7 @@ GameObject:
   - component: {fileID: 2044731632}
   m_Layer: 0
   m_Name: plot1_4
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30438,7 +30502,7 @@ GameObject:
   - component: {fileID: 2057829533}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30543,7 +30607,7 @@ GameObject:
   - component: {fileID: 2060207387}
   m_Layer: 0
   m_Name: plot1_9
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30648,7 +30712,7 @@ GameObject:
   - component: {fileID: 2080239987}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30753,7 +30817,7 @@ GameObject:
   - component: {fileID: 2098871960}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30858,7 +30922,7 @@ GameObject:
   - component: {fileID: 2112117745}
   m_Layer: 0
   m_Name: plot1_2
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31038,7 +31102,7 @@ GameObject:
   - component: {fileID: 2118716648}
   m_Layer: 0
   m_Name: plot1_5
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31143,7 +31207,7 @@ GameObject:
   - component: {fileID: 2119853232}
   m_Layer: 0
   m_Name: plot1_1
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31245,7 +31309,7 @@ GameObject:
   - component: {fileID: 2123034264}
   m_Layer: 0
   m_Name: PlotLain_6
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31295,7 +31359,7 @@ GameObject:
   - component: {fileID: 2142834089}
   m_Layer: 0
   m_Name: plot1_10 (5)
-  m_TagString: Untagged
+  m_TagString: Plot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31419,6 +31483,11 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1741448689997125210, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -31427,7 +31496,7 @@ PrefabInstance:
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.93
+      value: -0.976
       objectReference: {fileID: 0}
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
@@ -31437,7 +31506,7 @@ PrefabInstance:
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
@@ -31483,6 +31552,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ImplicitCom
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4607170553879502902, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5226812122644088705, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
@@ -33495,9 +33569,9 @@ SceneRoots:
   - {fileID: 72578088}
   - {fileID: 1005087000}
   - {fileID: 750968265}
-  - {fileID: 1677428324}
   - {fileID: 1826953726}
   - {fileID: 867053242}
   - {fileID: 1811689383}
   - {fileID: 750301013}
   - {fileID: 456693126}
+  - {fileID: 319397229}

@@ -87,6 +87,8 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         changeKeySetting(isWASDKeySetting);
         FarmMapActionAllocator();
+
+        // 그 외의 설정이 끝난 액션키도 등록하기 
     }
     public static IAmapManager Instance()
     {
@@ -106,7 +108,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
 
-        Debug.Log($"[IA Manager] {targetScheme}이 활성화되었습니다, 파트너!");
+        //Debug.Log($"[IA Manager] {targetScheme}이 준비됨!");
     }
     #endregion
 
@@ -191,6 +193,9 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     }
     #endregion
 
+
+    // 기존의 쓰던 A 맵  + 할당 >>> B 맵 + 할당...  A 맵 >> A맵에서의 키 해제 >> B에서의 키 할당 >>  맵 액션맵 A에서 B로 변경
+
     #region 농장 조작 키 할당
     void FarmMapActionAllocator()
     {
@@ -201,15 +206,11 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         map.Disable();
 
-        // 2. 액션을 찾습니다. (직접 경로를 쓰는 방식이 더 정확할 때가 있음)
+        
         InputAction actionMove = map.FindAction("Move");
 
         if (actionMove != null)
         {
-            // 3. 중복 구독 방지를 위해 -= 후 += (매우 권장)
-            actionMove.performed -= playerController.OnMove;
-            actionMove.canceled -= playerController.OnMove;
-
             actionMove.performed += playerController.OnMove;
             actionMove.canceled += playerController.OnMove;
         }
@@ -282,10 +283,14 @@ public class IAmapManager : MonoBehaviour, IMapChangable
         var map = playerInput.actions.FindActionMap(SETTING_MAP_NAME);
     }
     #endregion
-    
+
     #endregion
 
     #region 액션 바인딩 커스텀아이즈
+
+
+     public void Keymapping()
+    { InputActionMap map = playerInput.currentActionMap; }
 
     #endregion
 }
