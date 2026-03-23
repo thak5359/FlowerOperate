@@ -31,6 +31,7 @@ public class ItemGenerateManager : MonoBehaviour
 
     public void GenItem(int id, int amount, int duration, int grade)
     {
-
+        ObjectPool.GetObject();
+        ItemManager.Instance.
     }
 }
