@@ -727,6 +727,7 @@ MonoBehaviour:
   buttonSetting: {fileID: 6003409180730904690}
   buttonTitle: {fileID: 4267137857659543049}
   buttonEnd: {fileID: 3758727621298458278}
+  buttonCloseSetting: {fileID: 55675407822846768}
 --- !u!114 &7303586965115007400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1573,19 +1574,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5480694713810071567}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1974701182058911873
 GameObject:
   m_ObjectHideFlags: 0
@@ -3148,19 +3137,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1486683110376099648}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SettingMenuManager, Assembly-CSharp
-        m_MethodName: showUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3673481679983939788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3499,7 +3476,7 @@ GameObject:
   - component: {fileID: 3855221819074867068}
   - component: {fileID: 55675407822846768}
   m_Layer: 0
-  m_Name: CloseToggle
+  m_Name: Button_CloseSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3606,19 +3583,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3855221819074867068}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8072053992205383715}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: BackToPauseFromSetting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4235145875167150236
 GameObject:
   m_ObjectHideFlags: 0

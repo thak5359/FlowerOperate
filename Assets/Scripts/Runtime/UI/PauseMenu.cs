@@ -23,6 +23,7 @@ public class PauseMenu : MonoBehaviour
     public Button buttonSetting;
     public Button buttonTitle;
     public Button buttonEnd;
+    public Button buttonCloseSetting;
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
@@ -52,9 +53,11 @@ public class PauseMenu : MonoBehaviour
        input = IAmapManager.Instance();
 
         buttonResume.onClick.AddListener(() => StartCoroutine(ClosePauseMain()));
-        buttonSetting.onClick.AddListener(() => StartCoroutine(OnClickSettingMenu()));
+        buttonSetting.onClick.AddListener(() => StartCoroutine(OpenSettingMenu()));
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
+        buttonCloseSetting.onClick.AddListener(() => StartCoroutine(BackToPauseFromSetting()));
+
     }
 
     public static PauseMenu Instance()
@@ -122,34 +125,51 @@ public class PauseMenu : MonoBehaviour
         }
         Time.timeScale = 0f;
 
+
         isTransitioning = false;
     }
 
-   
+    private IEnumerator OpenSettingMenu()
+    {
+        isTransitioning = true;
+
+        input.changeIAmapSetting();
+
+        yield return StartCoroutine(MoveRoutine(settingPos));
+
+        isTransitioning = false;
+    }
+
+
 
     public IEnumerator ClosePauseMain()
     {
         isTransitioning = true;
 
-
         yield return StartCoroutine(MoveRoutine(hidePos));
-
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
         input.changeIAmapPrev();
 
-
         isTransitioning = false;
+
     }
 
     public IEnumerator BackToPauseFromSetting()
     {
+        Debug.Log("BackToPause is called 1!");
         isTransitioning = true;
         yield return StartCoroutine(MoveRoutine(showPos));
         input.changeIAmapPrev();
+        Debug.Log("BackToPause is called 2!");
+
         isTransitioning = false;
     }
+
+
+
+
 
     private IEnumerator MoveRoutine(Vector2 targetPos)
     {
@@ -177,15 +197,26 @@ public class PauseMenu : MonoBehaviour
 
     #region 버튼 클릭 기능
 
-    public IEnumerator OnClickSettingMenu()
+
+    public void OnClickSettingClose()
+    {
+        isTransitioning = true;
+
+        input.changeIAmapPauseMenu();
+
+         StartCoroutine(BackToPauseFromSetting());
+
+    } 
+
+
+    public void OnClickSettingMenu()
     {
         isTransitioning = true;
 
         input.changeIAmapSetting();
 
-        yield return StartCoroutine(MoveRoutine(settingPos));
+         StartCoroutine(MoveRoutine(settingPos));
 
-        isTransitioning = false;
     }
 
     public void OnClickTitleButton()

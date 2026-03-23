@@ -28,15 +28,22 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
-    Vector3 cachedVec3;
+    Vector3 cached3Vec1;
+    Vector3 cached3Vec2;
+
 
     [SerializeField] public GameObject UseArea;
+
+
+
+    //test용 코드, 땅 생성하기 (현재 아이템 데이터 없어서 스킵)
+    [SerializeField] public GameObject obj;
 
 
     // 상호작용 연속 방지용 
     private float interactCooldown = 0.2f;
     private float lastInteractTime = 0f;
-
+    
 
 
     private List<GameObject> useAreaList = new List<GameObject>();
@@ -55,6 +62,9 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     public void setTag(string input_tag) => messageTarget = input_tag;
     Vector2 heading; // 캐릭터가 보고 있는 방향 ( 아이템 사용)
+
+
+
 
     public static PlayerController Instance()
     {
@@ -107,8 +117,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
-        interactableArea.localPosition = cachedVec3;
-        SnapToWorldGrid(UseArea.transform, cachedVec3);
+        interactableArea.localPosition = cached3Vec1;
+        SnapToWorldGrid(UseArea.transform, cached3Vec1);
     }
 
     void Move()
@@ -127,13 +137,13 @@ public class PlayerController : MonoBehaviour, IInteractable
             {
                 cachedSign = (moveInput.x > 0 )? 1 : -1f;
                 heading.Set(cachedSign, 0.0f);
-                cachedVec3.Set(cachedSign, 0.0f, 0.0f);
+                cached3Vec1.Set(cachedSign, 0.0f, 0.0f);
             }
             else 
             {
                 cachedSign = (moveInput.y > 0) ? 1 : -1f;
                 heading.Set(0.0f, cachedSign);
-                cachedVec3.Set(0.0f, 0.0f, cachedSign);
+                cached3Vec1.Set(0.0f, 0.0f, cachedSign);
             }
           
         }
@@ -199,6 +209,11 @@ public class PlayerController : MonoBehaviour, IInteractable
              10,                 // 기본 효율 (나중에 아이템 등급에 따라 변경 가능)
              totalChargeTime     // 실제 버튼을 누르고 있었던 시간
          );
+
+            cached3Vec2 = UseArea.gameObject.transform.position;
+            cached3Vec2.y = 0.2f;
+
+            Instantiate(obj, cached3Vec2, Quaternion.identity);
 
             #if UNITY_EDITOR
             // 결과 출력
