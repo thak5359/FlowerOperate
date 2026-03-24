@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-
+    //선택 영역을 반올림/ 반내림 처리해주는 함수
     private void SnapToWorldGrid(Transform targetPos, Vector3 offset)
     {
         Vector3 targetWorldPos = transform.position + offset;
@@ -237,7 +237,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
 
     }
-
 
 
 #if UNITY_EDITOR

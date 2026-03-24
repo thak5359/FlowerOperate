@@ -34,10 +34,10 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     [Header("Wasd키로 조작하신다면 체크해주세요!")]
     [SerializeField] public bool isWASDKeySetting = true;
 
-    private PauseMenu pauseMenu;
+    private PauseMenu _pauseMenu;
     private PlayerInput playerInput;
     private PlayerController playerController;
-    private HotbarManager hotbarManager;
+    private HotbarManager _hotbarManager;
 
     private Stack<string> prevMapStack = new Stack<string>();
 
@@ -51,6 +51,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
     const string STORAGE_MAP_NAME = "MAP_STORAGE";
     const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
+
     const string WASD_SCHEME_NAME = "WASD_Scheme";
     const string ARROW_SCHEME_NAME = "Arrow_Scheme";
 
@@ -75,13 +76,13 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     private void Start()
     {
         playerController = PlayerController.Instance();
-        pauseMenu = PauseMenu.Instance();
-        hotbarManager = HotbarManager.Instance();
+        _pauseMenu = PauseMenu.Instance();
+        _hotbarManager = HotbarManager.Instance();
 
 
         if (playerController == null)
         {
-            Debug.LogError("[IA Manager] 파트너! PlayerController 인스턴스를 찾을 수 없어!");
+            Debug.LogError("[IA Manager] PlayerController 인스턴스를 찾을 수 없음!");
             return;
         }
 
@@ -181,7 +182,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
     {
         var map = playerInput.actions.FindActionMap(PAUSEMENU_MAP_NAME); // 현재 맵에서 사용중인 IA에서 특정 맵을 가져옴
         var actionEscape = map.FindAction("Escape"); // 거기서 어떤키를 눌렀을때에 동작을 할당하는 곳을 찾음
-        actionEscape.performed += pauseMenu.OnBackAction; // 함수 할당
+        actionEscape.performed += _pauseMenu.OnBackAction; // 함수 할당
     }
     #endregion
 
@@ -227,14 +228,14 @@ public class IAmapManager : MonoBehaviour, IMapChangable
 
         #region  핫 슬롯 좌우 이동
         InputAction actionPrevHotSlot = map.FindAction("PrevHotSlot");
-        actionPrevHotSlot.performed += hotbarManager.OnPrevHotSlot;
+        actionPrevHotSlot.performed += _hotbarManager.OnPrevHotSlot;
 
         InputAction actionNextHotSlot = map.FindAction("NextHotSlot");
-        actionNextHotSlot.performed += hotbarManager.OnNextHotSlot;
+        actionNextHotSlot.performed += _hotbarManager.OnNextHotSlot;
         #endregion
 
         InputAction actionEscape = map.FindAction("Escape");
-        actionEscape.performed += pauseMenu.OnBackAction;
+        actionEscape.performed += _pauseMenu.OnBackAction;
 
         # region 핫슬롯 1~0번 바로 이동
         
@@ -249,7 +250,7 @@ public class IAmapManager : MonoBehaviour, IMapChangable
             if(action != null)
             {
                 //ctx로 InputAction.callbackContext를 처리
-                action.performed += ctx => hotbarManager.pointSlot(slotIndex);
+                action.performed += ctx => _hotbarManager.pointSlot(slotIndex);
             }
         }
         #endregion

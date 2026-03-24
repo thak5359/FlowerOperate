@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9cf4d8df1d704d5689f3c69bd70d1cb9, type: 3}
-  m_Name: LifeTimeScope
+  m_Name: VContainerSetting
   m_EditorClassIdentifier: 
   RootLifetimeScope: {fileID: 0}
-  EnableDiagnostics: 0
+  EnableDiagnostics: 1
   DisableScriptModifier: 0
   RemoveClonePostfix: 0
