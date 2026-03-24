@@ -17,9 +17,6 @@ public interface IInteractable
 
 public class PlayerController : MonoBehaviour, IInteractable
 {
-    private static PlayerController instance;
-
-    private Item item;
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -34,8 +31,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [SerializeField] public GameObject UseArea;
 
-
-
     //test용 코드, 땅 생성하기 (현재 아이템 데이터 없어서 스킵)
     [SerializeField] public GameObject obj;
 
@@ -44,10 +39,10 @@ public class PlayerController : MonoBehaviour, IInteractable
     private float interactCooldown = 0.2f;
     private float lastInteractTime = 0f;
     
-
-
     private List<GameObject> useAreaList = new List<GameObject>();
 
+
+    // 차징 관리용
     private float chargeStartTime;
     private bool isCharging = false;
     float cachedSign;
@@ -64,28 +59,9 @@ public class PlayerController : MonoBehaviour, IInteractable
     Vector2 heading; // 캐릭터가 보고 있는 방향 ( 아이템 사용)
 
 
-
-
-    public static PlayerController Instance()
-    {
-        if (instance != null)
-        {
-            return instance;
-        }
-        else return null;
-    }
-
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     }
@@ -97,17 +73,9 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
             UseArea.SetActive(false);
         }
-
-
-
     }
 
 
-    void OnDestroy()
-    {
-        instance = null;
-
-    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -295,42 +263,42 @@ public class PlayerController : MonoBehaviour, IInteractable
     //    UnityEngine.Debug.Log(currentItem != null ? $"{currentItem.GetName()} 장착됨" : "맨손 상태");
     //}
 
-    private async void SampleItemUseCode()
-    {
-        // TODO :: 나중에 item 자식 클래스로 각 장비별 클래스를 만든 뒤에 as로 검사 방식을 좀 더 똑똑하게 하기!
+    //private async void SampleItemUseCode()
+    //{
+    //    // TODO :: 나중에 item 자식 클래스로 각 장비별 클래스를 만든 뒤에 as로 검사 방식을 좀 더 똑똑하게 하기!
 
-        switch (item.itemId)
-        {
-            case (3):
-
-
-            case (4):
-                break;
-
-            case (5):
-
-            case (6):
-                break;
-
-            case (7):
-
-            case (8):
-            case (9):
-                break;
+    //    switch (item.itemId)
+    //    {
+    //        case (3):
 
 
+    //        case (4):
+    //            break;
 
+    //        case (5):
 
-        }
+    //        case (6):
+    //            break;
 
+    //        case (7):
 
-        for (int i = 0; i < 10; i++)
-        {
-            useAreaList[i] = await AddressableManager.LoadAssetAsync<GameObject>("UseArea");
-        }
+    //        case (8):
+    //        case (9):
+    //            break;
 
 
 
 
-    }
+    //    }
+
+
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        useAreaList[i] = await AddressableManager.LoadAssetAsync<GameObject>("UseArea");
+    //    }
+
+
+
+
+    //}
 }

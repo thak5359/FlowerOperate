@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class HotbarManager : MonoBehaviour
 {
-    public static HotbarManager instance;
 
     [Header("핫키 슬롯을 등록해주세요")]
     [SerializeField] List<HotBarSlot> slots;
@@ -18,13 +17,6 @@ public class HotbarManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
-            instance = this;
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
 
         if (slots == null || slots.Count == 0)
         {
@@ -38,14 +30,6 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
-    public static HotbarManager Instance()
-    {
-        if (instance != null)
-        {
-            return instance;
-        }
-        else return null;
-    }
 
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)

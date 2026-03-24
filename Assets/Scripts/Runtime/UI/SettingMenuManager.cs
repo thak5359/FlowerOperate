@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using JetBrains.Annotations;
+using VContainer;
 
 public class SettingMenuManager : MonoBehaviour
 {
@@ -31,7 +32,13 @@ public class SettingMenuManager : MonoBehaviour
     private bool isShowing = true;
     private Canvas settingCanvas;
 
+    IMapChangable input;
 
+    [Inject]
+    void Construct(ActionMapChanger inputManager)
+    {
+        input = inputManager;
+    }
     private void Awake()
     {
         settingCanvas = GetComponent<Canvas>();
@@ -142,7 +149,8 @@ public class SettingMenuManager : MonoBehaviour
         }
 
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-        IMapChangable input = IAmapManager.Instance(); 
+
+
         if (isShowing == false) // ∫∏¿Ã±‚
         {
             moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));

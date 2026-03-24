@@ -8,10 +8,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 public class PauseMenu : MonoBehaviour
 {
-    private static PauseMenu instance;
 
     [Header("Pause Menu")]
     public RectTransform movablePart;
@@ -31,54 +32,46 @@ public class PauseMenu : MonoBehaviour
     private float cachedFloat = 0.0f;
     private IMapChangable input;
 
+    private string currentMap;
+
     private bool isTransitioning;
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
+    }
 
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+    
+    [Inject]
+    public  void Construct(IMapChangable inputManager)
+    {
+        input = inputManager;
+
     }
 
     private void Start()
     {
-
-       input = IAmapManager.Instance();
 
         buttonResume.onClick.AddListener(() => StartCoroutine(ClosePauseMain()));
         buttonSetting.onClick.AddListener(() => StartCoroutine(OpenSettingMenu()));
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
         buttonCloseSetting.onClick.AddListener(() => StartCoroutine(BackToPauseFromSetting()));
-
     }
 
-    public static PauseMenu Instance()
-    {
-        if (instance != null)
-            return instance;
-        else return null;
-    }
 
 
     #region PauseMenu, SettingMenu 호출/종료 기능
 
     public void OnBackAction(InputAction.CallbackContext context)
     {
+        Debug.Log("OnBackAction Called!");
         // 1. 공통 방어 로직
         if (isTransitioning == true || !context.performed) return;
 
-        string current = input.getCurrentIAmap();
+        currentMap = input.getCurrentIAmap();
 
 
-        switch (current)
+        switch (currentMap)
         {
             case "MAP_FARM":
             case "MAP_SHOP":
@@ -97,7 +90,7 @@ public class PauseMenu : MonoBehaviour
                 break;
 
             default:
-                Debug.Log($"[PauseMenu] {current} 맵에서는 해당 동작이 정의되지 않았습니다.");
+                Debug.Log($"[PauseMenu] {currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
                 break;
         }
     }
@@ -166,9 +159,6 @@ public class PauseMenu : MonoBehaviour
 
         isTransitioning = false;
     }
-
-
-
 
 
     private IEnumerator MoveRoutine(Vector2 targetPos)
