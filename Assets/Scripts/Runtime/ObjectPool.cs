@@ -3,12 +3,6 @@ using UnityEngine;
 using UnityEngine.AddressableAssets; // 추가
 using UnityEngine.ResourceManagement.AsyncOperations; // 추가
 
-// 1. ItemArea는 반드시 MonoBehaviour여야 GetComponent가 가능합니다.
-public class ItemArea : MonoBehaviour
-{
-    // 여기서 transform과 gameObject는 기본 제공되므로 
-    // 별도로 선언하지 않아도 됩니다. (필요 시 캐싱용으로만 사용)
-}
 
 public class ObjectPool : MonoBehaviour
 {
@@ -18,7 +12,7 @@ public class ObjectPool : MonoBehaviour
     private AssetReference prefabReference; // GameObject 대신 AssetReference 사용
 
     private GameObject loadedPrefab; // 로드된 프리팹 저장용
-    private Queue<ItemArea> poolingObjectQueue = new Queue<ItemArea>();
+    private Queue<Item> poolingObjectQueue = new Queue<Item>();
 
     async void Awake() // async로 변경하여 로딩을 기다립니다.
     {
@@ -39,11 +33,11 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    private ItemArea CreateNewObject()
+    private Item CreateNewObject()
     {
         // 로드된 프리팹을 인스턴스화합니다.
         var obj = Instantiate(loadedPrefab, transform);
-        var itemArea = obj.GetComponent<ItemArea>();
+        var itemArea = obj.GetComponent<Item>();
 
         obj.SetActive(false);
         return itemArea;
@@ -57,7 +51,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public static ItemArea GetObject()
+    public static Item GetObject()
     {
         // 로딩이 아직 안 끝났을 경우를 대비한 방어 코드
         if (Instance.loadedPrefab == null)
@@ -82,7 +76,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public static void ReturnObject(ItemArea item)
+    public static void ReturnObject(Item item)
     {
         item.gameObject.SetActive(false);
         item.transform.SetParent(Instance.transform);

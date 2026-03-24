@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ItemGenerateManager : MonoBehaviour
 {
+    int id;
+    int amount;
+    int duration;
+    int grade;
+
     private static ItemGenerateManager instance;
 
     private void Awake()
@@ -11,7 +16,6 @@ public class ItemGenerateManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
         }
         else
             Destroy(instance);
@@ -19,9 +23,9 @@ public class ItemGenerateManager : MonoBehaviour
 
     public static ItemGenerateManager Instance
     {
-        get 
-        { 
-            if( instance == null)
+        get
+        {
+            if (instance == null)
             {
                 return null;
             }
@@ -29,9 +33,9 @@ public class ItemGenerateManager : MonoBehaviour
         }
     }
 
-    public void GenItem(int id, int amount, int duration, int grade)
+    public void GenItem()
     {
-        ObjectPool.GetObject();
-        ItemManager.Instance.
+        Item item = ObjectPool.GetObject();
+        item.SetData(new ItemObjectData(id, amount, duration, grade));
     }
 }

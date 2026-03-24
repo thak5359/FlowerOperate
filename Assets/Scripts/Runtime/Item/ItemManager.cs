@@ -42,26 +42,46 @@ public class ItemManager : MonoBehaviour
                         bool flowControl = InsertDataToMasterDB(IDdata);
                         if (!flowControl)
                             continue;
-                        break;
                     }
+                    break;
+                case 40:
+                    {
+                        bool flowerControl = InsertDataToMasterDB(data);
+                        if (!flowerControl)
+                            continue;
+                    }
+                    break;
                 case 300:
                     {
                         var IDdata = data as FlowerIdData;
                         bool flowControl = InsertDataToMasterDB(IDdata);
                         if (!flowControl)
                             continue;
-                        break;
                     }
+                    break;
                 default:
                     continue;
             }
         }
         Debug.Log("ItemManager: 데이터베이스 초기화 완료!");
-        int randId = Random.Range(300, masterDb.Length);
-        Debug.Log(masterDb[randId]);
     }
 
     #region 데이터 타입별 InsertDataToMasterDB 함수
+    private bool InsertDataToMasterDB(ItemIdData data) //사용 가능 아이템
+    {
+        if (data == null)
+        {
+            Debug.Log("ID데이터에 잘못된 데이터가 들어있습니다.");
+            return false;
+        }
+        for (int i = 0; i < data.itemName.Count; i++)
+        {
+            MasterData masterData = new MasterData(data.ItemName(i));
+            if (masterData != null)
+                masterDb[data.startId + i] = masterData;
+        }
+        return true;
+    }
     private bool InsertDataToMasterDB(UsableIdData data) //사용 가능 아이템
     {
         if (data == null)
@@ -89,7 +109,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < data.itemName.Count; i++)
         {
             FlowerDataBase flower = new FlowerDataBase(
-                data.ItemName(i),flowerDetail.Species(data.SpeciesIndex(i)),
+                data.ItemName(i), flowerDetail.Species(data.SpeciesIndex(i)),
                 flowerDetail.Color(data.ColorIndex(i)), flowerDetail.Floro(data.FloroIndex(i)), flowerDetail.Floro(data.FloroIndex2(i)));
             if (flower != null)
             {
@@ -153,8 +173,8 @@ public class ItemManager : MonoBehaviour
         if (data != null)
         {
             result.Add(data.Getfloro);
-            
-            if(data != null)
+
+            if (data != null)
                 result.Add(data.Getfloro);
         }
         return result;
@@ -195,6 +215,13 @@ public class MasterData
     [SerializeField] protected string description;
     [SerializeField] protected string spriteAddress;
 
+    public MasterData(string name)
+    {
+        this.itemName = name;
+        //this.description = description;
+        //this.spriteAddress = spriteAddress;
+    }
+
     public string GetItemName => itemName;
     public string GetItemDescription => description;
     public string GetItemSpriteAddress => spriteAddress;
@@ -212,8 +239,8 @@ public class FlowerDataBase : MasterData
     [SerializeField] private bool isSeed = false;
 
     public FlowerDataBase(string Name = "Empty", string Species = "Empty", string Color = "Empty", string Floro = "Empty", string Floro2 = null)
+        : base(Name)
     {
-        this.itemName = Name;
         //this.description = Description;
         //this.spriteAddress = Addr;
         this.species = Species;
@@ -223,8 +250,8 @@ public class FlowerDataBase : MasterData
     }
 
     public FlowerDataBase(FlowerDataBase other)
+        : base(other.itemName)
     {
-        this.itemName = other.itemName;
         this.species = other.species;
         this.color = other.color;
         this.floro = other.floro;
@@ -248,8 +275,8 @@ public class UsableDataBase : MasterData
     [SerializeField] private ChargeInfo chargeInfo;
 
     public UsableDataBase(string Name, int dura, int pow, ChargeInfo info)
+        : base(Name)
     {
-        this.itemName = Name;
         //this.description = Description;
         //this.spriteAddress = Addr;
         this.duration = dura;

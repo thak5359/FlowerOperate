@@ -129,15 +129,6 @@ public class ItemIdContainerGenTool : EditorWindow
         AssetDatabase.Refresh();
     }
 
-    private ItemIdData CreateSOAsset(ItemIdData SO)
-    {
-        ItemIdData temp = ScriptableObject.CreateInstance<ItemIdData>();
-        temp.itemName = SO.itemName;
-        temp.description = SO.description;
-        temp.spriteAddress = SO.spriteAddress;
-        return temp;
-    }
-
     private static void ClearSO(ItemIdData SO)
     {
         SO.itemName.Clear();
@@ -183,6 +174,15 @@ public class ItemIdContainerGenTool : EditorWindow
         temp.durationIndex = SO.durationIndex;
         temp.powerIndex = SO.powerIndex;
         temp.chargeIndex = SO.chargeIndex;
+        return temp;
+    }
+
+    private ItemIdData CreateSOAsset(ItemIdData SO)
+    {
+        ItemIdData temp = ScriptableObject.CreateInstance<ItemIdData>();
+        temp.itemName = SO.itemName;
+        temp.description = SO.description;
+        temp.spriteAddress = SO.spriteAddress;
         return temp;
     }
 }
