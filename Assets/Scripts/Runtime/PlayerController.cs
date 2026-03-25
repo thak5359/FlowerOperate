@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,19 @@ public interface IInteractable
 
     void Interact(string tag);
 }
+
+public struct itemData
+{
+
+    float chargeTIme1;
+    float chargeTIme2;
+    float chargeTIme3;
+
+    int maxChargeCount;
+    string itemType;
+
+}
+
 
 
 public class PlayerController : MonoBehaviour, IInteractable
@@ -43,10 +57,12 @@ public class PlayerController : MonoBehaviour, IInteractable
 
 
     // 차징 관리용
+    [Header("차지 타임을 조절 하는 기능")]
+    [Range(1,2)]
+    public float charTimePerPhase = 1.75f;
     private float chargeStartTime;
     private bool isCharging = false;
     float cachedSign;
-
 
     private Vector2 moveInput;
     private Transform trans;
@@ -181,6 +197,33 @@ public class PlayerController : MonoBehaviour, IInteractable
             cached3Vec2 = UseArea.gameObject.transform.position;
             cached3Vec2.y = 0.2f;
 
+
+            float chargePhase = MathF.Floor(param.elapsedTime / charTimePerPhase);
+
+
+            if( chargePhase >= 0.0f )
+            {
+                Instantiate(obj, cached3Vec2, Quaternion.identity);
+            }
+            if( chargePhase >= 1.0f)
+            {
+
+            }
+            if (chargePhase >= 2.0f)
+            {
+
+            }
+            if (chargePhase >= 3.0f)
+            {
+
+            }
+            if (chargePhase >= 4.0f)
+            {
+
+            }
+
+
+
             Instantiate(obj, cached3Vec2, Quaternion.identity);
 
             #if UNITY_EDITOR
@@ -242,6 +285,10 @@ public class PlayerController : MonoBehaviour, IInteractable
             //UpdateSelectionVisual(currentElapsed);
         }
     }
+
+
+
+
 
     //private void UpdateSelectionVisual(float elapsed)
     //{

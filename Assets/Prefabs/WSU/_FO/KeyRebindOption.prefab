@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 3892880393462297019}
   - component: {fileID: 8991793004109542340}
   m_Layer: 5
-  m_Name: KeyBind__1 (8)
+  m_Name: KeyBindLine_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -913,7 +913,7 @@ GameObject:
   - component: {fileID: 9143104440344447199}
   - component: {fileID: 6444429717638082730}
   m_Layer: 5
-  m_Name: KeyBind__1 (13)
+  m_Name: KeyBindLine_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5593,8 +5593,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: Down
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -5935,7 +5934,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8976941222456895107}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24242425
+  m_Size: 0.3333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5954,7 +5953,7 @@ GameObject:
   - component: {fileID: 6541668889340410032}
   - component: {fileID: 935964752657526268}
   m_Layer: 5
-  m_Name: KeyBind__1 (2)
+  m_Name: KeyBindLine_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6600,7 +6599,7 @@ GameObject:
   - component: {fileID: 2487718776271820987}
   - component: {fileID: 8755679047201950269}
   m_Layer: 5
-  m_Name: KeyBind__1 (10)
+  m_Name: KeyBindLine_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7901,7 +7900,7 @@ GameObject:
   - component: {fileID: 1232156909694242815}
   - component: {fileID: 2935123488675717359}
   m_Layer: 5
-  m_Name: KeyBind__1 (5)
+  m_Name: KeyBindLine_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8195,8 +8194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: Right
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -8563,7 +8561,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000027682632}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 1180, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8708712979031749585
@@ -8964,7 +8962,7 @@ GameObject:
   - component: {fileID: 6176016101850295115}
   - component: {fileID: 5722152158254794820}
   m_Layer: 5
-  m_Name: KeyBind__1 (1)
+  m_Name: KeyBindLine_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9192,7 +9190,7 @@ GameObject:
   - component: {fileID: 6313830719566301692}
   - component: {fileID: 7735785117970643674}
   m_Layer: 5
-  m_Name: KeyBind__1 (16)
+  m_Name: KeyBindLine_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9674,7 +9672,7 @@ GameObject:
   - component: {fileID: 9216016669975184657}
   - component: {fileID: 7490817191847699345}
   m_Layer: 5
-  m_Name: KeyBind__1 (11)
+  m_Name: KeyBindLine_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9799,7 +9797,7 @@ GameObject:
   - component: {fileID: 6237733171591398406}
   - component: {fileID: 4863623650618827087}
   m_Layer: 5
-  m_Name: KeyBind__1 (9)
+  m_Name: KeyBindLine_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10454,7 +10452,7 @@ GameObject:
   - component: {fileID: 5133581488430705873}
   - component: {fileID: 1825933332359340600}
   m_Layer: 5
-  m_Name: KeyBind__1 (21)
+  m_Name: KeyBindLine_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10772,7 +10770,7 @@ GameObject:
   - component: {fileID: 422921017976285472}
   - component: {fileID: 2667125179997023086}
   m_Layer: 5
-  m_Name: KeyBind__1 (23)
+  m_Name: KeyBindLine_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11136,7 +11134,7 @@ GameObject:
   - component: {fileID: 4446364477377065443}
   - component: {fileID: 5024769523881711707}
   m_Layer: 5
-  m_Name: KeyBind__1 (3)
+  m_Name: KeyBindLine_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11632,7 +11630,7 @@ GameObject:
   - component: {fileID: 1852783297149385040}
   - component: {fileID: 2256736741269622639}
   m_Layer: 5
-  m_Name: KeyBind__1 (14)
+  m_Name: KeyBindLine_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12582,8 +12580,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: Use
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -12667,7 +12664,7 @@ GameObject:
   - component: {fileID: 6630234170405459152}
   - component: {fileID: 3667460469156877337}
   m_Layer: 5
-  m_Name: KeyBind__1 (22)
+  m_Name: KeyBindLine_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12792,7 +12789,7 @@ GameObject:
   - component: {fileID: 8606096676842931656}
   - component: {fileID: 7948582009767214182}
   m_Layer: 5
-  m_Name: KeyBind__1 (15)
+  m_Name: KeyBindLine_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12968,8 +12965,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: Interact
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -13358,8 +13354,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: Left
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -13799,7 +13794,7 @@ GameObject:
   - component: {fileID: 7641791789832135978}
   - component: {fileID: 345628411942124259}
   m_Layer: 5
-  m_Name: KeyBind__1 (17)
+  m_Name: KeyBindLine_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14909,7 +14904,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1792907870399718957
 CanvasRenderer:
@@ -14939,8 +14934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC870\uC791\uC744 \uBCC0\uACBD\uD560 \uD0A4\uB97C \uC5EC\uAE30\uC5D0
-    \uC785\uB825\uD558\uAE30111111111111111"
+  m_text: UP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 88d011b4bbe5cc24fa5d10ca455236c6, type: 2}
   m_sharedMaterial: {fileID: -2000317504653849908, guid: 88d011b4bbe5cc24fa5d10ca455236c6,
@@ -14986,7 +14980,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -15024,7 +15018,7 @@ GameObject:
   - component: {fileID: 8318905647013153772}
   - component: {fileID: 5774603972005383100}
   m_Layer: 5
-  m_Name: KeyBind__1 (18)
+  m_Name: KeyBindLine_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15252,7 +15246,7 @@ GameObject:
   - component: {fileID: 3217423029602505261}
   - component: {fileID: 8251295107595091877}
   m_Layer: 5
-  m_Name: KeyBind__1 (20)
+  m_Name: KeyBindLine_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15495,7 +15489,7 @@ GameObject:
   - component: {fileID: 591134436877126449}
   - component: {fileID: 3658938357652228546}
   m_Layer: 5
-  m_Name: KeyBind__1 (7)
+  m_Name: KeyBindLine_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15697,15 +15691,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 25
-    m_Right: 0
+    m_Right: 25
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -16009,7 +16003,7 @@ GameObject:
   - component: {fileID: 9105750474894065985}
   - component: {fileID: 2365423942811412966}
   m_Layer: 5
-  m_Name: KeyBind__1 (19)
+  m_Name: KeyBindLine_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16655,7 +16649,7 @@ GameObject:
   - component: {fileID: 288330555453423515}
   - component: {fileID: 2404551792627311174}
   m_Layer: 5
-  m_Name: KeyBind__1
+  m_Name: KeyBindLine_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17357,7 +17351,7 @@ GameObject:
   - component: {fileID: 1383554658529801170}
   - component: {fileID: 33372572283996729}
   m_Layer: 5
-  m_Name: KeyBind__1 (12)
+  m_Name: KeyBindLine_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17482,7 +17476,7 @@ GameObject:
   - component: {fileID: 6328261413527641917}
   - component: {fileID: 3280245719635697351}
   m_Layer: 5
-  m_Name: KeyBind__1 (6)
+  m_Name: KeyBindLine_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17607,7 +17601,7 @@ GameObject:
   - component: {fileID: 359815070779773381}
   - component: {fileID: 5198659589396955997}
   m_Layer: 5
-  m_Name: KeyBind__1 (4)
+  m_Name: KeyBindLine_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

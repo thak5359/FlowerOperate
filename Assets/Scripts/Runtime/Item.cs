@@ -10,7 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 
-public struct UseParam
+public struct   UseParam
 {
     public readonly Vector2 heading;
     public readonly Vector3 pos;

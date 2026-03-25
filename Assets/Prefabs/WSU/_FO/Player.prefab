@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 5058081736111985735}
   - component: {fileID: 1741448689997125210}
   - component: {fileID: 2746495836826919488}
+  - component: {fileID: 6061688993987198312}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -149,6 +150,8 @@ MonoBehaviour:
   canInteractive: 0
   interactableArea: {fileID: 6364007864105736048}
   UseArea: {fileID: 4607170553879502902}
+  obj: {fileID: 0}
+  charTimePerPhase: 1.75
   messageTarget: 
 --- !u!65 &5226812122644088705
 BoxCollider:
@@ -242,6 +245,14 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!81 &6061688993987198312
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063873374940779746}
+  m_Enabled: 1
 --- !u!1001 &699149670116001059
 PrefabInstance:
   m_ObjectHideFlags: 0
