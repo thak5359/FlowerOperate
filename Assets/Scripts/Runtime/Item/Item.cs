@@ -14,11 +14,5 @@ public class Item : MonoBehaviour
     public int GetGrade => data.GetGrade;
 
     public void SetData(ItemObjectData data) => this.data = data;
-
-    private void OnCollisionEnter(Collision col)
-    {
-        if(col.gameObject.tag == "Player")
-            Destroy(this.gameObject);
-    }
 }
 

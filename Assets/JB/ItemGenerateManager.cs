@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class ItemGenerateManager : MonoBehaviour
 {
-    int id;
-    int amount;
-    int duration;
-    int grade;
-
     private static ItemGenerateManager instance;
 
     private void Awake()
@@ -33,7 +28,7 @@ public class ItemGenerateManager : MonoBehaviour
         }
     }
 
-    public void GenItem()
+    public void GenItem(int id, int amount, int duration, int grade)
     {
         Item item = ObjectPool.GetObject();
         item.SetData(new ItemObjectData(id, amount, duration, grade));
