@@ -84,7 +84,6 @@ namespace Fungus
             string clipName = (soundClip == null) ? "None" : soundClip.name;
             return $"{clipName} ({channel})";
         }
-
         public override Color GetButtonColor() => new Color32(242, 209, 176, 255); // 오디오 커맨드와 유사한 색상
     }
 }

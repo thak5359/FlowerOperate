@@ -34,8 +34,6 @@ public class OptionManager : MonoBehaviour
     public AudioMixer masterMixer;
     public GameSettings settings = new GameSettings();
 
-
-
     //[Header("Writer UI References")]
     //public Slider writingSpeedSlider;
     //public Slider punctuationSpeedSlider;
@@ -52,7 +50,7 @@ public class OptionManager : MonoBehaviour
 
     [Header("Resolution UI Reference")]
     public TMP_Dropdown resolutionDropdown;
-    
+
 
     private List<Resolution> resolutions = new List<Resolution>();
 
@@ -63,7 +61,6 @@ public class OptionManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             LoadSettings();
         }
         else { Destroy(gameObject); }
@@ -71,8 +68,9 @@ public class OptionManager : MonoBehaviour
 
     private void Start()
     {
+        LoadSettings();
         InitResolution();
-        ApplyToFungus();
+        //ApplyToFungus();
     }
 
 
@@ -137,10 +135,10 @@ public class OptionManager : MonoBehaviour
     }
     private void ApplyAllVolumes()
     {
-        ApplyVolumeToMixer("MasterVolume", settings.masterVol);
-        ApplyVolumeToMixer("BGMVolume", settings.bgmVol);
-        ApplyVolumeToMixer("SFXVolume", settings.sfxVol);
-        ApplyVolumeToMixer("VoiceVolume", settings.voiceVol);
+        ChangeMasterVolume(settings.masterVol);
+        ChangeBGMVolume(settings.bgmVol);
+        ChangeSFXVolume(settings.sfxVol);
+        ChangeVoiceVolume(settings.voiceVol);
     }
     #endregion
 
@@ -274,7 +272,7 @@ public class OptionManager : MonoBehaviour
 
         if (masterVolumeSlider != null) masterVolumeSlider.value = settings.masterVol;
         if (bgmVolumeSlider != null) bgmVolumeSlider.value = settings.bgmVol;
-        if (sfxVolumeSlider != null)sfxVolumeSlider.value = settings.sfxVol;
+        if (sfxVolumeSlider != null) sfxVolumeSlider.value = settings.sfxVol;
         if (voiceVolumeSlider != null) voiceVolumeSlider.value = settings.voiceVol;
 
         SaveSettings();
@@ -285,7 +283,7 @@ public class OptionManager : MonoBehaviour
         string json = JsonUtility.ToJson(settings);
         PlayerPrefs.SetString("GameSettings", json);
         PlayerPrefs.Save();
-         //Debug.Log("저장된 JSON: " + json); // 확인용
+        //Debug.Log("저장된 JSON: " + json); // 확인용
     }
 
     private void LoadSettings()
@@ -306,7 +304,6 @@ public class OptionManager : MonoBehaviour
             Debug.Log($"[Init] 최초 가동: 최고 해상도({settings.resWidth}x{settings.resHeight})로 설정되었습니다.");
         }
 
-
         if (SceneManager.GetActiveScene().name == "MainTitle")
         {
             Screen.SetResolution(settings.resWidth, settings.resHeight, settings.isFullScreen);
@@ -325,7 +322,7 @@ public class OptionManager : MonoBehaviour
             Resolution maxRes = allRes[allRes.Length - 1];
             settings.resWidth = maxRes.width;
             settings.resHeight = maxRes.height;
-            settings.isFullScreen = true; 
+            settings.isFullScreen = true;
         }
         else
         {

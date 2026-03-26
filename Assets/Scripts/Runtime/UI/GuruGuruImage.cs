@@ -6,9 +6,20 @@ public class AutoIconController : MonoBehaviour
     [Tooltip("초당 회전 속도")]
     public float rotateSpeed = 200f;
 
-    public Image iconImage;
+    public SpriteRenderer iconImage;
 
-    private bool isTurned;
+    //private bool isTurned;
+
+
+    private void Update()
+    {
+        if (!iconImage.enabled) iconImage.enabled = true;
+
+        // 2. Z축 기준 회전 (시계 방향은 음수)
+        transform.Rotate(0, 0, -rotateSpeed * Time.deltaTime);
+        //isTurned = true;
+    }
+
 
 
     //void Update()

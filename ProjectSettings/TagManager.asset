@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
+  - Interactable
+  - Plot
   layers:
   - Default
   - TransparentFX
@@ -39,6 +41,33 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3025492195
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Fog
+    uniqueID: 2995720103
+    locked: 0
+  - name: 
+    uniqueID: 717929195
+    locked: 0
+  - name: New Layer 4
+    uniqueID: 1405228031
+    locked: 0
+  - name: New Layer 5
+    uniqueID: 3611317423
+    locked: 0
+  - name: New Layer 6
+    uniqueID: 137510849
+    locked: 0
+  - name: New Layer 7
+    uniqueID: 643734339
+    locked: 0
+  - name: New Layer 8
+    uniqueID: 2176457241
+    locked: 0
+  - name: New Layer 9
+    uniqueID: 4013454985
     locked: 0

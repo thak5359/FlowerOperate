@@ -13,12 +13,12 @@ public class HotBarSlot : MonoBehaviour
     public Toggle toggle;
     public Image slotFrame;
     public Image bg_img;
-    public SlotItem item;
+    public Item item;
     private void OnDisable()
     {
         item?.Cleanup();
     }
-    public async Task ChangeItem(SlotItem newItem)
+    public async Task ChangeItem(Item newItem)
     {
         item?.Cleanup();
 
