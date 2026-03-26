@@ -4,33 +4,40 @@ using UnityEngine;
 
 public interface IUseAreaHoeFunc
 {
-    public int HoeFunc();
+    public int DoHoeFunc();
 
 }
+
+
 public interface IUseAreaWateringCanFunc
 {
-    public int WateringCanFunc();
+    public int DoWateringCanFunc();
 }
 public interface IUseAreaHammerFunc
 {
-    public int HammerFunc();
+    public int DoHammerFunc();
 }
 public interface IUseAreaSickleFunc
 {
-    public int SickleFunc();
+    public int DoSickleFunc();
 }
 public interface IUseAreaAxeFunc
 {
-    public int AxeFunc();
+    public int DoAxeFunc();
 }
 public interface IUseAreaConSumableFunc
-{ public int ConsumableFunc();}
+{
+    public int DoConsumableFunc();
+}
 
 
 public class UseAreaFunction : MonoBehaviour, 
     IUseAreaAxeFunc, IUseAreaHoeFunc,IUseAreaWateringCanFunc, 
     IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConSumableFunc
 {
+
+    public string InnerTag;
+
     private Collision collision;
 
     private void Awake()
@@ -44,27 +51,27 @@ public class UseAreaFunction : MonoBehaviour,
         // 여기서 참고한 객체 초기화 하기
     }
 
-    int IUseAreaHoeFunc.HoeFunc()
+    int IUseAreaHoeFunc.DoHoeFunc()
     {
         throw new System.NotImplementedException();
     }
-    int IUseAreaAxeFunc.AxeFunc()
+    int IUseAreaAxeFunc.DoAxeFunc()
     {
         throw new System.NotImplementedException();
     }
-    int IUseAreaWateringCanFunc.WateringCanFunc()
+    int IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
         throw new System.NotImplementedException();
     }
-    int IUseAreaSickleFunc.SickleFunc()
+    int IUseAreaSickleFunc.DoSickleFunc()
     {
         throw new System.NotImplementedException();
     }
-    int IUseAreaHammerFunc.HammerFunc()
+    int IUseAreaHammerFunc.DoHammerFunc()
     {
         throw new System.NotImplementedException();
     }
-    int IUseAreaConSumableFunc.ConsumableFunc()
+    int IUseAreaConSumableFunc.DoConsumableFunc()
     {
         throw new System.NotImplementedException();
     }
@@ -72,11 +79,15 @@ public class UseAreaFunction : MonoBehaviour,
 
     void OnTriggerEnter(Collider other)
     {
-
+        InnerTag = other.gameObject.tag;
     }
+    
     void OnTriggerExit(Collider other)
     {
 
     }
+
+
+    
 
 }

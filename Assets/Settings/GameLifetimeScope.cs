@@ -15,6 +15,7 @@ public class GameLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        // TestActionMapChanger
         builder.RegisterEntryPoint<ActionMapChanger>().As< IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
