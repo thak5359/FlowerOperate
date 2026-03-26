@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class HotbarManager : MonoBehaviour
 {
 
-    [Header("ÇÖÅ° ½½·ÔÀ» µî·ÏÇØÁÖ¼¼¿ä")]
+    [Header("í•«í‚¤ ìŠ¬ë¡¯ì„ ë“±ë¡í•´ì£¼ì„¸ìš”")]
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
@@ -34,10 +34,10 @@ public class HotbarManager : MonoBehaviour
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
     {
-        // ¹öÆ°À» ´­·¶À» ¶§(performed)¸¸ ½ÇÇà
+        // ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ(performed)ë§Œ ì‹¤í–‰
         if (context.performed)
         {
-            // ÇöÀç À§Ä¡¿¡¼­ -1 ÇÑ °÷À¸·Î ÀÌµ¿ (¼øÈ¯ ·ÎÁ÷Àº pointSlotÀÌ Ã³¸®)
+            // í˜„ì¬ ìœ„ì¹˜ì—ì„œ -1 í•œ ê³³ìœ¼ë¡œ ì´ë™ (ìˆœí™˜ ë¡œì§ì€ pointSlotì´ ì²˜ë¦¬)
             pointSlot(pointingSlot - 1);
         }
     }
@@ -45,7 +45,7 @@ public class HotbarManager : MonoBehaviour
     {
         if (context.performed)
         {
-            // ÇöÀç À§Ä¡¿¡¼­ +1 ÇÑ °÷À¸·Î ÀÌµ¿
+            // í˜„ì¬ ìœ„ì¹˜ì—ì„œ +1 í•œ ê³³ìœ¼ë¡œ ì´ë™
             pointSlot(pointingSlot + 1);
         }
     }
@@ -70,7 +70,7 @@ public class HotbarManager : MonoBehaviour
         slots[cachedInt].toggle.isOn = true;
         slots[cachedInt].slotFrame.enabled = true;
 
-        Debug.Log($"{cachedInt + 1}¹ø ½½·Ô ¼±ÅÃµÊ");
+        Debug.Log($"{cachedInt + 1}ë²ˆ ìŠ¬ë¡¯ ì„ íƒë¨");
     }
 
 

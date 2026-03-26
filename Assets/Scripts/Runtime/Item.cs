@@ -27,7 +27,7 @@ public struct   UseParam
 }   
 
 
-[System.Serializable] // ÀÎ½ºÆåÅÍ³ª µð¹ö±ë È®ÀÎÀ» À§ÇØ Á÷·ÄÈ­ °¡´ÉÇÏ°Ô ¼³Á¤
+[System.Serializable] // ï¿½Î½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
 public class Item
 {
     public int? itemId = null;
@@ -70,7 +70,7 @@ public class Item
     }
     #endregion
 
-    //µ¥ÀÌÅÍ ·Îµå
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
     public virtual async void LoadData(int input_itemId, int input_amount)
     {
         itemId = input_itemId;
@@ -82,7 +82,7 @@ public class Item
         }
     }
 
-    // ¸®¼Ò½º ÇØÁ¦
+    // ï¿½ï¿½ï¿½Ò½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public virtual async Task<Sprite> RefreshSprite()
     {
@@ -116,7 +116,7 @@ public class Item
         {
             AddressableManager.ReleaseAsset(cachedSprite);
             cachedSprite = null;
-            Debug.Log($"Item {itemId} ¸®¼Ò½º 1È¸ ÇØÁ¦ ¿Ï·á");
+            Debug.Log($"Item {itemId} ï¿½ï¿½ï¿½Ò½ï¿½ 1È¸ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
         }
     }
 

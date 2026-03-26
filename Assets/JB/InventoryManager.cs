@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] Inventory inventory = new Inventory();
-    public List<Item> slots;
+    public List<ItemDataContainer> slots;
     private int curSlotCount;
     private string invenJson;
 

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ItemContainer
 {
-    protected List<Item> itemList;
+    protected List<ItemDataContainer> itemList;
     private int slotsCount;
 
     //Getter
     public int GetSlotsCount => slotsCount;
 
     //Setter
-    public void SetItemList(List<Item> itemList) => this.itemList = itemList;
+    public void SetItemList(List<ItemDataContainer> itemList) => this.itemList = itemList;
     public void SetSlotsCount(int slotsCount) => this.slotsCount = slotsCount;
 
     private void Initialize()
@@ -22,7 +22,7 @@ public class ItemContainer
 
     public virtual void Swap(int idx1, int idx2)
     {
-        Item temp = itemList[idx1];
+        ItemDataContainer temp = itemList[idx1];
         itemList[idx1] = itemList[idx2];
         itemList[idx2] = temp;
     }
@@ -36,7 +36,7 @@ public class ItemContainer
 [System.Serializable]
 public class Inventory : ItemContainer
 {
-    protected virtual void AddItem(Item item)
+    protected virtual void AddItem(ItemDataContainer item)
     {
         if (!itemList.Contains(item))
         {

@@ -32,37 +32,37 @@ public static class AddressableManager
         }
         else
         {
-            Debug.LogError($"[Addressables] ·Îµå ½ÇÆĞ: {address}");
+            Debug.LogError($"[Addressables] ë¡œë“œ ì‹¤íŒ¨: {address}");
             Addressables.Release(handle);
             return null;
         }
     }
 
-    // ¸Ş¸ğ¸® ÇØÁ¦ 
+    // ë©”ëª¨ë¦¬ í•´ì œ 
     public static void ReleaseAsset<T>(T asset)
     {
         if (asset != null) Addressables.Release(asset);
     }
 
-    // ¶óº§ ´ÜÀ§ÀÇ ¸Ş¸ğ¸® ÇØÁ¦
+    // ë¼ë²¨ ë‹¨ìœ„ì˜ ë©”ëª¨ë¦¬ í•´ì œ
     public static void ReleaseAllByLabel(string label)
     {
         if (labelHandles.TryGetValue(label, out List<AsyncOperationHandle> handles))
         {
             foreach (var handle in handles)
             {
-                if (handle.IsValid()) // ÇÚµé À¯È¿¼º Ã¼Å©
+                if (handle.IsValid()) // í•¸ë“¤ ìœ íš¨ì„± ì²´í¬
                 {
                     Addressables.Release(handle);
                 }
             }
             handles.Clear();
             labelHandles.Remove(label);
-            Debug.Log($"[Addressables] ¶óº§ '{label}'ÀÇ ¸ğµç ¿¡¼ÂÀÌ ¸Ş¸ğ¸®¿¡¼­ ÇØÁ¦µÇ¾ú½À´Ï´Ù.");
+            Debug.Log($"[Addressables] ë¼ë²¨ '{label}'ì˜ ëª¨ë“  ì—ì…‹ì´ ë©”ëª¨ë¦¬ì—ì„œ í•´ì œë˜ì—ˆìŠµë‹ˆë‹¤.");
         }
         else
         {
-            Debug.LogWarning($"[Addressables] ÇØÁ¦ÇÒ ¶óº§ '{label}'À» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning($"[Addressables] í•´ì œí•  ë¼ë²¨ '{label}'ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 }

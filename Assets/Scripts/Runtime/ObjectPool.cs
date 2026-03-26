@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets; // Ãß°¡
-using UnityEngine.ResourceManagement.AsyncOperations; // Ãß°¡
+using UnityEngine.AddressableAssets; // ï¿½ß°ï¿½
+using UnityEngine.ResourceManagement.AsyncOperations; // ï¿½ß°ï¿½
 
 
 public class ObjectPool : MonoBehaviour
@@ -9,16 +9,16 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool Instance;
 
     [SerializeField]
-    private AssetReference prefabReference; // GameObject ´ë½Å AssetReference »ç¿ë
+    private AssetReference prefabReference; // GameObject ï¿½ï¿½ï¿½ AssetReference ï¿½ï¿½ï¿½
 
-    private GameObject loadedPrefab; // ·ÎµåµÈ ÇÁ¸®ÆÕ ÀúÀå¿ë
-    private Queue<Item> poolingObjectQueue = new Queue<Item>();
+    private GameObject loadedPrefab; // ï¿½Îµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    private Queue<ItemDataContainer> poolingObjectQueue = new Queue<ItemDataContainer>();
 
-    async void Awake() // async·Î º¯°æÇÏ¿© ·ÎµùÀ» ±â´Ù¸³´Ï´Ù.
+    async void Awake() // asyncï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½Ï´ï¿½.
     {
         Instance = this;
 
-        // 2. ¾îµå·¹¼­ºí·Î ÇÁ¸®ÆÕ ·Îµå ½ÃÀÛ
+        // 2. ï¿½ï¿½å·¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½
         AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(prefabReference);
         await handle.Task;
 
@@ -29,15 +29,15 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ÇÁ¸®ÆÕ ·Îµå ½ÇÆÐ!");
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½!");
         }
     }
 
-    private Item CreateNewObject()
+    private ItemDataContainer CreateNewObject()
     {
-        // ·ÎµåµÈ ÇÁ¸®ÆÕÀ» ÀÎ½ºÅÏ½ºÈ­ÇÕ´Ï´Ù.
+        // ï¿½Îµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½È­ï¿½Õ´Ï´ï¿½.
         var obj = Instantiate(loadedPrefab, transform);
-        var itemArea = obj.GetComponent<Item>();
+        var itemArea = obj.GetComponent<ItemDataContainer>();
 
         obj.SetActive(false);
         return itemArea;
@@ -51,12 +51,12 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public static Item GetObject()
+    public static ItemDataContainer GetObject()
     {
-        // ·ÎµùÀÌ ¾ÆÁ÷ ¾È ³¡³µÀ» °æ¿ì¸¦ ´ëºñÇÑ ¹æ¾î ÄÚµå
+        // ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         if (Instance.loadedPrefab == null)
         {
-            Debug.LogWarning("¾ÆÁ÷ ÇÁ¸®ÆÕ ·Îµù ÁßÀÔ´Ï´Ù!");
+            Debug.LogWarning("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½!");
             return null;
         }
 
@@ -76,7 +76,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public static void ReturnObject(Item item)
+    public static void ReturnObject(ItemDataContainer item)
     {
         item.gameObject.SetActive(false);
         item.transform.SetParent(Instance.transform);
@@ -85,7 +85,7 @@ public class ObjectPool : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 3. Ç®ÀÌ ÆÄ±«µÉ ¶§ ¾îµå·¹¼­ºí ÇÚµé ÇØÁ¦ (¸Þ¸ð¸® °ü¸®)
+        // 3. Ç®ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½å·¹ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½)
         if (prefabReference.IsValid())
         {
             prefabReference.ReleaseAsset();
