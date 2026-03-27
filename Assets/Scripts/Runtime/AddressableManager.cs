@@ -32,7 +32,7 @@ public static class AddressableManager
         }
         else
         {
-            Debug.LogError($"[Addressables] 로드 실패: {address}");
+            Debug.LogError($"[Addressables] 로드 실패: {address}"); 
             Addressables.Release(handle);
             return null;
         }

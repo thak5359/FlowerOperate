@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 89393a8fc5db045498a42fe1cb949760
   m_SerializeEntries:
+  - m_GUID: 3cb96e266be395a41880adfaa9c30522
+    m_Address: InputActionAsset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a09667495a0ba240b3a3886980d35e3
     m_Address: itemExample
     m_ReadOnly: 0
