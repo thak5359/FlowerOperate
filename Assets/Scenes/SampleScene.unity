@@ -23467,7 +23467,8 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks: []
+  selectedBlocks:
+  - {fileID: 1618246204}
   selectedCommands: []
   variables: []
   description: 
@@ -23496,7 +23497,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -58
     y: 8
-    width: 174
+    width: 178.66667
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -23570,9 +23571,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 135
-    y: 9
-    width: 136
+    x: 138.33334
+    y: 8.333328
+    width: 139.33334
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0

@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using VContainer;
-using VContainer.Unity;
 
 namespace Fungus
 {
@@ -23,10 +17,10 @@ namespace Fungus
 
         public override void OnEnter()
         {
-           
-            input.changeIAmapChatBox();
-            
-            Continue();
+            if (input != null)
+                input.changeIAmapChatBox();
+            else Debug.LogAssertion("input ¾øÀ½!");
+                Continue();
         }
     }
 }

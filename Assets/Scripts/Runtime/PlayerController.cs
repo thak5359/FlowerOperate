@@ -1,13 +1,7 @@
-using Fungus;
-using JetBrains.Annotations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public interface IInteractable
 {
@@ -275,6 +269,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void IInteractable.Interact(string Tag)
     {
+        Debug.Log($"메세지 송신 to :{Tag}");
         Fungus.Flowchart.BroadcastFungusMessage(Tag);
     }
 

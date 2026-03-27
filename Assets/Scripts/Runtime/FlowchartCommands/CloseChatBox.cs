@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
@@ -21,11 +19,11 @@ namespace Fungus
 
         public override void OnEnter()
         {
+
             if (input != null)
-            {
                 input.changeIAmapPrev();
-            }
-            else Debug.LogError("input is Null!");
+            else Debug.LogAssertion("input ¾øÀ½!");
+            
                 Continue();
         }
 

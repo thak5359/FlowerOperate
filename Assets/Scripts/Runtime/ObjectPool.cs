@@ -39,6 +39,14 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+    private void Initialize(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            poolingObjectQueue.Enqueue(CreateNewObject());
+        }
+    }
+
     private ItemArea CreateNewObject()
     {
         // 로드된 프리팹을 인스턴스화합니다.
@@ -49,13 +57,7 @@ public class ObjectPool : MonoBehaviour
         return itemArea;
     }
 
-    private void Initialize(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            poolingObjectQueue.Enqueue(CreateNewObject());
-        }
-    }
+    
 
     public static ItemArea GetObject()
     {
