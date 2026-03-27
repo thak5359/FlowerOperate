@@ -33,6 +33,9 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+    private ItemDataContainer CreateNewObject()
+=======
     private void Initialize(int count)
     {
         for (int i = 0; i < count; i++)
@@ -41,7 +44,8 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    private ItemDataContainer CreateNewObject()
+    private ItemArea CreateNewObject()
+>>>>>>> Mingi
     {
         // �ε�� �������� �ν��Ͻ�ȭ�մϴ�.
         var obj = Instantiate(loadedPrefab, transform);

@@ -1,0 +1,515 @@
+using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
+using static Constant;
+
+public class UseAreamanager : IAsyncStartable, IDisposable
+{
+
+    private int currentChargeLevel = 0; // Í∏∞Î≥∏, 1, 2, 3, 4
+    private List<GameObject> pool = new List<GameObject>();
+
+    Vector3 defaultArea = new Vector3(1, 0, 0);
+
+    // Ïò§Î•∏Ï™ΩÏúºÎ°ú Î∞îÎùºÎ≥¥Îäî Í∏∞Ï§ÄÏúºÎ°ú ÏòÅÏó≠ Ï†ÑÍ∞ú
+
+    #region Í¥≠Ïù¥, Î¨ºÎøåÎ¶¨Í∞ú, ÎßùÏπò, ÏÜåÎ™®Ìíà ÏòÅÏó≠Î≤îÏúÑ
+    List<Vector3> AreaA1 = new List<Vector3>()
+{
+    new Vector3(1f, 0f, 0f),
+    new Vector3(2f, 0f, 0f),
+};
+
+    List<Vector3> AreaA2 = new List<Vector3>()
+{
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f)
+};
+
+    List<Vector3> AreaA3 = new List<Vector3>()
+{
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, 1f, 0f),
+
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f)
+};
+
+    List<Vector3> AreaA4 = new List<Vector3>()
+{
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f),
+};
+
+    List<Vector3> AreaA5 = new List<Vector3>()
+{
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, -2f, 0f),
+
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+
+    new Vector3(3f, 2f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, -2f, 0f),
+
+
+    new Vector3(4f, 2f, 0f),
+    new Vector3(4f, 1f, 0f),
+    new Vector3(4f, 0f, 0f),
+    new Vector3(4f, -1f, 0f),
+    new Vector3(4f, -2f, 0f),
+
+
+    new Vector3(5f, 2f, 0f),
+    new Vector3(5f, 1f, 0f),
+    new Vector3(5f, 0f, 0f),
+    new Vector3(5f, -1f, 0f),
+    new Vector3(5f, -2f, 0f)
+};
+    #endregion
+
+    #region ÎÇ´ ÏòÅÏó≠Î≤îÏúÑ
+    List<Vector3> AreaB1 = new List<Vector3>()
+{
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f)
+};
+
+    List<Vector3> AreaB2 = new List<Vector3>()
+{
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+
+};
+
+    List<Vector3> AreaB3 = new List<Vector3>()
+{
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+
+    new Vector3(3f, 2f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, -2f, 0f),
+};
+    #endregion
+
+    #region ÎèÑÎÅº ÏòÅÏó≠Î≤îÏúÑ
+    List<Vector3> AreaC1 = new List<Vector3>()
+{
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, -1f, 0f),
+
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, -1f, 0f),
+
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f)
+};
+
+    List<Vector3> AreaC2 = new List<Vector3>()
+{
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, -1f, 0f),
+
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, -2f, 0f),
+
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, -1f, 0f),
+    new Vector3(0f, -2f, 0f),
+
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, -2f, 0f),
+
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f)
+};
+
+    List<Vector3> AreaC3 = new List<Vector3>()
+{
+    new Vector3(-3f, 1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, -1f, 0f),
+
+    new Vector3(-2f, 2f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, -2f, 0f),
+
+    new Vector3(-1f, 3f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -3f, 0f),
+
+    new Vector3(0f, 3f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, -1f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -3f, 0f),
+
+    new Vector3(1f, 3f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -3f, 0f),
+
+    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f)
+};
+
+    List<Vector3> AreaC4 = new List<Vector3>()
+{
+    new Vector3(-4f, 1f, 0f),
+    new Vector3(-4f, 0f, 0f),
+    new Vector3(-4f, -1f, 0f),
+
+    new Vector3(-3f, 2f, 0f),
+    new Vector3(-3f, 1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, -2f, 0f),
+
+    new Vector3(-2f, 3f, 0f),
+    new Vector3(-2f, 2f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -3f, 0f),
+
+    new Vector3(-1f, 4f, 0f),
+    new Vector3(-1f, 3f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -3f, 0f),
+    new Vector3(-1f, -4f, 0f),
+
+    new Vector3(0f, 4f, 0f),
+    new Vector3(0f, 3f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, -1f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -3f, 0f),
+    new Vector3(0f, -4f, 0f),
+
+    new Vector3(1f, 4f, 0f),
+    new Vector3(1f, 3f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -3f, 0f),
+    new Vector3(1f, -4f, 0f),
+
+    new Vector3(2f, 3f, 0f),
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, -3f, 0f),
+
+    new Vector3(3f, 2f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, -2f, 0f),
+
+    new Vector3(4f, 1f, 0f),
+    new Vector3(4f, 0f, 0f),
+    new Vector3(4f, -1f, 0f)
+};
+
+    List<Vector3> AreaC5 = new List<Vector3>()
+{
+
+    new Vector3(-5f, 1f, 0f),
+    new Vector3(-5f, 0f, 0f),
+    new Vector3(-5f, -1f, 0f),
+
+    new Vector3(-4f, 2f, 0f),
+    new Vector3(-4f, 1f, 0f),
+    new Vector3(-4f, 0f, 0f),
+    new Vector3(-4f, -1f, 0f),
+    new Vector3(-4f, -2f, 0f),
+
+    new Vector3(-3f, 3f, 0f),
+    new Vector3(-3f, 2f, 0f),
+    new Vector3(-3f, 1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, -2f, 0f),
+    new Vector3(-3f, 3f, 0f),
+
+    new Vector3(-2f, 4f, 0f),
+    new Vector3(-2f, 3f, 0f),
+    new Vector3(-2f, 2f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -3f, 0f),
+    new Vector3(-2f, 4f, 0f),
+
+    new Vector3(-1f, 5f, 0f),
+    new Vector3(-1f, 4f, 0f),
+    new Vector3(-1f, 3f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -3f, 0f),
+    new Vector3(-1f, -4f, 0f),
+    new Vector3(-1f, -5f, 0f),
+
+    new Vector3(0f, 5f, 0f),
+    new Vector3(0f, 4f, 0f),
+    new Vector3(0f, 3f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, -1f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -3f, 0f),
+    new Vector3(0f, -4f, 0f),
+    new Vector3(0f, -5f, 0f),
+
+    new Vector3(1f, 5f, 0f),
+    new Vector3(1f, 4f, 0f),
+    new Vector3(1f, 3f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -3f, 0f),
+    new Vector3(1f, -4f, 0f),
+    new Vector3(1f, -5f, 0f),
+
+    new Vector3(2f, 4f, 0f),
+    new Vector3(2f, 3f, 0f),
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, -3f, 0f),
+    new Vector3(2f, -4f, 0f),
+
+    new Vector3(3f, 3f, 0f),
+    new Vector3(3f, 2f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, -2f, 0f),
+    new Vector3(3f, -3f, 0f),
+
+    new Vector3(4f, 2f, 0f),
+    new Vector3(4f, 1f, 0f),
+    new Vector3(4f, 0f, 0f),
+    new Vector3(4f, -1f, 0f),
+    new Vector3(4f, -2f, 0f),
+
+    new Vector3(5f, 1f, 0f),
+    new Vector3(5f, 0f, 0f),
+    new Vector3(5f, -1f, 0f),
+};
+    #endregion
+
+
+    private readonly Transform playerTransform; // ¡÷¿‘πﬁ¿ª ∫Œ∏ ∆Æ∑£Ω∫∆˚
+    private GameObject _loadedPrefab;
+    private readonly Stack<UseAreaFunction> _pool = new(80); // ∏ÆΩ∫∆Æ∫∏¥Ÿ Ω∫≈√¿Ã «Æ∏µø° ¿Ø∏Æ«ÿø‰!
+
+    // VContainer∏¶ ≈Î«ÿ ∫Œ∏∞° µ… Transform¿ª ¡÷¿‘πﬁΩ¿¥œ¥Ÿ.
+    //[Inject]
+    //private UseAreamanager(PlayerController pc)
+    //{
+    //    playerTransform = pc.gameObject.transform;
+    //}
+
+    //∫Òµø±‚∑Œ Prefab ∞°¡Æø¿±‚
+    public async UniTask StartAsync(CancellationToken cancellation)
+    {
+<<<<<<< HEAD
+        
+        //Ïò§Î∏åÏ†ùÌä∏ ÌíÄÎßÅÏúºÎ°ú ÏÇ¨Ïö©Ìï† ÏòÅÏó≠ 50Í∞ú ÎßåÎì§Ïñ¥ÎÜìÍ∏∞
+=======
+        // æÓµÂ∑πº≠∫Ì ∑ŒµÂ
+        _loadedPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
+>>>>>>> Mingi
+
+        if (_loadedPrefab != null)
+        {
+            InitializePool(80);
+        }
+    }
+
+    //«Æø°¥Ÿ∞° ∫π¡¶«∞ æ•º≈≥÷±‚ x80
+    private void InitializePool(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _pool.Push(CreateNewObject());
+        }
+    }
+
+
+    private UseAreaFunction CreateNewObject()
+    {
+        // MonoBehaviour∞° æ∆¥œπ«∑Œ UnityEngine.Object.Instantiate∏¶ ∏ÌΩ√¿˚¿∏∑Œ »£√‚
+        GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab, playerTransform);
+        go.SetActive(false);
+        return go.GetComponent<UseAreaFunction>();
+    }
+
+    public void RyoikiTenkai(List<Vector3> vecList)
+    {
+        for (int i = 0; i < vecList.Count; i++)
+        {
+
+            if (_pool.Count > 0)
+            {
+                var obj = _pool.Pop();
+                obj.gameObject.SetActive(true);
+                obj.gameObject.transform.position = vecList[i];
+            }
+            // «Æ¿Ã ∏¿⁄∂Û∏È ªı∑Œ ª˝º∫
+            var newObj = CreateNewObject();
+            newObj.gameObject.SetActive(true);
+            newObj.gameObject.transform.position = vecList[i];
+        }
+    }
+
+    //ø©±‚º≠ ∫Œ≈Õ
+    public void ReturnObject(UseAreaFunction returned)
+    {
+        returned.gameObject.SetActive(false);
+        returned.transform.SetParent(playerTransform);
+        _pool.Push(returned);
+    }
+
+    // OnDestroy ¥ÎΩ≈ IDisposable.Disposeø°º≠ ∏ﬁ∏∏Æ «ÿ¡¶
+    public void Dispose()
+    {
+        while (_pool.Count > 0)
+        {
+            var obj = _pool.Pop();
+            if (obj != null) UnityEngine.Object.Destroy(obj.gameObject);
+        }
+
+        // æÓµÂ∑πº≠∫Ì «ÿ¡¶ ∑Œ¡˜ (AddressableManager ¿ÃøÎ)
+        AddressableManager.ReleaseAsset(_loadedPrefab);
+        Debug.Log("[UseAreaSpawner] «Æ¿Ã «ÿ¡¶µ«æ˙Ω¿¥œ¥Ÿ, ∆ƒ∆Æ≥ !");
+    }
+
+    public enum Type
+    {
+        TypeA, TypeB, TypeC
+    }
+
+    //ItemObjectData
+    public void DimensionExpansion()
+    {
+        //ItemObjectDataÏóêÏÑú Îç∞Ïù¥ÌÑ∞Î•º Ï∂úÎ†•
+
+
+
+
+        foreach (var obj in pool) obj.SetActive(false);
+
+
+
+
+    }
+
+
+    private List<Vector3> GetAreaList(int itemId, int level)
+    {
+
+
+
+        return level switch
+        {
+            1 => AreaC1,
+            2 => AreaC2,
+            3 => AreaC3,
+            4 => AreaC4,
+            5 => AreaC5,
+            _ => null
+        };
+    }
+
+}
