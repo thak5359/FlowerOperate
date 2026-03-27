@@ -6,8 +6,7 @@ using static Constant;
 
 public class Constant
 {
-    public const string ADDRESSABLE_USEAREA = "asdf";
-
+    public const string ADDRESSABLE_USEAREA = "Prefab_UseArea";
 
 
 

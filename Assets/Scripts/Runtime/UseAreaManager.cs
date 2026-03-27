@@ -1,14 +1,13 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
-using Unity.Properties;
 using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 using static Constant;
 
-public class UseAreamanager : MonoBehaviour, IAsyncStartable
+public class UseAreamanager : IAsyncStartable, IDisposable
 {
 
     private int currentChargeLevel = 0; // 기본, 1, 2, 3, 4
@@ -389,11 +388,86 @@ public class UseAreamanager : MonoBehaviour, IAsyncStartable
 };
     #endregion
 
+
+    private readonly Transform playerTransform; // ���Թ��� �θ� Ʈ������
+    private GameObject _loadedPrefab;
+    private readonly Stack<UseAreaFunction> _pool = new(80); // ����Ʈ���� ������ Ǯ���� �����ؿ�!
+
+    // VContainer�� ���� �θ� �� Transform�� ���Թ޽��ϴ�.
+    //[Inject]
+    //private UseAreamanager(PlayerController pc)
+    //{
+    //    playerTransform = pc.gameObject.transform;
+    //}
+
+    //�񵿱�� Prefab ��������
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        
-        //오브젝트 풀링으로 사용할 영역 50개 만들어놓기
+        // ��巹���� �ε�
+        _loadedPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
 
+        if (_loadedPrefab != null)
+        {
+            InitializePool(80);
+        }
+    }
+
+    //Ǯ���ٰ� ����ǰ ���ųֱ� x80
+    private void InitializePool(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _pool.Push(CreateNewObject());
+        }
+    }
+
+
+    private UseAreaFunction CreateNewObject()
+    {
+        // MonoBehaviour�� �ƴϹǷ� UnityEngine.Object.Instantiate�� ��������� ȣ��
+        GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab, playerTransform);
+        go.SetActive(false);
+        return go.GetComponent<UseAreaFunction>();
+    }
+
+    public void RyoikiTenkai(List<Vector3> vecList)
+    {
+        for (int i = 0; i < vecList.Count; i++)
+        {
+
+            if (_pool.Count > 0)
+            {
+                var obj = _pool.Pop();
+                obj.gameObject.SetActive(true);
+                obj.gameObject.transform.position = vecList[i];
+            }
+            // Ǯ�� ���ڶ�� ���� ����
+            var newObj = CreateNewObject();
+            newObj.gameObject.SetActive(true);
+            newObj.gameObject.transform.position = vecList[i];
+        }
+    }
+
+    //���⼭ ����
+    public void ReturnObject(UseAreaFunction returned)
+    {
+        returned.gameObject.SetActive(false);
+        returned.transform.SetParent(playerTransform);
+        _pool.Push(returned);
+    }
+
+    // OnDestroy ��� IDisposable.Dispose���� �޸� ����
+    public void Dispose()
+    {
+        while (_pool.Count > 0)
+        {
+            var obj = _pool.Pop();
+            if (obj != null) UnityEngine.Object.Destroy(obj.gameObject);
+        }
+
+        // ��巹���� ���� ���� (AddressableManager �̿�)
+        AddressableManager.ReleaseAsset(_loadedPrefab);
+        Debug.Log("[UseAreaSpawner] Ǯ�� �����Ǿ����ϴ�, ��Ʈ��!");
     }
 
     public enum Type
@@ -406,7 +480,10 @@ public class UseAreamanager : MonoBehaviour, IAsyncStartable
     {
         //ItemObjectData에서 데이터를 출력
 
-        foreach( var obj in pool) obj.SetActive(false);
+
+
+
+        foreach (var obj in pool) obj.SetActive(false);
 
 
 

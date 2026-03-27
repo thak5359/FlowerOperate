@@ -33,7 +33,15 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    private ItemDataContainer CreateNewObject()
+    private void Initialize(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            poolingObjectQueue.Enqueue(CreateNewObject());
+        }
+    }
+
+    private ItemArea CreateNewObject()
     {
         // �ε�� �������� �ν��Ͻ�ȭ�մϴ�.
         var obj = Instantiate(loadedPrefab, transform);
@@ -43,13 +51,7 @@ public class ObjectPool : MonoBehaviour
         return itemArea;
     }
 
-    private void Initialize(int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            poolingObjectQueue.Enqueue(CreateNewObject());
-        }
-    }
+    
 
     public static ItemDataContainer GetObject()
     {

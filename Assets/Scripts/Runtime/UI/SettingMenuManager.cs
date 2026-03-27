@@ -1,12 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.IO;
-using Fungus;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using JetBrains.Annotations;
 using VContainer;
 
 public class SettingMenuManager : MonoBehaviour
