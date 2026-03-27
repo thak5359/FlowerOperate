@@ -394,11 +394,11 @@ public class UseAreamanager : IAsyncStartable, IDisposable
     private readonly Stack<UseAreaFunction> _pool = new(80); // 리스트보다 스택이 풀링에 유리해요!
 
     // VContainer를 통해 부모가 될 Transform을 주입받습니다.
-    [Inject]
-    private UseAreamanager(PlayerController pc)
-    {
-        playerTransform = pc.gameObject.transform;
-    }
+    //[Inject]
+    //private UseAreamanager(PlayerController pc)
+    //{
+    //    playerTransform = pc.gameObject.transform;
+    //}
 
     //비동기로 Prefab 가져오기
     public async UniTask StartAsync(CancellationToken cancellation)

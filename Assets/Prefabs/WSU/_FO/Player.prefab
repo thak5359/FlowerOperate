@@ -149,7 +149,7 @@ MonoBehaviour:
   moveSpeed: 5
   canInteractive: 0
   interactableArea: {fileID: 6364007864105736048}
-  UseArea: {fileID: 0}
+  UseArea: {fileID: 6062988967756959234}
   obj: {fileID: 0}
   charTimePerPhase: 1.75
   messageTarget: 
@@ -324,6 +324,12 @@ PrefabInstance:
 --- !u!4 &3014338507313990178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4927432743745008039, guid: cdb1c1df4be79e242a4bd4d47fb988a6,
+    type: 3}
+  m_PrefabInstance: {fileID: 7905177577490742149}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6062988967756959234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4148032170993382791, guid: cdb1c1df4be79e242a4bd4d47fb988a6,
     type: 3}
   m_PrefabInstance: {fileID: 7905177577490742149}
   m_PrefabAsset: {fileID: 0}
