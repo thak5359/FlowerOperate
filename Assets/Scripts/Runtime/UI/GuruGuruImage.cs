@@ -20,8 +20,6 @@ public class AutoIconController : MonoBehaviour
         //isTurned = true;
     }
 
-
-
     //void Update()
     //{
     //    // OptionManager의 상태를 실시간 감시
