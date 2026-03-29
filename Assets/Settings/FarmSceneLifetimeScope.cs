@@ -14,18 +14,20 @@ public class FarmSceneLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // TestActionMapChanger
-        builder.RegisterEntryPoint<ActionMapChanger>().As< IMapChangable>().AsSelf();
+        //Don'tDestory로 별도로 분리할 것들
+
+        builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
+        builder.Register<ItemManager>(Lifetime.Singleton).AsSelf();
 
+        //농장에서만 쓰이는 놈들
+        builder.RegisterEntryPoint<UseAreamanager>().As<IUseItem>().AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<PauseMenu>(pauseMenu);
-
-        
     }
 }

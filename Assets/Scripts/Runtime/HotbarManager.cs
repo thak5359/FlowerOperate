@@ -15,6 +15,11 @@ public class HotbarManager : MonoBehaviour
     private float scrollCooldown = 0.15f;
     private float lastScrollTime = 0.0f;
 
+    private int pointingItemId;
+
+    public int PointingItemId => pointingItemId;
+
+
     void Awake()
     {
 

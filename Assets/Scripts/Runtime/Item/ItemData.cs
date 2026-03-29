@@ -39,6 +39,4 @@ public struct ChargeInfo
     {
         Debug.Log($"chargeTime : ${ChargeTime}, maxChargeCont : ${maxChargeCount}");
     }
-
-    
 }

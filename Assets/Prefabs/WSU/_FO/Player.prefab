@@ -132,7 +132,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &2783318267432256488
 MonoBehaviour:
@@ -150,7 +150,7 @@ MonoBehaviour:
   canInteractive: 0
   interactableArea: {fileID: 6364007864105736048}
   UseArea: {fileID: 6062988967756959234}
-  obj: {fileID: 0}
+  Plot: {fileID: 2020869880897851072, guid: 66f8521fb646adb419de37d5b52980cd, type: 3}
   charTimePerPhase: 1.75
   messageTarget: 
 --- !u!65 &5226812122644088705

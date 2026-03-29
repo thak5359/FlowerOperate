@@ -10,9 +10,25 @@ public class Constant
 
 
 
+    public const int MIN_HOE_ID = 0;
+    public const int MAX_HOE_ID = 7;
 
 
 
+    public const int MIN_WATERINGCAN_ID = 8;
+    public const int MAX_WATERINGCAN_ID = 15;
+
+    public const int MIN_HAMMER_ID = 16;
+    public const int MAX_HAMMER_ID = 23;
+
+    public const int MIN_SICKLE_ID = 24;
+    public const int MAX_SICKLE_ID = 31;
+
+    public const int MIN_AXE_ID = 32;
+    public const int MAX_AXE_ID = 39;
+
+    public const int MIN_CONSUMABLE_ID = 500;
+    public const int MAX_CONSUMABLE_ID = 7;
 
 
     public const string TITLE_MAP_NAME = "MAP_TITLE";

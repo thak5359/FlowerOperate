@@ -2,27 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 
 public interface IInteractable
 {
-
     void Interact(string tag);
 }
 
-public struct itemData
-{
-
-    float chargeTIme1;
-    float chargeTIme2;
-    float chargeTIme3;
-
-    int maxChargeCount;
-    string itemType;
-
-}
 
 
-
+// ÇÃ·¹ÀÌ¾îÀÇ ÀÔ·Â ( WASD, »óÈ£ÀÛ¿ë, ¾ÆÀÌÅÛ »ç¿ë)À» Ã³¸®.
 public class PlayerController : MonoBehaviour, IInteractable
 {
 
@@ -30,52 +19,40 @@ public class PlayerController : MonoBehaviour, IInteractable
     public float moveSpeed = 5f;
     public bool canInteractive = false;
 
-
-    [Header("ìºë¦­í„°ê°€ ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ìœ„ì¹˜")]
+    [Header("Ä³¸¯ÅÍ°¡ »óÈ£ÀÛ¿ë °¡´ÉÇÑ À§Ä¡")]
     [SerializeField] public Transform interactableArea;
-    Vector3 cached3Vec1;
-    Vector3 cached3Vec2;
+    [SerializeField] public GameObject UseArea; // ¾ÆÀÌÅÛ »ç¿ë ¹üÀ§ (ÃßÈÄ »èÁ¦ÇÒ ¿¹Á¤)
+    [SerializeField] public GameObject Plot;
 
-
-    [SerializeField] public GameObject UseArea;
-
-    //testìš© ì½”ë“œ, ë•… ìƒì„±í•˜ê¸° (í˜„ì¬ ì•„ì´í…œ ë°ì´í„° ì—†ì–´ì„œ ìŠ¤í‚µ)
-    [SerializeField] public GameObject obj;
-
-
-    // ìƒí˜¸ì‘ìš© ì—°ì† ë°©ì§€ìš© 
-    private float interactCooldown = 0.2f;
-    private float lastInteractTime = 0f;
     
-    private List<GameObject> useAreaList = new List<GameObject>();
 
-
-    // ì°¨ì§• ê´€ë¦¬ìš©
-    [Header("ì°¨ì§€ íƒ€ì„ì„ ì¡°ì ˆ í•˜ëŠ” ê¸°ëŠ¥")]
-    [Range(1,2)]
+    // Â÷Â¡ °ü¸®¿ë
+    [Header("Â÷Áö Å¸ÀÓÀ» Á¶Àı ÇÏ´Â ±â´É")]
+    [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
     private float chargeStartTime;
     private bool isCharging = false;
     float cachedSign;
 
     private Vector2 moveInput;
-    private Transform trans;
     private Rigidbody rb;
-    private Animation anim;
+
+    // »óÈ£ÀÛ¿ë ¿¬¼Ó ¹æÁö¿ë 
+    private float interactCooldown = 0.2f;
+    private float lastInteractTime = 0f;
 
     [SerializeField] private string messageTarget;
 
     public void setTag(string input_tag) => messageTarget = input_tag;
-    Vector2 heading; // ìºë¦­í„°ê°€ ë³´ê³  ìˆëŠ” ë°©í–¥ ( ì•„ì´í…œ ì‚¬ìš©)
+    Vector2 heading;  // Ä³¸¯ÅÍ°¡ º¸°í ÀÖ´Â ¹æÇâ ( ¾ÆÀÌÅÛ »ç¿ë)
+    Vector3 cached3Vec;
 
-
+    [Inject]
     void Awake()
     {
-        
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        
     }
-
 
     void Start()
     {
@@ -85,8 +62,6 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-
-
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -95,8 +70,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
-        interactableArea.localPosition = cached3Vec1;
-        SnapToWorldGrid(UseArea.transform, cached3Vec1);
+        interactableArea.localPosition = cached3Vec;
+        SnapToWorldGrid(UseArea.transform, cached3Vec);
     }
 
     void Move()
@@ -106,166 +81,83 @@ public class PlayerController : MonoBehaviour, IInteractable
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
         if (moveInput.x != 0)
         {
-            //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer ë³€ê²½í•˜ëŠ” ê¸°ëŠ¥ìœ¼ë¡œ ë§Œë“¤ê¸°!
+            //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer º¯°æÇÏ´Â ±â´ÉÀ¸·Î ¸¸µé±â!
         }
 
-        if(moveInput != Vector2.zero)
+        if (moveInput != Vector2.zero)
         {
             if (moveInput.x != 0)
             {
-                cachedSign = (moveInput.x > 0 )? 1 : -1f;
-                heading.Set(cachedSign, 0.0f);
-                cached3Vec1.Set(cachedSign, 0.0f, 0.0f);
+                heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
+                cached3Vec.Set(heading.x, 0.0f, 0.0f);
             }
-            else 
+            else
             {
-                cachedSign = (moveInput.y > 0) ? 1 : -1f;
-                heading.Set(0.0f, cachedSign);
-                cached3Vec1.Set(0.0f, 0.0f, cachedSign);
+                heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
+                cached3Vec.Set(0.0f, 0.0f, heading.y);
+
             }
-          
+
         }
 
     }
 
-
     public void OnInteract(InputAction.CallbackContext context)
     {
-       
+
 
         if (canInteractive == true && context.canceled)
         {
 
             if (Time.time < lastInteractTime + interactCooldown)
             {
-                #if UNITY_EDITOR
-                Debug.Log("ì¢€ ì‚´ì‚´ ì¢€ ëˆŒëŸ¬ì£¼ì„¸ìš”...");
-                #endif
+#if UNITY_EDITOR
+                Debug.Log("ì¢€ ?´ì‚´ ì¢€ ?ŒëŸ¬ì£¼ì„¸??..");
+#endif
                 return;
             }
 
-            // ë‚˜ ìì‹ (this)ì„ IInteractableë¡œ í˜•ë³€í™˜í•´ì„œ í˜¸ì¶œí•´ì•¼ í•©ë‹ˆë‹¤.
+            // ³ª ÀÚ½Å(this)À» IInteractable·Î Çüº¯È¯ÇØ¼­ È£Ãâ
             ((IInteractable)this).Interact(this.messageTarget);
         }
     }
 
+    // ³ªÁß¿¡ »èÁ¦ÇÒ ½Ã¿¬¿ë ÄÚµå. ÀÎº¥Åä¸®±îÁö ¿Ï¼ºµÇ¸é º¯°æ.
     public void OnUse(InputAction.CallbackContext context)
     {
-        //   if (currentItem == null) return;
-
-
-        // 1. ë²„íŠ¼ì„ ëˆ„ë¥´ê¸° ì‹œì‘í–ˆì„ ë•Œ (Started)
+        // 1. ¹öÆ°À» ´©¸£±â ½ÃÀÛÇßÀ» ¶§ (Started)
         if (context.started)
         {
             if (UseArea.activeSelf == true)
             {
-                Debug.LogAssertion("ì˜¤ë¥˜! í‚¤ì…ë ¥ì´ ì˜ëª»ë¨!");
+                Debug.LogAssertion("¿À·ù! Å°ÀÔ·ÂÀÌ Àß¸øµÊ!");
                 return;
             }
 
-            UseArea.SetActive(true);
 
+
+            // ¾Æ·¡ ºÎºĞÀº Å×½ºÆ® ³¡³ª¸é »èÁ¦ÇÒ ÇÔ¼öÀÓ.
+            UseArea.SetActive(true);
             isCharging = true;
             chargeStartTime = Time.time;
-            Debug.Log("<color=yellow>[Item]</color> ì°¨ì§• ì‹œì‘...!");
-
-            // TODO: ì°¨ì§• ì‹œì‘ ì• ë‹ˆë©”ì´ì…˜ì´ë‚˜ ì´í™íŠ¸ íŠ¸ë¦¬ê±°
         }
 
-        // 2. ë²„íŠ¼ì„ ë–¼ì—ˆì„ ë•Œ (Canceled)
+
+        // 2. ¹öÆ°À» ¶¼¾úÀ» ¶§ (Canceled)
         if (context.canceled)
         {
-            if (!isCharging) return;
-
-            float totalChargeTime = Time.time - chargeStartTime;
-            isCharging = false;
-
-            // ì°¨ì§• ì‹œê°„ì„ í¬í•¨í•˜ì—¬ UseParam ìƒì„±
-            UseParam param = new UseParam(
-             heading,            // ìºë¦­í„°ê°€ ë°”ë¼ë³´ëŠ” 2D ë°©í–¥ (Vector2)
-             transform.position, // í˜„ì¬ í”Œë ˆì´ì–´ì˜ 3D ìœ„ì¹˜
-             10,                 // ê¸°ë³¸ íš¨ìœ¨ (ë‚˜ì¤‘ì— ì•„ì´í…œ ë“±ê¸‰ì— ë”°ë¼ ë³€ê²½ ê°€ëŠ¥)
-             totalChargeTime     // ì‹¤ì œ ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆì—ˆë˜ ì‹œê°„
-         );
-
-            cached3Vec2 = UseArea.gameObject.transform.position;
-            cached3Vec2.y = 0.2f;
-
-
-            float chargePhase = MathF.Floor(param.elapsedTime / charTimePerPhase);
-
-            // 
-
-            if( chargePhase >= 0.0f )
-            {
-                Instantiate(obj, cached3Vec2, Quaternion.identity);
-            }
-            if( chargePhase >= 1.0f)
-            {
-
-            }
-            if (chargePhase >= 2.0f)
-            {
-
-            }
-            if (chargePhase >= 3.0f)
-            {
-
-            }
-            if (chargePhase >= 4.0f)
-            {
-
-            }
-
-
-
-            Instantiate(obj, cached3Vec2, Quaternion.identity);
-
-            #if UNITY_EDITOR
-            // ê²°ê³¼ ì¶œë ¥
-            PrintUseResult(param);
-            #endif
-           
+            // ¾Æ·¡ ºÎºĞÀº Å×½ºÆ® ³¡³ª¸é »èÁ¦ÇÒ ÇÔ¼öÀÓ.
             UseArea.SetActive(false);
+            Instantiate(Plot, UseArea.transform.position, Quaternion.identity);
         }
     }
 
-    //ì„ íƒ ì˜ì—­ì„ ë°˜ì˜¬ë¦¼/ ë°˜ë‚´ë¦¼ ì²˜ë¦¬í•´ì£¼ëŠ” í•¨ìˆ˜
     private void SnapToWorldGrid(Transform targetPos, Vector3 offset)
     {
         Vector3 targetWorldPos = transform.position + offset;
 
-        float snappedX = Mathf.Round(targetWorldPos.x);
-        float snappedZ = Mathf.Round(targetWorldPos.z);
-
-        targetPos.position = new Vector3(snappedX, 0.15f, snappedZ);
-
-
-
+        targetPos.position = new Vector3(Mathf.Round(targetWorldPos.x), 0.15f, Mathf.Round(targetWorldPos.z));
     }
-
-
-#if UNITY_EDITOR
-    private void PrintUseResult(UseParam param)
-    {
-        string directionName = GetDirectionName(param.heading);
-        Debug.Log($"<color=cyan><b>[Item Use Result]</b></color>\n" +
-                  $"ë°©í–¥: {directionName} ({param.heading})\n" +
-                  $"ìœ„ì¹˜: {param.pos}\n" +
-                  $"ì°¨ì§• ì‹œê°„: {param.elapsedTime:F2}ì´ˆ\n" +
-                  $"íš¨ìœ¨: {param.efficiency}");
-    }
-
-    private string GetDirectionName(Vector2 h)
-    {
-        if (h == Vector2.up) return "ìœ„(North)";
-        if (h == Vector2.down) return "ì•„ë˜(South)";
-        if (h == Vector2.left) return "ì™¼ìª½(West)";
-        if (h == Vector2.right) return "ì˜¤ë¥¸ìª½(East)";
-        return "ë°©í–¥ ì•Œ ìˆ˜ ì—†ìŒ";
-    }
-
-#endif
 
     void IInteractable.Interact(string Tag)
     {
@@ -277,71 +169,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
         if (isCharging)
         {
-            float currentElapsed = Time.time - chargeStartTime;
             //UpdateSelectionVisual(currentElapsed);
         }
     }
 
-
-
-
-
-    //private void UpdateSelectionVisual(float elapsed)
-    //{
-    //    // ItemManagerì—ì„œ í˜„ì¬ ì•„ì´í…œì˜ ChargeInfoë¥¼ ê°€ì ¸ì™€ì„œ 
-    //    // ì‹œê°„ì— ë”°ë¼ selectionAreaì˜ ìŠ¤ì¼€ì¼ì„ í‚¤ì›Œì¤ë‹ˆë‹¤.
-    //    ChargeInfo info = ItemManager.Instance.GetChargeInfo((int)currentItem.itemId);
-
-    //    if (elapsed >= info.ChargeTime)
-    //    {
-    //        // ì˜ˆ: ì°¨ì§• ì™„ë£Œ ì‹œ ë²”ìœ„ë¥¼ 1x3 ë˜ëŠ” 3x3 ëŠë‚Œìœ¼ë¡œ í™•ì¥ ($3 \times 3$ ìœ ë‹› ë“±)
-    //        selectionArea.transform.localScale = new Vector3(0.8f, 0.01f, 2.4f);
-    //    }
-    //}
-    //public Item currentItem; // í˜„ì¬ ì¥” ì•„ì´í…œ
-
-    //public void SetItem(Item newItem)
-    //{
-    //    currentItem = newItem;
-    //    UnityEngine.Debug.Log(currentItem != null ? $"{currentItem.GetName()} ì¥ì°©ë¨" : "ë§¨ì† ìƒíƒœ");
-    //}
-
-    //private async void SampleItemUseCode()
-    //{
-    //    // TODO :: ë‚˜ì¤‘ì— item ìì‹ í´ë˜ìŠ¤ë¡œ ê° ì¥ë¹„ë³„ í´ë˜ìŠ¤ë¥¼ ë§Œë“  ë’¤ì— asë¡œ ê²€ì‚¬ ë°©ì‹ì„ ì¢€ ë” ë˜‘ë˜‘í•˜ê²Œ í•˜ê¸°!
-
-    //    switch (item.itemId)
-    //    {
-    //        case (3):
-
-
-    //        case (4):
-    //            break;
-
-    //        case (5):
-
-    //        case (6):
-    //            break;
-
-    //        case (7):
-
-    //        case (8):
-    //        case (9):
-    //            break;
-
-
-
-
-    //    }
-
-
-    //    for (int i = 0; i < 10; i++)
-    //    {
-    //        useAreaList[i] = await AddressableManager.LoadAssetAsync<GameObject>("UseArea");
-    //    }
-
-
-
-
-    //}
 }

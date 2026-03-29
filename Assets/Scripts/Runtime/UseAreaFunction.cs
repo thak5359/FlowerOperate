@@ -1,40 +1,38 @@
+using UnityEditor.UIElements;
 using UnityEngine;
-
+using static Constant;
 public interface IUseAreaHoeFunc
 {
-    public int DoHoeFunc();
-
+    int DoHoeFunc(GameObject plot);
 }
-
-
 public interface IUseAreaWateringCanFunc
 {
-    public int DoWateringCanFunc();
+    int DoWateringCanFunc();
 }
 public interface IUseAreaHammerFunc
 {
-    public int DoHammerFunc();
+    int DoHammerFunc();
 }
 public interface IUseAreaSickleFunc
 {
-    public int DoSickleFunc();
+    int DoSickleFunc();
 }
 public interface IUseAreaAxeFunc
 {
-    public int DoAxeFunc();
+    int DoAxeFunc();
 }
-public interface IUseAreaConSumableFunc
+public interface IUseAreaConsumableFunc
 {
-    public int DoConsumableFunc();
+    int DoConsumableFunc();
 }
 
 
 public class UseAreaFunction : MonoBehaviour, 
     IUseAreaAxeFunc, IUseAreaHoeFunc,IUseAreaWateringCanFunc, 
-    IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConSumableFunc
+    IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConsumableFunc
 {
-
-    public string InnerTag;
+    public GameObject _currentTarget;
+    public string innerTag;
 
     private Collision collision;
 
@@ -42,47 +40,96 @@ public class UseAreaFunction : MonoBehaviour,
     {
         collision = GetComponent<Collision>();
     }
-
+   
 
     private void OnDisable()
     {
         // 여기서 참고한 객체 초기화 하기
+        innerTag = null;
+        _currentTarget = null;
     }
 
-    int IUseAreaHoeFunc.DoHoeFunc()
+    int IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
     {
-        throw new System.NotImplementedException();
+        //TODO : 여기에 참고한 객체로 할 행동 구현하기. 성공하면 1반환, 실패했다면 0 반환, 오류는 -100 반환!
+        if(plot == null)
+        {
+            Debug.LogAssertion("DoHoeFunc error. plot is null");
+            return -100;
+        }
+
+        if( plot.tag != null)
+        {
+            Debug.Log("DoHoeFunc : 이미 해당칸에 사물이 존재하므로 돌아갑니다! " + plot.tag);
+            return 0;
+        }
+        else
+        {
+            //밭 생성
+            Instantiate(plot, this.gameObject.transform.position, Quaternion.identity);
+            return 1;
+        }
+
     }
     int IUseAreaAxeFunc.DoAxeFunc()
     {
-        throw new System.NotImplementedException();
+        //TODO : 여기에 참고한 객체로 할 행동 구현하기
+        return 1;
     }
     int IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
-        throw new System.NotImplementedException();
+        //TODO : 여기에 참고한 객체로 할 행동 구현하기
+        return 1;
     }
     int IUseAreaSickleFunc.DoSickleFunc()
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
     int IUseAreaHammerFunc.DoHammerFunc()
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
-    int IUseAreaConSumableFunc.DoConsumableFunc()
+    int IUseAreaConsumableFunc.DoConsumableFunc()
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
+
+    public int FireFunc(int itemId, GameObject plot = null)
+    {
+        if (itemId > MIN_HOE_ID && itemId < MAX_HOE_ID)
+            return ((IUseAreaHoeFunc)this).DoHoeFunc(plot);
+        else if (itemId > MIN_WATERINGCAN_ID && itemId < MAX_WATERINGCAN_ID)
+            return ((IUseAreaWateringCanFunc)this).DoWateringCanFunc();
+
+        else if (itemId > MIN_HAMMER_ID && itemId < MAX_HAMMER_ID)
+            return ((IUseAreaHammerFunc)this).DoHammerFunc();
+
+        else if (itemId > MIN_SICKLE_ID && itemId < MAX_SICKLE_ID)
+            return ((IUseAreaSickleFunc)this).DoSickleFunc();
+
+        else if (itemId > MIN_AXE_ID && itemId < MAX_AXE_ID)
+            return ((IUseAreaAxeFunc)this).DoAxeFunc();
+
+        else if (itemId > MIN_CONSUMABLE_ID && itemId < MAX_CONSUMABLE_ID)
+            return ((IUseAreaConsumableFunc)this).DoConsumableFunc();
+
+        else
+            Debug.LogAssertion("Fire Function error. Wrong itemId : " + itemId);
+            return -100;
+    }
+
 
 
     void OnTriggerEnter(Collider other)
     {
-        InnerTag = other.gameObject.tag;
+        if (other == this|| other == null ) return;
+        _currentTarget = other.gameObject;
+        innerTag = _currentTarget.gameObject.tag;
     }
     
     void OnTriggerExit(Collider other)
     {
-
+        if (_currentTarget == other.gameObject) _currentTarget = null;
     }
 
 

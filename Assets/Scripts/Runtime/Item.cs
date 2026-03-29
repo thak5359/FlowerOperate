@@ -13,14 +13,12 @@ using UnityEngine.UI;
 public struct   UseParam
 {
     public readonly Vector2 heading;
-    public readonly Vector3 pos;
     public readonly int efficiency;
     public readonly float elapsedTime;
 
-    public UseParam(Vector2 input_heading, Vector3 input_pos, int input_efficiency, float input_elapsed)
+    public UseParam(Vector2 input_heading,  int input_efficiency, float input_elapsed)
     {
         heading = input_heading;
-        pos = input_pos;
         efficiency = input_efficiency;
         elapsedTime = input_elapsed;
     }

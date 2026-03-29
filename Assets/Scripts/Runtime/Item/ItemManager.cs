@@ -180,6 +180,7 @@ public class ItemManager : MonoBehaviour
         return result;
     }
 
+    #endregion
     #region 3. 도구 데이터 (Usable)
 
     // 차징 정보 (시간, 최대 단계)
@@ -204,7 +205,6 @@ public class ItemManager : MonoBehaviour
         return (data != null) ? data.GetDuration : 0;
     }
 
-    #endregion
     #endregion
 }
 
