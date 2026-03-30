@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -269,7 +269,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void IInteractable.Interact(string Tag)
     {
-        Debug.Log($"¸Þ¼¼Áö ¼Û½Å to :{Tag}");
+        Debug.Log($" Þ¼     Û½  to :{Tag}");
         Fungus.Flowchart.BroadcastFungusMessage(Tag);
     }
 
