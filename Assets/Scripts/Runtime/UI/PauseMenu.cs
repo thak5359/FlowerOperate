@@ -27,6 +27,8 @@ public class PauseMenu : MonoBehaviour
     public Button buttonEnd;
     public Button buttonCloseSetting;
 
+    public SettingMenuManager settingMenuManager;
+
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
@@ -39,14 +41,18 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
-    }
+        settingMenuManager = GetComponent<SettingMenuManager>();
 
+        if (settingMenuManager != null)
+        {
+            Debug.Log("settingMenuManager is assigned successfully in PauseMenu.");
+        }
+    }
     
     [Inject]
     public  void Construct(IMapChangable inputManager)
     {
         input = inputManager;
-
     }
 
     private void Start()
@@ -127,7 +133,7 @@ public class PauseMenu : MonoBehaviour
         isTransitioning = true;
 
         input.changeIAmapSetting();
-
+        settingMenuManager.OnClickSoundButton(); 
         yield return StartCoroutine(MoveRoutine(settingPos));
 
         isTransitioning = false;
@@ -188,30 +194,9 @@ public class PauseMenu : MonoBehaviour
     #region 버튼 클릭 기능
 
 
-    public void OnClickSettingClose()
-    {
-        isTransitioning = true;
-
-        input.changeIAmapPauseMenu();
-
-         StartCoroutine(BackToPauseFromSetting());
-
-    } 
-
-
-    public void OnClickSettingMenu()
-    {
-        isTransitioning = true;
-
-        input.changeIAmapSetting();
-
-         StartCoroutine(MoveRoutine(settingPos));
-
-    }
-
     public void OnClickTitleButton()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("MainTitle");
     }
 
     public void OnClickGameEndButton()

@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
+using Unity.Collections;
+
+
 
 public class ItemManager : MonoBehaviour
 {
@@ -67,7 +71,7 @@ public class ItemManager : MonoBehaviour
     }
 
     #region 데이터 타입별 InsertDataToMasterDB 함수
-    private bool InsertDataToMasterDB(ItemIdData data) //사용 가능 아이템
+    private bool InsertDataToMasterDB(ItemIdData data) //사용 불가능 아이템
     {
         if (data == null)
         {

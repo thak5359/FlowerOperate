@@ -47,7 +47,7 @@ public class ActionKeyMapper : IAsyncStartable
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        if (_playerController == null)
+        if (_playerInput.actions == null)
             _playerInput.actions = await AddressableManager.LoadAssetAsync<InputActionAsset>("InputActionAsset");
 
         while (_playerInput.actions == null)
@@ -72,7 +72,6 @@ public class ActionKeyMapper : IAsyncStartable
         {
             FarmMapActionAllocator();
             PauseMapActionAllocator();
-            SettingMapActionAllocator();
             _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME);
         }
         Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
@@ -115,11 +114,24 @@ public class ActionKeyMapper : IAsyncStartable
     #region 세팅 메뉴 키 할당
     void SettingMapActionAllocator()
     {
+        if(_settingMenuManager == null)
+        {
+            Debug.LogWarning("SettingMenuManager가 할당되지 않았습니다. 세팅 메뉴 키 할당을 건너뜁니다.");
+            return;
+        }
+
         var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
         var actionEscape = map.FindAction("Escape");
-        actionEscape.performed += _settingMenuManager.OnBackAction;
-        Debug.Log("세팅 키 할당됨!");
 
+        if (currentSceneName == TITLE_SCENE_NAME)
+        {
+            actionEscape.performed += _settingMenuManager.OnBackAction;
+        }
+        else if (currentSceneName == FARM_SCENE_NAME)
+        {
+            actionEscape.performed += _pauseMenu.OnBackAction;
+        }
+        Debug.Log("세팅 키 할당됨!");
     }
     #endregion
 

@@ -8,15 +8,11 @@ using VContainer;
 using VContainer.Unity;
 using static Constant;
 
-
-
 public interface IUseItem
     {
     public void StartCharging();
     public void Fire();
 }
-
-
 
 public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
