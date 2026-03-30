@@ -14,16 +14,16 @@ public class FungusDependencyResolver : IStartable
 
     public void Start()
     {
-        // ¾À ³»ÀÇ ¸ğµç Flowchart¸¦ Ã£½À´Ï´Ù.
+        // ì”¬ ë‚´ì˜ ëª¨ë“  Flowchartë¥¼ ì°¾ìŠµë‹ˆë‹¤.
         var flowcharts = Object.FindObjectsByType<Flowchart>(FindObjectsSortMode.None);
         
         foreach (var flowchart in flowcharts)
         {
-            // Flowchart ³»ÀÇ ¸ğµç BlockÀ» °¡Á®¿É´Ï´Ù.
+            // Flowchart ë‚´ì˜ ëª¨ë“  Blockì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
             var blocks = flowchart.GetComponents<Block>();
             foreach (var block in blocks)
             {
-                // °¢ Block ³»ÀÇ ¸ğµç Command¿¡ ÀÇÁ¸¼ºÀ» ÁÖÀÔÇÕ´Ï´Ù.
+                // ê° Block ë‚´ì˜ ëª¨ë“  Commandì— ì˜ì¡´ì„±ì„ ì£¼ì…í•©ë‹ˆë‹¤.
                 foreach (var command in block.CommandList)
                 {
                     _container.Inject(command);
@@ -31,6 +31,6 @@ public class FungusDependencyResolver : IStartable
             }
         }
         
-        Debug.Log("Fungus Commands¿¡ ¸ğµç ÀÇÁ¸¼º ÁÖÀÔ ¿Ï·á!");
+        Debug.Log("Fungus Commandsì— ëª¨ë“  ì˜ì¡´ì„± ì£¼ì… ì™„ë£Œ!");
     }
 }

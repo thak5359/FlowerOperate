@@ -5,7 +5,7 @@ public class BGImageController : MonoBehaviour
 {
     public List<SpriteRenderer> bg_images = new List<SpriteRenderer>();
 
-    // Ä³½ÌÇÒ º¯¼öµé
+    // ìºì‹±í•  ë³€ìˆ˜ë“¤
     private Vector3 centerPos = new Vector3(960f, 540f, 0f);
     private Vector3 targetScale = Vector3.one;
 
@@ -18,7 +18,7 @@ public class BGImageController : MonoBehaviour
     {
         if (bg_images.Count == 0) return;
 
-        // 1. È­¸éÀÇ 1.2¹è Å©±â °è»ê
+        // 1. í™”ë©´ì˜ 1.2ë°° í¬ê¸° ê³„ì‚°
         float worldHeight = Camera.main.orthographicSize * 2.0f;
         float worldWidth = worldHeight / Screen.height * Screen.width;
 
@@ -27,7 +27,7 @@ public class BGImageController : MonoBehaviour
             var sr = bg_images[i];
             if (sr == null) continue;
 
-            // Áß¾Ó ¹èÄ¡ ¹× 1.2¹è ½ºÄÉÀÏ¸µ
+            // ì¤‘ì•™ ë°°ì¹˜ ë° 1.2ë°° ìŠ¤ì¼€ì¼ë§
             sr.transform.position = centerPos;
 
             float sWidth = sr.sprite.bounds.size.x;
@@ -37,12 +37,12 @@ public class BGImageController : MonoBehaviour
             targetScale.y = (worldHeight / sHeight) * 1.2f;
             sr.transform.localScale = targetScale;
 
-            // Awake ±ÔÄ¢: 1¹øÂ°¸¸ ÄÑ°í ³ª¸ÓÁö ²û
+            // Awake ê·œì¹™: 1ë²ˆì§¸ë§Œ ì¼œê³  ë‚˜ë¨¸ì§€ ë”
             sr.gameObject.SetActive(i == 0);
         }
     }
 
-    // ÀÌ¸§À¸·Î ¹è°æ ±³Ã¼
+    // ì´ë¦„ìœ¼ë¡œ ë°°ê²½ êµì²´
     public void ChangeBackground(string imageName)
     {
         foreach (var sr in bg_images)

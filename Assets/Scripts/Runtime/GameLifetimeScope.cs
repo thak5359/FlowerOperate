@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-//ÀüÃ¼ »ç¿ë
+//ì „ì²´ ì‚¬ìš©
 public class GameLifetimeScope : LifetimeScope
 {
 

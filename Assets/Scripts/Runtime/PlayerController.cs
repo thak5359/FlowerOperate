@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
             isCharging = true;
             chargeStartTime = Time.time;
-            Debug.Log("<color=yellow>[Item]</color> 차징 시작...!");
+            Debug.Log("<color=yellow>[Item]</color> 차징 시작...!");    
 
             // TODO: 차징 시작 애니메이션이나 이펙트 트리거
         }
