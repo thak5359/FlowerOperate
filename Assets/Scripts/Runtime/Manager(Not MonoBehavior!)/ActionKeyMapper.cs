@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 using static Constant;
 
-
-
 public class ActionKeyMapper : IAsyncStartable
 {
 
-    //Wasd 조작법 쓸거면 true 아니면 False
+    // Wasd 조작법 쓸거면 true 아니면 False
     [SerializeField] public bool isWASDKeySetting = true;
 
 
@@ -21,23 +20,35 @@ public class ActionKeyMapper : IAsyncStartable
     private PauseMenu _pauseMenu;
     private HotbarManager _hotbarManager;
     private PlayerController _playerController;
+    private SettingMenuManager _settingMenuManager;
 
+    private string currentSceneName;
 
     [Inject]
-    void Construct(PlayerInput input_playerInput, PauseMenu input_pauseMenu,
-     HotbarManager input_hotbarManager,PlayerController input_playerController)
+    void Construct(
+    PlayerInput input_playerInput, IObjectResolver container)
     {
-        Debug.Log("Construct B");
         _playerInput = input_playerInput;
-        _pauseMenu = input_pauseMenu;
-        _hotbarManager = input_hotbarManager;
-        _playerController = input_playerController;
+        // TODO : 별도 씬 이름에 맞춰서 변경하기
+        var pauseMenus = container.Resolve<IReadOnlyList<PauseMenu>>();
+        _pauseMenu = pauseMenus.Count > 0 ? pauseMenus[0] : null;
+
+        var hotbarmanagers = container.Resolve<IReadOnlyList<HotbarManager>>();
+        _hotbarManager = hotbarmanagers.Count > 0 ? hotbarmanagers[0] : null;
+
+        var playerControllers = container.Resolve<IReadOnlyList<PlayerController>>();
+        _playerController = playerControllers.Count > 0 ? playerControllers[0] : null;
+
+        var settingMenuManagers = container.Resolve<IReadOnlyList<SettingMenuManager>>();
+        _settingMenuManager = settingMenuManagers.Count > 0 ? settingMenuManagers[0] : null;
+
+        Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-
-        _playerInput.actions = await AddressableManager.LoadAssetAsync<InputActionAsset>("InputActionAsset");
+        if (_playerController == null)
+            _playerInput.actions = await AddressableManager.LoadAssetAsync<InputActionAsset>("InputActionAsset");
 
         while (_playerInput.actions == null)
         {
@@ -49,11 +60,22 @@ public class ActionKeyMapper : IAsyncStartable
 
         _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
 
-        FarmMapActionAllocator();
-        PauseMapActionAllocator();
-        SettingMapActionAllocator();
-        _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME);
-        Debug.Log("farmMap으로 현재 맵 전환 완료!");
+
+        currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (currentSceneName == TITLE_SCENE_NAME)
+        {
+            SettingMapActionAllocator();
+            _playerInput.SwitchCurrentActionMap(TITLE_MAP_NAME);
+        }
+        else if (currentSceneName == FARM_SCENE_NAME)
+        {
+            FarmMapActionAllocator();
+            PauseMapActionAllocator();
+            SettingMapActionAllocator();
+            _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME);
+        }
+        Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
 
     }
 
@@ -68,7 +90,7 @@ public class ActionKeyMapper : IAsyncStartable
         _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
         
         Debug.Log("여기까지는 정상!!");
-        //Debug.Log($"[IA Manager] {targetScheme}이 준비됨!");
+        // Debug.Log($"[IA Manager] {targetScheme}이 준비됨!");
     }
     #endregion
 
@@ -95,7 +117,7 @@ public class ActionKeyMapper : IAsyncStartable
     {
         var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
         var actionEscape = map.FindAction("Escape");
-        actionEscape.performed += _pauseMenu.OnBackAction;
+        actionEscape.performed += _settingMenuManager.OnBackAction;
         Debug.Log("세팅 키 할당됨!");
 
     }

@@ -3,11 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.InputSystem;
 using VContainer;
+using System;
+using static Constant;
 
 public class SettingMenuManager : MonoBehaviour
 {
-    public static SettingMenuManager instance;
-
     [Header("UI switch")]
     public Button soundButton;
     public Button displayButton;
@@ -24,16 +24,19 @@ public class SettingMenuManager : MonoBehaviour
     [SerializeField] private const float defaultDuration = 0.5f;   
 
     private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
-    private bool isShowing = true;
     private Canvas settingCanvas;
 
-    IMapChangable input;
+    bool isTransitioning = false;
+    private string currentMap;
+
+    IMapChangable input; // Injection
 
     [Inject]
     void Construct(ActionMapChanger inputManager)
     {
         input = inputManager;
     }
+
     private void Awake()
     {
         settingCanvas = GetComponent<Canvas>();
@@ -47,12 +50,6 @@ public class SettingMenuManager : MonoBehaviour
             displayButton.onClick.AddListener(() => OnClickDisplayButton());
         if (soundButton != null)
             soundButton.onClick.AddListener(() => OnClickSoundButton());
-
-        if (instance == null)
-        {
-            instance = this;
-            PanelChange(1);
-        }
     }
 
     public void OnClickSoundButton() => PanelChange(1);
@@ -95,7 +92,6 @@ public class SettingMenuManager : MonoBehaviour
         }
     }
 
-
     public void OpenSoundPanel(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton() && context.performed)
@@ -117,6 +113,7 @@ public class SettingMenuManager : MonoBehaviour
             }
         }
     }
+
     public void OpenEtcPanel(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton() && context.performed)
@@ -136,32 +133,74 @@ public class SettingMenuManager : MonoBehaviour
     private Coroutine moveCoroutine;
 
     // 설정 창 숨기기/보이기 (이동 연출 포함) 
-    public void showUI(float input_duration = defaultDuration)
+    public void OnBackAction(InputAction.CallbackContext context)
     {
-        if (input_duration == 0)
+        if (!context.performed && isTransitioning == true) return;
+        currentMap = input.getCurrentIAmap();
+
+        switch (currentMap)
         {
-            input_duration = defaultDuration;
+
+            case TITLE_MAP_NAME:
+                {
+                    StartCoroutine(OpenSettingMenu());
+                    break;
+                }
+            case SETTING_MAP_NAME:
+                {
+                    StartCoroutine(CloseSetttingMenu());
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError($"[SettingMenuManager]: {currentMap}맵에서 해당 동작에 정의되지 않았습니다."); break;
+                }
         }
-
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-
-
-        if (isShowing == false) // 보이기
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(showPos, input_duration));
-
-            input.changeIAmapPrev();
-        }
-        else // 숨기기
-        {
-            moveCoroutine = StartCoroutine(MoveRoutine(hidePos, input_duration));
-            input.changeIAmapPrev();
-        }
-        isShowing = !isShowing;
     }
 
-    private IEnumerator MoveRoutine(Vector2 targetPos, float input_duration)
+    private IEnumerator OpenSettingMenu()
     {
+        isTransitioning = true;
+
+        input.changeIAmapSetting();
+        yield return StartCoroutine(MoveRoutine(showPos));
+
+
+
+        isTransitioning = false;
+
+
+    }
+
+    private IEnumerator CloseSetttingMenu()
+    {
+
+        isTransitioning = true;
+
+        input.changeIAmapPrev();
+        yield return StartCoroutine(MoveRoutine(showPos));
+
+
+        isTransitioning = false;
+    }
+
+
+    public void OnClickSettingOpen()
+    {
+        input.changeIAmapSetting();
+        StartCoroutine(MoveRoutine(showPos));
+    }
+
+    public void OnClickSettingClose()
+    {
+        input.changeIAmapPrev();
+        StartCoroutine (MoveRoutine(hidePos));
+
+    }
+
+    private IEnumerator MoveRoutine(Vector2 targetPos)
+    {
+
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
 

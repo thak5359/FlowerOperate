@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
+using static Constant;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -64,7 +65,6 @@ public class PauseMenu : MonoBehaviour
 
     public void OnBackAction(InputAction.CallbackContext context)
     {
-        Debug.Log("OnBackAction Called!");
         // 1. 공통 방어 로직
         if (isTransitioning == true || !context.performed) return;
 
@@ -73,18 +73,18 @@ public class PauseMenu : MonoBehaviour
 
         switch (currentMap)
         {
-            case "MAP_FARM":
-            case "MAP_SHOP":
+            case FARM_MAP_NAME:
+            case SHOP_MAP_NAME:
                 // 농장이나 상점 -> 퍼즈 메뉴 열기
                 StartCoroutine(OpenPauseMain());
                 break;
 
-            case "MAP_PAUSE":
+            case PAUSEMENU_MAP_NAME:
                 // 퍼즈 메인 -> 메뉴 닫고 복귀
                 StartCoroutine(ClosePauseMain());
                 break;
 
-            case "MAP_SETTING":
+            case SETTING_MAP_NAME:
                 // 세팅 화면 -> 퍼즈 메인으로 돌아가기
                 StartCoroutine(BackToPauseFromSetting());
                 break;

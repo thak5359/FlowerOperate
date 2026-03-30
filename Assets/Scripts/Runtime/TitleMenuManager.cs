@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using VContainer;
 
 public class TitleMenuManager : MonoBehaviour
 {
@@ -11,10 +11,17 @@ public class TitleMenuManager : MonoBehaviour
     public Button loadButton;
     public Button settingButton;
     public Button endButton;
-
-    [SerializeField] protected SettingMenuManager SMM;
-
+    protected SettingMenuManager _settingMenuManger;
     
+    
+    
+    [Inject] 
+    void Construct(SettingMenuManager input_settingMenuManager)
+    {
+        _settingMenuManger = input_settingMenuManager;
+        Debug.Log($"세팅 메뉴의 할당 값은 {_settingMenuManger == null} 입니다");
+    }
+
     void Start()
     {
         startButton.onClick.AddListener(() => OnClickStartButton());
@@ -32,7 +39,7 @@ public class TitleMenuManager : MonoBehaviour
     }
     private void OnClickSettingButton()
     {
-        SMM.showUI();
+        _settingMenuManger.OnClickSettingOpen();
     }
     private void OnClickGameEndButton()
     {

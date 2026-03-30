@@ -12,5 +12,5 @@ public class FlowerDetailData : ItemDetailData
 
     public string Species(int index) => speciesList[index];
     public string Color(int index) => colorList[index];
-    public string? Floro(int index) => (index != -1) ? floroList[index] : null;
+    public string Floro(int index) => (index != -1) ? floroList[index] : null;
 }

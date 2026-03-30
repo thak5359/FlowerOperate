@@ -10,10 +10,11 @@ public class Constant
 
 
 
+    #region 아이템 장비 코드
+
+
     public const int MIN_HOE_ID = 0;
     public const int MAX_HOE_ID = 7;
-
-
 
     public const int MIN_WATERINGCAN_ID = 8;
     public const int MAX_WATERINGCAN_ID = 15;
@@ -30,6 +31,10 @@ public class Constant
     public const int MIN_CONSUMABLE_ID = 500;
     public const int MAX_CONSUMABLE_ID = 7;
 
+    #endregion
+
+
+    #region 액션 맵 이름
 
     public const string TITLE_MAP_NAME = "MAP_TITLE";
     public const string SETTING_MAP_NAME = "MAP_SETTING";
@@ -42,4 +47,11 @@ public class Constant
 
     public const string WASD_SCHEME_NAME = "WASD_Scheme";
     public const string ARROW_SCHEME_NAME = "Arrow_Scheme";
+    #endregion
+
+
+    #region 씬 이름
+    public const string TITLE_SCENE_NAME = "MainTitle";
+    public const string FARM_SCENE_NAME = "SampleScene";
+    #endregion
 }

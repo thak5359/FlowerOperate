@@ -402,7 +402,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     private float _chargeStartTime;
     float elapsed;
 
-    private int currentChargeLevel = 0; // 기본, 1, 2, 3, 4
+    //private int currentChargeLevel = 0; // 기본, 1, 2, 3, 4
     private List<GameObject> pool = new List<GameObject>();
 
     Vector3 defaultArea = new Vector3(1, 0, 0);

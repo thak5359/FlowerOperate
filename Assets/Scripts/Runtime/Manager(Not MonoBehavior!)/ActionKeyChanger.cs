@@ -10,7 +10,6 @@ public interface IActionKeyChanger
 
 }
 
-
 public class ActionKeyChanger : IActionKeyChanger
 {
     private PlayerInput _playerInput;

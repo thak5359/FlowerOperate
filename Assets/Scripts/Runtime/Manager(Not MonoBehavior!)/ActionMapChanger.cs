@@ -23,46 +23,17 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이
 
 }
 
-
-
-
-public class ActionMapChanger : IMapChangable, IStartable
+public class ActionMapChanger : IMapChangable
 {
-    
-
-    [Header("InputAction Asset 파일을 할당해주세요. 위치는 Asset/Settings입니다")]
-    [SerializeField] public InputActionAsset IA;
-
     private PlayerInput _playerInput;
-    private PlayerController _playerController;
-    private HotbarManager _hotbarManager;
-
     private Stack<string> prevMapStack = new();
 
     [Inject]
-    void Construct(PlayerInput input_playerInput, HotbarManager input_hotBarManager, PlayerController input_playerController)
+    void Construct(PlayerInput input_playerInput)
     {
         _playerInput = input_playerInput;
-        _hotbarManager = input_hotBarManager;
-        _playerController = input_playerController;
+        Debug.Log("ActionMapChanger has been successfully injected!");
     }
-
-
-
-    //public async UniTask StartAsync(CancellationToken cancellation)
-    //{
-       
-    //}
-
-    void IStartable.Start()
-    {
-        Debug.Log($"Construct A");
-        if (_playerController == null)
-        {
-            Debug.LogError("[IA Manager] PlayerController 인스턴스를 찾을 수 없음!");
-            return;
-        }
-    }  
 
     #region IA 맵 변경
 
@@ -80,9 +51,7 @@ public class ActionMapChanger : IMapChangable, IStartable
             prevMapStack.Push(currentMap);
             Debug.Log($"[IA Manager] Push: {currentMap} / 현재 스택 크기: {prevMapStack?.Count??null}");
         }
-
         _playerInput.SwitchCurrentActionMap(targetMap);
-        
     }
 
     string IMapChangable.getCurrentIAmap()
@@ -106,7 +75,6 @@ public class ActionMapChanger : IMapChangable, IStartable
             string target = prevMapStack.Pop();
             _playerInput.SwitchCurrentActionMap(target);
             Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
-
         }
     }
     void IMapChangable.changeIAmap(string targetMap) // 직접 키고 싶은 맵 요청
@@ -121,9 +89,7 @@ public class ActionMapChanger : IMapChangable, IStartable
    
     #region 액션 바인딩 커스텀아이즈
 
-
      public void Keymapping()
     { InputActionMap map = _playerInput.currentActionMap; }
-
     #endregion
 }
