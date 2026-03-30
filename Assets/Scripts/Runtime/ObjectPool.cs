@@ -1,7 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets; // �߰�
-using UnityEngine.ResourceManagement.AsyncOperations; // �߰�
+using UnityEngine.AddressableAssets; //  ? 
+using UnityEngine.ResourceManagement.AsyncOperations; //  ? 
 
 
 public class ObjectPool : MonoBehaviour
@@ -9,16 +9,16 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool Instance;
 
     [SerializeField]
-    private AssetReference prefabReference; // GameObject ��� AssetReference ���
+    private AssetReference prefabReference; // GameObject     AssetReference    
 
-    private GameObject loadedPrefab; // �ε�� ������ �����
+    private GameObject loadedPrefab; //  ε               
     private Queue<ItemDataContainer> poolingObjectQueue = new Queue<ItemDataContainer>();
 
-    async void Awake() // async�� �����Ͽ� �ε��� ��ٸ��ϴ�.
+    async void Awake() // async        ?   ε      ?  ? .
     {
         Instance = this;
 
-        // 2. ��巹������ ������ �ε� ����
+        // 2.   ?               ε      
         AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(prefabReference);
         await handle.Task;
 
@@ -29,7 +29,7 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            Debug.LogError("������ �ε� ����!");
+            Debug.LogError("        ε      !");
         }
     }
 
@@ -43,7 +43,7 @@ public class ObjectPool : MonoBehaviour
 
     private ItemDataContainer CreateNewObject()
     {
-        // �ε�� �������� �ν��Ͻ�ȭ�մϴ�.
+        //  ε             ν  ? ? ?? .
         var obj = Instantiate(loadedPrefab, transform);
         var itemArea = obj.GetComponent<ItemDataContainer>();
 
@@ -55,10 +55,10 @@ public class ObjectPool : MonoBehaviour
 
     public static ItemDataContainer GetObject()
     {
-        // �ε��� ���� �� ������ ��츦 ����� ��� �ڵ�
+        //  ε                     츦            ? 
         if (Instance.loadedPrefab == null)
         {
-            Debug.LogWarning("���� ������ �ε� ���Դϴ�!");
+            Debug.LogWarning("             ε     ?? !");
             return null;
         }
 
@@ -87,7 +87,7 @@ public class ObjectPool : MonoBehaviour
 
     private void OnDestroy()
     {
-        // 3. Ǯ�� �ı��� �� ��巹���� �ڵ� ���� (�޸� ����)
+        // 3. ?    ı         ?      ?       ( ?      )
         if (prefabReference.IsValid())
         {
             prefabReference.ReleaseAsset();

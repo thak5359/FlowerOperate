@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class MasterManager : MonoBehaviour
 {
     //private ProgressManager progressManager;
     //private IAmapManager iaMapManager;
-    // ¼¼ÀÌºê ·Îµå °ü¸® ¸Å´ÏÀú
+    // ì„¸ì´ë¸Œ ë¡œë“œ ê´€ë¦¬ ë§¤ë‹ˆì €
     
     public static MasterManager instance;
 

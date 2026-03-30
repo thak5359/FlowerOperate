@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,7 @@ public class ItemDataContainer : MonoBehaviour
     [SerializeField]
     ItemObjectData data;
 
+    public ItemObjectData GetData => this.data;
     public int GetItemID => data.GetItemID;
     public int GetAmount => data.GetAmount;
     public int GetDuration => data.GetDuration;

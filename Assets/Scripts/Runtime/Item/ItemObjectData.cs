@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [System.Serializable]
 public class ItemObjectData
@@ -8,16 +8,19 @@ public class ItemObjectData
     [SerializeField] int Duration;
     [SerializeField] int grade;
 
+    //ê²Œí„°
     public int GetItemID => itemID;
     public int GetAmount => amount;
     public int GetDuration => Duration;
     public int GetGrade => grade;
 
-    //¼¼ÅÍ
+    //ì„¸í„°
     public void SetItemID(int itemID) => this.itemID = itemID;
     public void SetAmount(int amount) => this.amount = amount;
     public void SetDuration(int Dur) => this.Duration = Dur;
     public void SetGrade(int grade) => this.grade = grade;
+
+    public void AddAmount(int amount) => this.amount += amount;
 
     public ItemObjectData(int itemID, int amount, int duration, int grade)
     {

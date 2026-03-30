@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,21 +7,21 @@ using Fungus;
 
 public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandler, IPointerExitHandler
 {
-    //¾îµğ¿¡¼­ µé¾î¿Ô´ÂÁö¸¸ °¨Áö, ³»ºÎ ¿òÁ÷ÀÓ °¨Áö X
+    //ì–´ë””ì—ì„œ ë“¤ì–´ì™”ëŠ”ì§€ë§Œ ê°ì§€, ë‚´ë¶€ ì›€ì§ì„ ê°ì§€ X
     public void OnPointerEnter(PointerEventData  eventdata)
     {
-        Debug.Log($"¸¶¿ì½º ¿Ã¶ó°¨ °¨ÁöµÊ : {eventdata}");
+        Debug.Log($"ë§ˆìš°ìŠ¤ ì˜¬ë¼ê° ê°ì§€ë¨ : {eventdata}");
     }
     public void OnPointerMove(PointerEventData pointerEventData)
     {
-        Debug.Log($"¸¶¿ì½º ¿òÁ÷ÀÓ °¨ÁöµÊ : {pointerEventData}");
+        Debug.Log($"ë§ˆìš°ìŠ¤ ì›€ì§ì„ ê°ì§€ë¨ : {pointerEventData}");
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
 
     }
-    //TODO : Panel ÇÏ³ª Àâ¾Æ¼­ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ¶ç¿ì´Â °Å ¸¸µé±â
+    //TODO : Panel í•˜ë‚˜ ì¡ì•„ì„œ ì•„ì´í…œ ë°ì´í„° ë„ìš°ëŠ” ê±° ë§Œë“¤ê¸°
 }
 
 
