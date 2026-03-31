@@ -1,0 +1,372 @@
+{
+    "InvenData": {
+        "itemListData": [
+            {
+                "itemID": 3,
+                "amount": 2,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            }
+        ],
+        "slotsCount": 1
+    },
+    "StorageData": {
+        "itemListData": [
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            },
+            {
+                "itemID": 0,
+                "amount": 0,
+                "Duration": 0,
+                "grade": 0
+            }
+        ],
+        "slotsCount": 0
+    }
+}

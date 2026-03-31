@@ -8,22 +8,17 @@ public class InventoryManager : ItemStorageParent
 {
     [SerializeField]
     GameObject slotPrefab;
-    string InvenJson;
+
+    //Getter
+    public ItemStorageData GetInvenData => _data;
 
     private void Awake()
     {
         this.Initialize();
-        InvenJson = JsonUtility.ToJson(_data);
-        string path = Path.Combine(Application.dataPath, "Savedata.json");
-        File.WriteAllText(path, InvenJson);
     }
 
     protected override void Initialize()
     {
         base.Initialize();
-        foreach(var slot in this.GetComponentsInChildren<ItemDataContainer>())
-        {
-            _data.AddItem(slot.GetData);
-        }
     }
 }
