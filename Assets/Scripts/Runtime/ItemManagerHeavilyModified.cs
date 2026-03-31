@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Burst;
+using UnityEngine.Rendering.Universal;
 
 public struct ItemDataStatic
 {
@@ -11,23 +12,39 @@ public struct ItemDataStatic
     public FixedString64Bytes Description;
     public FixedString64Bytes SpriteAddress;
 
-    public int Power;
-    public int Duration;
 }
 
 public struct UsableItemDataStatic 
 {
-    public int ChargeTime;
-    public int MaxChargeCount;
+    public int ItemId;
+    public FixedString64Bytes ItemName;
+    public FixedString64Bytes Description;
+    public FixedString64Bytes SpriteAddress;
+
+    public int chargeTime;
+    public int maxChargeCount;
 }
 
-public class ItemMangerHeavyModified 
+public struct FlowerItemDataStatic
+{
+    public int ItemId;
+    public FixedString64Bytes ItemName;
+    public FixedString64Bytes Description;
+    public FixedString64Bytes SpriteAddress;
+
+    public FixedString64Bytes species;
+
+}
+
+
+public class ItemManagerHeavilyModified 
 {
     public static ItemManager Instance { get; private set; }
 
     // 핵심: Burst가 접근 가능한 고속 데이터 배열
-    private NativeArray<ItemDataStatic> _nativeMasterDb;
-    private bool _isInitialized = false;
+    private NativeArray<ItemDataStatic> _nativeItemDB;
+    private NativeArray<FlowerItemDataStatic> _nativeFlowerItemDB;
+    private NativeArray<UsableItemDataStatic> _nativeUsableItemDB;
 
 
     //private void InitializeNativeDatabase()
@@ -138,23 +155,23 @@ public class ItemMangerHeavyModified
     public string GetItemName(int id)
     {
         // 내부적으로는 Burst로 최적화된 정적 메서드를 호출합니다.
-        return ItemSearchSystem.GetNameBurst(_nativeMasterDb, id).ToString();
+        return ItemSearchSystem.GetNameBurst(_nativeItemDB, id).ToString();
     }
 
     public string GetItemDescription(int id)
     {
-        return ItemSearchSystem.GetDescriptionBurst(_nativeMasterDb, id).ToString();
+        return ItemSearchSystem.GetDescriptionBurst(_nativeItemDB, id).ToString();
     }
 
     public string GetItemAddress(int id)
     {
-        return ItemSearchSystem.GetAddressBurst(_nativeMasterDb, id).ToString();
+        return ItemSearchSystem.GetAddressBurst(_nativeItemDB, id).ToString();
     }
 
     void OnDestroy()
     {
         // NativeArray는 반드시 수동으로 해제해야 메모리 누수가 없습니다!
-        if (_nativeMasterDb.IsCreated) _nativeMasterDb.Dispose();
+        if (_nativeItemDB.IsCreated) _nativeItemDB.Dispose();
     }
 }
 

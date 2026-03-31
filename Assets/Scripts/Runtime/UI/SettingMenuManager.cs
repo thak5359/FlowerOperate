@@ -187,8 +187,7 @@ public class SettingMenuManager : MonoBehaviour
 
     public void OnClickSettingOpen()
     {
-        input.changeIAmapSetting();
-        StartCoroutine(MoveRoutine(showPos));
+        OpenSettingMenu();
     }
 
     public void OnClickSettingClose()
