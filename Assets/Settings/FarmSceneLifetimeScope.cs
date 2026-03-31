@@ -5,11 +5,9 @@ using UnityEngine.InputSystem;
 
 public class FarmSceneLifetimeScope : LifetimeScope
 {
-
     [SerializeField] private PlayerController playerController;
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private PauseMenu pauseMenu;
-
 
     protected override void Configure(IContainerBuilder builder)
     {

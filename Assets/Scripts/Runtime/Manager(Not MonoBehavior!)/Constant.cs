@@ -54,4 +54,14 @@ public class Constant
     public const string TITLE_SCENE_NAME = "MainTitle";
     public const string FARM_SCENE_NAME = "SampleScene";
     #endregion
+
+    #region 아이템 데이터
+
+
+    public const int LAST_USABLE_ID = 40;
+    public const int LAST_COMMON_ID = 300;
+    public const int LAST_FLOWER_ID = 1000;
+
+
+    #endregion 
 }

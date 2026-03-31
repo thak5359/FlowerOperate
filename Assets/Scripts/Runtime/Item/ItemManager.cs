@@ -50,8 +50,8 @@ public class ItemManager : MonoBehaviour
                     break;
                 case 40:
                     {
-                        bool flowerControl = InsertDataToMasterDB(data);
-                        if (!flowerControl)
+                        bool flowControl = InsertDataToMasterDB(data);
+                        if (!flowControl)
                             continue;
                     }
                     break;
@@ -176,10 +176,10 @@ public class ItemManager : MonoBehaviour
 
         if (data != null)
         {
-            result.Add(data.Getfloro);
+            result.Add(data.GetFloro);
 
             if (data != null)
-                result.Add(data.Getfloro);
+                result.Add(data.GetFloro);
         }
         return result;
     }
@@ -264,7 +264,7 @@ public class FlowerDataBase : MasterData
 
     public string GetSpecies => species;
     public string GetColor => color;
-    public string Getfloro => floro;
+    public string GetFloro => floro;
     public string GetFloro2 => floro2;
     public bool GetIsSeed => isSeed;
 
