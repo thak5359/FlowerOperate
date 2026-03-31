@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
+
     [SerializeField]
     GameObject Inven;
     [SerializeField]
     GameObject Storage;
 
-    private SaveDatas save;
+    public static event Action OnSaveData;
+    public SaveDatas save;
     string SaveJson;
 
     private void Awake()
@@ -28,7 +30,10 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Load()
     {
-
+        string path = Path.Combine(Application.dataPath, "Save.json");
+        SaveJson = File.ReadAllText(path);
+        save = JsonUtility.FromJson<SaveDatas>(SaveJson);
+        OnSaveData?.Invoke();
     }
 }
 
@@ -39,6 +44,9 @@ public class SaveDatas
     private ItemStorageData InvenData;
     [SerializeField]
     private ItemStorageData StorageData;
+
+    public ItemStorageData GetInvenData => this.InvenData;
+    public ItemStorageData GetStorageData => this.StorageData;
 
     public SaveDatas(ItemStorageData inventory, ItemStorageData storage)
     {
