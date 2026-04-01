@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 
 
@@ -14,4 +15,16 @@ public class UsableDetailData : ItemDetailData
     public int Duration(int index) => durationList[index];
     public int Power(int index) => powerList[index];
     public ChargeInfo ChargeInfo(int index) => chargeInfoList[index];
+}
+
+public struct UsableDetailBlobData
+{
+    public short duration;
+    public byte power;
+    public ChargeInfo chargeInfo;
+}
+
+public struct UsableDetailBlobDatas
+{
+    public BlobArray<UsableDetailBlobData> usableDetails;
 }

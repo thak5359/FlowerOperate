@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Entities;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FlowerIdData", menuName = "FlowerData/IdData")]
@@ -17,3 +19,19 @@ public class FlowerIdData : ItemIdData
     public int FloroIndex2(int i) => floroIndex2[i];
 }
 
+public struct FlowerItemBlobData
+{
+    public BlobString itemName;
+    public BlobString description;
+    public BlobString spriteAddress;
+
+    public byte speciesIndex;
+    public byte colorIndex;
+    public byte floroIndex;
+    public byte floroIndex2;
+}
+
+public struct FlowerItemBlobDatas
+{
+    public BlobArray<FlowerItemBlobData> flowerItems;
+}
