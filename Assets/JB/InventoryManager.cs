@@ -6,32 +6,23 @@ using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
 {
-    [SerializeField]
-    GameObject slotPrefab;
-    [SerializeField]
-    GameObject savePrefab;
-
     //Getter
     public ItemStorageData GetInvenData => _data;
 
-    private void Awake()
-    {
-    }
-
     private void OnEnable()
     {
-        SaveLoadManager.OnSaveData += Initialize;
+        SaveLoadManager.OnLoadData += this.Initialize;
     }
 
     private void OnDisable()
     {
-        SaveLoadManager.OnSaveData -= Initialize;
+        SaveLoadManager.OnLoadData -= this.Initialize;
     }
 
-    protected override void Initialize()
+    private void Initialize(SaveDatas save)
     {
         base.Initialize();
-        _data = savePrefab.GetComponent<SaveLoadManager>().save.GetInvenData;
+        _data = save.GetInvenData;
         Debug.Log("초기화 끝");
     }
 }

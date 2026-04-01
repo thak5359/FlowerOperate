@@ -22,6 +22,7 @@ public class ItemStorageParent : MonoBehaviour
 
     public virtual void Swap(int idx1, int idx2)
     {
+        //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
         _data.SwapItem(idx1, idx2);
         Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
     }
@@ -34,6 +35,7 @@ public class ItemStorageParent : MonoBehaviour
     protected virtual void AddItem(ItemObjectData item)
     {
         _data.AddItem(item);
+        //슬롯의 숫자UI 변경 로직 넣어주세요.
     }
 }
 
@@ -63,7 +65,7 @@ public class ItemStorageData
 
     public void AddItem(ItemObjectData item)
     {
-        int idx = itemListData.FindIndex(curItem => curItem != null && curItem.GetItemID == item.GetItemID);
+        int idx = itemListData.FindIndex(curItem => curItem.Equals(null) && curItem.GetItemID == item.GetItemID);
         // 인벤토리에 같은 ID의 아이템이 있을 때
         if (idx != -1)
         {
@@ -71,7 +73,7 @@ public class ItemStorageData
             Debug.Log("Same Item");
         }
         // 획득한 아이템이 인벤에 없던 아이템 & 빈 슬롯이 존재할 때
-        else if (itemListData.Any(data => data == null))
+        else if (itemListData.Any(data => data.Equals(null)))
         {
             itemListData[GetSlotsCount] = item;
             SetSlotsCount(GetSlotsCount + 1);

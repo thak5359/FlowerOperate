@@ -3,37 +3,66 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
-public class SaveLoadManager : MonoBehaviour
+public class SaveLoadManager : MonoBehaviour, IInitializable
 {
+    private InventoryManager inventoryManager;
+    private StorageManager storageManager;
 
-    [SerializeField]
-    GameObject Inven;
-    [SerializeField]
-    GameObject Storage;
+    public static event Action<SaveDatas> OnLoadData;
+    public SaveDatas saveData;
+    private string SaveJson;
 
-    public static event Action OnSaveData;
-    public SaveDatas save;
-    string SaveJson;
-
-    private void Awake()
+    void IInitializable.Initialize()
     {
-        // GetComponent는 임시 코드. 추후 vcontainer를 활용하는 방향으로 수정 예정
-        save = new SaveDatas(Inven.GetComponent<InventoryManager>().GetInvenData, Storage.GetComponent<StorageManager>().GetStorageData);
+        saveData = new SaveDatas(inventoryManager.GetInvenData, storageManager.GetStorageData);
     }
+
+    [Inject]
+    public void Construct(InventoryManager inven, StorageManager storage)
+    {
+        inventoryManager = inven;
+        storageManager = storage;
+        Debug.Log("의존성 주입 완료!");
+    }
+
+    public SaveDatas GetSaveDatas => this.saveData;
+
     public void Save()
     {
+        // 1. 주입 확인 (로그가 떴다면 통과)
+        if (inventoryManager == null) return;
+
+        // 2. 인벤토리에 들어있는 '현재 인스펙터 값'을 직접 가져옵니다.
+        // 이벤트(Initialize)가 실행되지 않았어도 인스펙터에 넣은 값은 _data에 있습니다.
+        var currentData = inventoryManager.GetInvenData;
+
+        if (currentData == null)
+        {
+            Debug.LogError("InventoryManager의 _data가 null입니다.");
+            return;
+        }
+
+        // 3. 저장용 바구니(saveData)를 '지금' 새로 만듭니다. 
+        // 여기서 생성자에 currentData를 넣으면 인스펙터 값이 저장용 객체로 복사됩니다.
+        saveData = new SaveDatas(currentData, storageManager.GetStorageData);
+
+        // 4. JSON 저장
         string path = Path.Combine(Application.dataPath, "Save.json");
-        SaveJson = JsonUtility.ToJson(save, true);
-        File.WriteAllText(path, SaveJson);
+        string json = JsonUtility.ToJson(saveData, true);
+        File.WriteAllText(path, json);
+
+        Debug.Log($"[저장 성공] 파일 경로: {path}");
     }
 
     public void Load()
     {
         string path = Path.Combine(Application.dataPath, "Save.json");
         SaveJson = File.ReadAllText(path);
-        save = JsonUtility.FromJson<SaveDatas>(SaveJson);
-        OnSaveData?.Invoke();
+        saveData = JsonUtility.FromJson<SaveDatas>(SaveJson);
+        OnLoadData?.Invoke(saveData);
     }
 }
 
