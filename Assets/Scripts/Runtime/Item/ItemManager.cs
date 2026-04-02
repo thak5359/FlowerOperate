@@ -36,7 +36,7 @@ public class ItemManager : MonoBehaviour
         {
             switch (data.startId)
             {
-                case 0:
+                case 1:
                     {
                         var IDdata = data as UsableIdData;
                         bool flowControl = InsertDataToMasterDB(IDdata);
@@ -44,14 +44,14 @@ public class ItemManager : MonoBehaviour
                             continue;
                     }
                     break;
-                case 40:
+                case 100:
                     {
                         bool flowerControl = InsertDataToMasterDB(data);
                         if (!flowerControl)
                             continue;
                     }
                     break;
-                case 300:
+                case 700:
                     {
                         var IDdata = data as FlowerIdData;
                         bool flowControl = InsertDataToMasterDB(IDdata);
@@ -120,8 +120,8 @@ public class ItemManager : MonoBehaviour
                 masterDb[data.startId + (i * 2 + 1)] = flower;
                 masterDb[data.startId + (i * 2)] = seed;
 
-                if (seed != null)
-                    Debug.Log(seed.GetItemName);
+                //if (seed != null)
+                //    Debug.Log(seed.GetItemName);
             }
         }
         return true;

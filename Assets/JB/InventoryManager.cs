@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
 {
-    //Getter
-    public ItemStorageData GetInvenData => _data;
+    [SerializeField] List<ItemDataContainer> slotList;
+    [SerializeField] GameObject slotObject;
+
+    private void Awake()
+    {
+        slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
+    }
 
     private void OnEnable()
     {
@@ -23,6 +29,15 @@ public class InventoryManager : ItemStorageParent
     {
         base.Initialize();
         _data = save.GetInvenData;
+        for (int i = 0; i < _data.GetList.Count; i++)
+        {
+            if (i >= 30)
+            {
+                var newSlot = Instantiate(slotObject, this.gameObject.transform);
+                slotList.Add(newSlot.GetComponent<ItemDataContainer>());
+            }
+            slotList[i].SetData(_data.GetList[i]);
+        }
         Debug.Log("초기화 끝");
     }
 }

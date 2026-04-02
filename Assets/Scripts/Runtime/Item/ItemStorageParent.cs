@@ -12,12 +12,16 @@ public class ItemStorageParent : MonoBehaviour
     [SerializeField]
     protected ItemStorageData _data = new ItemStorageData();
 
+    //Getter
+    public ItemStorageData GetData => _data;
+
     protected virtual void Initialize()
     {
         if (_data.GetList != null)
             _data.ClearList();
         _data.SetItemList(new List<ItemObjectData>(new ItemObjectData[_data.GetSlotsCount]));
         _data.SetSlotsCount(0);
+        
     }
 
     public virtual void Swap(int idx1, int idx2)
@@ -25,6 +29,11 @@ public class ItemStorageParent : MonoBehaviour
         //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
         _data.SwapItem(idx1, idx2);
         Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
+    }
+
+    public virtual void Combine()
+    {
+
     }
 
     public void AbandonItem()
@@ -45,7 +54,7 @@ public class ItemStorageData
     [SerializeField]
     private List<ItemObjectData> itemListData;
     [SerializeField]
-    private int slotsCount = 30;
+    private int slotsCount = 50;
 
     //Getter
     public int GetSlotsCount => slotsCount;
@@ -65,10 +74,15 @@ public class ItemStorageData
 
     public void AddItem(ItemObjectData item)
     {
-        int idx = itemListData.FindIndex(curItem => curItem.Equals(null) && curItem.GetItemID == item.GetItemID);
+        int idx = itemListData.FindIndex(curItem => curItem.GetItemID == item.GetItemID);
         // 인벤토리에 같은 ID의 아이템이 있을 때
         if (idx != -1)
         {
+            if (itemListData[idx].CheckFull())
+            {
+                itemListData.Add(item);
+                return;
+            }
             itemListData[idx].AddAmount(item.GetAmount);
             Debug.Log("Same Item");
         }
@@ -84,6 +98,24 @@ public class ItemStorageData
         {
             itemListData.Add(item);
             Debug.Log("슬롯 꽉 참");
+        }
+    }
+
+    // 함수 정의: 매개변수 앞에 ref를 붙입니다.
+    public void CombineItem(ref ItemObjectData start, ref ItemObjectData target)
+    {
+        // 계산을 위해 임시 변수를 활용하는 것이 안전합니다.
+        int totalAmount = start.GetAmount + target.GetAmount;
+
+        if (totalAmount > 100)
+        {
+            target.SetAmount(100);
+            start.SetAmount((sbyte)(totalAmount - 100));
+        }
+        else
+        {
+            target.SetAmount((sbyte)totalAmount);
+            start.SetAmount(0); // 합쳐졌으므로 시작 아이템은 0개가 되어야 함
         }
     }
 }

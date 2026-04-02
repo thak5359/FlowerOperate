@@ -17,7 +17,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 
     void IInitializable.Initialize()
     {
-        saveData = new SaveDatas(inventoryManager.GetInvenData, storageManager.GetStorageData);
+        saveData = new SaveDatas(inventoryManager.GetData, storageManager.GetData);
     }
 
     [Inject]
@@ -37,7 +37,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 
         // 2. 인벤토리에 들어있는 '현재 인스펙터 값'을 직접 가져옵니다.
         // 이벤트(Initialize)가 실행되지 않았어도 인스펙터에 넣은 값은 _data에 있습니다.
-        var currentData = inventoryManager.GetInvenData;
+        var currentData = inventoryManager.GetData;
 
         if (currentData == null)
         {
@@ -47,7 +47,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 
         // 3. 저장용 바구니(saveData)를 '지금' 새로 만듭니다. 
         // 여기서 생성자에 currentData를 넣으면 인스펙터 값이 저장용 객체로 복사됩니다.
-        saveData = new SaveDatas(currentData, storageManager.GetStorageData);
+        saveData = new SaveDatas(currentData, storageManager.GetData);
 
         // 4. JSON 저장
         string path = Path.Combine(Application.dataPath, "Save.json");

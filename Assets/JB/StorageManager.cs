@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class StorageManager : ItemStorageParent
 {
-    public ItemStorageData GetStorageData => _data;
     private void Awake()
     {
-        Initialize();
+        //Initialize();
+        
     }
 
-
+    public void SortList()
+    {
+        GetData.GetList.Sort((ItemObjectData a, ItemObjectData b) => {
+            //2차 : ID 오름차순
+            return a.GetItemID.CompareTo(b.GetItemID);
+        });
+    }
 }

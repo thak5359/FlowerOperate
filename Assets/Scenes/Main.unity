@@ -393,6 +393,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49098494}
   m_CullTransparentMesh: 1
+--- !u!1 &65891408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 65891410}
+  - component: {fileID: 65891409}
+  m_Layer: 0
+  m_Name: Plot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &65891409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65891408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd9d4169ccd7b4489373e56046871f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    itemListData: []
+    slotsCount: 50
+--- !u!4 &65891410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65891408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 383.58453, y: 179.65318, z: 0.4292358}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104113727
 GameObject:
   m_ObjectHideFlags: 0
@@ -4020,7 +4067,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    itemListData: []
+    itemListData:
+    - itemID: 3
+      Duration: 0
+      amount: 0
+      grade: 0
+    - itemID: 2
+      Duration: 0
+      amount: 0
+      grade: 0
+    - itemID: 5
+      Duration: 0
+      amount: 0
+      grade: 0
+    - itemID: 11
+      Duration: 0
+      amount: 0
+      grade: 0
+    - itemID: 2
+      Duration: 0
+      amount: 0
+      grade: 0
     slotsCount: 30
 --- !u!4 &1313789151
 Transform:
@@ -4186,10 +4253,13 @@ MonoBehaviour:
   _data:
     itemListData:
     - itemID: 2
-      amount: 11
       Duration: 0
+      amount: 11
       grade: 0
     slotsCount: 30
+  slotList: []
+  slotObject: {fileID: 8345891398220901380, guid: e52c138f15d7410439bb7c677c715a63,
+    type: 3}
 --- !u!4 &1868467633
 Transform:
   m_ObjectHideFlags: 0
@@ -4420,3 +4490,4 @@ SceneRoots:
   - {fileID: 1291941868}
   - {fileID: 1868467633}
   - {fileID: 1313789151}
+  - {fileID: 65891410}
