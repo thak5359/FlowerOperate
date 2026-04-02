@@ -1,6 +1,6 @@
 #if UNITY_EDITOR
-using Fungus;
 using System.Collections.Generic;
+using System.IO;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEditor;
@@ -8,134 +8,108 @@ using UnityEngine;
 
 public class ItemBlobMaker : EditorWindow
 {
-    private List<ScriptableObject> targetSOList;
+    // 리스트로 여러 개의 SO를 받기 위해 SerializedObject를 활용합니다.
+    [SerializeField] private List<ItemIdData> targetSOList = new List<ItemIdData>();
     private string savePath = "Assets/Blobs";
 
     [MenuItem("Tools/Bake Item Data to Blob")]
-    public static void ShowWindow()
-    {
-        GetWindow<ItemBlobMaker>("Blobmaker");
-    }
-
+    public static void ShowWindow() => GetWindow<ItemBlobMaker>("Blobmaker (Partner Pro)");
 
     private void OnGUI()
     {
-        GUILayout.Label("아이템 SO -> 메쉬 파일 저장 도구 (Pro)", EditorStyles.boldLabel);
+        GUILayout.Label("HPC# 데이터 베이킹 도구", EditorStyles.boldLabel);
         EditorGUILayout.Space(10);
 
-        SerializedObject so = new SerializedObject(this);
+        // 리스트 UI를 인스펙터처럼 깔끔하게 표시
+        ScriptableObject target = this;
+        SerializedObject so = new SerializedObject(target);
         SerializedProperty listProp = so.FindProperty("targetSOList");
-        EditorGUILayout.PropertyField(listProp, new  GUIContent("대상 SO 리스트"),true);
+        EditorGUILayout.PropertyField(listProp, new GUIContent("대상 SO 리스트"), true);
         so.ApplyModifiedProperties();
 
         savePath = EditorGUILayout.TextField("저장 폴더 경로", savePath);
 
         EditorGUILayout.Space(20);
 
-        if (GUILayout.Button("ScriptableObject를 BLOB 형식으로 굽습니다", GUILayout.Height(40)))
+        if (GUILayout.Button("선택한 모든 SO를 개별 BLOB으로 굽기", GUILayout.Height(40)))
         {
-            if (targetSOList.Count == 0)
+            if (targetSOList == null || targetSOList.Count == 0)
             {
-                EditorUtility.DisplayDialog("경고", "파트너, SO 파일을 먼저 넣어주세요!", "확인");
+                EditorUtility.DisplayDialog("경고", "파트너, 리스트에 SO 파일을 먼저 넣어주세요!", "확인");
                 return;
             }
-            foreach (var target in targetSOList)
-            { Bake(target); }
+
+            foreach (var itemSO in targetSOList)
+            {
+                if (itemSO != null) Bake(itemSO);
+            }
+
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("완료", "모든 데이터가 바이너리로 구워졌습니다!", "확인");
         }
     }
 
-
-
-    public static void Bake(ScriptableObject SO)
+    public void Bake(ItemIdData so)
     {
-        if (SO is ItemIdData)
+        var builder = new BlobBuilder(Allocator.Temp);
+        try
         {
-            if (SO is UsableIdData)
+            // 2. 루트 구조체(ItemBlobDatas) 생성
+            ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
+
+            // 3. 내부 배열 할당 (SO의 아이템 개수만큼)
+            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
+
+            for (int i = 0; i < so.itemName.Count; i++)
             {
-                UsableIdData targetSO1 = (UsableIdData)SO;
-                using (var builder = new BlobBuilder(Allocator.Temp))
-                {
-                    // 2. 컨테이너 생성
-                    ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
-                    var arrayBuilder = builder.Allocate(ref root.Items, targetSO1.itemName.Count);
+                // ID 기록 (시작 ID + 인덱스)
+                arrayBuilder[i].ItemId = so.startId + i;
 
-                    for (int i = 0; i < targetSO1.itemName.Count; i++)
-                    {
-                        builder.AllocateString(ref arrayBuilder[i].ItemName, targetSO1.itemName[i]);
-                        builder.AllocateString(ref arrayBuilder[i].Description, targetSO1.description[i]);
-                        builder.AllocateString(ref arrayBuilder[i].SpriteAddress, targetSO1.spriteAddress[i]);
-                    }
-
-                    // 3. 파일로 저장 (바이너리 데이터 생성)
-                    var blobAsset = builder.CreateBlobAssetReference<ItemBlobDatas>(Allocator.Persistent);
-
-                    // 이 blobAsset을 파일로 저장하거나, 전역 매니저에 들고 있게 합니다.
-                    // (실제 프로젝트에서는 ScriptableObject에 Reference를 담아 저장하는 방식을 씁니다.)
-                }
+                // [중요] AllocateString은 반드시 builder를 통해 주소값을 할당해야 합니다.
+                // 텍스트가 null인 경우를 대비해 ""(빈 문자열) 처리를 해주는 것이 안전합니다.
+                builder.AllocateString(ref arrayBuilder[i].ItemName, so.itemName[i] ?? "");
+                builder.AllocateString(ref arrayBuilder[i].Description, so.description[i] ?? "");
+                builder.AllocateString(ref arrayBuilder[i].SpriteAddress, so.spriteAddress[i] ?? "");
             }
-            else if (SO is FlowerIdData)
+
+            // 4. 메모리에 구워진 데이터를 참조 형태로 추출
+            var blobAssetPtr = builder.CreateBlobAssetReference<ItemBlobDatas>(Allocator.Persistent);
+
+            // 5. 파일로 물리적 저장
+            SaveBlobToFile(blobAssetPtr, so.name);
+
+            // 6. 사용한 네이티브 메모리 해제
+            blobAssetPtr.Dispose();
+        }
+        finally
+        {
+            builder.Dispose(); // 메모리 해제 보장
+        }
+    }
+
+    private void SaveBlobToFile<T>(BlobAssetReference<T> blobRef, string fileName) where T : unmanaged
+    {
+        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+
+        string fullPath = Path.Combine(savePath, $"{fileName}.blob");
+
+        // 바이너리 파일 쓰기
+        using (var stream = new FileStream(fullPath, FileMode.Create))
+        using (var writer = new BinaryWriter(stream))
+        {
+            unsafe
             {
-                FlowerIdData targetSO2 = (FlowerIdData)SO;
-                using (var builder = new BlobBuilder(Allocator.Temp))
+                // 블롭의 실제 메모리 크기만큼 바이트 단위로 씁니다.
+                byte* ptr = (byte*)blobRef.GetUnsafePtr();
+                int size = blobRef.Value.Header.Length;
+
+                for (int i = 0; i < size; i++)
                 {
-                    // 2. 컨테이너 생성
-                    ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
-                    var arrayBuilder = builder.Allocate(ref root.Items, targetSO2.itemName.Count);
-
-                    for (int i = 0; i < targetSO2.itemName.Count; i++)
-                    {
-                        builder.AllocateString(ref arrayBuilder[i].ItemName, targetSO2.itemName[i]);
-                        builder.AllocateString(ref arrayBuilder[i].Description, targetSO2.description[i]);
-                        builder.AllocateString(ref arrayBuilder[i].SpriteAddress, targetSO2.spriteAddress[i]);
-                    }
-
-                    // 3. 파일로 저장 (바이너리 데이터 생성)
-                    var blobAsset = builder.CreateBlobAssetReference<ItemBlobDatas>(Allocator.Persistent);
-
-                    // 이 blobAsset을 파일로 저장하거나, 전역 매니저에 들고 있게 합니다.
-                    // (실제 프로젝트에서는 ScriptableObject에 Reference를 담아 저장하는 방식을 씁니다.)
-                }
-            }
-            else
-            {
-                ItemIdData targetSO3 = (ItemIdData)SO;
-                using (var builder = new BlobBuilder(Allocator.Temp))
-                {
-                    // 2. 컨테이너 생성
-                    ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
-                    var arrayBuilder = builder.Allocate(ref root.Items, targetSO3.itemName.Count);
-
-                    for (int i = 0; i < targetSO3.itemName.Count; i++)
-                    {
-                        builder.AllocateString(ref arrayBuilder[i].ItemName, targetSO3.itemName[i]);
-                        builder.AllocateString(ref arrayBuilder[i].Description, targetSO3.description[i]);
-                        builder.AllocateString(ref arrayBuilder[i].SpriteAddress, targetSO3.spriteAddress[i]);
-                    }
-
-                    // 3. 파일로 저장 (바이너리 데이터 생성)
-                    var blobAsset = builder.CreateBlobAssetReference<ItemBlobDatas>(Allocator.Persistent);
-
-                    // 이 blobAsset을 파일로 저장하거나, 전역 매니저에 들고 있게 합니다.
-                    // (실제 프로젝트에서는 ScriptableObject에 Reference를 담아 저장하는 방식을 씁니다.)
+                    writer.Write(ptr[i]);
                 }
             }
         }
-        else if (SO is ItemDetailData)
-        {
-            if (SO is UsableDetailData)
-            {
-
-            }
-            else if (SO is FlowerDetailData)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
-        else { EditorUtility.DisplayDialog("경고", "파트너, Item 관련 데이터가 아닌거 같은데요?!", "확인"); }
+        Debug.Log($"<color=green>[Bake 성공]</color> {fileName} -> {fullPath}");
     }
 }
 #endif
