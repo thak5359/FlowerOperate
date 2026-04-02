@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Unity.Collections;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,13 +14,13 @@ using UnityEngine.UI;
 public struct   UseParam
 {
     public readonly Vector2 heading;
-    public readonly int efficiency;
+    public readonly sbyte power;
     public readonly float elapsedTime;
 
-    public UseParam(Vector2 input_heading,  int input_efficiency, float input_elapsed)
+    public UseParam(Vector2 input_heading,  sbyte input_power, float input_elapsed)
     {
         heading = input_heading;
-        efficiency = input_efficiency;
+        power = input_power;
         elapsedTime = input_elapsed;
     }
 }   
@@ -28,53 +29,48 @@ public struct   UseParam
 [System.Serializable] // �ν����ͳ� ����� Ȯ���� ���� ����ȭ �����ϰ� ����
 public class Item
 {
-    public int? itemId = null;
-    protected int amount = 1;
+    public short itemId;
+    protected short amount = 1;
     protected Sprite cachedSprite;
 
-    public Item(int? id, int count)
+    public Item(short id, short count)
     {
         this.itemId = id;
         this.amount = count;
     }
 
     #region Get
-    public int Amount => amount;
-    virtual public string GetName()
+    public short Amount => amount;
+    virtual public FixedString64Bytes GetName()
     {
         if (itemId != -1)
-            return ItemManager.Instance.GetItemName((int)itemId);
+            return ItemManager.Instance.GetItemName(itemId);
 
         else return null;
     }
-    virtual public string GetDescription()
+    virtual public FixedString128Bytes GetDescription()
     {
         if (itemId != -1)
-            return ItemManager.Instance.GetItemDescription((int)itemId);
+            return ItemManager.Instance.GetItemDescription(itemId);
         else return null;
     }
     public virtual async Task<Sprite> GetSprite()
     {
-        if (itemId != null)
-        {
-            if (cachedSprite != null)
+            if (cachedSprite == null)
             {
-                if (itemId is int)
-                    cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ItemManager.Instance.GetItemAddress((int)itemId, 0));
+                    cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ItemManager.Instance.GetItemAddress(itemId).ToString());
             }
             return cachedSprite;
-        }
-        return null;
     }
     #endregion
 
     //������ �ε�
-    public virtual async void LoadData(int input_itemId, int input_amount)
+    public virtual async void LoadData(short input_itemId, short input_amount)
     {
         itemId = input_itemId;
         amount = input_amount;
 
-        if (itemId != -1 && itemId != null)
+        if (itemId != -1)
         {
             await RefreshSprite();
         }
@@ -84,13 +80,9 @@ public class Item
 
     public virtual async Task<Sprite> RefreshSprite()
     {
-        if (itemId != null && itemId is int)
-        {
             if (cachedSprite != null) AddressableManager.ReleaseAsset(cachedSprite);
-            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ItemManager.Instance.GetItemAddress((int)itemId));
+            cachedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ItemManager.Instance.GetItemAddress(itemId).ToString());
             return cachedSprite;
-        }
-        return null;
     }
 
     virtual public void OnUse(UseParam param)

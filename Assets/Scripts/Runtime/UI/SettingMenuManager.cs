@@ -138,23 +138,19 @@ public class SettingMenuManager : MonoBehaviour
         if (!context.performed && isTransitioning == true) return;
         currentMap = input.getCurrentIAmap();
 
-        switch (currentMap)
+        // 수정할 위치: SettingMenuManager 스크립트 내부의 맵 분기 처리 로직
+        if (currentMap == TITLE_MAP_NAME)
         {
-
-            case TITLE_MAP_NAME:
-                {
-                    StartCoroutine(OpenSettingMenu());
-                    break;
-                }
-            case SETTING_MAP_NAME:
-                {
-                    StartCoroutine(CloseSetttingMenu());
-                    break;
-                }
-            default:
-                {
-                    Debug.LogError($"[SettingMenuManager]: {currentMap}맵에서 해당 동작에 정의되지 않았습니다."); break;
-                }
+            StartCoroutine(OpenSettingMenu());
+        }
+        else if (currentMap == SETTING_MAP_NAME)
+        {
+            StartCoroutine(CloseSetttingMenu());
+        }
+        else
+        {
+            // 그 외의 경우 (기존 default 역할)
+            Debug.LogError($"[SettingMenuManager]: {currentMap}맵에서 해당 동작에 정의되지 않았습니다.");
         }
     }
 

@@ -13,7 +13,7 @@ public class ItemBlobMaker : EditorWindow
     private string savePath = "Assets/Blobs";
 
     [MenuItem("Tools/Bake Item Data to Blob")]
-    public static void ShowWindow() => GetWindow<ItemBlobMaker>("Blobmaker (Partner Pro)");
+    public static void ShowWindow() => GetWindow<ItemBlobMaker>("Blobmaker");
 
     private void OnGUI()
     {
@@ -54,62 +54,30 @@ public class ItemBlobMaker : EditorWindow
         var builder = new BlobBuilder(Allocator.Temp);
         try
         {
-            // 2. 루트 구조체(ItemBlobDatas) 생성
             ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
-
-            // 3. 내부 배열 할당 (SO의 아이템 개수만큼)
             var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
 
-            for (int i = 0; i < so.itemName.Count; i++)
+            for (short i = 0; i < so.itemName.Count; i++)
             {
-                // ID 기록 (시작 ID + 인덱스)
-                arrayBuilder[i].ItemId = so.startId + i;
+                arrayBuilder[i].ItemId = (short)(so.startId + i);
 
-                // [중요] AllocateString은 반드시 builder를 통해 주소값을 할당해야 합니다.
-                // 텍스트가 null인 경우를 대비해 ""(빈 문자열) 처리를 해주는 것이 안전합니다.
-                builder.AllocateString(ref arrayBuilder[i].ItemName, so.itemName[i] ?? "");
-                builder.AllocateString(ref arrayBuilder[i].Description, so.description[i] ?? "");
-                builder.AllocateString(ref arrayBuilder[i].SpriteAddress, so.spriteAddress[i] ?? "");
+                arrayBuilder[i].ItemName = (so.itemName[i] == null) ? so.itemName[i] : "";
+                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : "";
+                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : "";
             }
 
-            // 4. 메모리에 구워진 데이터를 참조 형태로 추출
-            var blobAssetPtr = builder.CreateBlobAssetReference<ItemBlobDatas>(Allocator.Persistent);
+            if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+            string fullPath = Path.Combine(savePath, $"{so.name}.blob");
 
-            // 5. 파일로 물리적 저장
-            SaveBlobToFile(blobAssetPtr, so.name);
+            // 완벽하게 구워버리기
+            BlobAssetReference<ItemBlobDatas>.Write(builder, fullPath, 1);
 
-            // 6. 사용한 네이티브 메모리 해제
-            blobAssetPtr.Dispose();
+            Debug.Log($"<color=green>[Bake 성공]</color> {so.name} -> {fullPath}");
         }
         finally
         {
-            builder.Dispose(); // 메모리 해제 보장
+            builder.Dispose();
         }
-    }
-
-    private void SaveBlobToFile<T>(BlobAssetReference<T> blobRef, string fileName) where T : unmanaged
-    {
-        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-
-        string fullPath = Path.Combine(savePath, $"{fileName}.blob");
-
-        // 바이너리 파일 쓰기
-        using (var stream = new FileStream(fullPath, FileMode.Create))
-        using (var writer = new BinaryWriter(stream))
-        {
-            unsafe
-            {
-                // 블롭의 실제 메모리 크기만큼 바이트 단위로 씁니다.
-                byte* ptr = (byte*)blobRef.GetUnsafePtr();
-                int size = blobRef.Value.Header.Length;
-
-                for (int i = 0; i < size; i++)
-                {
-                    writer.Write(ptr[i]);
-                }
-            }
-        }
-        Debug.Log($"<color=green>[Bake 성공]</color> {fileName} -> {fullPath}");
     }
 }
 #endif

@@ -68,10 +68,10 @@ public class ItemIdContainerGenTool : EditorWindow
 
             SO.itemName.Add(data[1]);
 
-            SO.speciesIndex.Add(int.Parse(data[2]));
-            SO.colorIndex.Add(int.Parse(data[3]));
-            SO.floroIndex.Add(int.Parse(data[4]));
-            if (int.TryParse(data[5], out int value))
+            SO.speciesIndex.Add(byte.Parse(data[2]));
+            SO.colorIndex.Add(byte.Parse(data[3]));
+            SO.floroIndex.Add(byte.Parse(data[4]));
+            if (sbyte.TryParse(data[5], out sbyte value))
                 SO.floroIndex2.Add(value);
             else
                 SO.floroIndex2.Add(-1);
@@ -97,9 +97,9 @@ public class ItemIdContainerGenTool : EditorWindow
 
             SO.itemName.Add(data[1]);
 
-            SO.durationIndex.Add(int.Parse(data[2]));
-            SO.powerIndex.Add(int.Parse(data[3]));
-            SO.chargeIndex.Add(int.Parse(data[6]));
+            SO.durationIndex.Add(byte.Parse(data[2]));
+            SO.powerIndex.Add(byte.Parse(data[3]));
+            SO.chargeIndex.Add(byte.Parse(data[6]));
         }
 
         UsableIdData usableId = CreateSOAsset(SO);

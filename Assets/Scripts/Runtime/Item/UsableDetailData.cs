@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -8,19 +9,20 @@ using UnityEngine;
 
 public class UsableDetailData : ItemDetailData
 {
-    [SerializeField] public List<int> durationList;
-    [SerializeField] public List<int> powerList;
+    [SerializeField] public List<short> durationList;
+    [SerializeField] public List<byte> powerList;
     [SerializeField] public List<ChargeInfo> chargeInfoList = new List<ChargeInfo>();
 
-    public int Duration(int index) => durationList[index];
-    public int Power(int index) => powerList[index];
-    public ChargeInfo ChargeInfo(int index) => chargeInfoList[index];
+    public short Duration(byte index) => durationList[index];
+    public byte Power(byte index) => powerList[index];
+    public ChargeInfo ChargeInfo(byte index) => chargeInfoList[index];
 }
 
 public struct UsableDetailBlobData
 {
+    public byte index;
     public short duration;
-    public byte power;
+    public sbyte power;
     public ChargeInfo chargeInfo;
 }
 

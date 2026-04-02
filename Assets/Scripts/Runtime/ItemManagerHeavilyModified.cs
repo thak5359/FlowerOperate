@@ -10,13 +10,13 @@ using static Constant;
 
 public struct ItemDataStatic
 {
-    public int ItemId;
+    public short ItemId;
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString64Bytes SpriteAddress;
 
-    public ItemDataStatic(int input_itemId, string input_ItemName,
-        string input_Description, string input_SpriteAddress)
+    public ItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName,
+        FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress)
     {
         ItemId = input_itemId;
         ItemName  = input_ItemName;
@@ -27,17 +27,17 @@ public struct ItemDataStatic
 
 public struct UsableItemDataStatic 
 {
-    public int ItemId;
+    public short ItemId;
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString64Bytes SpriteAddress;
 
-    public int Duration;
-    public int Power;
+    public short Duration;
+    public sbyte Power;
     public ChargeInfo chargeInfo;
 
-    public UsableItemDataStatic(int input_itemId, string input_ItemName,
-        string input_Description, string input_SpriteAddress, int input_Duration, int input_Power, ChargeInfo input_ChargeInfo)
+    public UsableItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName,
+        FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress, short input_Duration, sbyte input_Power, ChargeInfo input_ChargeInfo)
     {
         ItemId = input_itemId;
         ItemName = input_ItemName;
@@ -52,7 +52,7 @@ public struct UsableItemDataStatic
 
 public struct FlowerItemDataStatic
 {
-    public int ItemId;
+    public short ItemId;
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString64Bytes SpriteAddress;
@@ -64,8 +64,8 @@ public struct FlowerItemDataStatic
 
     bool isSeed;
 
-    public FlowerItemDataStatic(int input_itemId, string input_ItemName, string input_Description, string input_SpriteAddress, 
-        string input_species, string input_Color, string input_Floro1, string input_Floro2 = null, bool input_isSeed = false)
+    public FlowerItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName, FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress,
+        FixedString32Bytes input_species, FixedString32Bytes input_Color, FixedString32Bytes input_Floro1, FixedString32Bytes input_Floro2 = default(FixedString32Bytes), bool input_isSeed = false)
     {
         ItemId = input_itemId;
         ItemName = input_ItemName;
@@ -93,9 +93,9 @@ public struct FlowerItemDataStatic
         isSeed = copy.isSeed;
     }
 
-    public void SetItemName(string itemName) => this.ItemName = itemName;
+    public void SetItemName(FixedString64Bytes itemName) => this.ItemName = itemName;
     public void SetIsSeed(bool isSeed = false) => this.isSeed = isSeed;
-    public void SetItemDescription(string description) => this.Description = description;
+    public void SetItemDescription(FixedString128Bytes description) => this.Description = description;
 }
 
 
@@ -104,14 +104,16 @@ public class ItemManagerHeavilyModified : IStartable
 {
     bool _isInitialized = false; // 초기화 완료 여부
 
-
     [Header("Data Sources")]
     // 이 리스트에 FlowerIdData, UsableIdData SO들을 다 넣으시면 됩니다.
-    [SerializeField] private List<ItemIdData> itemIdDatas;
+     private List<ItemIdData> itemIdDatas;
+    private List<FlowerIdData> flowerIdDatas;
+    private List<UsableIdData> usableIdDatas;
+
 
     [Header("Master Tables (Detail)")]
-    [SerializeField] private FlowerDetailData flowerDetail;
-    [SerializeField] private UsableDetailData usableDetail;
+    private FlowerDetailData flowerDetail;
+     private UsableDetailData usableDetail;
 
     // 핵심: Burst가 접근 가능한 고속 데이터 배열
     private NativeArray<ItemDataStatic> _nativeItemDB;
@@ -120,6 +122,7 @@ public class ItemManagerHeavilyModified : IStartable
 
     void IStartable.Start()
     {
+        
         InitializeNativeDatabase();
         _isInitialized = true;
     }
@@ -162,7 +165,6 @@ public class ItemManagerHeavilyModified : IStartable
         _isInitialized = true;
     }
 
-
     #region 데이터 타입별 InsertDataToMasterDB 함수
     private bool InsertItemData(ItemIdData data) //사용 불가능 아이템
     {
@@ -171,7 +173,7 @@ public class ItemManagerHeavilyModified : IStartable
             Debug.Log("ID데이터에 잘못된 데이터가 들어있습니다.");
             return false;
         }
-        for (int i = 0; i < data.itemName.Count; i++)
+        for (byte i = 0; i < data.itemName.Count; i++)
         {
             ItemDataStatic itemData = new ItemDataStatic(i, data.ItemName(i), data.Description(i), data.Address(i));
             _nativeItemDB[data.startId + i] = itemData;
@@ -185,11 +187,11 @@ public class ItemManagerHeavilyModified : IStartable
             Debug.Log("ID데이터에 잘못된 데이터가 들어있습니다.");
             return false;
         }
-        for (int i = 0; i < data.itemName.Count; i++)
+        for (byte i = 0; i < data.itemName.Count; i++)
         {
             UsableItemDataStatic usable = new UsableItemDataStatic(
                 i, data.ItemName(i), data.Description(i), data.Address(i),
-                usableDetail.Duration(data.DuratIndex(i)), usableDetail.Power(data.PowerIndex(i)), usableDetail.ChargeInfo(data.ChargeIndex(i)
+                usableDetail.Duration(data.DuratIndex(i)), (sbyte)usableDetail.Power(data.PowerIndex(i)), usableDetail.ChargeInfo(data.ChargeIndex(i)
                 ));
 
             _nativeUsableItemDB[data.startId + i] = usable;
@@ -203,11 +205,11 @@ public class ItemManagerHeavilyModified : IStartable
             Debug.Log("ID데이터에 잘못된 데이터가 들어있습니다.");
             return false;
         }
-        for (int i = 0; i < data.itemName.Count; i++)
+        for (sbyte i = 0; i < data.itemName.Count; i++)
         {
             FlowerItemDataStatic flower = new FlowerItemDataStatic(
-                 i, data.ItemName(i), data.Description(i), data.Address(i),
-                flowerDetail.Color(data.ColorIndex(i)), flowerDetail.Floro(data.FloroIndex(i)), flowerDetail.Floro(data.FloroIndex2(i)));
+                 i, data.ItemName((byte)i), data.Description((byte)i), data.Address((byte)i),
+                flowerDetail.Color(data.ColorIndex((byte)i)), flowerDetail.Floro((sbyte)data.FloroIndex((byte)i)), flowerDetail.Floro(data.FloroIndex2(i)));
 
             var seed = new FlowerItemDataStatic(flower);
             seed.SetItemName(data.itemName[i] + " 씨앗");
@@ -220,24 +222,23 @@ public class ItemManagerHeavilyModified : IStartable
         return true;
     }
        
-    
     #endregion
 
-    public string GetItemName(int id)
+    public string GetItemName(short id)
     {
         FixedString64Bytes result;
         ItemSearchSystem.GetNameBurst(in _nativeItemDB, in _nativeUsableItemDB, in _nativeFlowerItemDB, id, out result);
         return result.ToString();
     }
 
-    public string GetItemDescription(int id)
+    public string GetItemDescription(short id)
     {
         FixedString128Bytes result;
         ItemSearchSystem.GetDescriptionBurst(in _nativeItemDB,in _nativeUsableItemDB, in _nativeFlowerItemDB, id, out result);
         return result.ToString();
     }
 
-    public string GetItemAddress(int id)
+    public string GetItemAddress(short id)
     {
         FixedString128Bytes result;
         ItemSearchSystem.GetAddressBurst(in _nativeItemDB, in _nativeUsableItemDB, in _nativeFlowerItemDB, id, out result);
@@ -245,38 +246,38 @@ public class ItemManagerHeavilyModified : IStartable
 
     }
 
-    public string GetUsableItemPower(int id)
+    public string GetUsableItemPower(short id)
     {
         return ItemSearchSystem.GetPowerBurst(in _nativeUsableItemDB, id).ToString();
     }
 
-    public ChargeInfo GetUsabelItemChargeInfo(int id)
+    public ChargeInfo GetUsabelItemChargeInfo(short id)
     {
         ChargeInfo result = new ChargeInfo();
         ItemSearchSystem.GetChargeInfo(in _nativeUsableItemDB, id, out result);
         return result;
     }
 
-    public int GetUsableItemDuration(int id)
+    public int GetUsableItemDuration(short id)
     {
         return ItemSearchSystem.GetDurationBurst(in _nativeUsableItemDB, id);
     }
 
-    public string GetFlowerItemSpecies(int id)
+    public string GetFlowerItemSpecies(short id)
     {
         FixedString32Bytes result;
         ItemSearchSystem.GetSpeciesBurst(in _nativeFlowerItemDB, id, out result);
         return result.ToString();
     }
 
-    public string GetFlowerItemColor(int id)
+    public string GetFlowerItemColor(short id)
     {
         FixedString32Bytes result;
         ItemSearchSystem.GetColorBurst(in _nativeFlowerItemDB, id, out result);
         return result.ToString();
     }
 
-    public string GetFlowerItemFloro(int id, out string Floro2)
+    public string GetFlowerItemFloro(short id, out string Floro2)
     {
         FixedString32Bytes result1;
         FixedString32Bytes result2;
@@ -391,7 +392,7 @@ public static class ItemSearchSystem
 
     [BurstCompile]
     public static void GetAddressBurst(in NativeArray<ItemDataStatic> db1, in NativeArray<UsableItemDataStatic> db2,
-        in NativeArray<FlowerItemDataStatic> db3, int id, out FixedString128Bytes result)
+        in NativeArray<FlowerItemDataStatic> db3, short id, out FixedString128Bytes result)
     {
         if (id >= 0 && id < LAST_USABLE_ID)
              GetAddressBurst(in db1, id, out result);
@@ -402,7 +403,7 @@ public static class ItemSearchSystem
         else result = default;
     }
     [BurstCompile]
-    public static void GetAddressBurst(in NativeArray<ItemDataStatic> db, int id, out FixedString128Bytes result)
+    public static void GetAddressBurst(in NativeArray<ItemDataStatic> db, short id, out FixedString128Bytes result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -412,7 +413,7 @@ public static class ItemSearchSystem
         result =  db[id].SpriteAddress;
     }
     [BurstCompile]
-    public static void GetAddressBurst(in NativeArray<UsableItemDataStatic> db, int id, out FixedString128Bytes result)
+    public static void GetAddressBurst(in NativeArray<UsableItemDataStatic> db, short id, out FixedString128Bytes result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -422,7 +423,7 @@ public static class ItemSearchSystem
         result = db[id].SpriteAddress;
     }
     [BurstCompile]
-    public static void GetAddressBurst(in NativeArray<FlowerItemDataStatic> db, int id, out FixedString128Bytes result)
+    public static void GetAddressBurst(in NativeArray<FlowerItemDataStatic> db, short id, out FixedString128Bytes result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -436,19 +437,19 @@ public static class ItemSearchSystem
     #endregion 
 
     [BurstCompile]
-    public static int GetDurationBurst(in NativeArray<UsableItemDataStatic> db, int id)
+    public static short GetDurationBurst(in NativeArray<UsableItemDataStatic> db, short id)
     {
         if (id < 0 || id >= db.Length) return -1;
         return db[id].Duration;
     }
     [BurstCompile]
-    public static int GetPowerBurst(in NativeArray<UsableItemDataStatic> db, int id)
+    public static sbyte GetPowerBurst(in NativeArray<UsableItemDataStatic> db, short id)
     {
         if (id < 0 || id >= db.Length) return -1;
         return db[id].Power;
     }
     [BurstCompile]
-    public static void GetChargeInfo(in NativeArray<UsableItemDataStatic>db, int id, out ChargeInfo result)
+    public static void GetChargeInfo(in NativeArray<UsableItemDataStatic>db, short id, out ChargeInfo result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -460,7 +461,7 @@ public static class ItemSearchSystem
 
 
     [BurstCompile]
-    public static void GetSpeciesBurst(in NativeArray<FlowerItemDataStatic> db, int id, out FixedString32Bytes result)
+    public static void GetSpeciesBurst(in NativeArray<FlowerItemDataStatic> db, short id, out FixedString32Bytes result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -471,7 +472,7 @@ public static class ItemSearchSystem
 
     }
     [BurstCompile]
-    public static void GetColorBurst(in NativeArray<FlowerItemDataStatic> db, int id, out FixedString32Bytes result)
+    public static void GetColorBurst(in NativeArray<FlowerItemDataStatic> db, short id, out FixedString32Bytes result)
     {
         if (id < 0 || id >= db.Length)
         {
@@ -482,7 +483,7 @@ public static class ItemSearchSystem
 
     }
     [BurstCompile]
-    public static void GetFloroBurst(in NativeArray<FlowerItemDataStatic> db, int id, out FixedString32Bytes result1, out FixedString32Bytes result2)
+    public static void GetFloroBurst(in NativeArray<FlowerItemDataStatic> db, short id, out FixedString32Bytes result1, out FixedString32Bytes result2)
     {
         if (id < LAST_COMMON_ID || id >= db.Length - LAST_COMMON_ID)
         {

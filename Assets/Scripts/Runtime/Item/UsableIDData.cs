@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UsableIdData", menuName = "UsableData/IdData")]
 public class UsableIdData : ItemIdData
 {
-    [SerializeField] public List<int> durationIndex;
-    [SerializeField] public List<int> powerIndex;
-    [SerializeField] public List<int> chargeIndex;
+    [SerializeField] public List<byte> durationIndex;
+    [SerializeField] public List<byte> powerIndex;
+    [SerializeField] public List<byte> chargeIndex;
 
 
-    public int DuratIndex(int idx) => durationIndex[idx];
-    public int ChargeIndex(int idx) => chargeIndex[idx];
-    public int PowerIndex(int idx) => powerIndex[idx];
+    public byte DuratIndex(byte idx) => durationIndex[idx];
+    public byte ChargeIndex(byte idx) => chargeIndex[idx];
+    public byte PowerIndex(byte idx) => powerIndex[idx];
 }
 
 public struct UsableItemBlobData
 {
-    public BlobString itemName;
-    public BlobString description;
-    public BlobString spriteAddress;
+    public short ItemId;
+    public FixedString64Bytes ItemName;
+    public FixedString128Bytes Description;
+    public FixedString64Bytes SpriteAddress;
 
     public byte durationIndex;
     public byte powerIndex;

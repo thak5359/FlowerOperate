@@ -106,11 +106,11 @@ public class ItemDetailGenTool : EditorWindow
         {
             string[] data = line.Split(',');
 
-            SO.durationList.Add(int.Parse(data[1]));
-            SO.powerList.Add(int.Parse(data[2]));
+            SO.durationList.Add(byte.Parse(data[1]));
+            SO.powerList.Add(byte.Parse(data[2]));
             if (float.TryParse(data[3], out float Time))
             {
-                for (int i = 0; i < 4; i++)
+                for (sbyte i = 0; i < 4; i++)
                 {
                     ChargeInfo chargeInfo = new ChargeInfo(Time, i);
                     chargeInfo.ReadValue();
@@ -161,7 +161,7 @@ public class ItemDetailGenTool : EditorWindow
 
             // 2. 복사본의 값 수정
             tempInfo.ChargeTime = EditorGUILayout.FloatField(tempInfo.ChargeTime, GUILayout.Width(80));
-            tempInfo.maxChargeCount = EditorGUILayout.IntField(so.chargeInfoList[i].maxChargeCount, GUILayout.Width(100));
+            tempInfo.maxChargeCount = (sbyte)EditorGUILayout.IntField(so.chargeInfoList[i].maxChargeCount, GUILayout.Width(100));
 
             // 3. 수정된 복사본을 다시 리스트에 덮어쓰기
             so.chargeInfoList[i] = tempInfo;

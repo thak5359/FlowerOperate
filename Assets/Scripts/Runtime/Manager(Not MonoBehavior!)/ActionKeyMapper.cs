@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Unity.Collections;
 using VContainer;
 using VContainer.Unity;
 using static Constant;
@@ -56,9 +57,9 @@ public class ActionKeyMapper : IAsyncStartable
         }
 
 
-        string targetScheme = isWASDKeySetting ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
+        FixedString64Bytes targetScheme = isWASDKeySetting ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
 
-        _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
+        _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme.ToString());
 
 
         currentSceneName = SceneManager.GetActiveScene().name;
@@ -66,13 +67,13 @@ public class ActionKeyMapper : IAsyncStartable
         if (currentSceneName == TITLE_SCENE_NAME)
         {
             SettingMapActionAllocator();
-            _playerInput.SwitchCurrentActionMap(TITLE_MAP_NAME);
+            _playerInput.SwitchCurrentActionMap(TITLE_MAP_NAME.ToString());
         }
         else if (currentSceneName == FARM_SCENE_NAME)
         {
             FarmMapActionAllocator();
             PauseMapActionAllocator();
-            _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME);
+            _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME.ToString());
         }
         Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
 
@@ -84,9 +85,9 @@ public class ActionKeyMapper : IAsyncStartable
     {
         isWASDKeySetting = isWASD;
         Debug.Log("여기까지는 정상!");
-        string targetScheme = isWASD ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
+        FixedString64Bytes targetScheme = isWASD ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
         Debug.Log("여기까지는 정상!!");
-        _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme);
+        _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme.ToString());
         
         Debug.Log("여기까지는 정상!!");
         // Debug.Log($"[IA Manager] {targetScheme}이 준비됨!");
@@ -98,14 +99,14 @@ public class ActionKeyMapper : IAsyncStartable
     #region 타이틀 키 할당
     void TitleMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
     }
     #endregion
 
     #region 정지 메뉴 키 할당
     void PauseMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(PAUSEMENU_MAP_NAME); // 현재 맵에서 사용중인 IA에서 특정 맵을 가져옴
+        var map = _playerInput.actions.FindActionMap(PAUSEMENU_MAP_NAME.ToString()); // 현재 맵에서 사용중인 IA에서 특정 맵을 가져옴
         var actionEscape = map.FindAction("Escape"); // 거기서 어떤키를 눌렀을때에 동작을 할당하는 곳을 찾음
         actionEscape.performed += _pauseMenu.OnBackAction; // 함수 할당
     }
@@ -120,7 +121,7 @@ public class ActionKeyMapper : IAsyncStartable
             return;
         }
 
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
         var actionEscape = map.FindAction("Escape");
 
         if (currentSceneName == TITLE_SCENE_NAME)
@@ -143,7 +144,7 @@ public class ActionKeyMapper : IAsyncStartable
     {
         if (_playerInput == null || _playerInput.actions == null) return;
 
-        InputActionMap map = _playerInput.actions.FindActionMap(FARM_MAP_NAME);
+        InputActionMap map = _playerInput.actions.FindActionMap(FARM_MAP_NAME.ToString());
         if (map == null) return;
 
         map.Disable();
@@ -207,14 +208,14 @@ public class ActionKeyMapper : IAsyncStartable
     #region 인벤토리 조작 키 할당
     void InventoryMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
     }
     #endregion
 
     #region 가게 경영 조작 키 할당
     void ShopMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
     }
     #endregion
 
@@ -222,7 +223,7 @@ public class ActionKeyMapper : IAsyncStartable
     #region 대화창 조작 키 할당... 일단 써놔
     void ChatboxMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME);
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
     }
     #endregion
 
