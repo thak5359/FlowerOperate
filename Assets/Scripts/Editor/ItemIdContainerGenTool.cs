@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -19,25 +19,25 @@ public class ItemIdContainerGenTool : EditorWindow
     private void OnGUI()
     {
         baseIdData = (ItemIdData)EditorGUILayout.ObjectField(
-            "±â¹İ SO ¿¡¼Â",
+            "ê¸°ë°˜ SO ì—ì…‹",
             baseIdData,
             typeof(ItemIdData),
             false);
 
         csvFile = (TextAsset)EditorGUILayout.ObjectField(
-            "csv ÆÄÀÏ",
+            "csv íŒŒì¼",
             csvFile,
             typeof(TextAsset),
             false);
 
-        menu = (DropDownMenu)EditorGUILayout.EnumPopup("Á¾·ù", menu);
+        menu = (DropDownMenu)EditorGUILayout.EnumPopup("ì¢…ë¥˜", menu);
 
-        if (GUILayout.Button("SO »ı¼º"))
+        if (GUILayout.Button("SO ìƒì„±"))
         {
             switch (menu)
             {
                 case DropDownMenu.Flower:
-                    if (baseIdData is FlowerIdData flowerData) // ÆĞÅÏ ¸ÅÄª »ç¿ë (C# 7.0+)
+                    if (baseIdData is FlowerIdData flowerData) // íŒ¨í„´ ë§¤ì¹­ ì‚¬ìš© (C# 7.0+)
                         OperateFunc(flowerData);
                     break;
 
@@ -50,7 +50,7 @@ public class ItemIdContainerGenTool : EditorWindow
                     if (baseIdData != null)
                         OperateFunc(baseIdData);
                     else
-                        Debug.LogWarning("º£ÀÌ½º ¾ÆÀÌµğSO ¾øÀ½"); // ¿¡·¯´Â °æ°í³ª ¿¡·¯ ·Î±×°¡ ÁÁ½À´Ï´Ù.
+                        Debug.LogWarning("ë² ì´ìŠ¤ ì•„ì´ë””SO ì—†ìŒ"); // ì—ëŸ¬ëŠ” ê²½ê³ ë‚˜ ì—ëŸ¬ ë¡œê·¸ê°€ ì¢‹ìŠµë‹ˆë‹¤.
                     break;
             }
         }
@@ -94,7 +94,6 @@ public class ItemIdContainerGenTool : EditorWindow
         foreach(string line in lines)
         {
             string[] data = line.Split(',');
-
             SO.itemName.Add(data[1]);
 
             SO.durationIndex.Add(int.Parse(data[2]));

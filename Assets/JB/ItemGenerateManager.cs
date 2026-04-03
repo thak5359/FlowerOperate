@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ public class ItemGenerateManager : MonoBehaviour
         }
     }
 
-    public void GenItem(int id, int amount, int duration, int grade)
+    public void GenItem(ushort id, sbyte amount, short duration, byte grade)
     {
         ItemDataContainer item = ObjectPool.GetObject();
         item.SetData(new ItemObjectData(id, amount, duration, grade));

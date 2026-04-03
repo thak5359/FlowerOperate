@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e56dec4bdd9ed114a90539e29a1151db, type: 3}
   m_Name: EtcIdData
   m_EditorClassIdentifier: 
-  startId: 40
+  startId: 100
   itemName:
   - "\uB3CC"
   - "\uB3D9 \uAD11\uC11D"
