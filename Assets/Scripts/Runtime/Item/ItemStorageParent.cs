@@ -46,6 +46,16 @@ public class ItemStorageParent : MonoBehaviour
         _data.AddItem(item);
         //슬롯의 숫자UI 변경 로직 넣어주세요.
     }
+
+    protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
+    {
+        List<ItemObjectData> tempOD = new List<ItemObjectData>();
+        foreach (ItemDataContainer data in changedDataList)
+        {
+            tempOD.Add(data.GetData);
+        }
+        return tempOD;
+    }
 }
 
 [Serializable]

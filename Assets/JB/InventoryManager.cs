@@ -31,7 +31,7 @@ public class InventoryManager : ItemStorageParent
         _data = save.GetInvenData;
         for (int i = 0; i < _data.GetList.Count; i++)
         {
-            if (i >= 30)
+            if (i >= 1)
             {
                 var newSlot = Instantiate(slotObject, this.gameObject.transform);
                 slotList.Add(newSlot.GetComponent<ItemDataContainer>());

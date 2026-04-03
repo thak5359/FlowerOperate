@@ -73,9 +73,12 @@ public class SaveDatas
     private ItemStorageData InvenData;
     [SerializeField]
     private ItemStorageData StorageData;
+    [SerializeField]
+    private ItemStorageData plotData;
 
     public ItemStorageData GetInvenData => this.InvenData;
     public ItemStorageData GetStorageData => this.StorageData;
+    public ItemStorageData GetPlotData => this.plotData;
 
     public SaveDatas(ItemStorageData inventory, ItemStorageData storage)
     {

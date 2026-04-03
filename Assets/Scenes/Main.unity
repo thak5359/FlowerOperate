@@ -425,6 +425,7 @@ MonoBehaviour:
   _data:
     itemListData: []
     slotsCount: 50
+  plots: []
 --- !u!4 &65891410
 Transform:
   m_ObjectHideFlags: 0
@@ -4399,6 +4400,9 @@ MonoBehaviour:
     StorageData:
       itemListData: []
       slotsCount: 30
+    plotData:
+      itemListData: []
+      slotsCount: 50
 --- !u!1001 &3829688190100329799
 PrefabInstance:
   m_ObjectHideFlags: 0
