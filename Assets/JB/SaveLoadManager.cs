@@ -18,7 +18,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 
     void IInitializable.Initialize()
     {
-        saveData = new SaveDatas(inventoryManager.GetData, storageManager.GetData);
+        saveData = new SaveDatas(inventoryManager.GetData, storageManager.GetData, plotManager.GetData, plotManager.GetPlots);
     }
 
     [Inject]
@@ -49,7 +49,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 
         // 3. 저장용 바구니(saveData)를 '지금' 새로 만듭니다. 
         // 여기서 생성자에 currentData를 넣으면 인스펙터 값이 저장용 객체로 복사됩니다.
-        saveData = new SaveDatas(currentData, storageManager.GetData);
+        saveData = new SaveDatas(currentData, storageManager.GetData, plotManager.GetData, plotManager.GetPlots);
 
         // 4. JSON 저장
         string path = Path.Combine(Application.dataPath, "Save.json");
@@ -78,15 +78,19 @@ public class SaveDatas
     [SerializeField]
     private ItemStorageData plotItemData;
     [SerializeField]
-    private Plot plotData;
+    private List<PlotData> plotData;
 
     public ItemStorageData GetInvenData => this.InvenData;
     public ItemStorageData GetStorageData => this.StorageData;
-    public ItemStorageData GetPlotData => this.plotItemData;
+    public ItemStorageData GetPlotItemData => this.plotItemData;
+    public List<PlotData > GetPlotData => this.plotData;
 
-    public SaveDatas(ItemStorageData inventory, ItemStorageData storage)
+    public SaveDatas(ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem
+        , List<PlotData> plot)
     {
         this.InvenData = inventory;
         this.StorageData = storage;
+        this.plotItemData = plotItem;
+        this.plotData = plot;
     }
 }

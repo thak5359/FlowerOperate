@@ -17,27 +17,16 @@ public class InventoryManager : ItemStorageParent
 
     private void OnEnable()
     {
-        SaveLoadManager.OnLoadData += this.Initialize;
+        SaveLoadManager.OnLoadData += this.Load;
     }
 
     private void OnDisable()
     {
-        SaveLoadManager.OnLoadData -= this.Initialize;
+        SaveLoadManager.OnLoadData -= this.Load;
     }
 
-    private void Initialize(SaveDatas save)
+    private void Load(SaveDatas saveDatas)
     {
-        base.Initialize();
-        _data = save.GetInvenData;
-        for (int i = 0; i < _data.GetList.Count; i++)
-        {
-            if (i >= 1)
-            {
-                var newSlot = Instantiate(slotObject, this.gameObject.transform);
-                slotList.Add(newSlot.GetComponent<ItemDataContainer>());
-            }
-            slotList[i].SetData(_data.GetList[i]);
-        }
-        Debug.Log("초기화 끝");
+        base.Initialize(StorageType.INVEN, saveDatas.GetInvenData, slotObject, ref slotList);
     }
 }

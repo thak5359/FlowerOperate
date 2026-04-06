@@ -6,6 +6,13 @@ using System.Xml.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 
+public enum StorageType
+{
+    INVEN,
+    STORAGE,
+    PLOT
+}
+
 [Serializable]
 public class ItemStorageParent : MonoBehaviour
 {
@@ -15,48 +22,91 @@ public class ItemStorageParent : MonoBehaviour
     //Getter
     public ItemStorageData GetData => _data;
 
-    protected virtual void Initialize()
+    protected virtual void Initialize(StorageType type, ItemStorageData data, GameObject slotObject, ref List<ItemDataContainer> slotList)
     {
-        if (_data.GetList != null)
-            _data.ClearList();
-        _data.SetItemList(new List<ItemObjectData>(new ItemObjectData[_data.GetSlotsCount]));
-        _data.SetSlotsCount(0);
-        
-    }
+        ResetData();
+        _data = data;
 
-    
-    public virtual void Swap(int idx1, int idx2)
-    {
-        //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
-        _data.SwapItem(idx1, idx2);
-        Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
-    }
-
-    public virtual void Combine()
-    {
-
-    }
-
-    public void AbandonItem()
-    {
-
-    }
-
-    protected virtual void AddItem(ItemObjectData item)
-    {
-        _data.AddItem(item);
-        //슬롯의 숫자UI 변경 로직 넣어주세요.
-    }
-
-    protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
-    {
-        List<ItemObjectData> tempOD = new List<ItemObjectData>();
-        foreach (ItemDataContainer data in changedDataList)
+        switch (type)
         {
-            tempOD.Add(data.GetData);
+            case StorageType.INVEN:
+                {
+                    for (int i = 0; i < _data.GetList.Count; i++)
+                    {
+                        if (i >= _data.GetSlotsCount)
+                        {
+                            var newSlot = Instantiate(slotObject, this.gameObject.transform);
+                            slotList.Add(newSlot.GetComponent<ItemDataContainer>());
+                        }
+                        slotList[i].SetData(_data.GetList[i]);
+                    }
+                    break;
+                }
+            case StorageType.STORAGE:
+                {
+                    for (int i = 0; i < _data.GetList.Count; i++)
+                    {
+                        if (i >= _data.GetSlotsCount)
+                            Debug.LogError("창고 슬롯이 꽉 찼습니다.");
+                        else
+                            slotList[i].SetData(_data.GetList[i]);
+                    }
+                    break;
+                }
+            case StorageType.PLOT:
+                {
+                    for (int i = 0; i < _data.GetList.Count; i++)
+                    {
+                        slotList[i].SetData(_data.GetList[i]);
+                    }
+                    break;
+                }
+            default:
+                break;
         }
-        return tempOD;
+        Debug.Log("초기화 끝");
     }
+
+protected void ResetData()
+{
+    if (_data.GetList != null)
+        _data.ClearList();
+    _data.SetItemList(new List<ItemObjectData>(new ItemObjectData[_data.GetSlotsCount]));
+    _data.SetSlotsCount(0);
+}
+
+public virtual void Swap(int idx1, int idx2)
+{
+    //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
+    _data.SwapItem(idx1, idx2);
+    Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
+}
+
+public virtual void Combine()
+{
+
+}
+
+public void AbandonItem()
+{
+
+}
+
+protected virtual void AddItem(ItemObjectData item)
+{
+    _data.AddItem(item);
+    //슬롯의 숫자UI 변경 로직 넣어주세요.
+}
+
+protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
+{
+    List<ItemObjectData> tempOD = new List<ItemObjectData>();
+    foreach (ItemDataContainer data in changedDataList)
+    {
+        tempOD.Add(data.GetData);
+    }
+    return tempOD;
+}
 }
 
 [Serializable]
