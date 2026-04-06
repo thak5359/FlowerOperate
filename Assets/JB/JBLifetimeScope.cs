@@ -14,5 +14,8 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<StorageManager>()
             .As<ItemStorageParent>()
             .AsSelf();
+        builder.RegisterComponentInHierarchy<PlotManager>()
+            .As<ItemStorageParent>()
+            .AsSelf();
     }
 }

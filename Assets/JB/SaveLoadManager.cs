@@ -10,6 +10,7 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
 {
     private InventoryManager inventoryManager;
     private StorageManager storageManager;
+    private PlotManager plotManager;
 
     public static event Action<SaveDatas> OnLoadData;
     public SaveDatas saveData;
@@ -21,10 +22,11 @@ public class SaveLoadManager : MonoBehaviour, IInitializable
     }
 
     [Inject]
-    public void Construct(InventoryManager inven, StorageManager storage)
+    public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot)
     {
         inventoryManager = inven;
         storageManager = storage;
+        plotManager = plot;
         Debug.Log("의존성 주입 완료!");
     }
 
@@ -74,11 +76,13 @@ public class SaveDatas
     [SerializeField]
     private ItemStorageData StorageData;
     [SerializeField]
-    private ItemStorageData plotData;
+    private ItemStorageData plotItemData;
+    [SerializeField]
+    private Plot plotData;
 
     public ItemStorageData GetInvenData => this.InvenData;
     public ItemStorageData GetStorageData => this.StorageData;
-    public ItemStorageData GetPlotData => this.plotData;
+    public ItemStorageData GetPlotData => this.plotItemData;
 
     public SaveDatas(ItemStorageData inventory, ItemStorageData storage)
     {

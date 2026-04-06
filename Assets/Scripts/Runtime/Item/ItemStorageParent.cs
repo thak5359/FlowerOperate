@@ -24,6 +24,17 @@ public class ItemStorageParent : MonoBehaviour
         
     }
 
+    private void OnEnable()
+    {
+        SaveLoadManager.OnLoadData += this.Initialize;
+    }
+
+    private void OnDisable()
+    {
+        SaveLoadManager.OnLoadData -= this.Initialize;
+    }
+
+
     public virtual void Swap(int idx1, int idx2)
     {
         //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
