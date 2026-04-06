@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -114,6 +112,7 @@ public class PauseMenu : MonoBehaviour
 
     private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
     {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapPauseMenu();
@@ -141,6 +140,7 @@ public class PauseMenu : MonoBehaviour
 
     private async UniTask OpenSettingMenu(CancellationToken cancellationToken = default)
     {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapSetting();
@@ -154,6 +154,7 @@ public class PauseMenu : MonoBehaviour
 
     public async UniTask ClosePauseMain(CancellationToken cancellationToken = default)
     {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         await MoveRoutine(hidePos);

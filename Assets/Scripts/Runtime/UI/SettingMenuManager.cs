@@ -169,6 +169,8 @@ public class SettingMenuManager : MonoBehaviour
 
     public async UniTask OpenSettingMenu()
     {
+
+        if ( isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapSetting();
@@ -181,6 +183,7 @@ public class SettingMenuManager : MonoBehaviour
     private async UniTask CloseSetttingMenu()
     {
 
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapPrev();
@@ -193,11 +196,13 @@ public class SettingMenuManager : MonoBehaviour
 
     public void OnClickSettingOpen()
     {
+        if (isTransitioning == true) return;
         OpenSettingMenu().Forget();
     }
 
     public void OnClickSettingClose()
     {
+        if (isTransitioning == true) return;
         input.changeIAmapPrev();
         MoveRoutine(hidePos).Forget(); 
     }
