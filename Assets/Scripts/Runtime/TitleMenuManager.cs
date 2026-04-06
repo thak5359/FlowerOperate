@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Fungus;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ public class TitleMenuManager : MonoBehaviour
     void Construct(SettingMenuManager input_settingMenuManager)
     {
         _settingMenuManger = input_settingMenuManager;
-        Debug.Log($"세팅 메뉴의 할당 값은 {_settingMenuManger == null} 입니다");
+        if(_settingMenuManger == null)
+            Debug.LogAssertion("SettingMenuManager이 할당되지 않았습니다.");
     }
 
     void Start()
@@ -39,7 +41,7 @@ public class TitleMenuManager : MonoBehaviour
     }
     private void OnClickSettingButton()
     {
-        _settingMenuManger.OnClickSettingOpen();
+        _settingMenuManger.OpenSettingMenu().Forget();
     }
     private void OnClickGameEndButton()
     {

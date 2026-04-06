@@ -10,7 +10,6 @@ public interface IInteractable
 }
 
 
-
 // 플레이어의 입력 ( WASD, 상호작용, 아이템 사용)을 처리.
 public class PlayerController : MonoBehaviour, IInteractable
 {
@@ -146,6 +145,8 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
+
+
             // 아래 부분은 테스트 끝나면 삭제할 함수임.
             UseArea.SetActive(false);
             Instantiate(Plot, UseArea.transform.position, Quaternion.identity);

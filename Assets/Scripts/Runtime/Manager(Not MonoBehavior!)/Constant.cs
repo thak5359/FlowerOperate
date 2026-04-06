@@ -8,9 +8,20 @@ public class Constant
 {
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
 
+    #region 아이템 ID 범위
+
+    public const short USABLE_START_ID = 0;
+    public const short COMMON_START_ID = 41;
+    public const short FLOWER_START_ID = 301;
+
+    public const short USABLE_END_ID = 40;
+    public const short COMMON_END_ID = 300;
+    public const short FLOWER_END_ID = 1000;
+
+    #endregion
 
 
-    #region 아이템 장비 코드
+    #region  장비 아이템 ID 범위
 
     public const short MIN_HOE_ID = 0;
     public const short MAX_HOE_ID = 7;
@@ -33,7 +44,7 @@ public class Constant
     #endregion
 
 
-    #region 액션 맵 이름
+    #region 액션 맵, 스키마 이름
 
     public static readonly FixedString64Bytes TITLE_MAP_NAME = "MAP_TITLE";
     public static readonly FixedString64Bytes SETTING_MAP_NAME = "MAP_SETTING";
@@ -46,19 +57,26 @@ public class Constant
 
     public static readonly FixedString64Bytes WASD_SCHEME_NAME = "WASD_Scheme";
     public static readonly FixedString64Bytes ARROW_SCHEME_NAME = "Arrow_Scheme";
+   
     #endregion
 
 
     #region 씬 이름
+    
     public static readonly FixedString64Bytes TITLE_SCENE_NAME = "MainTitle";
     public static readonly FixedString64Bytes FARM_SCENE_NAME = "SampleScene";
+    
     #endregion
 
-    #region 아이템 데이터
+   
+    #region BLOB 데이터 파일 경로
 
-    public const short  LAST_USABLE_ID = 40;
-    public const short LAST_COMMON_ID = 300;
-    public const short LAST_FLOWER_ID = 1000;
-
-    #endregion 
+    public const string BLOB_FOLDER = "Blobs";
+    public const string ITEM_BLOB = "ItemData.blob";
+    public const string FLOWER_BLOB = "FlowerData.blob";
+    public const string USABLE_BLOB = "UsableData.blob";
+    public const string FLOWER_DETAIL_BLOB = "FlowerDetail.blob";
+    public const string USABLE_DETAIL_BLOB = "UsableDetail.blob";
+    
+    #endregion
 }

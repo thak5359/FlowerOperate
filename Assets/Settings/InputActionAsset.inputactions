@@ -785,11 +785,44 @@
         {
             "name": "MAP_CHATBOX",
             "id": "c01d8be1-0c6f-43cf-9e31-2be3b2fcb3c4",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "MAP_STORAGE",
+            "id": "e21ee7eb-c61a-48f2-8daf-fb559f8fa8d9",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "ToPrevBox",
                     "type": "Button",
-                    "id": "d8e3d9c2-036e-43f0-a0eb-254b2bd0c1ae",
+                    "id": "edfd7ec7-9d02-4e2e-9ae8-4410827039aa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToNextBox",
+                    "type": "Button",
+                    "id": "89ca0a94-fc16-497d-83ed-ea2fddc469d2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SortBox",
+                    "type": "Button",
+                    "id": "85282a35-788f-4649-a1b9-93f0dbd9946e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SortAllBox",
+                    "type": "Button",
+                    "id": "f53bb640-03c6-41d3-86ff-bbda65c65ab2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -799,12 +832,45 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "ec7d482f-2cc9-4428-bb6a-02d7742be27c",
-                    "path": "",
+                    "id": "7f1cd8db-2590-4492-bb8b-5e7a34f39c41",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SortBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b32cc2d-17f8-43a6-bc32-4ce99df3d4cd",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SortAllBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b55be207-1c15-4fa1-bced-81bd8ee29779",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD_Scheme;Arrow_Scheme",
-                    "action": "New action",
+                    "action": "ToNextBox",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76c40786-45e9-4445-82ae-dde44674f537",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "ToPrevBox",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -72,11 +72,18 @@ public class PauseMenu : MonoBehaviour
 
     #region PauseMenu, SettingMenu 호출/종료 기능
 
-    public async void OnBackAction(InputAction.CallbackContext context)
+    public void OnBackAction(InputAction.CallbackContext context)
     {
         // 1. 공통 방어 로직
         if (isTransitioning == true || !context.performed) return;
 
+        HandleBackActionAsync(context).Forget();
+
+    }
+
+
+    private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
+    {
         currentMap = input.getCurrentIAmap();
 
         // 수정할 위치: PauseMenu UI 매니저 스크립트 내부의 맵 분기 처리 로직
@@ -88,7 +95,7 @@ public class PauseMenu : MonoBehaviour
         else if (currentMap == PAUSEMENU_MAP_NAME)
         {
             // 퍼즈 메인 -> 메뉴 닫고 복귀
-           await  ClosePauseMain();
+            await ClosePauseMain();
         }
         else if (currentMap == SETTING_MAP_NAME)
         {
@@ -97,10 +104,13 @@ public class PauseMenu : MonoBehaviour
         }
         else
         {
-            // 그 외의 경우 (기존 default 역할)
+            // 그 외의 경우 
             Debug.Log($"[PauseMenu] {currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
         }
+
+
     }
+
 
     private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
     {
@@ -170,7 +180,6 @@ public class PauseMenu : MonoBehaviour
 
     private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken cancellationToken = default)
     {
-
         if (targetPos == showPos) { pauseCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
@@ -184,10 +193,8 @@ public class PauseMenu : MonoBehaviour
             movablePart.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
             await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
         }
-
         movablePart.anchoredPosition = targetPos;
         if (targetPos == hidePos) { pauseCanvas.enabled = false; }
-
     }
 
     #endregion
@@ -202,15 +209,11 @@ public class PauseMenu : MonoBehaviour
 
     public void OnClickGameEndButton()
     {
-    
     #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
     #else
         Application.Quit();
     #endif
     }
-   
-
-
 #endregion
 }

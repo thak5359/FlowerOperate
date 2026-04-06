@@ -813,7 +813,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: VCONTAINER_UNITASK_INTEGRATION
+    Standalone: VCONTAINER_UNITASK_INTEGRATION;UNITASK_DOTS_SUPPORT
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

@@ -31,5 +31,5 @@ public struct UsableItemBlobData
 
 public struct UsableItemBlobDatas
 {
-    public BlobArray<UsableItemBlobData> usableItems;
+    public BlobArray<UsableItemBlobData> Items;
 }

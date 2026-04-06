@@ -14,7 +14,6 @@ public class ActionKeyChanger : IActionKeyChanger
 {
     private PlayerInput _playerInput;
 
-
     [Inject]
     public void Construct(PlayerInput input_playerInput)
     {
@@ -35,7 +34,6 @@ public class ActionKeyChanger : IActionKeyChanger
             Debug.Log("targetMap is Null!");
             return;
         }
-
 
         InputAction  actionToRebind = targetMap.FindAction(actionName);
         if (actionToRebind == null)
@@ -63,14 +61,6 @@ public class ActionKeyChanger : IActionKeyChanger
                 actionToRebind.actionMap.Enable();
             })
             .Start(); // 여기서부터 입력을 기다리기 시작합니다.
-
         rebindingOperation.Start();
     }
-    
-}
-
-public interface IActionKeyUI
-{
-
-
 }

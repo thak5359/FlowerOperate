@@ -13,10 +13,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
     {
         //KeyMapper랑 Changer는 씬 의존적인 스크립트 이기에 SceneLifetimeScope에 존재해야함.
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
-
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
-
-
 
         builder.RegisterEntryPoint<UseAreamanager>().As<IUseItem>().AsSelf();
 

@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 //전체 사용
 public class GameLifetimeScope : LifetimeScope
 {
-
     [SerializeField] private PlayerInput playerInput;
     //Root LifetimeScope를 사용해서모든 씬에서 사용하기!
     protected override void Configure(IContainerBuilder builder)

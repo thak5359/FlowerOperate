@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 using VContainer;
 using System;
 using static Constant;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class SettingMenuManager : MonoBehaviour
 {
@@ -16,6 +18,9 @@ public class SettingMenuManager : MonoBehaviour
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
     public GameObject etcPanel;         // 기타 설정 판넬
+
+    public Button closeButton;        // 설정 창 닫는 버튼
+
 
     [Header("On/Off MoveSet")]
     public RectTransform movablePart; // 이동시킬 최상위 부모 패널
@@ -48,8 +53,8 @@ public class SettingMenuManager : MonoBehaviour
             soundButton.onClick.AddListener(() => OnClickSoundButton());
         if (displayButton != null)
             displayButton.onClick.AddListener(() => OnClickDisplayButton());
-        if (soundButton != null)
-            soundButton.onClick.AddListener(() => OnClickSoundButton());
+        if( closeButton != null)
+            closeButton.onClick.AddListener(() => CloseSetttingMenu().Forget());
     }
 
     public void OnClickSoundButton() => PanelChange(1);
@@ -136,45 +141,50 @@ public class SettingMenuManager : MonoBehaviour
     public void OnBackAction(InputAction.CallbackContext context)
     {
         if (!context.performed && isTransitioning == true) return;
+        HandleBackActionAsync(context).Forget();
+
+       
+    }
+
+    private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
+    {
         currentMap = input.getCurrentIAmap();
 
-        // 수정할 위치: SettingMenuManager 스크립트 내부의 맵 분기 처리 로직
         if (currentMap == TITLE_MAP_NAME)
         {
-            StartCoroutine(OpenSettingMenu());
+            await OpenSettingMenu();
         }
         else if (currentMap == SETTING_MAP_NAME)
         {
-            StartCoroutine(CloseSetttingMenu());
+            await CloseSetttingMenu();
         }
         else
         {
-            // 그 외의 경우 (기존 default 역할)
+            // 그 외의 경우
             Debug.LogError($"[SettingMenuManager]: {currentMap}맵에서 해당 동작에 정의되지 않았습니다.");
         }
     }
 
-    private IEnumerator OpenSettingMenu()
+
+
+    public async UniTask OpenSettingMenu()
     {
         isTransitioning = true;
 
         input.changeIAmapSetting();
-        yield return StartCoroutine(MoveRoutine(showPos));
-
-
+        await MoveRoutine(showPos);
 
         isTransitioning = false;
 
-
     }
 
-    private IEnumerator CloseSetttingMenu()
+    private async UniTask CloseSetttingMenu()
     {
 
         isTransitioning = true;
 
         input.changeIAmapPrev();
-        yield return StartCoroutine(MoveRoutine(showPos));
+        await MoveRoutine(hidePos);
 
 
         isTransitioning = false;
@@ -183,19 +193,18 @@ public class SettingMenuManager : MonoBehaviour
 
     public void OnClickSettingOpen()
     {
-        OpenSettingMenu();
+        OpenSettingMenu().Forget();
     }
 
     public void OnClickSettingClose()
     {
         input.changeIAmapPrev();
-        StartCoroutine (MoveRoutine(hidePos));
-
+        MoveRoutine(hidePos).Forget(); 
     }
 
-    private IEnumerator MoveRoutine(Vector2 targetPos)
+    private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken token = default)
     {
-
+        if (targetPos == showPos) { settingCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
 
@@ -206,10 +215,9 @@ public class SettingMenuManager : MonoBehaviour
             t = t * t * (3f - 2f * t);
 
             movablePart.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
         movablePart.anchoredPosition = targetPos;
         if (targetPos == hidePos) { settingCanvas.enabled = false; }
-        PanelChange(1);
     }
 }
