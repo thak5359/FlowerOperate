@@ -1,22 +1,36 @@
 ﻿using JetBrains.Annotations;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
-
+using Unity.Entities;
 
 [CreateAssetMenu(fileName = "IdData", menuName = "ItemData/IdData")]
 public class ItemIdData : ScriptableObject
 {
 
     [Header("기본 정보")]
-    [SerializeField] public int startId;
+    [SerializeField] public short startId;
+    [SerializeField] public List<FixedString64Bytes> itemName;
+    [SerializeField] public List<FixedString128Bytes> description;
+    [SerializeField] public List<FixedString64Bytes> spriteAddress;
 
-    [SerializeField] public List<string> itemName;
-    [SerializeField] public List<string> description;
-    [SerializeField] public List<string> spriteAddress;
+    public FixedString64Bytes ItemName(byte i) => itemName[i];
+    public FixedString128Bytes Description(byte i) => description[i];
+    public FixedString64Bytes Address(byte i) => spriteAddress[i];
+}
 
-    public string ItemName(int i) => itemName[i];
-    public string Description(int i) => description[i];
-    public string Address(int i) => spriteAddress[i];
+
+public struct ItemBlobData
+{
+    public short ItemId;
+    public FixedString64Bytes ItemName;      
+    public FixedString128Bytes Description; 
+    public FixedString64Bytes SpriteAddress;
+}
+
+public struct ItemBlobDatas
+{
+    public BlobArray<ItemBlobData> Items;
 }
 
 public class ItemDetailData : ScriptableObject
@@ -28,9 +42,9 @@ public class ItemDetailData : ScriptableObject
 public struct ChargeInfo
 {
     public float ChargeTime;
-    public int maxChargeCount;
+    public sbyte maxChargeCount;
 
-    public ChargeInfo(float time, int count)
+    public ChargeInfo(float time, sbyte count)
     {
         ChargeTime = time;
         maxChargeCount = count;
@@ -40,6 +54,4 @@ public struct ChargeInfo
     {
         Debug.Log($"chargeTime : ${ChargeTime}, maxChargeCont : ${maxChargeCount}");
     }
-
-    
 }

@@ -5,27 +5,20 @@ using UnityEngine.InputSystem;
 
 public class FarmSceneLifetimeScope : LifetimeScope
 {
-
-    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private PauseMenu pauseMenu;
-    
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // TestActionMapChanger
-        builder.RegisterEntryPoint<ActionMapChanger>().As< IMapChangable>().AsSelf();
+        //KeyMapper랑 Changer는 씬 의존적인 스크립트 이기에 SceneLifetimeScope에 존재해야함.
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
 
+        builder.RegisterEntryPoint<UseAreamanager>().As<IUseItem>().AsSelf();
 
-        builder.RegisterComponent<PlayerInput>(playerInput);
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<PauseMenu>(pauseMenu);
-
-        
     }
 }

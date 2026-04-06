@@ -1,8 +1,9 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -10,6 +11,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
+using static Constant;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -26,6 +28,8 @@ public class PauseMenu : MonoBehaviour
     public Button buttonEnd;
     public Button buttonCloseSetting;
 
+    public SettingMenuManager settingMenuManager;
+
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
@@ -38,24 +42,28 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
-    }
+        settingMenuManager = GetComponent<SettingMenuManager>();
 
+        if (settingMenuManager != null)
+        {
+            Debug.Log("settingMenuManager is assigned successfully in PauseMenu.");
+        }
+    }
     
     [Inject]
     public  void Construct(IMapChangable inputManager)
     {
         input = inputManager;
-
     }
 
     private void Start()
     {
 
-        buttonResume.onClick.AddListener(() => StartCoroutine(ClosePauseMain()));
-        buttonSetting.onClick.AddListener(() => StartCoroutine(OpenSettingMenu()));
+        buttonResume.onClick.AddListener(() => ClosePauseMain().Forget());
+        buttonSetting.onClick.AddListener(() => OpenSettingMenu().Forget());
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
-        buttonCloseSetting.onClick.AddListener(() => StartCoroutine(BackToPauseFromSetting()));
+        buttonCloseSetting.onClick.AddListener(() => BackToPauseFromSetting().Forget());
     }
 
 
@@ -64,44 +72,52 @@ public class PauseMenu : MonoBehaviour
 
     public void OnBackAction(InputAction.CallbackContext context)
     {
-        Debug.Log("OnBackAction Called!");
         // 1. 공통 방어 로직
         if (isTransitioning == true || !context.performed) return;
 
-        currentMap = input.getCurrentIAmap();
+        HandleBackActionAsync(context).Forget();
 
-
-        switch (currentMap)
-        {
-            case "MAP_FARM":
-            case "MAP_SHOP":
-                // 농장이나 상점 -> 퍼즈 메뉴 열기
-                StartCoroutine(OpenPauseMain());
-                break;
-
-            case "MAP_PAUSE":
-                // 퍼즈 메인 -> 메뉴 닫고 복귀
-                StartCoroutine(ClosePauseMain());
-                break;
-
-            case "MAP_SETTING":
-                // 세팅 화면 -> 퍼즈 메인으로 돌아가기
-                StartCoroutine(BackToPauseFromSetting());
-                break;
-
-            default:
-                Debug.Log($"[PauseMenu] {currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
-                break;
-        }
     }
 
-    private IEnumerator OpenPauseMain()
+
+    private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
     {
+        currentMap = input.getCurrentIAmap();
+
+        // 수정할 위치: PauseMenu UI 매니저 스크립트 내부의 맵 분기 처리 로직
+        if (currentMap == FARM_MAP_NAME || currentMap == SHOP_MAP_NAME)
+        {
+            // 농장이나 상점 -> 퍼즈 메뉴 열기
+            OpenPauseMain(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+        else if (currentMap == PAUSEMENU_MAP_NAME)
+        {
+            // 퍼즈 메인 -> 메뉴 닫고 복귀
+            await ClosePauseMain();
+        }
+        else if (currentMap == SETTING_MAP_NAME)
+        {
+            // 세팅 화면 -> 퍼즈 메인으로 돌아가기
+            await BackToPauseFromSetting();
+        }
+        else
+        {
+            // 그 외의 경우 
+            Debug.Log($"[PauseMenu] {currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
+        }
+
+
+    }
+
+
+    private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
+    {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapPauseMenu();
 
-        StartCoroutine(MoveRoutine(showPos));
+        MoveRoutine(showPos).Forget();
 
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
@@ -113,7 +129,7 @@ public class PauseMenu : MonoBehaviour
             float warpedT = Mathf.Sin(cachedFloat / 1.0f * Mathf.PI * 0.5f);
 
             Time.timeScale = Mathf.SmoothStep(1, 0, warpedT);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
             
         }
         Time.timeScale = 0f;
@@ -122,24 +138,26 @@ public class PauseMenu : MonoBehaviour
         isTransitioning = false;
     }
 
-    private IEnumerator OpenSettingMenu()
+    private async UniTask OpenSettingMenu(CancellationToken cancellationToken = default)
     {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapSetting();
-
-        yield return StartCoroutine(MoveRoutine(settingPos));
+        settingMenuManager.OnClickSoundButton(); 
+        await(MoveRoutine(settingPos));
 
         isTransitioning = false;
     }
 
 
 
-    public IEnumerator ClosePauseMain()
+    public async UniTask ClosePauseMain(CancellationToken cancellationToken = default)
     {
+        if (isTransitioning == true) return;
         isTransitioning = true;
 
-        yield return StartCoroutine(MoveRoutine(hidePos));
+        await MoveRoutine(hidePos);
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
@@ -149,11 +167,11 @@ public class PauseMenu : MonoBehaviour
 
     }
 
-    public IEnumerator BackToPauseFromSetting()
+    public async UniTask BackToPauseFromSetting()
     {
         Debug.Log("BackToPause is called 1!");
         isTransitioning = true;
-        yield return StartCoroutine(MoveRoutine(showPos));
+        await MoveRoutine(showPos);
         input.changeIAmapPrev();
         Debug.Log("BackToPause is called 2!");
 
@@ -161,9 +179,8 @@ public class PauseMenu : MonoBehaviour
     }
 
 
-    private IEnumerator MoveRoutine(Vector2 targetPos)
+    private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken cancellationToken = default)
     {
-
         if (targetPos == showPos) { pauseCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;
@@ -175,12 +192,10 @@ public class PauseMenu : MonoBehaviour
             t = t * t * (3f - 2f * t);
 
             movablePart.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
         }
-
         movablePart.anchoredPosition = targetPos;
         if (targetPos == hidePos) { pauseCanvas.enabled = false; }
-
     }
 
     #endregion
@@ -188,43 +203,18 @@ public class PauseMenu : MonoBehaviour
     #region 버튼 클릭 기능
 
 
-    public void OnClickSettingClose()
-    {
-        isTransitioning = true;
-
-        input.changeIAmapPauseMenu();
-
-         StartCoroutine(BackToPauseFromSetting());
-
-    } 
-
-
-    public void OnClickSettingMenu()
-    {
-        isTransitioning = true;
-
-        input.changeIAmapSetting();
-
-         StartCoroutine(MoveRoutine(settingPos));
-
-    }
-
     public void OnClickTitleButton()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("MainTitle");
     }
 
     public void OnClickGameEndButton()
     {
-    
     #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
     #else
         Application.Quit();
     #endif
     }
-   
-
-
 #endregion
 }

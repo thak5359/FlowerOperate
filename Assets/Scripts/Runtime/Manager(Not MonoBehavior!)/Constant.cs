@@ -1,29 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
-using static Constant;
 
 
 public class Constant
 {
-    public const string ADDRESSABLE_USEAREA = "Prefab_UseArea";
+    public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
+
+    #region 아이템 ID 범위
+
+    public const short USABLE_START_ID = 0;
+    public const short COMMON_START_ID = 41;
+    public const short FLOWER_START_ID = 301;
+
+    public const short USABLE_END_ID = 40;
+    public const short COMMON_END_ID = 300;
+    public const short FLOWER_END_ID = 1000;
+
+    #endregion
 
 
+    #region  장비 아이템 ID 범위
+
+    public const short MIN_HOE_ID = 0;
+    public const short MAX_HOE_ID = 7;
+
+    public const short MIN_WATERINGCAN_ID = 8;
+    public const short MAX_WATERINGCAN_ID = 15;
+
+    public const short MIN_HAMMER_ID = 16;
+    public const short MAX_HAMMER_ID = 23;
+
+    public const short MIN_SICKLE_ID = 24;
+    public const short MAX_SICKLE_ID = 31;
+
+    public const short MIN_AXE_ID = 32;
+    public const short MAX_AXE_ID = 39;
+
+    public const short MIN_CONSUMABLE_ID = 500;
+    public const short MAX_CONSUMABLE_ID = 7;
+
+    #endregion
 
 
+    #region 액션 맵, 스키마 이름
+
+    public static readonly FixedString64Bytes TITLE_MAP_NAME = "MAP_TITLE";
+    public static readonly FixedString64Bytes SETTING_MAP_NAME = "MAP_SETTING";
+    public static readonly FixedString64Bytes PAUSEMENU_MAP_NAME = "MAP_PAUSE";
+    public static readonly FixedString64Bytes SHOP_MAP_NAME = "MAP_SHOP";
+    public static readonly FixedString64Bytes FARM_MAP_NAME = "MAP_FARM";
+    public static readonly FixedString64Bytes INVENTORY_MAP_NAME = "MAP_INVENTORY";
+    public static readonly FixedString64Bytes STORAGE_MAP_NAME = "MAP_STORAGE";
+    public static readonly FixedString64Bytes CHATBOX_MAP_NAME = "MAP_CHATBOX";
+
+    public static readonly FixedString64Bytes WASD_SCHEME_NAME = "WASD_Scheme";
+    public static readonly FixedString64Bytes ARROW_SCHEME_NAME = "Arrow_Scheme";
+   
+    #endregion
 
 
+    #region 씬 이름
+    
+    public static readonly FixedString64Bytes TITLE_SCENE_NAME = "MainTitle";
+    public static readonly FixedString64Bytes FARM_SCENE_NAME = "SampleScene";
+    
+    #endregion
 
+   
+    #region BLOB 데이터 파일 경로
 
-    public const string TITLE_MAP_NAME = "MAP_TITLE";
-    public const string SETTING_MAP_NAME = "MAP_SETTING";
-    public const string PAUSEMENU_MAP_NAME = "MAP_PAUSE";
-    public const string SHOP_MAP_NAME = "MAP_SHOP";
-    public const string FARM_MAP_NAME = "MAP_FARM";
-    public const string INVENTORY_MAP_NAME = "MAP_INVENTORY";
-    public const string STORAGE_MAP_NAME = "MAP_STORAGE";
-    public const string CHATBOX_MAP_NAME = "MAP_CHATBOX";
-
-    public const string WASD_SCHEME_NAME = "WASD_Scheme";
-    public const string ARROW_SCHEME_NAME = "Arrow_Scheme";
+    public const string BLOB_FOLDER = "Blobs";
+    public const string ITEM_BLOB = "ItemData.blob";
+    public const string FLOWER_BLOB = "FlowerData.blob";
+    public const string USABLE_BLOB = "UsableData.blob";
+    public const string FLOWER_DETAIL_BLOB = "FlowerDetail.blob";
+    public const string USABLE_DETAIL_BLOB = "UsableDetail.blob";
+    
+    #endregion
 }

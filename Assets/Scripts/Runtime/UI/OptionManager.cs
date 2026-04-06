@@ -71,7 +71,8 @@ public class OptionManager : MonoBehaviour
         LoadSettings();
         InitResolution();
         //ApplyToFungus();
-    }
+        resolutionDropdown.onValueChanged.AddListener( (value) => SetResolutionFromDropdown(value));
+            }
 
 
     private void OnEnable() { SceneManager.sceneLoaded += OnSceneLoaded; }

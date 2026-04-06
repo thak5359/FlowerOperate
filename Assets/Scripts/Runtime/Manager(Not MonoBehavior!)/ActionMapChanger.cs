@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
+using Unity.Collections;
 using VContainer.Unity;
 using static Constant;
 
@@ -23,56 +24,27 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이
 
 }
 
-
-
-
-public class ActionMapChanger : IMapChangable, IStartable
+public class ActionMapChanger : IMapChangable
 {
-    
-
-    [Header("InputAction Asset 파일을 할당해주세요. 위치는 Asset/Settings입니다")]
-    [SerializeField] public InputActionAsset IA;
-
     private PlayerInput _playerInput;
-    private PlayerController _playerController;
-    private HotbarManager _hotbarManager;
-
-    private Stack<string> prevMapStack = new();
+    private Stack<FixedString64Bytes> prevMapStack = new();
 
     [Inject]
-    void Construct(PlayerInput input_playerInput, HotbarManager input_hotBarManager, PlayerController input_playerController)
+    void Construct(PlayerInput input_playerInput)
     {
         _playerInput = input_playerInput;
-        _hotbarManager = input_hotBarManager;
-        _playerController = input_playerController;
+        Debug.Log("ActionMapChanger has been successfully injected!");
     }
-
-
-
-    //public async UniTask StartAsync(CancellationToken cancellation)
-    //{
-       
-    //}
-
-    void IStartable.Start()
-    {
-        Debug.Log($"Construct A");
-        if (_playerController == null)
-        {
-            Debug.LogError("[IA Manager] PlayerController 인스턴스를 찾을 수 없음!");
-            return;
-        }
-    }  
 
     #region IA 맵 변경
 
-    private void PushAndChange(string targetMap)
+    private void PushAndChange(FixedString64Bytes targetMap)
     {
         Debug.Log($"{targetMap}으로 전환하기");
 
         if (_playerInput == null) return;
 
-        string currentMap = _playerInput.currentActionMap.name;
+        FixedString64Bytes currentMap = _playerInput.currentActionMap.name;
 
         // 똑같은 맵을 또 스택에 넣는 것을 방지 
         if (currentMap != targetMap)
@@ -80,9 +52,7 @@ public class ActionMapChanger : IMapChangable, IStartable
             prevMapStack.Push(currentMap);
             Debug.Log($"[IA Manager] Push: {currentMap} / 현재 스택 크기: {prevMapStack?.Count??null}");
         }
-
-        _playerInput.SwitchCurrentActionMap(targetMap);
-        
+        _playerInput.SwitchCurrentActionMap(targetMap.ToString());
     }
 
     string IMapChangable.getCurrentIAmap()
@@ -103,10 +73,9 @@ public class ActionMapChanger : IMapChangable, IStartable
     {
         if (_playerInput != null && prevMapStack.Count > 0)
         {
-            string target = prevMapStack.Pop();
-            _playerInput.SwitchCurrentActionMap(target);
+            FixedString64Bytes target = prevMapStack.Pop();
+            _playerInput.SwitchCurrentActionMap(target.ToString());
             Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
-
         }
     }
     void IMapChangable.changeIAmap(string targetMap) // 직접 키고 싶은 맵 요청
@@ -121,9 +90,7 @@ public class ActionMapChanger : IMapChangable, IStartable
    
     #region 액션 바인딩 커스텀아이즈
 
-
      public void Keymapping()
     { InputActionMap map = _playerInput.currentActionMap; }
-
     #endregion
 }
