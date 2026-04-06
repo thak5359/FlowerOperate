@@ -33,41 +33,31 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
-    Vector3 cached3Vec1;
-    Vector3 cached3Vec2;
+    [SerializeField] public GameObject UseArea; // ������ ��� ���� (���� ������ ����)
+    [SerializeField] public GameObject Plot;
 
 
-    [SerializeField] public GameObject UseArea;
 
-    //test용 코드, 땅 생성하기 (현재 아이템 데이터 없어서 스킵)
-    [SerializeField] public GameObject obj;
-
-
-    // 상호작용 연속 방지용 
-    private float interactCooldown = 0.2f;
-    private float lastInteractTime = 0f;
-    
-    private List<GameObject> useAreaList = new List<GameObject>();
-
-
-    // 차징 관리용
-    [Header("차지 타임을 조절 하는 기능")]
-    [Range(1,2)]
+    // ��¡ ������
+    [Header("���� Ÿ���� ���� �ϴ� ���")]
+    [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
     private float chargeStartTime;
     private bool isCharging = false;
     float cachedSign;
 
     private Vector2 moveInput;
-    private Transform trans;
     private Rigidbody rb;
-    private Animation anim;
+
+    // ��ȣ�ۿ� ���� ������ 
+    private float interactCooldown = 0.2f;
+    private float lastInteractTime = 0f;
 
     [SerializeField] private string messageTarget;
 
     public void setTag(string input_tag) => messageTarget = input_tag;
-    Vector2 heading; // 캐릭터가 보고 있는 방향 ( 아이템 사용)
-
+    Vector2 heading;  // ĳ���Ͱ� ���� �ִ� ���� ( ������ ���)
+    Vector3 cached3Vec;
 
     void Awake()
     {
@@ -95,8 +85,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
-        interactableArea.localPosition = cached3Vec1;
-        SnapToWorldGrid(UseArea.transform, cached3Vec1);
+        interactableArea.localPosition = cached3Vec;
+        SnapToWorldGrid(UseArea.transform, cached3Vec);
     }
 
     void Move()
@@ -109,21 +99,16 @@ public class PlayerController : MonoBehaviour, IInteractable
             //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
         }
 
-        if(moveInput != Vector2.zero)
+        if (moveInput.x != 0)
         {
-            if (moveInput.x != 0)
-            {
-                cachedSign = (moveInput.x > 0 )? 1 : -1f;
-                heading.Set(cachedSign, 0.0f);
-                cached3Vec1.Set(cachedSign, 0.0f, 0.0f);
-            }
-            else 
-            {
-                cachedSign = (moveInput.y > 0) ? 1 : -1f;
-                heading.Set(0.0f, cachedSign);
-                cached3Vec1.Set(0.0f, 0.0f, cachedSign);
-            }
-          
+            heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
+            cached3Vec.Set(heading.x, 0.0f, 0.0f);
+        }
+        else
+        {
+            heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
+            cached3Vec.Set(0.0f, 0.0f, heading.y);
+
         }
 
     }
@@ -164,10 +149,8 @@ public class PlayerController : MonoBehaviour, IInteractable
             }
 
             UseArea.SetActive(true);
-
             isCharging = true;
             chargeStartTime = Time.time;
-            Debug.Log("<color=yellow>[Item]</color> 차징 시작...!");    
 
             // TODO: 차징 시작 애니메이션이나 이펙트 트리거
         }
@@ -175,57 +158,9 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
-            if (!isCharging) return;
 
-            float totalChargeTime = Time.time - chargeStartTime;
-            isCharging = false;
+            Instantiate(Plot, UseArea.transform.position, Quaternion.identity);
 
-            // 차징 시간을 포함하여 UseParam 생성
-            UseParam param = new UseParam(
-             heading,            // 캐릭터가 바라보는 2D 방향 (Vector2)
-             transform.position, // 현재 플레이어의 3D 위치
-             10,                 // 기본 효율 (나중에 아이템 등급에 따라 변경 가능)
-             totalChargeTime     // 실제 버튼을 누르고 있었던 시간
-         );
-
-            cached3Vec2 = UseArea.gameObject.transform.position;
-            cached3Vec2.y = 0.2f;
-
-
-            float chargePhase = MathF.Floor(param.elapsedTime / charTimePerPhase);
-
-            // 
-
-            if( chargePhase >= 0.0f )
-            {
-                Instantiate(obj, cached3Vec2, Quaternion.identity);
-            }
-            if( chargePhase >= 1.0f)
-            {
-
-            }
-            if (chargePhase >= 2.0f)
-            {
-
-            }
-            if (chargePhase >= 3.0f)
-            {
-
-            }
-            if (chargePhase >= 4.0f)
-            {
-
-            }
-
-
-
-            Instantiate(obj, cached3Vec2, Quaternion.identity);
-
-            #if UNITY_EDITOR
-            // 결과 출력
-            PrintUseResult(param);
-            #endif
-           
             UseArea.SetActive(false);
         }
     }
@@ -243,29 +178,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
 
     }
-
-
-#if UNITY_EDITOR
-    private void PrintUseResult(UseParam param)
-    {
-        string directionName = GetDirectionName(param.heading);
-        Debug.Log($"<color=cyan><b>[Item Use Result]</b></color>\n" +
-                  $"방향: {directionName} ({param.heading})\n" +
-                  $"위치: {param.pos}\n" +
-                  $"차징 시간: {param.elapsedTime:F2}초\n" +
-                  $"효율: {param.efficiency}");
-    }
-
-    private string GetDirectionName(Vector2 h)
-    {
-        if (h == Vector2.up) return "위(North)";
-        if (h == Vector2.down) return "아래(South)";
-        if (h == Vector2.left) return "왼쪽(West)";
-        if (h == Vector2.right) return "오른쪽(East)";
-        return "방향 알 수 없음";
-    }
-
-#endif
 
     void IInteractable.Interact(string Tag)
     {
