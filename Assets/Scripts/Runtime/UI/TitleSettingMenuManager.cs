@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Fungus;
 using System;
 using System.Collections;
 using System.Threading;
@@ -218,7 +219,7 @@ public class TitleSettingMenuManager : MonoBehaviour
         isTransitioning = true;
 
         input.changeIAmapSetting();
-        await MoveRoutine(showPos);
+        await MoveRoutine(showPos, this.GetCancellationTokenOnDestroy());
 
         isTransitioning = false;
 
@@ -231,7 +232,7 @@ public class TitleSettingMenuManager : MonoBehaviour
         isTransitioning = true;
 
         input.changeIAmapPrev();
-        await MoveRoutine(hidePos);
+        await MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy());
 
 
         isTransitioning = false;
@@ -247,11 +248,16 @@ public class TitleSettingMenuManager : MonoBehaviour
     {
         if (isTransitioning == true) return;
         input.changeIAmapPrev();
-        MoveRoutine(hidePos).Forget(); 
+        MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy()).Forget(); 
     }
 
     private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken token = default)
     {
+        if(movablePart == null || settingCanvas == null)
+        {
+            Debug.LogError("[SettingMenuManager]: MoveRoutine 실행 중 movablePart 또는 settingCanvas가 할당되지 않았습니다.");
+            return;
+        }
         if (targetPos == showPos) { settingCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;

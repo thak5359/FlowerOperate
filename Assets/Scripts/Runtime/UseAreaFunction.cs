@@ -33,11 +33,11 @@ public class UseAreaFunction : MonoBehaviour,
     public GameObject _currentTarget;
     public string innerTag;
 
-    private Collision collision;
+    private Collider collision;
 
     private void Awake()
     {
-        collision = GetComponent<Collision>();
+        collision = GetComponent<Collider>();
     }
    
 

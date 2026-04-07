@@ -1,0 +1,25 @@
+/* 모든 라벨의 기본 설정 */
+.info-label {
+    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory OTF Bold.otf");
+    -unity-font-definition: initial;
+    margin: 0;
+    padding: 0;
+    -unity-text-align: middle-center;
+    color: white; /* 텍스트 가독성을 위해 기본 색상 지정 */
+}
+
+/* 폰트 크기별 분리 */
+.text-large { font-size: 45px; }
+.text-medium { font-size: 40px; }
+.text-small { font-size: 35px; }
+
+/* 레이아웃 공통 설정 */
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-base {
+    flex-grow: 1;
+    width: 100%;
+}

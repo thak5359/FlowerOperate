@@ -206,7 +206,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
         input.changeIAmapPauseMenu();
 
-        MoveRoutine(showPos).Forget();
+        MoveRoutine(showPos, this.GetCancellationTokenOnDestroy()).Forget();
 
         Debug.Log("시간을 멈춰라 마이 월드야~!");
 
@@ -233,7 +233,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
         input.changeIAmapSetting();
         PanelChange(1);
-        await(MoveRoutine(settingPos));
+        await(MoveRoutine(settingPos, this.GetCancellationTokenOnDestroy()));
 
         isTransitioning = false;
     }
@@ -242,7 +242,7 @@ public class IngameSettingMenuManager : MonoBehaviour
     {
         isTransitioning = true;
 
-        await MoveRoutine(hidePos);
+        await MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy());
 
         Debug.Log("시간은 다시 움직인다");
         Time.timeScale = 1.0f;
@@ -256,7 +256,7 @@ public class IngameSettingMenuManager : MonoBehaviour
     {
         isTransitioning = true;
 
-        await MoveRoutine(showPos);
+        await MoveRoutine(showPos, this.GetCancellationTokenOnDestroy());
         input.changeIAmapPrev();
 
         isTransitioning = false;
@@ -264,6 +264,12 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken cancellationToken = default)
     {
+        if (movablePart == null || pauseCanvas == null)
+        {
+            Debug.LogError("[SettingMenuManager]: MoveRoutine 실행 중 movablePart 또는 settingCanvas가 할당되지 않았습니다.");
+            return;
+        }
+
         if (targetPos == showPos) { pauseCanvas.enabled = true; }
         Vector2 startPos = movablePart.anchoredPosition;
         float elapsed = 0;

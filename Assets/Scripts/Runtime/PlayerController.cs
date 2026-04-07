@@ -23,15 +23,13 @@ public class PlayerController : MonoBehaviour, IInteractable
     [SerializeField] public GameObject UseArea; // 아이템 사용 범위 (추후 삭제할 예정)
     [SerializeField] public GameObject Plot;
 
-    
 
     // 차징 관리용
-    [Header("차지 타임을 조절 하는 기능")]
+    [Header("차지 타임을 조절 하는 기능. 아이템 데이터가 만들어지기 전까지 실험용임.")]
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
-    private float chargeStartTime;
-    private bool isCharging = false;
-    float cachedSign;
+
+    private UseAreamanager _useAreaManager;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -43,14 +41,18 @@ public class PlayerController : MonoBehaviour, IInteractable
     [SerializeField] private string messageTarget;
 
     public void setTag(string input_tag) => messageTarget = input_tag;
-    Vector2 heading;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
+    public Vector2 heading;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
     Vector3 cached3Vec;
 
-    [Inject]
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        
+    } 
+
+    [Inject]
+    void Construct(UseAreamanager input_UseAreaManager)
+    {
+        _useAreaManager = input_UseAreaManager;
     }
 
     void Start()
@@ -135,10 +137,8 @@ public class PlayerController : MonoBehaviour, IInteractable
 
 
 
-            // 아래 부분은 테스트 끝나면 삭제할 함수임.
-            UseArea.SetActive(true);
-            isCharging = true;
-            chargeStartTime = Time.time;
+            _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
+
         }
 
 
@@ -147,9 +147,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
 
 
-            // 아래 부분은 테스트 끝나면 삭제할 함수임.
-            UseArea.SetActive(false);
-            Instantiate(Plot, UseArea.transform.position, Quaternion.identity);
+            _useAreaManager.Fire(); // 발사!
         }
     }
 
@@ -164,14 +162,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
         Debug.Log($"메세지 송신 to :{Tag}");
         Fungus.Flowchart.BroadcastFungusMessage(Tag);
-    }
-
-    void Update()
-    {
-        if (isCharging)
-        {
-            //UpdateSelectionVisual(currentElapsed);
-        }
     }
 
 }
