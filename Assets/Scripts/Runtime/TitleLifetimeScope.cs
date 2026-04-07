@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
-public class TittleLifetimeScope : LifetimeScope
+public class TitleLifetimeScope : LifetimeScope
 {
 
-    [SerializeField] private SettingMenuManager smm;
+    [SerializeField] private TitleSettingMenuManager smm;
     [SerializeField] private TitleMenuManager tmm;
 
     protected override void Configure(IContainerBuilder builder)
@@ -15,6 +15,6 @@ public class TittleLifetimeScope : LifetimeScope
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 
         builder.RegisterComponent<TitleMenuManager>(tmm);
-        builder.RegisterComponent<SettingMenuManager>(smm);
+        builder.RegisterComponent<TitleSettingMenuManager>(smm);
     }
 }

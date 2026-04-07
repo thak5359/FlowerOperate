@@ -18,10 +18,10 @@ public class ActionKeyMapper : IAsyncStartable
 
 
     private PlayerInput _playerInput;
-    private PauseMenu _pauseMenu;
+    private IngameSettingMenuManager _pauseMenu;
     private HotbarManager _hotbarManager;
     private PlayerController _playerController;
-    private SettingMenuManager _settingMenuManager;
+    private TitleSettingMenuManager _settingMenuManager;
 
     private string currentSceneName;
 
@@ -31,7 +31,7 @@ public class ActionKeyMapper : IAsyncStartable
     {
         _playerInput = input_playerInput;
         // TODO : 별도 씬 이름에 맞춰서 변경하기
-        var pauseMenus = container.Resolve<IReadOnlyList<PauseMenu>>();
+        var pauseMenus = container.Resolve<IReadOnlyList<IngameSettingMenuManager>>();
         _pauseMenu = pauseMenus.Count > 0 ? pauseMenus[0] : null;
 
         var hotbarmanagers = container.Resolve<IReadOnlyList<HotbarManager>>();
@@ -40,7 +40,7 @@ public class ActionKeyMapper : IAsyncStartable
         var playerControllers = container.Resolve<IReadOnlyList<PlayerController>>();
         _playerController = playerControllers.Count > 0 ? playerControllers[0] : null;
 
-        var settingMenuManagers = container.Resolve<IReadOnlyList<SettingMenuManager>>();
+        var settingMenuManagers = container.Resolve<IReadOnlyList<TitleSettingMenuManager>>();
         _settingMenuManager = settingMenuManagers.Count > 0 ? settingMenuManagers[0] : null;
 
         Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");

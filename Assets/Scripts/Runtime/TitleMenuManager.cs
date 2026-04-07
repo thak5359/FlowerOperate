@@ -12,12 +12,12 @@ public class TitleMenuManager : MonoBehaviour
     public Button loadButton;
     public Button settingButton;
     public Button endButton;
-    protected SettingMenuManager _settingMenuManger;
+    protected TitleSettingMenuManager _settingMenuManger;
     
     
     
     [Inject] 
-    void Construct(SettingMenuManager input_settingMenuManager)
+    void Construct(TitleSettingMenuManager input_settingMenuManager)
     {
         _settingMenuManger = input_settingMenuManager;
         if(_settingMenuManger == null)

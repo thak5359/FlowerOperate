@@ -6,27 +6,7 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class GameSettings
-{
-    //// 대화 관련
-    //public float writingSpeed = 30f;
-    //public float puncSliderRaw = 3f;
-    ////public bool isAutoMode = false;
-    //public float autoWaitTime = 2.0f;
 
-    // 사운드 관련 (0~100)
-    public float masterVol = 100f;
-    public float bgmVol = 100f;
-    public float sfxVol = 100f;
-    public float voiceVol = 100f;
-
-    // 해상도 및 화면 설정
-
-    public int resWidth = 1920;
-    public int resHeight = 1080;
-    public bool isFullScreen = true;
-}
 
 public class OptionManager : MonoBehaviour
 {
@@ -52,32 +32,24 @@ public class OptionManager : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
 
 
-    private List<Resolution> resolutions = new List<Resolution>();
-
     #region 싱글톤 & 초기화
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            LoadSettings();
-        }
-        else { Destroy(gameObject); }
-    }
 
     private void Start()
     {
         LoadSettings();
         InitResolution();
-        //ApplyToFungus();
-        resolutionDropdown.onValueChanged.AddListener( (value) => SetResolutionFromDropdown(value));
-            }
+        ApplyAllVolumes();
+
+        
+        resolutionDropdown.onValueChanged.AddListener(SetResolutionFromDropdown);
+        Debug.Log("Void start excuted on OptionManager");
+    }
 
 
     private void OnEnable() { SceneManager.sceneLoaded += OnSceneLoaded; }
     private void OnDisable() { SceneManager.sceneLoaded -= OnSceneLoaded; }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) { ApplyToFungus(); }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) { ApplyToUI(); }
 
 
     #endregion
@@ -131,7 +103,7 @@ public class OptionManager : MonoBehaviour
             case "VoiceVolume": settings.voiceVol = Value; break;
         }
 
-        ApplyToFungus();
+        ApplyToUI();
 
     }
     private void ApplyAllVolumes()
@@ -217,17 +189,11 @@ public class OptionManager : MonoBehaviour
         settings.resHeight = selected.h;
         settings.isFullScreen = selected.isFull;
 
-        // 2. [핵심] 현재 씬 이름 체크
-        if (SceneManager.GetActiveScene().name == "MainTitle")
-        {
+        //기존에 동작 안정성을 위해서 타이틀에서만 변경하게 되어있었음. 해제
+
             Screen.SetResolution(selected.w, selected.h, selected.isFull);
             Debug.Log($"[Resolution] '{selected.w}x{selected.h}' 적용 완료 (Scene: MainTitle)");
-        }
-        else
-        {
-            Debug.Log("[Resolution] 데이터 저장 완료. 다음 'MainTitle' 진입 시 적용됩니다.");
-        }
-
+        
         SaveSettings();
     }
 
@@ -254,7 +220,7 @@ public class OptionManager : MonoBehaviour
 
     #region UI 설정 적용, 저장, 불러오기
 
-    public void ApplyToFungus()
+    public void ApplyToUI()
     {
         //SayDialog sayDialog = SayDialog.GetSayDialog();
         //if (sayDialog != null)
@@ -298,17 +264,13 @@ public class OptionManager : MonoBehaviour
         }
         else
         {
-            // 2. [최초 가동] 데이터가 없다면 최고 사양으로 세팅
             SetDefaultHighestResolution();
 
             SaveSettings();
             Debug.Log($"[Init] 최초 가동: 최고 해상도({settings.resWidth}x{settings.resHeight})로 설정되었습니다.");
         }
 
-        if (SceneManager.GetActiveScene().name == "MainTitle")
-        {
             Screen.SetResolution(settings.resWidth, settings.resHeight, settings.isFullScreen);
-        }
 
         ApplyAllVolumes();
     }
