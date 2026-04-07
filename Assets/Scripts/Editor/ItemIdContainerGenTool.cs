@@ -1,28 +1,24 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 public class ItemIdContainerGenTool : EditorWindow
 {
-    public ItemIdData baseIdData;
     public TextAsset csvFile;
     public DropDownMenu menu = DropDownMenu.None;
 
     [MenuItem("Tools/IndexSOGenerator")]
     static void Mymenu()
     {
-        GetWindow<ItemIdContainerGenTool>();
+        GetWindow<ItemIdContainerGenTool>("ID SO Generator");
     }
 
     private void OnGUI()
     {
-        baseIdData = (ItemIdData)EditorGUILayout.ObjectField(
-            "기반 SO 에셋",
-            baseIdData,
-            typeof(ItemIdData),
-            false);
+        EditorGUILayout.HelpBox("CSV 데이터를 기반으로 ScriptableObject를 생성합니다.\n'Assets/ScriptableObjects/...' 경로에 생성됩니다.", MessageType.Info);
 
         csvFile = (TextAsset)EditorGUILayout.ObjectField(
             "csv 파일",
@@ -32,156 +28,159 @@ public class ItemIdContainerGenTool : EditorWindow
 
         menu = (DropDownMenu)EditorGUILayout.EnumPopup("종류", menu);
 
-        if (GUILayout.Button("SO 생성"))
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("SO 생성", GUILayout.Height(30)))
         {
+            if (csvFile == null)
+            {
+                EditorUtility.DisplayDialog("오류", "CSV 파일을 선택해주세요.", "확인");
+                return;
+            }
+
+            ExecuteGeneration();
+        }
+    }
+
+    private void ExecuteGeneration()
+    {
+        try
+        {
+            AssetDatabase.StartAssetEditing();
+            
+            string csvText = csvFile.text;
+            string[] lines = csvText.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            
+            if (lines.Length == 0)
+            {
+                Debug.LogWarning("CSV 파일이 비어 있습니다.");
+                return;
+            }
+
             switch (menu)
             {
                 case DropDownMenu.Flower:
-                    if (baseIdData is FlowerIdData flowerData) // 패턴 매칭 사용 (C# 7.0+)
-                        OperateFunc(flowerData);
+                    CreateFlowerSO(lines);
                     break;
 
                 case DropDownMenu.Usable:
-                    if (baseIdData is UsableIdData usableData)
-                        OperateFunc(usableData);
+                    CreateUsableSO(lines);
                     break;
 
                 default:
-                    if (baseIdData != null)
-                        OperateFunc(baseIdData);
-                    else
-                        Debug.LogWarning("베이스 아이디SO 없음"); // 에러는 경고나 에러 로그가 좋습니다.
+                    CreateEtcSO(lines);
                     break;
             }
         }
+        catch (Exception e)
+        {
+            Debug.LogError($"SO 생성 중 오류 발생: {e.Message}\n{e.StackTrace}");
+            EditorUtility.DisplayDialog("오류", $"생성 중 오류가 발생했습니다: {e.Message}", "확인");
+        }
+        finally
+        {
+            AssetDatabase.StopAssetEditing();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.ClearProgressBar();
+        }
     }
 
-    private void OperateFunc(FlowerIdData SO)
+    private void CreateFlowerSO(string[] lines)
     {
-        ClearSO(SO);
+        FlowerIdData so = ScriptableObject.CreateInstance<FlowerIdData>();
+        InitializeBaseLists(so);
+        so.speciesIndex = new List<int>();
+        so.colorIndex = new List<int>();
+        so.floroIndex = new List<int>();
+        so.floroIndex2 = new List<int>();
 
-        string[] lines = csvFile.ToString().Split('\n');
-
-        foreach (string line in lines)
+        for (int i = 0; i < lines.Length; i++)
         {
-            string[] data = line.Split(',');
+            if (i % 10 == 0) // Update progress bar every 10 lines to save performance
+                EditorUtility.DisplayProgressBar("SO 생성 중", $"Flower 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
-            SO.itemName.Add(data[1]);
+            string[] data = lines[i].Split(',');
+            if (data.Length < 5) continue;
 
-            SO.speciesIndex.Add(int.Parse(data[2]));
-            SO.colorIndex.Add(int.Parse(data[3]));
-            SO.floroIndex.Add(int.Parse(data[4]));
-            if (int.TryParse(data[5], out int value))
-                SO.floroIndex2.Add(value);
+            so.itemName.Add(data[1].Trim());
+            so.speciesIndex.Add(int.TryParse(data[2], out int s) ? s : 0);
+            so.colorIndex.Add(int.TryParse(data[3], out int c) ? c : 0);
+            so.floroIndex.Add(int.TryParse(data[4], out int f) ? f : 0);
+            
+            if (data.Length > 5 && int.TryParse(data[5], out int f2))
+                so.floroIndex2.Add(f2);
             else
-                SO.floroIndex2.Add(-1);
+                so.floroIndex2.Add(-1);
         }
 
-        FlowerIdData flowerId = CreateSOAsset(SO);
-
-        AssetDatabase.CreateAsset(flowerId, "Assets/ScriptableObjects/Flower/FlowerIdData.asset");
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        SaveAsset(so, "Assets/ScriptableObjects/Flower/FlowerIdData.asset");
     }
 
-    private void OperateFunc(UsableIdData SO)
+    private void CreateUsableSO(string[] lines)
     {
-        if(SO.itemName.Count > 0)
-            ClearSO(SO);
+        UsableIdData so = ScriptableObject.CreateInstance<UsableIdData>();
+        InitializeBaseLists(so);
+        so.durationIndex = new List<int>();
+        so.powerIndex = new List<int>();
+        so.chargeIndex = new List<int>();
 
-        string[] lines = csvFile.ToString().Split('\n');
-
-        foreach(string line in lines)
+        for (int i = 0; i < lines.Length; i++)
         {
-            string[] data = line.Split(',');
-            SO.itemName.Add(data[1]);
+            if (i % 10 == 0)
+                EditorUtility.DisplayProgressBar("SO 생성 중", $"Usable 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
-            SO.durationIndex.Add(int.Parse(data[2]));
-            SO.powerIndex.Add(int.Parse(data[3]));
-            SO.chargeIndex.Add(int.Parse(data[6]));
+            string[] data = lines[i].Split(',');
+            if (data.Length < 4) continue;
+
+            so.itemName.Add(data[1].Trim());
+            so.durationIndex.Add(int.TryParse(data[2], out int d) ? d : 0);
+            so.powerIndex.Add(int.TryParse(data[3], out int p) ? p : 0);
+            
+            if (data.Length > 6)
+                so.chargeIndex.Add(int.TryParse(data[6], out int ch) ? ch : 0);
+            else
+                so.chargeIndex.Add(0);
         }
 
-        UsableIdData usableId = CreateSOAsset(SO);
-
-        AssetDatabase.CreateAsset(usableId, "Assets/ScriptableObjects/Gear/UsableIdData.asset");
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        SaveAsset(so, "Assets/ScriptableObjects/Gear/UsableIdData.asset");
     }
-    private void OperateFunc(ItemIdData SO)
+
+    private void CreateEtcSO(string[] lines)
     {
-        if (SO.itemName.Count > 0)
-            ClearSO(SO);
+        ItemIdData so = ScriptableObject.CreateInstance<ItemIdData>();
+        InitializeBaseLists(so);
 
-        string[] lines = csvFile.ToString().Split('\n');
-
-        foreach (string line in lines)
+        for (int i = 0; i < lines.Length; i++)
         {
-            string[] data = line.Split(',');
+            if (i % 10 == 0)
+                EditorUtility.DisplayProgressBar("SO 생성 중", $"Etc 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
-            SO.itemName.Add(data[1]);
+            string[] data = lines[i].Split(',');
+            if (data.Length < 2) continue;
+
+            so.itemName.Add(data[1].Trim());
         }
 
-        ItemIdData etcItemId = CreateSOAsset(SO);
-
-        AssetDatabase.CreateAsset(etcItemId, "Assets/ScriptableObjects/Ore/EtcIdData.asset");
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        SaveAsset(so, "Assets/ScriptableObjects/Ore/EtcIdData.asset");
     }
 
-    private static void ClearSO(ItemIdData SO)
+    private void InitializeBaseLists(ItemIdData so)
     {
-        SO.itemName.Clear();
-        SO.description.Clear();
-        SO.spriteAddress.Clear();
+        so.itemName = new List<string>();
+        so.description = new List<string>();
+        so.spriteAddress = new List<string>();
     }
 
-    private static void ClearSO(FlowerIdData SO)
+    private void SaveAsset(UnityEngine.Object asset, string path)
     {
-        ClearSO(SO);
-        SO.itemName.Clear();
-        SO.speciesIndex.Clear();
-        SO.colorIndex.Clear();
-        SO.floroIndex.Clear();
-        SO.floroIndex2.Clear();
-    }
+        string directory = Path.GetDirectoryName(path);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
-    private static void ClearSO(UsableIdData SO)
-    {
-        ClearSO(SO);
-        SO.itemName.Clear();
-        SO.durationIndex.Clear();
-        SO.powerIndex.Clear();
-        SO.chargeIndex.Clear();
-    }
-
-
-    private static FlowerIdData CreateSOAsset(FlowerIdData SO)
-    {
-        FlowerIdData temp = ScriptableObject.CreateInstance<FlowerIdData>();
-        temp.itemName = SO.itemName;
-        temp.speciesIndex = SO.speciesIndex;
-        temp.colorIndex = SO.colorIndex;
-        temp.floroIndex = SO.floroIndex;
-        temp.floroIndex2 = SO.floroIndex2;
-        return temp;
-    }
-
-    private static UsableIdData CreateSOAsset(UsableIdData SO)
-    {
-        UsableIdData temp = ScriptableObject.CreateInstance<UsableIdData>();
-        temp.itemName = SO.itemName;
-        temp.durationIndex = SO.durationIndex;
-        temp.powerIndex = SO.powerIndex;
-        temp.chargeIndex = SO.chargeIndex;
-        return temp;
-    }
-
-    private ItemIdData CreateSOAsset(ItemIdData SO)
-    {
-        ItemIdData temp = ScriptableObject.CreateInstance<ItemIdData>();
-        temp.itemName = SO.itemName;
-        temp.description = SO.description;
-        temp.spriteAddress = SO.spriteAddress;
-        return temp;
+        AssetDatabase.CreateAsset(asset, path);
+        Debug.Log($"SO 생성 완료: {path}");
     }
 }

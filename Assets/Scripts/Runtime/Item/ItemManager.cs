@@ -38,16 +38,16 @@ public class ItemManager : MonoBehaviour
             {
                 case 1:
                     {
-                        var IDdata = data as UsableIdData;
-                        bool flowControl = InsertDataToMasterDB(IDdata);
-                        if (!flowControl)
+                        bool flowerControl = InsertDataToMasterDB(data);
+                        if (!flowerControl)
                             continue;
                     }
                     break;
                 case 100:
                     {
-                        bool flowerControl = InsertDataToMasterDB(data);
-                        if (!flowerControl)
+                        var IDdata = data as UsableIdData;
+                        bool flowControl = InsertDataToMasterDB(IDdata);
+                        if (!flowControl)
                             continue;
                     }
                     break;

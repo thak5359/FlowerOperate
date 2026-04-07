@@ -13,8 +13,13 @@ public enum StorageType
     PLOT
 }
 
+public interface IManager
+{
+    public void Load(SaveDatas saveDatas);
+}
+
 [Serializable]
-public class ItemStorageParent : MonoBehaviour
+public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
     protected ItemStorageData _data = new ItemStorageData();
@@ -22,91 +27,101 @@ public class ItemStorageParent : MonoBehaviour
     //Getter
     public ItemStorageData GetData => _data;
 
-    protected virtual void Initialize(StorageType type, ItemStorageData data, GameObject slotObject, ref List<ItemDataContainer> slotList)
+    protected virtual void Initialize(ItemStorageParent storageParent , ItemStorageData data, GameObject slotObject, ref List<ItemDataContainer> slotList)
     {
-        ResetData();
+        if (data == null || data.GetList == null)
+        {
+            Debug.LogWarning("불러온 데이터가 유효하지 않습니다.");
+            return;
+        }
+
+        // 1. 데이터 교체 (ResetData를 먼저 하면 안됨)
         _data = data;
 
-        switch (type)
+        // 2. 슬롯 UI 업데이트
+        if(storageParent is InventoryManager)
         {
-            case StorageType.INVEN:
+            for (int i = 0; i < _data.GetList.Count; i++)
+            {
+                // 필요한 경우 슬롯 동적 생성
+                if (i >= slotList.Count && slotObject != null)
                 {
-                    for (int i = 0; i < _data.GetList.Count; i++)
-                    {
-                        if (i >= _data.GetSlotsCount)
-                        {
-                            var newSlot = Instantiate(slotObject, this.gameObject.transform);
-                            slotList.Add(newSlot.GetComponent<ItemDataContainer>());
-                        }
-                        slotList[i].SetData(_data.GetList[i]);
-                    }
-                    break;
+                    var newSlot = Instantiate(slotObject, this.gameObject.transform);
+                    slotList.Add(newSlot.GetComponent<ItemDataContainer>());
                 }
-            case StorageType.STORAGE:
-                {
-                    for (int i = 0; i < _data.GetList.Count; i++)
-                    {
-                        if (i >= _data.GetSlotsCount)
-                            Debug.LogError("창고 슬롯이 꽉 찼습니다.");
-                        else
-                            slotList[i].SetData(_data.GetList[i]);
-                    }
-                    break;
-                }
-            case StorageType.PLOT:
-                {
-                    for (int i = 0; i < _data.GetList.Count; i++)
-                    {
-                        slotList[i].SetData(_data.GetList[i]);
-                    }
-                    break;
-                }
-            default:
-                break;
+
+                if (i < slotList.Count)
+                    slotList[i].SetData(_data.GetList[i]);
+            }
         }
-        Debug.Log("초기화 끝");
+        else
+        {
+            // Storage나 Plot은 기존 슬롯 리스트를 그대로 사용
+            for (int i = 0; i < _data.GetList.Count; i++)
+            {
+                if (i < slotList.Count)
+                    slotList[i].SetData(_data.GetList[i]);
+            }
+        }
+        
+        Debug.Log($"{storageParent.name} 초기화 끝 (아이템 수: {_data.GetList.Count})");
     }
 
-protected void ResetData()
-{
-    if (_data.GetList != null)
-        _data.ClearList();
-    _data.SetItemList(new List<ItemObjectData>(new ItemObjectData[_data.GetSlotsCount]));
-    _data.SetSlotsCount(0);
-}
+    public virtual void Load(SaveDatas saveDatas) { }
 
-public virtual void Swap(int idx1, int idx2)
-{
-    //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
-    _data.SwapItem(idx1, idx2);
-    Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
-}
-
-public virtual void Combine()
-{
-
-}
-
-public void AbandonItem()
-{
-
-}
-
-protected virtual void AddItem(ItemObjectData item)
-{
-    _data.AddItem(item);
-    //슬롯의 숫자UI 변경 로직 넣어주세요.
-}
-
-protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
-{
-    List<ItemObjectData> tempOD = new List<ItemObjectData>();
-    foreach (ItemDataContainer data in changedDataList)
+    protected void ResetData()
     {
-        tempOD.Add(data.GetData);
+        // 리스트를 완전히 비우는 것이 아니라, 슬롯 수만큼 기본값으로 채웁니다.
+        int count = (_data != null) ? _data.GetSlotsCount : 50;
+        if (count <= 0) count = 50;
+
+        List<ItemObjectData> emptyList = new List<ItemObjectData>();
+        for (int i = 0; i < count; i++) emptyList.Add(default);
+
+        if (_data == null) _data = new ItemStorageData();
+        _data.SetItemList(emptyList);
     }
-    return tempOD;
-}
+
+    public virtual void Swap(int idx1, int idx2)
+    {
+        //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
+        _data.SwapItem(idx1, idx2);
+        Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
+    }
+
+    // 아이템 합치기 함수
+    public virtual void EngraftItem(ref ItemObjectData a, ref ItemObjectData b)
+    {
+        if (a.CheckFull() || b.CheckEmpty())
+            return;
+
+        int space = 100 - a.GetAmount;
+        int amountToMove = Math.Min(space, (int)b.GetAmount);
+
+        a.SetAmount((short)(a.GetAmount + amountToMove));
+        b.SetAmount((short)(b.GetAmount - amountToMove));
+    }
+
+    public void AbandonItem()
+    {
+
+    }
+
+    protected virtual void AddItem(ItemObjectData item)
+    {
+        _data.AddItem(item);
+        //슬롯의 숫자UI 변경 로직 넣어주세요.
+    }
+
+    protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
+    {
+        List<ItemObjectData> tempOD = new List<ItemObjectData>();
+        foreach (ItemDataContainer data in changedDataList)
+        {
+            tempOD.Add(data.GetData);
+        }
+        return tempOD;
+    }
 }
 
 [Serializable]
@@ -171,11 +186,11 @@ public class ItemStorageData
         if (totalAmount > 100)
         {
             target.SetAmount(100);
-            start.SetAmount((sbyte)(totalAmount - 100));
+            start.SetAmount((short)(totalAmount - 100));
         }
         else
         {
-            target.SetAmount((sbyte)totalAmount);
+            target.SetAmount((short)totalAmount);
             start.SetAmount(0); // 합쳐졌으므로 시작 아이템은 0개가 되어야 함
         }
     }

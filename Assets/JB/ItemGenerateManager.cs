@@ -28,7 +28,7 @@ public class ItemGenerateManager : MonoBehaviour
         }
     }
 
-    public void GenItem(ushort id, sbyte amount, short duration, byte grade)
+    public void GenItem(ushort id, short amount, short duration, byte grade)
     {
         ItemDataContainer item = ObjectPool.GetObject();
         item.SetData(new ItemObjectData(id, amount, duration, grade));

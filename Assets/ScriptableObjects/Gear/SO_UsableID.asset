@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e3289371f21924fa24bd00b2c9ce11, type: 3}
   m_Name: SO_UsableID
   m_EditorClassIdentifier: 
-  startId: 1
-  itemIndex: 
+  startId: 100
   itemName:
   - "\uB0A1\uC740 \uAD2D\uC774"
   - "\uB3D9 \uAD2D\uC774"

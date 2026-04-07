@@ -15,7 +15,7 @@ public struct PlotData // 저장용 데이터 바구니
     public int lastActivedDay;
 }
 
-    [Serializable]
+[Serializable]
 public class Plot : MonoBehaviour
 {
     public PlotData data = new PlotData();
@@ -39,6 +39,12 @@ public class Plot : MonoBehaviour
     public int growth; // 꽃의 성장 단계 == item.level
     public int elapsed; // 심고 경과한 날짜 또는 페이즈.
 
+
+    private void Awake()
+    {
+        flowerId = this.gameObject.GetComponent<ItemDataContainer>().GetItemID;
+    }
+
     //OnEnable일때 타 관리 클래스에서 loadData 실행하기!
     public void loadData(bool input_isTilled, bool input_isWatered, int input_itemID,
         bool input_isFertilized, int input_growth, int input_elapsed)//DB에서 데이터 로드
@@ -50,7 +56,6 @@ public class Plot : MonoBehaviour
         elapsed = input_elapsed;
     }
 
-
     //TODO! 시간 관리 클래스 만들어 이 친구에게 오늘 날짜 갖다주기.
     //public void OnEnable()
     //{
@@ -61,26 +66,25 @@ public class Plot : MonoBehaviour
     //{
     //    turnOff();
     //}
+
     public PlotData GetSaveData()
     {
-
         data.isTilled = this.isTilled;
         data.isWatered = this.isWatered;
         data.isFertilized = this.isFertilized;
-        data.flowerId = this.flowerId ?? -1; // null이면 0으로 저장
+        data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
         data.growth = this.growth;
         data.elapsed = this.elapsed;
         data.lastActivedDay = this.LastActivedDay;
 
         return data;
-        
     }
     public void LoadFromData(PlotData data)
     {
         this.isTilled = data.isTilled;
         this.isWatered = data.isWatered;
         this.isFertilized = data.isFertilized;
-        this.flowerId = data.flowerId == -1 ? (int?)null : data.flowerId;
+        this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;
         this.growth = data.growth;
         this.elapsed = data.elapsed;
         this.LastActivedDay = data.lastActivedDay;

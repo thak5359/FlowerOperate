@@ -1,8 +1,5 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
@@ -12,21 +9,41 @@ public class InventoryManager : ItemStorageParent
 
     private void Awake()
     {
-        slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
+        if (slotList == null || slotList.Count == 0)
+            slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
     }
 
-    private void OnEnable()
+    public override void Load(SaveDatas saveDatas)
     {
-        SaveLoadManager.OnLoadData += this.Load;
+        base.Initialize(this, saveDatas.GetInvenData, slotObject, ref slotList);
     }
 
-    private void OnDisable()
+    /// <summary>
+    /// 실제 UI 슬롯들의 데이터를 현재 데이터 리스트(_data)와 동기화합니다.
+    /// </summary>
+    public void RefreshUI()
     {
-        SaveLoadManager.OnLoadData -= this.Load;
+        if (_data == null || _data.GetList == null) return;
+
+        for (int i = 0; i < slotList.Count; i++)
+        {
+            if (i < _data.GetList.Count)
+                slotList[i].SetData(_data.GetList[i]);
+            else
+                slotList[i].SetData(default); // 빈 슬롯 처리
+        }
     }
 
-    private void Load(SaveDatas saveDatas)
+    /// <summary>
+    /// 저장 전, UI 슬롯의 실제 값을 데이터 리스트에 반영합니다.
+    /// </summary>
+    public void SyncItemState()
     {
-        base.Initialize(StorageType.INVEN, saveDatas.GetInvenData, slotObject, ref slotList);
+        List<ItemObjectData> currentStates = new List<ItemObjectData>();
+        foreach (var slot in slotList)
+        {
+            currentStates.Add(slot.GetData);
+        }
+        _data.SetItemList(currentStates);
     }
 }
