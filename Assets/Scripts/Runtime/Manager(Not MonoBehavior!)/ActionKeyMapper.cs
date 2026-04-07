@@ -9,8 +9,9 @@ using Unity.Collections;
 using VContainer;
 using VContainer.Unity;
 using static Constant;
+using System;
 
-public class ActionKeyMapper : IAsyncStartable
+public class ActionKeyMapper : IAsyncStartable, IDisposable
 {
 
     // Wasd 조작법 쓸거면 true 아니면 False
@@ -73,9 +74,29 @@ public class ActionKeyMapper : IAsyncStartable
         {
             FarmMapActionAllocator();
             PauseMapActionAllocator();
+            SettingMapActionAllocator();
             _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME.ToString());
         }
         Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
+
+    }
+    //TODO : 할당 되어있는 모든 액션을 해제하기!
+    void IDisposable.Dispose()
+    {
+        if (_playerInput != null)
+        {
+            if (currentSceneName == TITLE_SCENE_NAME)
+            {
+                SettingMapActionDeallocator();
+            }
+            else if (currentSceneName == FARM_SCENE_NAME)
+            {
+
+                PauseMapActionDeallocator();
+                SettingMapActionDeallocator();
+                FarmMapActionDeallocator();
+            }
+        }
 
     }
 
@@ -100,6 +121,8 @@ public class ActionKeyMapper : IAsyncStartable
     void TitleMapActionAllocator()
     {
         var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
+        var actionEscape = map.FindAction("Escape");
+        actionEscape.performed += _settingMenuManager.OnBackAction;
     }
     #endregion
 
@@ -115,7 +138,7 @@ public class ActionKeyMapper : IAsyncStartable
     #region 세팅 메뉴 키 할당
     void SettingMapActionAllocator()
     {
-        if(_settingMenuManager == null)
+        if(currentSceneName == TITLE_SCENE_NAME && _settingMenuManager == null)
         {
             Debug.LogWarning("SettingMenuManager가 할당되지 않았습니다. 세팅 메뉴 키 할당을 건너뜁니다.");
             return;
@@ -135,7 +158,7 @@ public class ActionKeyMapper : IAsyncStartable
         Debug.Log("세팅 키 할당됨!");
     }
     #endregion
-
+    
 
     // 기존의 쓰던 A 맵  + 할당 >>> B 맵 + 할당...  A 맵 >> A맵에서의 키 해제 >> B에서의 키 할당 >>  맵 액션맵 A에서 B로 변경
 
@@ -181,20 +204,16 @@ public class ActionKeyMapper : IAsyncStartable
 
         #region 핫슬롯 1~0번 바로 이동
 
-        for (int i = 0; i < 10; i++)
-        {
-            int slotIndex = i;
-            // 1~9 , 0번 슬롯 할당
-            int displayNum = (i == 9) ? 0 : i + 1;
-            string actionName = $"HotSlot{displayNum}";
-
-            InputAction action = map.FindAction(actionName);
-            if (action != null)
-            {
-                //ctx로 InputAction.callbackContext를 처리
-                action.performed += ctx => _hotbarManager.pointSlot(slotIndex);
-            }
-        }
+        map.FindAction("HotSlot1").performed += OnHotSlot1Performed;
+        map.FindAction("HotSlot2").performed += OnHotSlot2Performed;
+        map.FindAction("HotSlot3").performed += OnHotSlot3Performed;
+        map.FindAction("HotSlot4").performed += OnHotSlot4Performed;
+        map.FindAction("HotSlot5").performed += OnHotSlot5Performed;
+        map.FindAction("HotSlot6").performed += OnHotSlot6Performed;
+        map.FindAction("HotSlot7").performed += OnHotSlot7Performed;
+        map.FindAction("HotSlot8").performed += OnHotSlot8Performed;
+        map.FindAction("HotSlot9").performed += OnHotSlot9Performed;
+        map.FindAction("HotSlot0").performed += OnHotSlot0Performed;
         #endregion
 
         var actionOpenInventory = map.FindAction("OpenInventory");
@@ -229,4 +248,113 @@ public class ActionKeyMapper : IAsyncStartable
 
     #endregion
 
+
+
+    #region 키 할당 해제 스크립트
+    #region 정지 메뉴 키 해제
+    void PauseMapActionDeallocator()
+    {
+        // 1. 맵 찾기
+        var map = _playerInput.actions.FindActionMap(PAUSEMENU_MAP_NAME.ToString());
+        if (map == null) return;
+
+        // 2. 액션 찾기
+        var actionEscape = map.FindAction("Escape");
+        if (actionEscape == null) return;
+
+        // 3. 해제 (매니저 객체가 아직 살아있는지 확인 후 해제)
+        if (_pauseMenu != null)
+        {
+            actionEscape.performed -= _pauseMenu.OnBackAction;
+            Debug.Log("정지 메뉴 키 해제 완료!");
+        }
+    }
+    #endregion
+
+    #region 세팅 메뉴 키 해제
+    void SettingMapActionDeallocator()
+    {
+        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
+        if (map == null) return;
+
+        var actionEscape = map.FindAction("Escape");
+        if (actionEscape == null) return;
+
+        // 할당할 때와 대칭되는 조건으로 해제합니다.
+        if (currentSceneName == TITLE_SCENE_NAME)
+        {
+            if (_settingMenuManager != null)
+            {
+                actionEscape.performed -= _settingMenuManager.OnBackAction;
+            }
+        }
+        else if (currentSceneName == FARM_SCENE_NAME)
+        {
+            if (_pauseMenu != null)
+            {
+                actionEscape.performed -= _pauseMenu.OnBackAction;
+            }
+        }
+        Debug.Log("세팅 키 해제 완료!");
+    }
+    #endregion
+
+    #region 농장 조작 키 해제
+    void FarmMapActionDeallocator()
+    {
+        if (_playerInput == null || _playerInput.actions == null) return;
+        InputActionMap map = _playerInput.actions.FindActionMap(FARM_MAP_NAME.ToString());
+        if (map == null) return;
+
+        // 기본 조작 해제
+        var actionMove = map.FindAction("Move");
+        actionMove.performed -= _playerController.OnMove;
+        actionMove.canceled -= _playerController.OnMove;
+
+        var actionUse = map.FindAction("Use");
+        actionUse.started -= _playerController.OnUse;
+        actionUse.performed -= _playerController.OnUse;
+        actionUse.canceled -= _playerController.OnUse;
+
+        var actionInteract = map.FindAction("Interact");
+        actionInteract.started -= _playerController.OnInteract;
+        actionInteract.performed -= _playerController.OnInteract;
+        actionInteract.canceled -= _playerController.OnInteract;
+
+        var actionPrevHotSlot = map.FindAction("PrevHotSlot");
+        actionPrevHotSlot.performed -= _hotbarManager.OnPrevHotSlot;
+
+        var actionNextHotSlot = map.FindAction("NextHotSlot");
+        actionNextHotSlot.performed -= _hotbarManager.OnNextHotSlot;
+
+        var actionEscape = map.FindAction("Escape");
+        actionEscape.performed -= _pauseMenu.OnBackAction;
+
+        // 핫슬롯 1~0번 해제 (하드 코딩)
+        map.FindAction("HotSlot1").performed -= OnHotSlot1Performed;
+        map.FindAction("HotSlot2").performed -= OnHotSlot2Performed;
+        map.FindAction("HotSlot3").performed -= OnHotSlot3Performed;
+        map.FindAction("HotSlot4").performed -= OnHotSlot4Performed;
+        map.FindAction("HotSlot5").performed -= OnHotSlot5Performed;
+        map.FindAction("HotSlot6").performed -= OnHotSlot6Performed;
+        map.FindAction("HotSlot7").performed -= OnHotSlot7Performed;
+        map.FindAction("HotSlot8").performed -= OnHotSlot8Performed;
+        map.FindAction("HotSlot9").performed -= OnHotSlot9Performed;
+        map.FindAction("HotSlot0").performed -= OnHotSlot0Performed;
+    }
+    #endregion
+
+    #region 핫슬롯키 할당용 함수
+    private void OnHotSlot1Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(0);
+    private void OnHotSlot2Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(1);
+    private void OnHotSlot3Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(2);
+    private void OnHotSlot4Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(3);
+    private void OnHotSlot5Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(4);
+    private void OnHotSlot6Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(5);
+    private void OnHotSlot7Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(6);
+    private void OnHotSlot8Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(7);
+    private void OnHotSlot9Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(8);
+    private void OnHotSlot0Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(9);
+    #endregion
+    #endregion
 }

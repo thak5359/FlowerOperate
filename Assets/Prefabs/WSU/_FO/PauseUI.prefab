@@ -728,7 +728,7 @@ MonoBehaviour:
   buttonTitle: {fileID: 4267137857659543049}
   buttonEnd: {fileID: 3758727621298458278}
   buttonCloseSetting: {fileID: 55675407822846768}
-  settingMenuManager: {fileID: 0}
+  settingMenuManager: {fileID: 7303586965115007400}
 --- !u!114 &7303586965115007400
 MonoBehaviour:
   m_ObjectHideFlags: 0

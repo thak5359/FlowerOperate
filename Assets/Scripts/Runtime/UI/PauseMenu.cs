@@ -73,7 +73,7 @@ public class PauseMenu : MonoBehaviour
     public void OnBackAction(InputAction.CallbackContext context)
     {
         // 1. 공통 방어 로직
-        if (isTransitioning == true || !context.performed) return;
+        if (this == null || isTransitioning == true || !context.performed) return;
 
         HandleBackActionAsync(context).Forget();
 
@@ -112,7 +112,6 @@ public class PauseMenu : MonoBehaviour
 
     private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
     {
-        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapPauseMenu();
@@ -140,7 +139,6 @@ public class PauseMenu : MonoBehaviour
 
     private async UniTask OpenSettingMenu(CancellationToken cancellationToken = default)
     {
-        if (isTransitioning == true) return;
         isTransitioning = true;
 
         input.changeIAmapSetting();
@@ -154,7 +152,6 @@ public class PauseMenu : MonoBehaviour
 
     public async UniTask ClosePauseMain(CancellationToken cancellationToken = default)
     {
-        if (isTransitioning == true) return;
         isTransitioning = true;
 
         await MoveRoutine(hidePos);
@@ -169,11 +166,10 @@ public class PauseMenu : MonoBehaviour
 
     public async UniTask BackToPauseFromSetting()
     {
-        Debug.Log("BackToPause is called 1!");
         isTransitioning = true;
+
         await MoveRoutine(showPos);
         input.changeIAmapPrev();
-        Debug.Log("BackToPause is called 2!");
 
         isTransitioning = false;
     }

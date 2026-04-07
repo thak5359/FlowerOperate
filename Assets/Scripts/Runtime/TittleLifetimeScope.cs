@@ -5,10 +5,9 @@ using VContainer.Unity;
 
 public class TittleLifetimeScope : LifetimeScope
 {
-
-    [SerializeField] private SettingMenuManager smm;
     [SerializeField] private TitleMenuManager tmm;
-
+    [SerializeField] private SettingMenuManager smm;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();

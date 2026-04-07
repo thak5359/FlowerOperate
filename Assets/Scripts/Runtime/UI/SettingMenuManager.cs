@@ -140,7 +140,7 @@ public class SettingMenuManager : MonoBehaviour
     // 설정 창 숨기기/보이기 (이동 연출 포함) 
     public void OnBackAction(InputAction.CallbackContext context)
     {
-        if (!context.performed && isTransitioning == true) return;
+        if (this == null || !context.performed && isTransitioning == true) return;
         HandleBackActionAsync(context).Forget();
 
        

@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; align-self: stretch; align-items: center; justify-content: center; width: 100%; height: 265px;" />
+</ui:UXML>

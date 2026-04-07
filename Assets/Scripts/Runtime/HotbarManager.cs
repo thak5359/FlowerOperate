@@ -78,6 +78,7 @@ public class HotbarManager : MonoBehaviour
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
+   
 
     public void SyncPlayerItem()
     {

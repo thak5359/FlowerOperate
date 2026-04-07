@@ -56,15 +56,6 @@ public class OptionManager : MonoBehaviour
 
     #region ΩÃ±€≈Ê & √ ±‚»≠
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            LoadSettings();
-        }
-        else { Destroy(gameObject); }
-    }
 
     private void Start()
     {

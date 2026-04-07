@@ -4404,7 +4404,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &1400211874
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5518,6 +5518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1697567596}
+  - component: {fileID: 1697567597}
   m_Layer: 0
   m_Name: CubeInSprite
   m_TagString: Untagged
@@ -5544,6 +5545,27 @@ Transform:
   - {fileID: 635064049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1697567597
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697567595}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: -0.1}
 --- !u!1 &1723892173
 GameObject:
   m_ObjectHideFlags: 0
@@ -5958,7 +5980,7 @@ CapsuleCollider:
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.000000059604645, y: 0, z: -1}
 --- !u!23 &1809669473
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6065,7 +6087,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &1830754213
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6245,7 +6267,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!23 &1863047992
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6900,6 +6922,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 500033216139901061, guid: 901f2443acd5cb04ea1624f36f334368,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 531727551535185601, guid: 901f2443acd5cb04ea1624f36f334368,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7363,6 +7390,11 @@ PrefabInstance:
     - target: {fileID: 3615696475290750506, guid: 901f2443acd5cb04ea1624f36f334368,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685866613821373179, guid: 901f2443acd5cb04ea1624f36f334368,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3888596619768770122, guid: 901f2443acd5cb04ea1624f36f334368,
