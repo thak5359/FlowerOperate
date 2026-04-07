@@ -6,13 +6,6 @@ using System.Xml.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public enum StorageType
-{
-    INVEN,
-    STORAGE,
-    PLOT
-}
-
 public interface IManager
 {
     public void Load(SaveDatas saveDatas);
