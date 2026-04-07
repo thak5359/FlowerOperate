@@ -7,7 +7,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
 {
     [SerializeField] private PlayerController playerController;
     [SerializeField] private HotbarManager hotbarManager;
-    [SerializeField] private PauseMenu pauseMenu;
+    [SerializeField] private IngameSettingMenuManager pauseMenu;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -19,6 +19,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
 
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
-        builder.RegisterComponent<PauseMenu>(pauseMenu);
+        builder.RegisterComponent<IngameSettingMenuManager>(pauseMenu);
     }
 }

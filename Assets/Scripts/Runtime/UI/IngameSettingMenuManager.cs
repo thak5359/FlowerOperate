@@ -1,26 +1,23 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 using static Constant;
 
-public class PauseMenu : MonoBehaviour
+public class IngameSettingMenuManager : MonoBehaviour
 {
+
 
     [Header("Pause Menu")]
     public RectTransform movablePart;
-    public Vector2 hidePos;
-    public Vector2 showPos;
-    public Vector2 settingPos;
+    public Vector2 hidePos = new Vector2(0, 1000);
+    public Vector2 showPos = new Vector2(0, 0);
+    public Vector2 settingPos = new Vector2 ( 0, -1000);
 
     public Button buttonResume;
     public Button buttonSetting;
@@ -28,13 +25,39 @@ public class PauseMenu : MonoBehaviour
     public Button buttonEnd;
     public Button buttonCloseSetting;
 
-    public SettingMenuManager settingMenuManager;
+    [Header("UI switch")]
+    public Button soundButton;
+    public Button displayButton;
+    public Button etcButton;
+
+    public GameObject soundPanel;        // 사운드 설정 판넬
+    public GameObject displayPanel;      // 화면 설정 판넬
+    public GameObject etcPanel;         // 기타 설정 판넬
+    private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
+
+
+    [Header("Sound UI References")]
+    public Slider masterVolumeSlider;
+    public Slider bgmVolumeSlider;
+    public Slider sfxVolumeSlider;
+    public Slider voiceVolumeSlider;
+
+    [Header("Sound UI Value Shower")]
+    public TextValueEdtior masterVolumeText;
+    public TextValueEdtior bgmVolumeText;
+    public TextValueEdtior sfxVolumeText;
+    public TextValueEdtior voiceVolumeText;
+
+    [Header("Resolution UI Reference")]
+    public TMP_Dropdown resolutionDropdown;
+
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
     private float cachedFloat = 0.0f;
     private IMapChangable input;
+    private  SettingManager _settingManager;
 
     private string currentMap;
 
@@ -42,31 +65,58 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
-        settingMenuManager = GetComponent<SettingMenuManager>();
 
-        if (settingMenuManager != null)
-        {
-            Debug.Log("settingMenuManager is assigned successfully in PauseMenu.");
-        }
     }
     
     [Inject]
-    public  void Construct(IMapChangable inputManager)
+    public  void Construct(IMapChangable input_Imapchangable, SettingManager input_settingManager)
     {
-        input = inputManager;
+        input = input_Imapchangable;
+        _settingManager = input_settingManager;
     }
 
     private void Start()
     {
+
+        SyncUIWithSettings();
 
         buttonResume.onClick.AddListener(() => ClosePauseMain().Forget());
         buttonSetting.onClick.AddListener(() => OpenSettingMenu().Forget());
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
         buttonCloseSetting.onClick.AddListener(() => BackToPauseFromSetting().Forget());
+
+        soundButton.onClick.AddListener(() => OnClickSoundButton());
+        displayButton.onClick.AddListener(() => OnClickDisplayButton());
+
+        masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
+        bgmVolumeSlider   .onValueChanged.AddListener(OnBGMVolumeChanged);
+        sfxVolumeSlider   .onValueChanged.AddListener(OnSFXVolumeChanged);
+        voiceVolumeSlider.onValueChanged.AddListener(OnVoiceVolumeChanged);
+
+        resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
+
     }
 
+    private void SyncUIWithSettings()
+    {
+        var s = _settingManager.Settings;
 
+        // 슬라이더 값을 저장된 값으로 세팅 (이벤트 호출 방지를 위해 SetValueWithoutNotify 권장)
+        masterVolumeSlider.SetValueWithoutNotify(s.masterVol);
+        bgmVolumeSlider.SetValueWithoutNotify(s.bgmVol);
+        sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
+        voiceVolumeSlider.SetValueWithoutNotify(s.voiceVol);
+
+
+        masterVolumeText.changeTextValueInt(s.masterVol);
+        bgmVolumeText.changeTextValueInt(s.bgmVol);
+        sfxVolumeText.changeTextValueInt(s.sfxVol);
+        voiceVolumeText.changeTextValueInt(s.voiceVol);
+
+        // 해상도 드롭다운 초기화
+        _settingManager.InitializeResDropdown(resolutionDropdown);
+    }
 
     #region PauseMenu, SettingMenu 호출/종료 기능
 
@@ -78,6 +128,47 @@ public class PauseMenu : MonoBehaviour
         HandleBackActionAsync(context).Forget();
 
     }
+
+    private void PanelChange(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                {
+                    soundPanel.SetActive(true);
+                    displayPanel.SetActive(false);
+                    etcPanel.SetActive(false);
+
+                    usingPanel = num;
+                    break;
+                }
+            case 2:
+                {
+                    soundPanel.SetActive(false);
+                    displayPanel.SetActive(true);
+                    etcPanel.SetActive(false);
+
+                    usingPanel = num;
+                    break;
+                }
+            case 3:
+                {
+                    soundPanel.SetActive(false);
+                    displayPanel.SetActive(false);
+                    etcPanel.SetActive(true);
+
+                    usingPanel = num;
+                    break;
+                }
+        }
+    }
+
+
+
+
+
+
+
 
 
     private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
@@ -108,7 +199,6 @@ public class PauseMenu : MonoBehaviour
 
 
     }
-
 
     private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
     {
@@ -142,13 +232,11 @@ public class PauseMenu : MonoBehaviour
         isTransitioning = true;
 
         input.changeIAmapSetting();
-        settingMenuManager.OnClickSoundButton(); 
+        PanelChange(1);
         await(MoveRoutine(settingPos));
 
         isTransitioning = false;
     }
-
-
 
     public async UniTask ClosePauseMain(CancellationToken cancellationToken = default)
     {
@@ -174,7 +262,6 @@ public class PauseMenu : MonoBehaviour
         isTransitioning = false;
     }
 
-
     private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken cancellationToken = default)
     {
         if (targetPos == showPos) { pauseCanvas.enabled = true; }
@@ -198,6 +285,10 @@ public class PauseMenu : MonoBehaviour
 
     #region 버튼 클릭 기능
 
+    public void OnClickSoundButton() => PanelChange(1);
+    public void OnClickDisplayButton() => PanelChange(2);
+
+    public void OnClickEtcButton() => PanelChange(3);
 
     public void OnClickTitleButton()
     {
@@ -212,5 +303,39 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
     #endif
     }
-#endregion
+    #endregion
+
+    #region 볼륨 값 조절
+
+    public void OnMasterVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(MASTER_MIXER_GROUP, value);
+    }
+
+    public void OnBGMVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(BGM_MIXER_GROUP, value);
+    }
+
+    public void OnSFXVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(SFX_MIXER_GROUP, value);
+    }
+
+    public void OnVoiceVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(VOICE_MIXER_GROUP, value);
+    }
+
+    #endregion
+
+    #region 해상도 드롭다운 초기화
+
+    public void OnResolutionChanged(int value)
+    {
+        _settingManager.ApplyResolution(value);
+
+    }
+    #endregion
+
 }

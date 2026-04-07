@@ -77,6 +77,15 @@ public class Constant
     public const string USABLE_BLOB = "UsableData.blob";
     public const string FLOWER_DETAIL_BLOB = "FlowerDetail.blob";
     public const string USABLE_DETAIL_BLOB = "UsableDetail.blob";
-    
+
+    #endregion
+
+    #region 오디어 믹서 그룹 이름
+
+    public const string MASTER_MIXER_GROUP = "MasterVolume";
+    public const string BGM_MIXER_GROUP = "BGMVolume";
+    public const string SFX_MIXER_GROUP = "SFXVolume";
+    public const string VOICE_MIXER_GROUP = "VoiceVolume";
+
     #endregion
 }

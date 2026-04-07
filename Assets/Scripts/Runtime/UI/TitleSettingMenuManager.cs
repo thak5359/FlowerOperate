@@ -1,14 +1,15 @@
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.InputSystem;
-using VContainer;
-using System;
-using static Constant;
 using Cysharp.Threading.Tasks;
+using System;
+using System.Collections;
 using System.Threading;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using VContainer;
+using static Constant;
 
-public class SettingMenuManager : MonoBehaviour
+public class TitleSettingMenuManager : MonoBehaviour
 {
     [Header("UI switch")]
     public Button soundButton;
@@ -26,7 +27,27 @@ public class SettingMenuManager : MonoBehaviour
     public RectTransform movablePart; // 이동시킬 최상위 부모 패널
     public Vector2 showPos;          // 화면 안 위치 (예: 0,525)
     public Vector2 hidePos;          // 화면 밖 위치 (예: 0, -525)
-    [SerializeField] private const float defaultDuration = 0.5f;   
+    [SerializeField] private const float defaultDuration = 0.5f;
+
+    [Header("Sound UI References")]
+    public Slider masterVolumeSlider;
+    public Slider bgmVolumeSlider;
+    public Slider sfxVolumeSlider;
+    public Slider voiceVolumeSlider;
+
+
+    [Header ("Sound UI Value Shower")]
+    public TextValueEdtior masterVolumeText;
+    public TextValueEdtior bgmVolumeText;
+    public TextValueEdtior sfxVolumeText;
+    public TextValueEdtior voiceVolumeText;
+
+    [Header("Resolution UI Reference")]
+    public TMP_Dropdown resolutionDropdown;
+
+
+    public SettingManager _settingManager; 
+
 
     private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
     private Canvas settingCanvas;
@@ -37,9 +58,10 @@ public class SettingMenuManager : MonoBehaviour
     IMapChangable input; // Injection
 
     [Inject]
-    void Construct(ActionMapChanger inputManager)
+    void Construct(ActionMapChanger inputManager, SettingManager input_settingManager)
     {
         input = inputManager;
+        _settingManager = input_settingManager;
     }
 
     private void Awake()
@@ -49,13 +71,40 @@ public class SettingMenuManager : MonoBehaviour
 
     private void Start()
     {
-        if (soundButton != null)
-            soundButton.onClick.AddListener(() => OnClickSoundButton());
-        if (displayButton != null)
-            displayButton.onClick.AddListener(() => OnClickDisplayButton());
-        if( closeButton != null)
-            closeButton.onClick.AddListener(() => CloseSetttingMenu().Forget());
+        SyncUIWithSettings();
+        soundButton.onClick.AddListener(() => OnClickSoundButton());
+        displayButton.onClick.AddListener(() => OnClickDisplayButton());
+        closeButton.onClick.AddListener(() => CloseSetttingMenu().Forget());
+
+
+        masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
+        bgmVolumeSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
+        sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+        voiceVolumeSlider.onValueChanged.AddListener(OnVoiceVolumeChanged);
+
+        resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
+
     }
+    private void SyncUIWithSettings()
+    {
+        var s = _settingManager.Settings;
+
+        // 슬라이더 값을 저장된 값으로 세팅 (이벤트 호출 방지를 위해 SetValueWithoutNotify 권장)
+        masterVolumeSlider.SetValueWithoutNotify(s.masterVol);
+        bgmVolumeSlider.SetValueWithoutNotify(s.bgmVol);
+        sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
+        voiceVolumeSlider.SetValueWithoutNotify(s.voiceVol);
+
+
+        masterVolumeText.changeTextValueInt(s.masterVol);
+        bgmVolumeText.changeTextValueInt(s.bgmVol);
+        sfxVolumeText.changeTextValueInt(s.sfxVol);
+        voiceVolumeText.changeTextValueInt(s.voiceVol);
+
+        // 해상도 드롭다운 초기화
+        _settingManager.InitializeResDropdown(resolutionDropdown);
+    }
+
 
     public void OnClickSoundButton() => PanelChange(1);
     public void OnClickDisplayButton() => PanelChange(2);
@@ -130,10 +179,6 @@ public class SettingMenuManager : MonoBehaviour
         }
     }
 
-    public void OffUI() // 끄기
-    {
-        movablePart.anchoredPosition = hidePos;
-    }
 
     private Coroutine moveCoroutine;
 
@@ -165,8 +210,6 @@ public class SettingMenuManager : MonoBehaviour
         }
     }
 
-
-
     public async UniTask OpenSettingMenu()
     {
 
@@ -192,7 +235,6 @@ public class SettingMenuManager : MonoBehaviour
 
         isTransitioning = false;
     }
-
 
     public void OnClickSettingOpen()
     {
@@ -225,4 +267,39 @@ public class SettingMenuManager : MonoBehaviour
         movablePart.anchoredPosition = targetPos;
         if (targetPos == hidePos) { settingCanvas.enabled = false; }
     }
+
+    #region 볼륨 값 조절
+
+    public void OnMasterVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(MASTER_MIXER_GROUP, value);
+    }
+
+    public void OnBGMVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(BGM_MIXER_GROUP, value);
+    }
+
+    public void OnSFXVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(SFX_MIXER_GROUP, value);
+    }
+
+    public void OnVoiceVolumeChanged(float value)
+    {
+        _settingManager.ApplyVolume(VOICE_MIXER_GROUP, value);
+    }
+
+    public void OnResolutionChanged(int value)
+    {
+        _settingManager.ApplyResolution(value);
+
+    }
+
+    public void InitializeResDropdown()
+    {
+        _settingManager.InitializeResDropdown(resolutionDropdown);
+    }
+
+    #endregion
 }
