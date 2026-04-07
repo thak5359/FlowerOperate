@@ -16,6 +16,7 @@ public class TitleSettingMenuManager : MonoBehaviour
     public Button displayButton;
     public Button etcButton;
 
+
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
     public GameObject etcPanel;         // 기타 설정 판넬
