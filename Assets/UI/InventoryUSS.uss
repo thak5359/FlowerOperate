@@ -1,0 +1,44 @@
+﻿/* 인벤토리 전체 배경판 */
+.inventory-root {
+    width: 870px;
+    height: 460px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    background-color: rgb(202, 155, 166);
+    padding: 10px;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* 인벤토리 한 줄 (Row) */
+.inventory-row {
+    flex-grow: 0;
+    height: 80px;
+    width: 100%;
+    flex-direction: row;
+}
+
+/* 왼쪽 포인터/인덱스 영역 */
+.slot-spacer {
+    width: 40px;
+    padding-right: 10px;
+}
+
+/* 버튼들을 감싸는 컨테이너 */
+.slot-container {
+    flex-grow: 1;
+    flex-direction: row;
+    width: 800px;
+}
+
+/* 개별 슬롯 버튼 */
+.inventory-slot {
+    width: 10%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border-width: 1px; /* 슬롯 구분선 추가 (선택사항) */
+}

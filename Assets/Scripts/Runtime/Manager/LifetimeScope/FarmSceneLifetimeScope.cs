@@ -17,7 +17,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 
-
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<IngameSettingMenuManager>(pauseMenu);

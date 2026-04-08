@@ -1,25 +1,88 @@
-/* 모든 라벨의 기본 설정 */
-.info-label {
+/* 1. 변수 설정: 유지보수가 엄청 편해집니다 */
+:root {
+    --bg-calendar: rgba(255, 0, 0, 0.52);
+    --bg-day: rgba(255, 252, 0, 0.45);
+    --bg-time: rgba(60, 71, 214, 0.67);
+    --bg-money: rgba(45, 255, 25, 0.55);
+    --ruby-color: rgba(255, 255, 255, 0.9);
+    
+    /* 폰트 상속을 위해 최상위에서 한 번만 선언 */
     -unity-font: url("project://database/Assets/Art/Fonts/Maplestory OTF Bold.otf");
     -unity-font-definition: initial;
-    margin: 0;
-    padding: 0;
-    -unity-text-align: middle-center;
-    color: white; /* 텍스트 가독성을 위해 기본 색상 지정 */
+    color: white;
 }
 
-/* 폰트 크기별 분리 */
-.text-large { font-size: 45px; }
-.text-medium { font-size: 40px; }
-.text-small { font-size: 35px; }
-
-/* 레이아웃 공통 설정 */
+/* 2. 레이아웃 공통 클래스 */
 .flex-center {
     justify-content: center;
     align-items: center;
 }
 
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+/* 3. 메인 컨테이너 및 패널 */
+#InfoContainer {
+    width: 26%;
+    height: 18%;
+}
+
+#DateContainer {
+    height: 65%;
+}
+
 .panel-base {
     flex-grow: 1;
-    width: 100%;
+}
+
+#CalendarPanel {
+    width: 60%;
+    background-color: var(--bg-calendar);
+}
+
+#DayOfWeekPanel {
+    background-color: var(--bg-day);
+}
+
+#TimePanel {
+    background-color: var(--bg-time);
+}
+
+#MoneyPanel {
+    height: 35%;
+    background-color: var(--bg-money);
+}
+
+/* 4. 라벨 및 텍스트 스타일 */
+.info-label {
+    margin: 0;
+    padding: 0;
+    -unity-text-align: middle-center;
+}
+
+.text-large { font-size: 45px; }
+.text-medium { font-size: 40px; }
+.text-small { font-size: 35px; }
+
+/* 5. 루비 문자 최적화 */
+#DateGroup {
+    height: 35%;
+    align-items: flex-end;
+}
+
+.ruby-unit {
+    margin: 0;
+    padding: 0;
+}
+
+.ruby-label {
+    font-size: 14px;
+    margin-bottom: -5px;
+    -unity-font-style: bold;
+    color: var(--ruby-color);
 }

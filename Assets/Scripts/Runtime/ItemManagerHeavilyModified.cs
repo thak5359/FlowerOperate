@@ -112,7 +112,7 @@ public struct FlowerItemDataStatic
 
 public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 {
-    bool _isInitialized = false; // 초기화 완료 여부
+   // bool _isInitialized = false; // 초기화 완료 여부
 
     //  Burst가 접근 가능한 고속 데이터 배열
     private BlobAssetReference<ItemBlobDatas> _nativeItemDB;
@@ -133,7 +133,7 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
         );
 
         Debug.Log("<color=green>[Blob]</color> 모든 데이터 로드 완료!");
-        _isInitialized = true;
+        //_isInitialized = true;
     }
 
     void IDisposable.Dispose()
@@ -404,7 +404,6 @@ public static class ItemSearchSystem
     }
     #endregion
 
-  
 }
 
 

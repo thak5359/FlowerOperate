@@ -1,28 +1,28 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/InfoUSS.uss" />
-    
-    <ui:VisualElement name="InfoContainer" style="width: 26%; height: 18%;">
-        
-        <ui:VisualElement name="DateContainer" style="height: 65%; flex-direction: row;">
-            
-            <ui:VisualElement name="CalendarPanel" class="panel-base flex-center" style="width: 60%; background-color: rgba(255, 0, 0, 0.52);">
-                <ui:Label name="YearLabel" class="info-label text-medium" text="XXXX년" style="-unity-text-align: lower-center; height: 50%;" />
-                <ui:Label name="DateLabel" class="info-label text-medium" text="XX월 XX일" style="-unity-text-align: upper-center; height: 50%;" />
+    <Style src="project://database/Assets/UI/InfoUSS.uss?fileID=7433441132597879392&amp;guid=26e843afe16dc954981c7584bc0e5385&amp;type=3#InfoUSS" />
+    <ui:VisualElement name="InfoContainer">
+        <ui:VisualElement name="DateContainer" class="row">
+            <ui:VisualElement name="CalendarPanel" class="panel-base flex-center">
+                <ui:Label name="YearLabel" text="XXXX년" class="info-label text-medium" style="-unity-text-align: middle-center; height: 50%;" />
+                <ui:VisualElement name="DateGroup" class="row flex-center">
+                    <ui:VisualElement name="RubyUnit" class="column flex-center ruby-unit">
+                        <ui:Label name="RubyLabel" text="N월" class="ruby-label" />
+                        <ui:Label name="DateLabelBase" text="공월의 달" class="info-label text-medium" />
+                    </ui:VisualElement>
+                    <ui:Label name="DateLabelDay" text=" 23일" class="info-label text-medium" />
+                </ui:VisualElement>
             </ui:VisualElement>
-
             <ui:VisualElement style="width: 40%;">
-                <ui:VisualElement name="DayOfWeekPanel" class="panel-base flex-center" style="background-color: rgba(255, 252, 0, 0.45);">
-                    <ui:Label name="DayOfWeekLabel" class="info-label text-small" text="금요일" />
+                <ui:VisualElement name="DayOfWeekPanel" class="panel-base flex-center">
+                    <ui:Label name="DayOfWeekLabel" text="금요일" class="info-label text-small" />
                 </ui:VisualElement>
-                <ui:VisualElement name="TimePanel" class="panel-base flex-center" style="background-color: rgba(60, 71, 214, 0.67);">
-                    <ui:Label name="TimeLabel" class="info-label text-small" text="17:32" />
+                <ui:VisualElement name="TimePanel" class="panel-base flex-center">
+                    <ui:Label name="TimeLabel" text="영업 후" class="info-label text-small" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-
-        <ui:VisualElement name="MoneyPanel" class="flex-center" style="height: 35%; background-color: rgba(45, 255, 25, 0.55);">
-            <ui:Label name="MoneyLabel" class="info-label text-large" text="000,000,000,000$" />
+        <ui:VisualElement name="MoneyPanel" class="flex-center">
+            <ui:Label name="MoneyLabel" text="000,000,000,000$" class="info-label text-large" />
         </ui:VisualElement>
-
     </ui:VisualElement>
 </ui:UXML>

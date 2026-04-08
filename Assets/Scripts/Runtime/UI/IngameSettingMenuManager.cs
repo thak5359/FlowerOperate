@@ -11,8 +11,6 @@ using static Constant;
 
 public class IngameSettingMenuManager : MonoBehaviour
 {
-
-
     [Header("Pause Menu")]
     public RectTransform movablePart;
     public Vector2 hidePos = new Vector2(0, 1000);
@@ -50,7 +48,6 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     [Header("Resolution UI Reference")]
     public TMP_Dropdown resolutionDropdown;
-
 
     [SerializeField] protected const float defaultDuration = 0.5f;
 
@@ -98,7 +95,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     }
 
-    private void SyncUIWithSettings()
+    private void SyncUIWithSettings() // 설정값 UI 동기화 기능
     {
         var s = _settingManager.Settings;
 
