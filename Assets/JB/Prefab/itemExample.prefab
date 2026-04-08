@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 21585766931932021}
   m_Layer: 0
   m_Name: itemExample
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,6 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     itemID: 0
-    amount: 0
     Duration: 0
+    amount: 0
     grade: 0

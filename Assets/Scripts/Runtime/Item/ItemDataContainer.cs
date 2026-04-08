@@ -17,8 +17,12 @@ public class ItemDataContainer : MonoBehaviour
     public void SetData(ItemObjectData data) => this.data = data;
 
     public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
-    
-    
+
+
+    public void DestroyItem()
+    {
+        ObjectPool.ReturnObject(this);
+    }
 }
 
 [System.Serializable]

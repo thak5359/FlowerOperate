@@ -1,14 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
 {
     [SerializeField] List<ItemDataContainer> slotList;
-    [SerializeField] GameObject slotObject;
 
     private void Awake()
     {
+        for(int i = slotList.Count; i < _data.GetSlotsCount; i++)
+            Instantiate(slotObject, this.transform);
         if (slotList == null || slotList.Count == 0)
             slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
     }

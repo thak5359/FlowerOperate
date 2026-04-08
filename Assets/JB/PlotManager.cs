@@ -59,7 +59,7 @@ public class PlotManager : ItemStorageParent
         
         plots = loadedPlots;
     }
-        
+
     public void SyncItemState()
     {
         // 각 플롯의 최신 아이템 및 상태 데이터를 갱신

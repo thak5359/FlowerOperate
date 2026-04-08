@@ -9,6 +9,8 @@ public class StorageManager : ItemStorageParent
 
     private void Awake()
     {
+        for (int i = slotList.Count; i < _data.GetSlotsCount; i++)
+            Instantiate(slotObject, this.transform);
         if (slotList == null || slotList.Count == 0)
             slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
     }

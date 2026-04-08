@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class SaveLoadManager : MonoBehaviour, IStartable
+public class SaveLoadManager : MonoBehaviour
 {
     private InventoryManager _inventoryManager;
     private StorageManager _storageManager;
@@ -23,8 +23,6 @@ public class SaveLoadManager : MonoBehaviour, IStartable
         Debug.Log("의존성 주입 완료!");
     }
 
-    void IStartable.Start() { }
-
     private void SyncSaveData()
     {
         if (_inventoryManager == null || _storageManager == null || _plotManager == null) return;
@@ -36,6 +34,7 @@ public class SaveLoadManager : MonoBehaviour, IStartable
 
         // 참조가 아닌 값(리스트 복사)을 넘겨서 데이터 오염 방지
         saveData = new SaveDatas(
+            ProgressManager.Instance.getDay(),
             CloneData(_inventoryManager.GetData), 
             CloneData(_storageManager.GetData), 
             CloneData(_plotManager.GetData), 
@@ -91,6 +90,7 @@ public class SaveLoadManager : MonoBehaviour, IStartable
 [Serializable]
 public class SaveDatas
 {
+    [SerializeField] private int playDay;
     [SerializeField] private ItemStorageData invenData;
     [SerializeField] private ItemStorageData storageData;
     [SerializeField] private ItemStorageData plotItemData;
@@ -101,8 +101,9 @@ public class SaveDatas
     public ItemStorageData GetPlotItemData => plotItemData;
     public List<PlotData> GetPlotData => plotData;
 
-    public SaveDatas(ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
+    public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
     {
+        this.playDay = day;
         this.invenData = inventory;
         this.storageData = storage;
         this.plotItemData = plotItem;

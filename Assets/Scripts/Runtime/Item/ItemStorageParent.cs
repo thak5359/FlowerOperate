@@ -16,6 +16,8 @@ public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
     protected ItemStorageData _data = new ItemStorageData();
+    [SerializeField] 
+    protected GameObject slotObject;
 
     //Getter
     public ItemStorageData GetData => _data;
