@@ -14,6 +14,16 @@ public class InventoryManager : ItemStorageParent
             slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
     }
 
+    void OnEnable()
+    {
+        GlobalEventManager.OnItemPickedUp += AddItem;
+    }
+
+    void OnDisable()
+    {
+        GlobalEventManager.OnItemPickedUp -= AddItem;
+    }
+
     public override void Load(SaveDatas saveDatas)
     {
         base.Initialize(this, saveDatas.GetInvenData, slotObject, ref slotList);

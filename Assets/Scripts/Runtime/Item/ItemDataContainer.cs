@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemDataContainer : MonoBehaviour
 {
@@ -18,10 +19,18 @@ public class ItemDataContainer : MonoBehaviour
 
     public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
 
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            GlobalEventManager.InvokeItemPickedUp(data);
+            DestroyItem();
+        }
+    }
 
     public void DestroyItem()
     {
-        ObjectPool.ReturnObject(this);
+        ObjectPool.ReturnObject(gameObject);
     }
 }
 
