@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,10 +48,10 @@ public class ItemIdContainerGenTool : EditorWindow
         try
         {
             AssetDatabase.StartAssetEditing();
-            
+
             string csvText = csvFile.text;
             string[] lines = csvText.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             if (lines.Length == 0)
             {
                 Debug.LogWarning("CSV 파일이 비어 있습니다.");
@@ -90,10 +91,10 @@ public class ItemIdContainerGenTool : EditorWindow
     {
         FlowerIdData so = ScriptableObject.CreateInstance<FlowerIdData>();
         InitializeBaseLists(so);
-        so.speciesIndex = new List<int>();
-        so.colorIndex = new List<int>();
-        so.floroIndex = new List<int>();
-        so.floroIndex2 = new List<int>();
+        so.speciesIndex = new List<byte>();
+        so.colorIndex = new List<byte>();
+        so.floroIndex = new List<byte>();
+        so.floroIndex2 = new List<sbyte>();
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -103,11 +104,13 @@ public class ItemIdContainerGenTool : EditorWindow
             string[] data = lines[i].Split(',');
             if (data.Length < 5) continue;
 
-            SO.speciesIndex.Add(byte.Parse(data[2]));
-            SO.colorIndex.Add(byte.Parse(data[3]));
-            SO.floroIndex.Add(byte.Parse(data[4]));
-            if (sbyte.TryParse(data[5], out sbyte value))
-                SO.floroIndex2.Add(value);
+            so.itemName.Add(data[1].Trim());
+            so.speciesIndex.Add(byte.TryParse(data[2], out byte s) ? s : (byte)0);
+            so.colorIndex.Add(byte.TryParse(data[3], out byte c) ? c : (byte)0);
+            so.floroIndex.Add(byte.TryParse(data[4], out byte f) ? f : (byte)0);
+
+            if (data.Length > 5 && sbyte.TryParse(data[5], out sbyte f2))
+                so.floroIndex2.Add(f2);
             else
                 so.floroIndex2.Add(-1);
         }
@@ -119,18 +122,26 @@ public class ItemIdContainerGenTool : EditorWindow
     {
         UsableIdData so = ScriptableObject.CreateInstance<UsableIdData>();
         InitializeBaseLists(so);
-        so.durationIndex = new List<int>();
-        so.powerIndex = new List<int>();
-        so.chargeIndex = new List<int>();
+        so.durationIndex = new List<byte>();
+        so.powerIndex = new List<byte>();
+        so.chargeIndex = new List<byte>();
 
         for (int i = 0; i < lines.Length; i++)
         {
             if (i % 10 == 0)
                 EditorUtility.DisplayProgressBar("SO 생성 중", $"Usable 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
-            SO.durationIndex.Add(byte.Parse(data[2]));
-            SO.powerIndex.Add(byte.Parse(data[3]));
-            SO.chargeIndex.Add(byte.Parse(data[6]));
+            string[] data = lines[i].Split(',');
+            if (data.Length < 4) continue;
+
+            so.itemName.Add(data[1].Trim());
+            so.durationIndex.Add(byte.TryParse(data[2], out byte d) ? d : (byte)0);
+            so.powerIndex.Add(byte.TryParse(data[3], out byte p) ? p : (byte)0);
+
+            if (data.Length > 6)
+                so.chargeIndex.Add(byte.TryParse(data[6], out byte ch) ? ch : (byte)0);
+            else
+                so.chargeIndex.Add((byte)0);
         }
 
         SaveAsset(so, "Assets/ScriptableObjects/Gear/UsableIdData.asset");
@@ -157,9 +168,9 @@ public class ItemIdContainerGenTool : EditorWindow
 
     private void InitializeBaseLists(ItemIdData so)
     {
-        so.itemName = new List<string>();
-        so.description = new List<string>();
-        so.spriteAddress = new List<string>();
+        so.itemName = new List<FixedString64Bytes>();
+        so.description = new List<FixedString128Bytes>();
+        so.spriteAddress = new List<FixedString64Bytes>();
     }
 
     private void SaveAsset(UnityEngine.Object asset, string path)
