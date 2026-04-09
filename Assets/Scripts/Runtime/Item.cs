@@ -28,11 +28,11 @@ public struct   UseParam
 [System.Serializable] // �ν����ͳ� ����� Ȯ���� ���� ����ȭ �����ϰ� ����
 public class Item
 {
-    public short itemId;
+    public ushort itemId;
     protected short amount = 1;
     protected Sprite cachedSprite;
 
-    public Item(short id, short count)
+    public Item(ushort id, short count)
     {
         this.itemId = id;
         this.amount = count;
@@ -42,14 +42,14 @@ public class Item
     public short Amount => amount;
     virtual public FixedString64Bytes GetName()
     {
-        if (itemId != -1)
+        if (itemId != 0)
             return ItemManager.Instance.GetItemName(itemId);
 
         else return null;
     }
     virtual public FixedString128Bytes GetDescription()
     {
-        if (itemId != -1)
+        if (itemId != 0)
             return ItemManager.Instance.GetItemDescription(itemId);
         else return null;
     }
@@ -64,12 +64,12 @@ public class Item
     #endregion
 
     //������ �ε�
-    public virtual async void LoadData(short input_itemId, short input_amount)
+    public virtual async void LoadData(ushort input_itemId, short input_amount)
     {
         itemId = input_itemId;
         amount = input_amount;
 
-        if (itemId != -1)
+        if (itemId != 0)
         {
             await RefreshSprite();
         }

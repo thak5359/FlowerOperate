@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +6,9 @@ using UnityEngine;
 [System.Serializable]
 public struct PlotData // 저장용 데이터 바구니
 {
+    public float posX;
+    public float posY;
+
     public bool isTilled;
     public bool isWatered;
     public bool isFertilized;
@@ -43,12 +46,15 @@ public class Plot : MonoBehaviour
     private void Awake()
     {
         flowerId = this.gameObject.GetComponent<ItemDataContainer>().GetItemID;
+        data.posX = this.gameObject.transform.position.x;
+        data.posY = this.gameObject.transform.position.y;
     }
 
     //OnEnable일때 타 관리 클래스에서 loadData 실행하기!
-    public void loadData(bool input_isTilled, bool input_isWatered, int input_itemID,
+    public void loadData(float input_posX, float input_posY, bool input_isTilled, bool input_isWatered, int input_itemID,
         bool input_isFertilized, int input_growth, int input_elapsed)//DB에서 데이터 로드
     {
+        this.transform.position = new Vector3(input_posX, input_posY);
         isTilled = input_isTilled;
         isWatered = input_isWatered;
         flowerId = input_itemID;
@@ -81,6 +87,7 @@ public class Plot : MonoBehaviour
     }
     public void LoadFromData(PlotData data)
     {
+        this.transform.position = new Vector3(data.posX, data.posY);
         this.isTilled = data.isTilled;
         this.isWatered = data.isWatered;
         this.isFertilized = data.isFertilized;

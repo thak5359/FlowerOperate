@@ -1,43 +1,60 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Collections;
+using System.Threading.Tasks;
 
 public class StorageManager : ItemStorageParent
 {
-    [SerializeField] List<ItemDataContainer> slotList;
+    // 실제 아이템 데이터를 직접 관리하는 리스트
+    [SerializeField] List<ItemObjectData> slotList = new List<ItemObjectData>();
+
+    // 자식 오브젝트에서 관리할 UI 슬롯 리스트
+    [SerializeField] List<HotBarSlot> hotbarSlots = new List<HotBarSlot>();
 
     private void Awake()
     {
-        for (int i = slotList.Count; i < _data.GetSlotsCount; i++)
-            Instantiate(slotObject, this.transform);
-        if (slotList == null || slotList.Count == 0)
-            slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
-    }
-
-    public override void Load(SaveDatas saveDatas)
-    {
-        base.Initialize(this, saveDatas.GetStorageData, null, ref slotList);
-        RefreshUI();
-    }
-
-    public void SortList()
-    {
-        if (_data == null || _data.GetList == null) return;
-
-        // 1. 비어있지 않은 아이템만 추출하여 작업 리스트 생성
-        List<ItemObjectData> items = new List<ItemObjectData>();
-        foreach (var item in _data.GetList)
+        // _data가 초기화되어 있다고 가정하고 슬롯 생성 및 초기화
+        if (_data != null)
         {
-            if (!item.CheckEmpty())
+            // 이미 생성된 자식이 있다면 리스트에 추가하고, 부족하면 생성
+            hotbarSlots.AddRange(GetComponentsInChildren<HotBarSlot>());
+
+            for (int i = hotbarSlots.Count; i < _data.GetSlotsCount; i++)
+            {
+                if (slotObject != null)
+                {
+                    GameObject go = Instantiate(slotObject, this.transform);
+                    HotBarSlot slot = go.GetComponent<HotBarSlot>();
+                    if (slot != null) hotbarSlots.Add(slot);
+                }
+            }
+        }
+    }
+
+    public override async void Load(SaveDatas saveDatas)
+    {
+        // base.Initialize를 통해 _data와 slotList(ref)를 초기화
+        base.Initialize(this, saveDatas.GetStorageData, null, ref slotList);
+        await RefreshUI();
+    }
+
+    public async Task SortList()
+    {
+        if (slotList == null || slotList.Count == 0) return;
+
+        // 1. 비어있지 않은 아이템만 추출
+        List<ItemObjectData> items = new List<ItemObjectData>();
+        foreach (var item in slotList)
+        {
+            if (item.GetItemID != 0) // ID가 0이 아니면 유효한 아이템으로 간주 (ItemObjectData 정의 기준)
                 items.Add(item);
         }
 
         // 2. 같은 아이템들 합치기 (Stacking)
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].CheckFull()) continue;
-
             for (int j = i + 1; j < items.Count; j++)
             {
                 if (items[i].GetItemID == items[j].GetItemID && items[i].GetGrade == items[j].GetGrade)
@@ -49,14 +66,12 @@ public class StorageManager : ItemStorageParent
 
                     items[i] = itemI;
                     items[j] = itemJ;
-
-                    if (items[i].CheckFull()) break;
                 }
             }
         }
 
-        // 3. 합치기 후 빈 아이템 제거
-        items.RemoveAll(x => x.CheckEmpty());
+        // 3. 빈 아이템 제거 (합치기 결과 수량이 0이 된 경우 등)
+        items.RemoveAll(x => x.GetAmount <= 0);
 
         // 4. 정렬 (ID 오름차순, 등급 내림차순, 개수 내림차순)
         items.Sort((a, b) =>
@@ -68,39 +83,56 @@ public class StorageManager : ItemStorageParent
             return b.GetAmount.CompareTo(a.GetAmount);
         });
 
-        // 5. 원래 슬롯 크기에 맞춰 데이터 리스트 재구성 (빈 슬롯 채우기)
-        int totalSlots = slotList.Count > 0 ? slotList.Count : _data.GetList.Count;
+        // 5. 원래 슬롯 크기에 맞춰 리스트 재구성
+        int totalSlots = _data != null ? _data.GetSlotsCount : hotbarSlots.Count;
         List<ItemObjectData> newList = new List<ItemObjectData>(totalSlots);
         newList.AddRange(items);
         while (newList.Count < totalSlots)
         {
-            newList.Add(new ItemObjectData(default));
+            newList.Add(default); // 기본값(빈 아이템)으로 채움
         }
 
-        _data.SetItemList(newList);
+        slotList = newList;
+        
+        if (_data != null)
+            _data.SetItemList(slotList);
 
-        // 6. UI 갱신
-        RefreshUI();
+        await RefreshUI();
     }
 
-    public void RefreshUI()
+    public async Task RefreshUI()
     {
-        for (int i = 0; i < slotList.Count; i++)
+        for (int i = 0; i < hotbarSlots.Count; i++)
         {
-            if (i < _data.GetList.Count)
-                slotList[i].SetData(_data.GetList[i]);
+            if (i < slotList.Count)
+            {
+                // HotBarSlot은 Item 객체를 받으므로, ItemManager 등을 통해 변환이 필요할 수 있습니다.
+                // 여기서는 ItemManager.GetItem(ItemObjectData)와 같은 함수가 있다고 가정하거나
+                // HotBarSlot의 내부 데이터 구조를 고려하여 처리해야 합니다.
+                // 사용자 요청대로 HotBarSlot은 수정하지 않으므로, 데이터 동기화 로직만 유지합니다.
+                
+                // 임시: HotBarSlot이 ItemObjectData를 직접 처리할 수 있도록 확장되거나,
+                // StorageManager에서 Item 객체를 생성하여 전달하는 로직이 필요합니다.
+                // 현재 코드 구조상 HotBarSlot의 ChangeItem(Item)을 호출하는 방식을 권장합니다.
+                
+                // 만약 ItemManager가 static으로 존재한다면:
+                // hotbarSlots[i].ChangeItem(ItemManager.GetItem(slotList[i]));
+
+                await hotbarSlots[i].ChangeItem(
+                    new Item(slotList[i].GetItemID, slotList[i].GetAmount));
+            }
             else
-                slotList[i].SetData(default);
+            {
+                await hotbarSlots[i].ChangeItem(null);
+            }
         }
     }
 
     public void SyncItemState()
     {
-        List<ItemObjectData> currentStates = new List<ItemObjectData>();
-        foreach (var slot in slotList)
+        if (_data != null)
         {
-            currentStates.Add(slot.GetData);
+            _data.SetItemList(slotList);
         }
-        _data.SetItemList(currentStates);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Burst;
 using Unity.Collections;
@@ -136,16 +136,16 @@ public class ItemManager : MonoBehaviour
     // --- 데이터 접근 엔진 ---
 
     //  기본 데이터 가져오기 
-    public T GetIdData<T>(short id) where T : MasterData
+    public T GetIdData<T>(ushort id) where T : MasterData
     {
         if (id < 0 || id > LAST_ID) return null;
         return masterDb[id] as T;
     }
 
     #region 1. 공통 정보
-    public FixedString64Bytes GetItemName(short id) => GetIdData<MasterData>(id)?.GetItemName ?? "알 수 없는 아이템";
-    public FixedString128Bytes GetItemDescription(short id) => GetIdData<MasterData>(id)?.GetItemDescription ?? "";
-    public FixedString128Bytes GetItemAddress(short id) => GetIdData<MasterData>(id)?.GetItemSpriteAddress ?? "";
+    public FixedString64Bytes GetItemName(ushort id) => GetIdData<MasterData>(id)?.GetItemName ?? "알 수 없는 아이템";
+    public FixedString128Bytes GetItemDescription(ushort id) => GetIdData<MasterData>(id)?.GetItemDescription ?? "";
+    public FixedString128Bytes GetItemAddress(ushort id) => GetIdData<MasterData>(id)?.GetItemSpriteAddress ?? "";
     #endregion
 
     #region 2. 꽃 데이터 
@@ -161,7 +161,7 @@ public class ItemManager : MonoBehaviour
     //}
 
     // 꽃 이름
-    public FixedString32Bytes GetFlowerColor(short id)
+    public FixedString32Bytes GetFlowerColor(ushort id)
     {
         var data = GetIdData<FlowerDataBase>(id);
         if (data == null) return "알 수 없는 꽃";
@@ -170,7 +170,7 @@ public class ItemManager : MonoBehaviour
     }
 
     // 꽃말 리스트 가져오기
-    public List<FixedString32Bytes> GetFlowerFloros(short id)
+    public List<FixedString32Bytes> GetFlowerFloros(ushort id)
     {
         List<FixedString32Bytes> result = new List<FixedString32Bytes>();
         var data = GetIdData<FlowerDataBase>(id);
@@ -189,7 +189,7 @@ public class ItemManager : MonoBehaviour
     #region 3. 도구 데이터 (Usable)
 
     // 차징 정보 (시간, 최대 단계)
-    public ChargeInfo GetChargeInfo(short id)
+    public ChargeInfo GetChargeInfo(ushort id)
     {
         var data = GetIdData<UsableDataBase>(id);
         // ID 데이터에서 찾은 chargeIndex로 Detail 테이블에서 ChargeInfo 구조체를 가져옵니다.
@@ -197,14 +197,14 @@ public class ItemManager : MonoBehaviour
     }
 
     // 도구 파워 (곡갱이 파워 등)
-    public sbyte GetUsablePower(short id)
+    public sbyte GetUsablePower(ushort id)
     {
         var data = GetIdData<UsableDataBase>(id);
         return (data != null) ? data.GetPower : default(sbyte);
     }
 
     // 도구 내구도 (기본 최대치)
-    public short GetMaxDuration(short id)
+    public short GetMaxDuration(ushort id)
     {
         var data = GetIdData<UsableDataBase>(id);
         return (data != null) ? data.GetDuration : default(short);

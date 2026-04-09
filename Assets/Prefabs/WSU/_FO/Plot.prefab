@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4457616994706979021}
   - component: {fileID: 5375164888704346529}
   - component: {fileID: 1171999487842374406}
+  - component: {fileID: 3615092104814633657}
   m_Layer: 0
   m_Name: Plot
   m_TagString: Untagged
@@ -83,3 +84,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3615092104814633657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020869880897851072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8567a338669f84a9f0f629f53b697c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    posX: 0
+    posY: 0
+    isTilled: 0
+    isWatered: 0
+    isFertilized: 0
+    flowerId: 0
+    growth: 0
+    elapsed: 0
+    lastActivedDay: 0
+  plotRenderer: {fileID: 0}
+  flowerRenderer: {fileID: 0}
+  isTilled: 0
+  isWatered: 0
+  isFertilized: 0
+  growth: 0
+  elapsed: 0

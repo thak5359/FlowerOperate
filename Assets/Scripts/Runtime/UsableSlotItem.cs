@@ -9,7 +9,7 @@ public class HoeItem : Item
 {
     public int currentDuration = 100; // ������ �⺻��
 
-    public HoeItem(short id, short count) : base(id, count)
+    public HoeItem(ushort id, short count) : base(id, count)
     {
         // ���� �ʱ�ȭ
     }
@@ -48,7 +48,7 @@ public class HoeItem : Item
 public class HammerItem : Item
 {
     public int currentDuration = 100;
-    public HammerItem(short id, short count) : base(id, count)
+    public HammerItem(ushort id, short count) : base(id, count)
     {
 
     }
@@ -84,7 +84,7 @@ public class HammerItem : Item
 public class WateringCanItem : Item
 {
     public int currentDuration = 100;
-    public WateringCanItem(short id, short count) : base(id, count)
+    public WateringCanItem(ushort id, short count) : base(id, count)
     {
 
     }
@@ -118,7 +118,7 @@ public class WateringCanItem : Item
 }
 public class ConsumableSlotItem : Item
 {
-    public ConsumableSlotItem(short id, short count) : base(id, count)
+    public ConsumableSlotItem(ushort id, short count) : base(id, count)
     {
     }
     public override void OnUse(UseParam param)

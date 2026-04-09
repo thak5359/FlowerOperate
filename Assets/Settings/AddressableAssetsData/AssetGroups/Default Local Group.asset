@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a6a35f3728e65f49ba69f06defcd65c
+    m_Address: PlotBase
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9a09667495a0ba240b3a3886980d35e3
     m_Address: Assets/JB/Prefab/itemExample.prefab
     m_ReadOnly: 0

@@ -1,17 +1,21 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
 {
-    [SerializeField] List<ItemDataContainer> slotList;
+    [SerializeField] List<ItemObjectData> slotList;
+    [SerializeField] List<HotBarSlot> slots = new List<HotBarSlot>();
 
     private void Awake()
     {
         for(int i = slotList.Count; i < _data.GetSlotsCount; i++)
-            Instantiate(slotObject, this.transform);
+        {
+            var slot = Instantiate(slotObject, this.transform);
+            slots.Add(slot.GetComponent<HotBarSlot>());
+        }
         if (slotList == null || slotList.Count == 0)
-            slotList = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
+            slotList = new List<ItemObjectData>();
     }
 
     void OnEnable()
@@ -39,9 +43,7 @@ public class InventoryManager : ItemStorageParent
         for (int i = 0; i < slotList.Count; i++)
         {
             if (i < _data.GetList.Count)
-                slotList[i].SetData(_data.GetList[i]);
-            else
-                slotList[i].SetData(default); // 빈 슬롯 처리
+                slotList = _data.GetList;
         }
     }
 
@@ -50,11 +52,6 @@ public class InventoryManager : ItemStorageParent
     /// </summary>
     public void SyncItemState()
     {
-        List<ItemObjectData> currentStates = new List<ItemObjectData>();
-        foreach (var slot in slotList)
-        {
-            currentStates.Add(slot.GetData);
-        }
-        _data.SetItemList(currentStates);
+        _data.SetItemList(slotList);
     }
 }

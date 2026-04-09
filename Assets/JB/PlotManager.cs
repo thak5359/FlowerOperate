@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlotManager : ItemStorageParent
 {
+    // 실제 아이템 데이터를 직접 관리하는 리스트
     [SerializeField]
-    private List<ItemDataContainer> plotItems;
+    private List<ItemObjectData> plotItems = new List<ItemObjectData>();
+    
+    // 시각적 상태와 작물 성장을 담당하는 플롯 컴포넌트 리스트 (자식 오브젝트)
+    private List<Plot> plotComponents = new List<Plot>();
+    
     [SerializeField]
-    private List<PlotData> plots;
+    private List<PlotData> plots = new List<PlotData>();
 
-    public List<ItemDataContainer> GetPlantedIist => plotItems;
+    public List<ItemObjectData> GetPlantedList => plotItems;
     public List<PlotData> GetPlots => plots;
 
     private void Awake()
@@ -22,38 +27,40 @@ public class PlotManager : ItemStorageParent
     /// </summary>
     private void RefreshPlotCache()
     {
-        plotItems = new List<ItemDataContainer>(this.GetComponentsInChildren<ItemDataContainer>());
+        // 자식 Plot 컴포넌트 수집
+        plotComponents = new List<Plot>(this.GetComponentsInChildren<Plot>());
         
-        var plotComponents = this.GetComponentsInChildren<Plot>();
         plots = new List<PlotData>();
         foreach (var plot in plotComponents)
         {
             plots.Add(plot.GetSaveData());
         }
 
-        // 현재 아이템 데이터를 리스트화하여 동기화
-        List<ItemObjectData> itemDatas = new List<ItemObjectData>();
-        foreach (var item in plotItems)
+        // 데이터 리스트 초기화 (개수는 플롯 개수에 맞춤)
+        if (plotItems.Count != plotComponents.Count)
         {
-            itemDatas.Add(item.GetData);
+            plotItems = new List<ItemObjectData>(new ItemObjectData[plotComponents.Count]);
         }
-        _data.SetItemList(itemDatas);
+        
+        if (_data != null)
+            _data.SetItemList(plotItems);
     }
 
     public override void Load(SaveDatas saveDatas)
     {
-        // 1. 아이템 데이터 초기화
+        // 1. 아이템 데이터 초기화 (List<ItemObjectData>로 직접 로드)
         base.Initialize(this, saveDatas.GetPlotItemData, null, ref plotItems);
         
-        // 2. 플롯 상태 데이터 복구 (인덱스 기반 매칭으로 성능 개선)
-        var plotComponents = this.GetComponentsInChildren<Plot>();
+        // 2. 플롯 상태 데이터 복구
+        plotComponents = new List<Plot>(this.GetComponentsInChildren<Plot>());
         var loadedPlots = saveDatas.GetPlotData;
 
-        for (int i = 0; i < plotComponents.Length; i++)
+        for (int i = 0; i < plotComponents.Count; i++)
         {
             if (i < loadedPlots.Count)
             {
                 plotComponents[i].LoadFromData(loadedPlots[i]);
+                // 시각적 데이터 업데이트가 필요하다면 여기서 호출
             }
         }
         
@@ -62,15 +69,11 @@ public class PlotManager : ItemStorageParent
 
     public void SyncItemState()
     {
-        // 각 플롯의 최신 아이템 및 상태 데이터를 갱신
-        List<ItemObjectData> itemDatas = new List<ItemObjectData>();
-        foreach (var item in plotItems)
-        {
-            itemDatas.Add(item.GetData);
-        }
-        _data.SetItemList(itemDatas);
+        // 데이터 리스트를 SaveData에 반영
+        if (_data != null)
+            _data.SetItemList(plotItems);
 
-        var plotComponents = this.GetComponentsInChildren<Plot>();
+        // 플롯 상태(수분, 비료 등) 데이터 동기화
         plots.Clear();
         foreach (var plot in plotComponents)
         {
@@ -81,15 +84,18 @@ public class PlotManager : ItemStorageParent
     public void AfterHarvest()
     {
         base.ResetData();
+        // 데이터 리스트 초기화
+        for (int i = 0; i < plotItems.Count; i++)
+            plotItems[i] = default;
+            
         RefreshPlotCache();
     }
 
     public void GrowthPlant()
     {
-        var plantList = _data.GetList;
-        for (int i = 0; i < plantList.Count; i++)
+        for (int i = 0; i < plotItems.Count; i++)
         {
-            ItemObjectData plant = plantList[i];
+            ItemObjectData plant = plotItems[i];
             
             if (plant.GetItemID == 0) continue; // 빈 공간 제외
 
@@ -100,18 +106,21 @@ public class PlotManager : ItemStorageParent
             // 성장 완료 시 ID 변경 (다음 단계로)
             if (newDuration <= 0)
             {
-                // TODO: 성장 테이블(CSV)을 참조하도록 개선 필요. 현재는 임시로 ID+1
+                // TODO: 성장 테이블(CSV)을 참조하도록 개선 필요
                 plant.SetItemID((ushort)(plant.GetItemID + 1));
-                // plant.SetDuration(GetDefaultDurationFromCSV(plant.GetItemID));
             }
             
-            plantList[i] = plant; // struct이므로 다시 대입
+            plotItems[i] = plant; // struct이므로 다시 대입
+            
+            // 자식 Plot 오브젝트의 시각적 상태 업데이트 (필요 시)
+            if (i < plotComponents.Count)
+            {
+                // Plot 컴포넌트가 데이터를 받아 표현하도록 설계되어야 함
+                // plotComponents[i].UpdateVisual(plant); 
+            }
         }
         
-        // UI 갱신
-        for (int i = 0; i < plotItems.Count; i++)
-        {
-            plotItems[i].SetData(plantList[i]);
-        }
+        if (_data != null)
+            _data.SetItemList(plotItems);
     }
 }

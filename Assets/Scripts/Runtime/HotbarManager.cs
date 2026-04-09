@@ -6,6 +6,7 @@ public class HotbarManager : MonoBehaviour
 {
 
     [Header("핫키 슬롯을 등록해주세요")]
+    [SerializeField] List<ItemObjectData> items;
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 

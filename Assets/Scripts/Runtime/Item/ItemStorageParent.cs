@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +16,13 @@ public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
     protected ItemStorageData _data = new ItemStorageData();
-    [SerializeField] 
+    [SerializeField]
     protected GameObject slotObject;
 
     //Getter
     public ItemStorageData GetData => _data;
 
-    protected virtual void Initialize(ItemStorageParent storageParent , ItemStorageData data, GameObject slotObject, ref List<ItemDataContainer> slotList)
+    protected virtual void Initialize(ItemStorageParent storageParent, ItemStorageData data, GameObject slotObject, ref List<ItemObjectData> slotList)
     {
         if (data == null || data.GetList == null)
         {
@@ -32,33 +32,8 @@ public class ItemStorageParent : MonoBehaviour, IManager
 
         // 1. 데이터 교체 (ResetData를 먼저 하면 안됨)
         _data = data;
+        slotList = _data.GetList;
 
-        // 2. 슬롯 UI 업데이트
-        if(storageParent is InventoryManager)
-        {
-            for (int i = 0; i < _data.GetList.Count; i++)
-            {
-                // 필요한 경우 슬롯 동적 생성
-                if (i >= slotList.Count && slotObject != null)
-                {
-                    var newSlot = Instantiate(slotObject, this.gameObject.transform);
-                    slotList.Add(newSlot.GetComponent<ItemDataContainer>());
-                }
-
-                if (i < slotList.Count)
-                    slotList[i].SetData(_data.GetList[i]);
-            }
-        }
-        else
-        {
-            // Storage나 Plot은 기존 슬롯 리스트를 그대로 사용
-            for (int i = 0; i < _data.GetList.Count; i++)
-            {
-                if (i < slotList.Count)
-                    slotList[i].SetData(_data.GetList[i]);
-            }
-        }
-        
         Debug.Log($"{storageParent.name} 초기화 끝 (아이템 수: {_data.GetList.Count})");
     }
 
@@ -167,7 +142,6 @@ public class ItemStorageData
         // 첫 획득에 슬롯이 꽉 차있을 때
         else
         {
-            itemListData.Add(item);
             Debug.Log("슬롯 꽉 참");
         }
     }
