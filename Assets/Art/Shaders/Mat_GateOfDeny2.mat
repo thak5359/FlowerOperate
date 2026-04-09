@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_GateOfDeny
+  m_Name: Mat_GateOfDeny2
   m_Shader: {fileID: -6465566751694194690, guid: 7cae02b075e1e364db2ec6ba43cdfcf3,
     type: 3}
   m_Parent: {fileID: 0}
@@ -64,7 +64,7 @@ Material:
     - _QueueOffset: 0
     - _WaveDensity: 50
     - _WaveSpeed: 1
-    - _WaveStrength: 0.2
+    - _WaveStrength: 0.1
     m_Colors:
     - _Aurora: {r: 0, g: 0, b: 0, a: 0}
     - _Base_Color: {r: 0, g: 0.29921293, b: 1, a: 0}

@@ -1,4 +1,4 @@
-using VContainer;
+ï»¿using VContainer;
 using VContainer.Unity;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,10 +8,11 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private PlayerController playerController;
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private IngameSettingMenuManager pauseMenu;
+    // [SerializeField] private //TODO ì¸ë²¤í† ë¦¬ ë§¤ë‹ˆì € ì¶”ê°€í•˜ê¸°
 
     protected override void Configure(IContainerBuilder builder)
     {
-        //KeyMapper¶û Changer´Â ¾À ÀÇÁ¸ÀûÀÎ ½ºÅ©¸³Æ® ÀÌ±â¿¡ SceneLifetimeScope¿¡ Á¸ÀçÇØ¾ßÇÔ.
+        //KeyMapperë‘ ChangerëŠ” ì”¬ ì˜ì¡´ì ì¸ ìŠ¤í¬ë¦½íŠ¸ ì´ê¸°ì— SceneLifetimeScopeì— ì¡´ì¬í•´ì•¼í•¨.
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<UseAreamanager>().As<IUseItem>().AsSelf();
 
