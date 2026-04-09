@@ -1,88 +1,112 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class SaveLoadManager : MonoBehaviour, IInitializable
+public class SaveLoadManager : MonoBehaviour
 {
-    private InventoryManager inventoryManager;
-    private StorageManager storageManager;
+    private InventoryManager _inventoryManager;
+    private StorageManager _storageManager;
+    private PlotManager _plotManager;
 
-    public static event Action<SaveDatas> OnLoadData;
+    private const string SAVE_FILE_NAME = "SaveData.json";
     public SaveDatas saveData;
-    private string SaveJson;
-
-    void IInitializable.Initialize()
-    {
-        saveData = new SaveDatas(inventoryManager.GetData, storageManager.GetData);
-    }
 
     [Inject]
-    public void Construct(InventoryManager inven, StorageManager storage)
+    public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot)
     {
-        inventoryManager = inven;
-        storageManager = storage;
+        _inventoryManager = inven;
+        _storageManager = storage;
+        _plotManager = plot;
         Debug.Log("의존성 주입 완료!");
     }
 
-    public SaveDatas GetSaveDatas => this.saveData;
+    private void SyncSaveData()
+    {
+        if (_inventoryManager == null || _storageManager == null || _plotManager == null) return;
+        
+        // 저장 전 동기화 호출
+        _inventoryManager.SyncItemState();
+        _storageManager.SyncItemState();
+        _plotManager.SyncItemState();
+
+        // 참조가 아닌 값(리스트 복사)을 넘겨서 데이터 오염 방지
+        saveData = new SaveDatas(
+            ProgressManager.Instance.getDay(),
+            CloneData(_inventoryManager.GetData), 
+            CloneData(_storageManager.GetData), 
+            CloneData(_plotManager.GetData), 
+            new List<PlotData>(_plotManager.GetPlots)
+        );
+    }
+
+    // ItemStorageData를 깊은 복사하는 헬퍼 함수
+    private ItemStorageData CloneData(ItemStorageData original)
+    {
+        ItemStorageData clone = new ItemStorageData();
+        clone.SetSlotsCount(original.GetSlotsCount);
+        if (original.GetList != null)
+        {
+            clone.SetItemList(new List<ItemObjectData>(original.GetList));
+        }
+        return clone;
+    }
 
     public void Save()
     {
-        // 1. 주입 확인 (로그가 떴다면 통과)
-        if (inventoryManager == null) return;
-
-        // 2. 인벤토리에 들어있는 '현재 인스펙터 값'을 직접 가져옵니다.
-        // 이벤트(Initialize)가 실행되지 않았어도 인스펙터에 넣은 값은 _data에 있습니다.
-        var currentData = inventoryManager.GetData;
-
-        if (currentData == null)
+        SyncSaveData();
+        
+        if (saveData == null)
         {
-            Debug.LogError("InventoryManager의 _data가 null입니다.");
+            Debug.LogError("저장할 데이터가 생성되지 않았습니다.");
             return;
         }
 
-        // 3. 저장용 바구니(saveData)를 '지금' 새로 만듭니다. 
-        // 여기서 생성자에 currentData를 넣으면 인스펙터 값이 저장용 객체로 복사됩니다.
-        saveData = new SaveDatas(currentData, storageManager.GetData);
-
-        // 4. JSON 저장
-        string path = Path.Combine(Application.dataPath, "Save.json");
-        string json = JsonUtility.ToJson(saveData, true);
-        File.WriteAllText(path, json);
-
-        Debug.Log($"[저장 성공] 파일 경로: {path}");
+        FileDataHandler.SaveJson(saveData, SAVE_FILE_NAME);
     }
 
     public void Load()
     {
-        string path = Path.Combine(Application.dataPath, "Save.json");
-        SaveJson = File.ReadAllText(path);
-        saveData = JsonUtility.FromJson<SaveDatas>(SaveJson);
-        OnLoadData?.Invoke(saveData);
+        SaveDatas loadedData = FileDataHandler.LoadJson<SaveDatas>(SAVE_FILE_NAME);
+        
+        if (loadedData != null)
+        {
+            saveData = loadedData;
+            
+            // 주입된 각 매니저의 Load 메서드를 직접 호출하여 데이터를 분배합니다.
+            if (_inventoryManager != null) _inventoryManager.Load(saveData);
+            if (_storageManager != null) _storageManager.Load(saveData);
+            if (_plotManager != null) _plotManager.Load(saveData);
+            
+            Debug.Log("데이터 로드 및 분배 완료");
+        }
     }
+
+    public SaveDatas GetSaveDatas => this.saveData;
 }
 
 [Serializable]
 public class SaveDatas
 {
-    [SerializeField]
-    private ItemStorageData InvenData;
-    [SerializeField]
-    private ItemStorageData StorageData;
-    [SerializeField]
-    private ItemStorageData plotData;
+    [SerializeField] private int playDay;
+    [SerializeField] private ItemStorageData invenData;
+    [SerializeField] private ItemStorageData storageData;
+    [SerializeField] private ItemStorageData plotItemData;
+    [SerializeField] private List<PlotData> plotData;
 
-    public ItemStorageData GetInvenData => this.InvenData;
-    public ItemStorageData GetStorageData => this.StorageData;
-    public ItemStorageData GetPlotData => this.plotData;
+    public ItemStorageData GetInvenData => invenData;
+    public ItemStorageData GetStorageData => storageData;
+    public ItemStorageData GetPlotItemData => plotItemData;
+    public List<PlotData> GetPlotData => plotData;
 
-    public SaveDatas(ItemStorageData inventory, ItemStorageData storage)
+    public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
     {
-        this.InvenData = inventory;
-        this.StorageData = storage;
+        this.playDay = day;
+        this.invenData = inventory;
+        this.storageData = storage;
+        this.plotItemData = plotItem;
+        this.plotData = plot;
     }
 }

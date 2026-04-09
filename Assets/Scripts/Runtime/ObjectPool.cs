@@ -1,96 +1,163 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets; //  ? 
-using UnityEngine.ResourceManagement.AsyncOperations; //  ? 
-
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Threading.Tasks;
 
 public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool Instance;
 
-    [SerializeField]
-    private AssetReference prefabReference; // GameObject     AssetReference    
-
-    private GameObject loadedPrefab; //  ε               
-    private Queue<ItemDataContainer> poolingObjectQueue = new Queue<ItemDataContainer>();
-
-    async void Awake() // async        ?   ε      ?  ? .
+    [System.Serializable]
+    public class PoolConfig
     {
-        Instance = this;
+        public string key;
+        public AssetReference prefabReference;
+        public int initialCount;
+    }
 
-        // 2.   ?               ε      
-        AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(prefabReference);
+    [SerializeField]
+    private List<PoolConfig> poolConfigs = new List<PoolConfig>();
+
+    private Dictionary<string, GameObject> loadedPrefabs = new Dictionary<string, GameObject>();
+    private Dictionary<string, Queue<GameObject>> poolDictionary = new Dictionary<string, Queue<GameObject>>();
+
+    async void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            await InitializePools();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private async Task InitializePools()
+    {
+        List<Task> loadTasks = new List<Task>();
+
+        foreach (var config in poolConfigs)
+        {
+            loadTasks.Add(LoadAndInitialize(config));
+        }
+
+        await Task.WhenAll(loadTasks);
+    }
+
+    private async Task LoadAndInitialize(PoolConfig config)
+    {
+        if (string.IsNullOrEmpty(config.key))
+        {
+            Debug.LogError("Pool key is null or empty!");
+            return;
+        }
+
+        AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(config.prefabReference);
         await handle.Task;
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            loadedPrefab = handle.Result;
-            Initialize(10);
+            loadedPrefabs[config.key] = handle.Result;
+            poolDictionary[config.key] = new Queue<GameObject>();
+            
+            for (int i = 0; i < config.initialCount; i++)
+            {
+                poolDictionary[config.key].Enqueue(CreateNewObject(config.key));
+            }
         }
         else
         {
-            Debug.LogError("        ε      !");
+            Debug.LogError($"Failed to load prefab for key: {config.key}");
         }
     }
 
-    private void Initialize(int count)
+    private GameObject CreateNewObject(string key)
     {
-        for (int i = 0; i < count; i++)
+        if (!loadedPrefabs.TryGetValue(key, out GameObject prefab))
         {
-            poolingObjectQueue.Enqueue(CreateNewObject());
-        }
-    }
-
-    private ItemDataContainer CreateNewObject()
-    {
-        //  ε             ν  ? ? ?? .
-        var obj = Instantiate(loadedPrefab, transform);
-        var itemArea = obj.GetComponent<ItemDataContainer>();
-
-        obj.SetActive(false);
-        return itemArea;
-    }
-
-    
-
-    public static ItemDataContainer GetObject()
-    {
-        //  ε                     츦            ? 
-        if (Instance.loadedPrefab == null)
-        {
-            Debug.LogWarning("             ε     ?? !");
             return null;
         }
 
-        if (Instance.poolingObjectQueue.Count > 0)
+        var obj = Instantiate(prefab, transform);
+        
+        // Ensure PoolableObject exists to track the key
+        var poolable = obj.GetComponent<PoolableObject>();
+        if (poolable == null)
         {
-            var obj = Instance.poolingObjectQueue.Dequeue();
-            obj.transform.SetParent(null);
-            obj.gameObject.SetActive(true);
-            return obj;
+            poolable = obj.AddComponent<PoolableObject>();
+        }
+        poolable.PoolKey = key;
+
+        obj.SetActive(false);
+        return obj;
+    }
+
+    public static GameObject GetObject(string key)
+    {
+        if (Instance == null) return null;
+
+        if (!Instance.poolDictionary.TryGetValue(key, out Queue<GameObject> queue))
+        {
+            Debug.LogWarning($"Pool with key {key} not found!");
+            return null;
+        }
+
+        GameObject obj;
+        if (queue.Count > 0)
+        {
+            obj = queue.Dequeue();
         }
         else
         {
-            var newObj = Instance.CreateNewObject();
-            newObj.transform.SetParent(null);
-            newObj.gameObject.SetActive(true);
-            return newObj;
+            obj = Instance.CreateNewObject(key);
         }
+
+        if (obj != null)
+        {
+            obj.transform.SetParent(null);
+            obj.SetActive(true);
+        }
+        return obj;
     }
 
-    public static void ReturnObject(ItemDataContainer item)
+    public static void ReturnObject(GameObject obj)
     {
-        item.gameObject.SetActive(false);
-        item.transform.SetParent(Instance.transform);
-        Instance.poolingObjectQueue.Enqueue(item);
+        if (Instance == null || obj == null) return;
+
+        var poolable = obj.GetComponent<PoolableObject>();
+        if (poolable == null)
+        {
+            Debug.LogWarning($"Trying to return an object that is not poolable: {obj.name}. Destroying.");
+            Destroy(obj);
+            return;
+        }
+
+        string key = poolable.PoolKey;
+
+        if (!string.IsNullOrEmpty(key) && Instance.poolDictionary.TryGetValue(key, out Queue<GameObject> queue))
+        {
+            obj.SetActive(false);
+            obj.transform.SetParent(Instance.transform);
+            queue.Enqueue(obj);
+        }
+        else
+        {
+            Debug.LogWarning($"Trying to return object with invalid key: {key}. Destroying.");
+            Destroy(obj);
+        }
     }
 
     private void OnDestroy()
     {
-        // 3. ?    ı         ?      ?       ( ?      )
-        if (prefabReference.IsValid())
+        foreach (var config in poolConfigs)
         {
-            prefabReference.ReleaseAsset();
+            if (config.prefabReference.IsValid())
+            {
+                config.prefabReference.ReleaseAsset();
+            }
         }
     }
 }

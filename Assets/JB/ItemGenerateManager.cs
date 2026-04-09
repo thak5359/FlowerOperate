@@ -2,35 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemGenerateManager : MonoBehaviour
+public static class ItemGenerateManager
 {
-    private static ItemGenerateManager instance;
-
-    private void Awake()
+    public static void GenItem(ushort id, short amount, short duration, byte grade)
     {
-        if (instance == null)
+        GameObject obj = ObjectPool.GetObject(id.ToString());
+        if (obj != null)
         {
-            instance = this;
-        }
-        else
-            Destroy(instance);
-    }
-
-    public static ItemGenerateManager Instance
-    {
-        get
-        {
-            if (instance == null)
+            ItemDataContainer item = obj.GetComponent<ItemDataContainer>();
+            if (item != null)
             {
-                return null;
+                item.SetData(new ItemObjectData(id, amount, duration, grade));
             }
-            return instance;
         }
     }
-
-    public void GenItem(ushort id, sbyte amount, short duration, byte grade)
+    public static void GenItem(ItemObjectData data)
     {
-        ItemDataContainer item = ObjectPool.GetObject();
-        item.SetData(new ItemObjectData(id, amount, duration, grade));
+        GameObject obj = ObjectPool.GetObject(data.GetItemID.ToString());
+        if (obj != null)
+        {
+            ItemDataContainer item = obj.GetComponent<ItemDataContainer>();
+            if (item != null)
+            {
+                item.SetData(data);
+            }
+        }
     }
 }
