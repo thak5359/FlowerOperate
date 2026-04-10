@@ -72,11 +72,6 @@ public class ItemStorageParent : MonoBehaviour, IManager
         b.SetAmount((short)(b.GetAmount - amountToMove));
     }
 
-    public void AbandonItem()
-    {
-
-    }
-
     protected virtual void AddItem(ItemObjectData item)
     {
         _data.AddItem(item);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 
 public class HotbarManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class HotbarManager : MonoBehaviour
     [SerializeField] List<ItemObjectData> items;
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
+
+    private InventoryManager inventoryManager;
 
     private int cachedInt;
     private int pointingSlot = -1;
@@ -20,6 +23,12 @@ public class HotbarManager : MonoBehaviour
 
     public int PointingItemId => pointingItemId;
 
+    [Inject]
+    public void Construct(InventoryManager inven)
+    {
+        inventoryManager = inven;
+        Debug.Log("HotbarManager InventoryManager 의존성 주입 완료!");
+    }
 
     void Awake()
     {
@@ -27,6 +36,12 @@ public class HotbarManager : MonoBehaviour
         if (slots == null || slots.Count == 0)
         {
             Debug.LogError("Hotbar slots is NULL or Empty!");
+        }
+
+        if(items == null || items.Count == 0)
+        {
+            Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
+            items = new List<ItemObjectData>();
         }
     }
 
@@ -36,7 +51,20 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
-
+    private void UpdateSlotData()
+    {
+        for(int i = 0; i<10; i++)
+        {
+            if (i < inventoryManager.GetData.GetList.Count)
+            {
+                items[i] = inventoryManager.GetData.GetList[i];
+            }
+            else
+            {
+                items[i] = default;
+            }
+        }
+    }
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
     {
