@@ -27,41 +27,49 @@ public class HotbarManager : MonoBehaviour
     public void Construct(InventoryManager inven)
     {
         inventoryManager = inven;
-        Debug.Log("HotbarManager InventoryManager 의존성 주입 완료!");
+        Debug.Log("HotbarManager의 InventoryManager 의존성 주입 완료!");
     }
 
     void Awake()
     {
-
         if (slots == null || slots.Count == 0)
         {
             Debug.LogError("Hotbar slots is NULL or Empty!");
-        }
-
-        if(items == null || items.Count == 0)
-        {
-            Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
-            items = new List<ItemObjectData>();
         }
     }
 
     private void Start()
     {
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
+            if (inventoryManager != null && inventoryManager.getSlotList != null)
+            {
+                UpdateHotSlotItems();
+            }
+            else
+            {
+                items = new List<ItemObjectData>();
+            }
+        }
+
         lastScrollTime = -scrollCooldown;
         pointSlot(0);
     }
 
-    private void UpdateSlotData()
+    private void UpdateHotSlotItems()
     {
-        for(int i = 0; i<10; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
-            if (i < inventoryManager.GetData.GetList.Count)
+            if (i < inventoryManager.getSlotList.Count)
             {
-                items[i] = inventoryManager.GetData.GetList[i];
+                items.Add(inventoryManager.getSlotList[i]);
+                Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
             }
             else
             {
                 items[i] = default;
+                Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
             }
         }
     }

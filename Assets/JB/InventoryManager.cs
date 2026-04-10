@@ -1,11 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : ItemStorageParent
 {
     [SerializeField] List<ItemObjectData> slotList;
+    // 인벤토리 슬롯 리스트
     [SerializeField] List<HotBarSlot> slots = new List<HotBarSlot>();
+
+    // Getter
+    public List<ItemObjectData> getSlotList => slotList;
 
     private void Awake()
     {
