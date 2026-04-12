@@ -8,7 +8,7 @@ using Fungus;
 public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandler, IPointerExitHandler
 {
     //어디에서 들어왔는지만 감지, 내부 움직임 감지 X
-    public void OnPointerEnter(PointerEventData  eventdata)
+    public void OnPointerEnter(PointerEventData eventdata)
     {
         Debug.Log($"마우스 올라감 감지됨 : {eventdata}");
     }

@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-    } 
+    }
 
     [Inject]
     void Construct(UseAreamanager input_UseAreaManager)

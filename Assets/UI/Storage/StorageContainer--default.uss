@@ -1,0 +1,49 @@
+#StorageContainer {
+    width: 820px;
+    height: 660px;
+    background-color: rgba(0, 22, 166, 0);
+}
+
+.quick-move-area {
+    height: 70px;
+    background-color: rgba(163, 255, 143, 0.31);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.page-dot-button {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 50%;
+    border-width: 0;
+}
+
+
+.action-button-container {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 50px;
+    width: 800px;
+    background-color: rgba(248, 0, 0, 0.56);
+}
+
+
+.btn-sort {
+    height: 50px;
+    margin: 0;
+}
+
+/* 확장 정리 버튼의 기본 상태 */
+.btn-expansion {
+    visibility: visible;
+}
+
+/* 부모(StorageContainer)에 'hide-expansion' 클래스가 추가되면 
+   그 안의 'btn-expansion' 클래스를 가진 요소를 숨깁니다.
+*/
+.hide-expansion .btn-expansion {
+    visibility: hidden;
+}

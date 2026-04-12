@@ -8,7 +8,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private  AudioMixer masterMixer;
+    [SerializeField] private AudioMixer masterMixer;
     //Root LifetimeScope를 사용해서모든 씬에서 사용하기!
     protected override void Configure(IContainerBuilder builder)
     {
