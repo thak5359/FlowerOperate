@@ -36,6 +36,7 @@ public class ActionMapChanger : IMapChangable
         Debug.Log("ActionMapChanger has been successfully injected!");
     }
 
+
     #region IA 맵 변경
 
     private void PushAndChange(FixedString64Bytes targetMap)
@@ -50,7 +51,7 @@ public class ActionMapChanger : IMapChangable
         if (currentMap != targetMap)
         {
             prevMapStack.Push(currentMap);
-            Debug.Log($"[IA Manager] Push: {currentMap} / 현재 스택 크기: {prevMapStack?.Count??null}");
+            Debug.Log($"[IA Manager] Push: {currentMap} / 현재 스택 크기: {prevMapStack?.Count ?? null}");
         }
         _playerInput.SwitchCurrentActionMap(targetMap.ToString());
     }
@@ -75,7 +76,7 @@ public class ActionMapChanger : IMapChangable
         {
             FixedString64Bytes target = prevMapStack.Pop();
             _playerInput.SwitchCurrentActionMap(target.ToString());
-            Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count??0}");
+            Debug.Log($"[IA Manager] Pop: {target} / 남은 스택 크기: {prevMapStack?.Count ?? 0}");
         }
     }
     void IMapChangable.changeIAmap(string targetMap) // 직접 키고 싶은 맵 요청
@@ -87,10 +88,10 @@ public class ActionMapChanger : IMapChangable
     }
     #endregion
 
-   
+
     #region 액션 바인딩 커스텀아이즈
 
-     public void Keymapping()
+    public void Keymapping()
     { InputActionMap map = _playerInput.currentActionMap; }
     #endregion
 }

@@ -12,7 +12,7 @@ public class HotbarManager : MonoBehaviour
     private int cachedInt;
     private int pointingSlot = -1;
 
-    private float scrollCooldown = 0.15f;
+    private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
 
     private int pointingItemId;
@@ -35,7 +35,26 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
+<<<<<<< Updated upstream
 
+=======
+    private void UpdateHotSlotItems()
+    {
+        //for (int i = 0; i < slots.Count; i++)
+        //{
+        //    if (i < inventoryManager.getSlotList.Count)
+        //    {
+        //        items.Add(inventoryManager.getSlotList[i]);
+        //        Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
+        //    }
+        //    else
+        //    {
+        //        items[i] = default;
+        //        Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
+        //    }
+        //}
+    }
+>>>>>>> Stashed changes
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
     {
@@ -77,8 +96,6 @@ public class HotbarManager : MonoBehaviour
 
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
-
-   
 
     public void SyncPlayerItem()
     {

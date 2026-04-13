@@ -1,0 +1,9 @@
+.DataLoadButtoUSS--Hide {
+    display: none;
+    justify-content: space-around;
+    height: 100%;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition-duration: 0.01s;
+}

@@ -47,6 +47,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");
     }
 
+
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         if (_playerInput.actions == null)
@@ -109,7 +110,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         FixedString64Bytes targetScheme = isWASD ? WASD_SCHEME_NAME : ARROW_SCHEME_NAME;
         Debug.Log("여기까지는 정상!!");
         _playerInput.actions.bindingMask = InputBinding.MaskByGroup(targetScheme.ToString());
-        
+
         Debug.Log("여기까지는 정상!!");
         // Debug.Log($"[IA Manager] {targetScheme}이 준비됨!");
     }
@@ -138,7 +139,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     #region 세팅 메뉴 키 할당
     void SettingMapActionAllocator()
     {
-        if(currentSceneName == TITLE_SCENE_NAME && _settingMenuManager == null)
+        if (currentSceneName == TITLE_SCENE_NAME && _settingMenuManager == null)
         {
             Debug.LogWarning("SettingMenuManager가 할당되지 않았습니다. 세팅 메뉴 키 할당을 건너뜁니다.");
             return;
@@ -158,7 +159,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         Debug.Log("세팅 키 할당됨!");
     }
     #endregion
-    
+
 
     // 기존의 쓰던 A 맵  + 할당 >>> B 맵 + 할당...  A 맵 >> A맵에서의 키 해제 >> B에서의 키 할당 >>  맵 액션맵 A에서 B로 변경
 
@@ -220,6 +221,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         // actionOpenInventory.performed +=   //TODO : 인벤토리 UI를 여는 함수 할당하기
 
         map.Enable();
+        Debug.Log("FarmActionKey 할당됨!");
 
     }
     #endregion
