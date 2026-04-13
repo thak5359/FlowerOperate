@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,8 +11,9 @@ public class SaveLoadManager : MonoBehaviour
     private StorageManager _storageManager;
     private PlotManager _plotManager;
 
-    private const string SAVE_FILE_NAME = "SaveData.json";
+    private string SAVE_FILE_NAME = "SaveData.json";
     public SaveDatas saveData;
+
 
     [Inject]
     public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot)
@@ -54,8 +55,9 @@ public class SaveLoadManager : MonoBehaviour
         return clone;
     }
 
-    public void Save()
+    public void Save(string file)
     {
+        SAVE_FILE_NAME = file;
         SyncSaveData();
         
         if (saveData == null)
@@ -67,8 +69,9 @@ public class SaveLoadManager : MonoBehaviour
         FileDataHandler.SaveJson(saveData, SAVE_FILE_NAME);
     }
 
-    public void Load()
+    public void Load(string file)
     {
+        SAVE_FILE_NAME = file;
         SaveDatas loadedData = FileDataHandler.LoadJson<SaveDatas>(SAVE_FILE_NAME);
         
         if (loadedData != null)
@@ -90,6 +93,7 @@ public class SaveLoadManager : MonoBehaviour
 [Serializable]
 public class SaveDatas
 {
+    [SerializeField] private string saveTime;
     [SerializeField] private int playDay;
     [SerializeField] private ItemStorageData invenData;
     [SerializeField] private ItemStorageData storageData;
@@ -103,6 +107,7 @@ public class SaveDatas
 
     public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
     {
+        this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;
         this.invenData = inventory;
         this.storageData = storage;

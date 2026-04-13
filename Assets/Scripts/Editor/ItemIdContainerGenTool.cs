@@ -10,6 +10,7 @@ public class ItemIdContainerGenTool : EditorWindow
 {
     public TextAsset csvFile;
     public DropDownMenu menu = DropDownMenu.None;
+    public short startId = 0; // ItemIdData의 startId 연동
 
     [MenuItem("Tools/IndexSOGenerator")]
     static void Mymenu()
@@ -27,11 +28,14 @@ public class ItemIdContainerGenTool : EditorWindow
             typeof(TextAsset),
             false);
 
-        menu = (DropDownMenu)EditorGUILayout.EnumPopup("종류", menu);
+        menu = (DropDownMenu)EditorGUILayout.EnumPopup("아이템 종류", menu);
+        
+        // Start ID 입력 필드 추가
+        startId = (short)EditorGUILayout.IntField("시작 ID (Start ID)", startId);
 
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("SO 생성", GUILayout.Height(30)))
+        if (GUILayout.Button("SO 생성 및 덮어쓰기", GUILayout.Height(30)))
         {
             if (csvFile == null)
             {
@@ -90,7 +94,8 @@ public class ItemIdContainerGenTool : EditorWindow
     private void CreateFlowerSO(string[] lines)
     {
         FlowerIdData so = ScriptableObject.CreateInstance<FlowerIdData>();
-        InitializeBaseLists(so);
+        InitializeBaseInfo(so);
+        
         so.speciesIndex = new List<byte>();
         so.colorIndex = new List<byte>();
         so.floroIndex = new List<byte>();
@@ -98,16 +103,21 @@ public class ItemIdContainerGenTool : EditorWindow
 
         for (int i = 0; i < lines.Length; i++)
         {
-            if (i % 10 == 0) // Update progress bar every 10 lines to save performance
+            if (i % 10 == 0)
                 EditorUtility.DisplayProgressBar("SO 생성 중", $"Flower 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
             string[] data = lines[i].Split(',');
-            if (data.Length < 5) continue;
+            if (data.Length < 2) continue;
 
+            // 기본 정보 채우기
             so.itemName.Add(data[1].Trim());
-            so.speciesIndex.Add(byte.TryParse(data[2], out byte s) ? s : (byte)0);
-            so.colorIndex.Add(byte.TryParse(data[3], out byte c) ? c : (byte)0);
-            so.floroIndex.Add(byte.TryParse(data[4], out byte f) ? f : (byte)0);
+            so.description.Add(""); // 필요시 CSV 인덱스 추가 가능
+            so.spriteAddress.Add("");
+
+            // Flower 전용 인덱스 채우기
+            so.speciesIndex.Add(data.Length > 2 && byte.TryParse(data[2], out byte s) ? s : (byte)0);
+            so.colorIndex.Add(data.Length > 3 && byte.TryParse(data[3], out byte c) ? c : (byte)0);
+            so.floroIndex.Add(data.Length > 4 && byte.TryParse(data[4], out byte f) ? f : (byte)0);
 
             if (data.Length > 5 && sbyte.TryParse(data[5], out sbyte f2))
                 so.floroIndex2.Add(f2);
@@ -121,7 +131,8 @@ public class ItemIdContainerGenTool : EditorWindow
     private void CreateUsableSO(string[] lines)
     {
         UsableIdData so = ScriptableObject.CreateInstance<UsableIdData>();
-        InitializeBaseLists(so);
+        InitializeBaseInfo(so);
+        
         so.durationIndex = new List<byte>();
         so.powerIndex = new List<byte>();
         so.chargeIndex = new List<byte>();
@@ -132,11 +143,14 @@ public class ItemIdContainerGenTool : EditorWindow
                 EditorUtility.DisplayProgressBar("SO 생성 중", $"Usable 데이터 처리 중... ({i}/{lines.Length})", (float)i / lines.Length);
 
             string[] data = lines[i].Split(',');
-            if (data.Length < 4) continue;
+            if (data.Length < 2) continue;
 
             so.itemName.Add(data[1].Trim());
-            so.durationIndex.Add(byte.TryParse(data[2], out byte d) ? d : (byte)0);
-            so.powerIndex.Add(byte.TryParse(data[3], out byte p) ? p : (byte)0);
+            so.description.Add("");
+            so.spriteAddress.Add("");
+
+            so.durationIndex.Add(data.Length > 2 && byte.TryParse(data[2], out byte d) ? d : (byte)0);
+            so.powerIndex.Add(data.Length > 3 && byte.TryParse(data[3], out byte p) ? p : (byte)0);
 
             if (data.Length > 6)
                 so.chargeIndex.Add(byte.TryParse(data[6], out byte ch) ? ch : (byte)0);
@@ -150,7 +164,7 @@ public class ItemIdContainerGenTool : EditorWindow
     private void CreateEtcSO(string[] lines)
     {
         ItemIdData so = ScriptableObject.CreateInstance<ItemIdData>();
-        InitializeBaseLists(so);
+        InitializeBaseInfo(so);
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -161,13 +175,16 @@ public class ItemIdContainerGenTool : EditorWindow
             if (data.Length < 2) continue;
 
             so.itemName.Add(data[1].Trim());
+            so.description.Add("");
+            so.spriteAddress.Add("");
         }
 
         SaveAsset(so, "Assets/ScriptableObjects/Ore/EtcIdData.asset");
     }
 
-    private void InitializeBaseLists(ItemIdData so)
+    private void InitializeBaseInfo(ItemIdData so)
     {
+        so.startId = this.startId;
         so.itemName = new List<FixedString64Bytes>();
         so.description = new List<FixedString128Bytes>();
         so.spriteAddress = new List<FixedString64Bytes>();
@@ -181,7 +198,9 @@ public class ItemIdContainerGenTool : EditorWindow
             Directory.CreateDirectory(directory);
         }
 
+        // 기존 에셋이 있으면 덮어쓰기 위해 삭제 후 생성
+        AssetDatabase.DeleteAsset(path);
         AssetDatabase.CreateAsset(asset, path);
-        Debug.Log($"SO 생성 완료: {path}");
+        Debug.Log($"<color=cyan>SO 생성 완료:</color> {path} (StartID: {startId})");
     }
 }

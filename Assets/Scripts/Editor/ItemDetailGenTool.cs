@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 public enum DropDownMenu
@@ -27,13 +26,13 @@ public class ItemDetailGenTool : EditorWindow
     private void OnGUI()
     {
         itemDetailData = (ItemDetailData)EditorGUILayout.ObjectField(
-            "디테일 데이터",
+            "디테일 데이터 (SO)",
             itemDetailData,
             typeof(ItemDetailData),
             false);
 
         csvFile = (TextAsset)EditorGUILayout.ObjectField(
-            "csv 데이터",
+            "CSV 데이터 파일",
             csvFile,
             typeof(TextAsset),
             false);
@@ -44,23 +43,28 @@ public class ItemDetailGenTool : EditorWindow
         }
 
         menu = (DropDownMenu)EditorGUILayout.EnumPopup("종류", menu);
-        if (GUILayout.Button("생성"))
+        
+        if (GUILayout.Button("데이터 생성 및 SO 업데이트"))
         {
+            if (itemDetailData == null || csvFile == null)
+            {
+                Debug.LogError("SO 또는 CSV 파일이 할당되지 않았습니다!");
+                return;
+            }
+
             switch (menu)
             {
                 case DropDownMenu.Flower:
-                    var SO = itemDetailData as FlowerDetailData;
-                    if (SO != null)
-                        OperateFunc(SO);
+                    if (itemDetailData is FlowerDetailData flowerSO)
+                        OperateFunc(flowerSO);
                     else
-                        Debug.Log("잘못된 설정");
+                        Debug.LogError("할당된 SO가 FlowerDetailData 형식이 아닙니다.");
                     break;
                 case DropDownMenu.Usable:
-                    var so = itemDetailData as UsableDetailData;
-                    if (so != null)
-                        OperateFunc(so);
+                    if (itemDetailData is UsableDetailData usableSOData)
+                        OperateFunc(usableSOData);
                     else
-                        Debug.Log("난리남");
+                        Debug.LogError("할당된 SO가 UsableDetailData 형식이 아닙니다.");
                     break;
             }
         }
@@ -68,28 +72,44 @@ public class ItemDetailGenTool : EditorWindow
 
     private void OperateFunc(FlowerDetailData SO)
     {
+        if (SO == null) return;
+
+        // 실행 취소 지원 및 데이터 초기화
+        Undo.RecordObject(SO, "Update Flower Detail Data");
         ClearSOlist(SO);
-        string[] lines = csvFile.ToString().Split('\n');
+        
+        // 줄바꿈 문자를 유연하게 처리 (\r\n 또는 \n)
+        string[] lines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
         {
             string[] data = line.Split(',');
-            if (int.TryParse(data[0], out int speciesIdx))
-                SO.speciesList.Add(data[1]);
-            if (int.TryParse(data[4], out int colorIdx))
-                SO.colorList.Add(data[5]);
-            if (int.TryParse(data[8], out int floroIdx))
-                SO.floroList.Add(data[9]);
+            if (data.Length < 2) continue;
+
+            // 1. 품종 파싱: 0번 인덱스가 숫자이고 1번 인덱스에 이름이 있는 경우
+            if (int.TryParse(data[0].Trim(), out _) && data.Length > 1 && !string.IsNullOrWhiteSpace(data[1]))
+            {
+                SO.speciesList.Add(data[1].Trim());
+            }
+
+            // 2. 색상 파싱: 4번 인덱스가 숫자이고 5번 인덱스에 이름이 있는 경우
+            if (data.Length > 5 && int.TryParse(data[4].Trim(), out _) && !string.IsNullOrWhiteSpace(data[5]))
+            {
+                SO.colorList.Add(data[5].Trim());
+            }
+
+            // 3. 꽃말 파싱: 9번 인덱스에 이름이 있는 경우
+            if (data.Length > 9 && !string.IsNullOrWhiteSpace(data[9]))
+            {
+                SO.floroList.Add(data[9].Trim());
+            }
         }
 
-        FlowerDetailData flowerData = ScriptableObject.CreateInstance<FlowerDetailData>();
-        flowerData.speciesList = SO.speciesList;
-        flowerData.colorList = SO.colorList;
-        flowerData.floroList = SO.floroList;
-
-        AssetDatabase.CreateAsset(flowerData, "Assets/ScriptableObjects/Flower/FlowerDetailSO.asset");
+        // 변경사항 저장 및 에디터 갱신
+        EditorUtility.SetDirty(SO);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        
+        Debug.Log($"<color=green>Flower SO 업데이트 완료:</color> 품종 {SO.speciesList.Count}, 색상 {SO.colorList.Count}, 꽃말 {SO.floroList.Count}");
     }
 
     private static void ClearSOlist(FlowerDetailData SO)
@@ -101,32 +121,37 @@ public class ItemDetailGenTool : EditorWindow
 
     private void OperateFunc(UsableDetailData SO)
     {
-        string[] lines = csvFile.ToString().Split('\n');
+        if (SO == null) return;
+
+        Undo.RecordObject(SO, "Update Usable Detail Data");
+        SO.durationList.Clear();
+        SO.powerList.Clear();
+        SO.chargeInfoList.Clear();
+
+        string[] lines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
         foreach (string line in lines)
         {
             string[] data = line.Split(',');
+            if (data.Length < 3) continue;
 
-            SO.durationList.Add(byte.Parse(data[1]));
-            SO.powerList.Add(byte.Parse(data[2]));
-            if (float.TryParse(data[3], out float Time))
+            if (short.TryParse(data[1].Trim(), out short duration))
+                SO.durationList.Add(duration);
+            
+            if (byte.TryParse(data[2].Trim(), out byte power))
+                SO.powerList.Add(power);
+
+            if (data.Length > 3 && float.TryParse(data[3].Trim(), out float time))
             {
                 for (sbyte i = 0; i < 4; i++)
                 {
-                    ChargeInfo chargeInfo = new ChargeInfo(Time, i);
-                    chargeInfo.ReadValue();
-                    SO.chargeInfoList.Add(chargeInfo);
+                    SO.chargeInfoList.Add(new ChargeInfo(time, i));
                 }
             }
         }
 
-        UsableDetailData usableDetailData = ScriptableObject.CreateInstance<UsableDetailData>();
-        usableDetailData.durationList = SO.durationList;
-        usableDetailData.powerList = SO.powerList;
-        usableDetailData.chargeInfoList = SO.chargeInfoList;
-
-        AssetDatabase.CreateAsset(usableDetailData, "Assets/ScriptableObjects/Gear/UsableDetailSO.asset");
+        EditorUtility.SetDirty(SO);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        Debug.Log("<color=green>Usable SO 업데이트 완료.</color>");
     }
 
     private void DrawChargeInfoList(UsableDetailData so)
@@ -140,44 +165,29 @@ public class ItemDetailGenTool : EditorWindow
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("< Charge Info List >", EditorStyles.boldLabel);
 
-        // 표 헤더 그리기
         EditorGUILayout.BeginHorizontal("box");
         EditorGUILayout.LabelField("No.", GUILayout.Width(30));
         EditorGUILayout.LabelField("Time (sec)", GUILayout.Width(80));
         EditorGUILayout.LabelField("Charge Index", GUILayout.Width(100));
         EditorGUILayout.EndHorizontal();
 
-        // 리스트 내용 출력
         for (int i = 0; i < so.chargeInfoList.Count; i++)
         {
             EditorGUILayout.BeginHorizontal("box");
-
-            // 순번
             EditorGUILayout.LabelField(i.ToString(), GUILayout.Width(30));
 
-            // Time 수정 (직접 수정 가능하도록 floatField 사용)
-            // 1. 임시 변수에 복사본 꺼내기
             ChargeInfo tempInfo = so.chargeInfoList[i];
-
-            // 2. 복사본의 값 수정
             tempInfo.ChargeTime = EditorGUILayout.FloatField(tempInfo.ChargeTime, GUILayout.Width(80));
             tempInfo.maxChargeCount = (sbyte)EditorGUILayout.IntField(so.chargeInfoList[i].maxChargeCount, GUILayout.Width(100));
-
-            // 3. 수정된 복사본을 다시 리스트에 덮어쓰기
             so.chargeInfoList[i] = tempInfo;
 
-            // Index 수정
-
-            // 삭제 버튼 (옵션)
             if (GUILayout.Button("X", GUILayout.Width(20)))
             {
                 so.chargeInfoList.RemoveAt(i);
             }
-
             EditorGUILayout.EndHorizontal();
         }
 
-        // 변경사항이 있으면 저장 대상으로 마킹
         if (GUI.changed)
         {
             EditorUtility.SetDirty(so);

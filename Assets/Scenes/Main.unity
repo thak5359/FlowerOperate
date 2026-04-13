@@ -532,13 +532,13 @@ MonoBehaviour:
       - m_Target: {fileID: 2063780190}
         m_TargetAssemblyTypeName: SaveLoadManager, Assembly-CSharp
         m_MethodName: Save
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: save1.json
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &104113730
@@ -273728,6 +273728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveData:
+    saveTime: 
     playDay: 0
     invenData:
       itemListData: []

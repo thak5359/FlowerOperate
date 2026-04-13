@@ -112,9 +112,9 @@ public struct FlowerItemDataStatic
 
 public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 {
-   // bool _isInitialized = false; // ÃÊ±âÈ­ ¿Ï·á ¿©ºÎ
+   // bool _isInitialized = false; // ì´ˆê¸°í™” ì™„ë£Œ ì—¬ë¶€
 
-    //  Burst°¡ Á¢±Ù °¡´ÉÇÑ °í¼Ó µ¥ÀÌÅÍ ¹è¿­
+    //  Burstê°€ ì ‘ê·¼ ê°€ëŠ¥í•œ ê³ ì† ë°ì´í„° ë°°ì—´
     private BlobAssetReference<ItemBlobDatas> _nativeItemDB;
     private BlobAssetReference<FlowerItemBlobDatas> _nativeFlowerItemDB;
     private BlobAssetReference<UsableItemBlobDatas> _nativeUsableItemDB;
@@ -132,7 +132,7 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
             LoadBlob<UsableDetailBlobDatas>(USABLE_DETAIL_BLOB, (res) => usableDetail = res)
         );
 
-        Debug.Log("<color=green>[Blob]</color> ¸ğµç µ¥ÀÌÅÍ ·Îµå ¿Ï·á!");
+        Debug.Log("<color=green>[Blob]</color> ëª¨ë“  ë°ì´í„° ë¡œë“œ ì™„ë£Œ!");
         //_isInitialized = true;
     }
 
@@ -153,21 +153,21 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 
     public async UniTask LoadFlowerEncyclopedia()
     {
-        int count = FLOWER_END_ID - FLOWER_START_ID + 1; // ¿¹: 700°³
+        int count = FLOWER_END_ID - FLOWER_START_ID + 1; // ì˜ˆ: 700ê°œ
 
-        // 1. ÇÊ¿äÇÑ ¸Ş¸ğ¸® ÇÒ´ç (NativeArray)
+        // 1. í•„ìš”í•œ ë©”ëª¨ë¦¬ í• ë‹¹ (NativeArray)
         var targetIds = new NativeArray<short>(count, Allocator.TempJob);
         var outNames = new NativeArray<FixedString64Bytes>(count, Allocator.TempJob);
         var outDescs = new NativeArray<FixedString128Bytes>(count, Allocator.TempJob);
         var outAddrs = new NativeArray<FixedString128Bytes>(count, Allocator.TempJob);
 
-        // 2. ´ë»ó ID Ã¤¿ì±â (¿©±â´Â ¸ŞÀÎ ½º·¹µå¿¡¼­ ÇÑ ¹ø¸¸ ¼öÇà)
+        // 2. ëŒ€ìƒ ID ì±„ìš°ê¸° (ì—¬ê¸°ëŠ” ë©”ì¸ ìŠ¤ë ˆë“œì—ì„œ í•œ ë²ˆë§Œ ìˆ˜í–‰)
         for (int i = 0; i < count; i++)
         {
             targetIds[i] = (short)(FLOWER_START_ID + i);
         }
 
-        // 3. Job ¼³Á¤
+        // 3. Job ì„¤ì •
         ItemEncyclopediaJob job = new ItemEncyclopediaJob
         {
             targetItemIds = targetIds,
@@ -181,19 +181,19 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
         try
         {
 
-            // 4. Job ½ÇÇà (700¹øÀÇ Execute¸¦ º´·Ä·Î µ¹·Á¶ó!)
-            JobHandle handle = job.Schedule(count, 64); // 64°³¾¿ ¹­¾î¼­ ½º·¹µå¿¡ ¹èºĞ
+            // 4. Job ì‹¤í–‰ (700ë²ˆì˜ Executeë¥¼ ë³‘ë ¬ë¡œ ëŒë ¤ë¼!)
+            JobHandle handle = job.Schedule(count, 64); // 64ê°œì”© ë¬¶ì–´ì„œ ìŠ¤ë ˆë“œì— ë°°ë¶„
 
-            // 5. ¿Ï·á ´ë±â (ºñµ¿±â·Î ±â´Ù¸®±â)
+            // 5. ì™„ë£Œ ëŒ€ê¸° (ë¹„ë™ê¸°ë¡œ ê¸°ë‹¤ë¦¬ê¸°)
             //await handle.ToUniTask();
             await handle.WaitAsync(PlayerLoopTiming.Update);
 
-            // 6. °á°ú È°¿ë (ÀÌÁ¦ outNames µîÀ» »ç¿ëÇØ UI ¸®½ºÆ® »ı¼º)
-            // ... UI »ı¼º ·ÎÁ÷ ...
+            // 6. ê²°ê³¼ í™œìš© (ì´ì œ outNames ë“±ì„ ì‚¬ìš©í•´ UI ë¦¬ìŠ¤íŠ¸ ìƒì„±)
+            // ... UI ìƒì„± ë¡œì§ ...
         }
         finally
         {
-            // 7. ¸Ş¸ğ¸® ÇØÁ¦
+            // 7. ë©”ëª¨ë¦¬ í•´ì œ
             targetIds.Dispose();
             outNames.Dispose();
             outDescs.Dispose();
@@ -206,7 +206,7 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 [BurstCompile]
 public static class ItemSearchSystem 
 {
-    #region °ø¿ë µ¥ÀÌÅÍ Á¢±Ù
+    #region ê³µìš© ë°ì´í„° ì ‘ê·¼
     [BurstCompile]
     public static void GetItemNameBurst(
         in BlobAssetReference<UsableItemBlobDatas> usableDB,
@@ -215,7 +215,7 @@ public static class ItemSearchSystem
         short id,
         out FixedString64Bytes name)
     {
-        // ÀÎµ¦½º Å×ÀÌºí ·ÎÁ÷: ID ¹üÀ§¿¡ µû¶ó ÀûÀıÇÑ BLOBÀÇ Value.Items[index]¿¡ Á¢±Ù
+        // ì¸ë±ìŠ¤ í…Œì´ë¸” ë¡œì§: ID ë²”ìœ„ì— ë”°ë¼ ì ì ˆí•œ BLOBì˜ Value.Items[index]ì— ì ‘ê·¼
         if (id >= 0 && id < COMMON_END_ID)
         {
             name = usableDB.Value.Items[id - USABLE_START_ID].ItemName;
@@ -237,7 +237,7 @@ public static class ItemSearchSystem
        short id,
        out FixedString128Bytes name)
     {
-        // ÀÎµ¦½º Å×ÀÌºí ·ÎÁ÷: ID ¹üÀ§¿¡ µû¶ó ÀûÀıÇÑ BLOBÀÇ Value.Items[index]¿¡ Á¢±Ù
+        // ì¸ë±ìŠ¤ í…Œì´ë¸” ë¡œì§: ID ë²”ìœ„ì— ë”°ë¼ ì ì ˆí•œ BLOBì˜ Value.Items[index]ì— ì ‘ê·¼
         if (id >= 0 && id < COMMON_END_ID)
         {
             name = usableDB.Value.Items[id- USABLE_START_ID].Description;
@@ -259,7 +259,7 @@ public static class ItemSearchSystem
    short id,
    out FixedString128Bytes name)
     {
-        // ÀÎµ¦½º Å×ÀÌºí ·ÎÁ÷: ID ¹üÀ§¿¡ µû¶ó ÀûÀıÇÑ BLOBÀÇ Value.Items[index]¿¡ Á¢±Ù
+        // ì¸ë±ìŠ¤ í…Œì´ë¸” ë¡œì§: ID ë²”ìœ„ì— ë”°ë¼ ì ì ˆí•œ BLOBì˜ Value.Items[index]ì— ì ‘ê·¼
         if (id >= 0 && id < COMMON_END_ID)
         {
             name = db3.Value.Items[id - USABLE_START_ID].SpriteAddress;
@@ -275,7 +275,7 @@ public static class ItemSearchSystem
     }
     #endregion
     
-    #region »ç¿ë ¾ÆÀÌÅÛ Àü¿ë µ¥ÀÌÅÍ Á¢±Ù
+    #region ì‚¬ìš© ì•„ì´í…œ ì „ìš© ë°ì´í„° ì ‘ê·¼
 
     [BurstCompile]
     public static void GetDurationBurst(
@@ -337,7 +337,7 @@ public static class ItemSearchSystem
     }
     #endregion
 
-    #region ²É ¾ÆÀÌÅÛ Àü¿ë µ¥ÀÌÅÍ Á¢±Ù
+    #region ê½ƒ ì•„ì´í…œ ì „ìš© ë°ì´í„° ì ‘ê·¼
     [BurstCompile]
     public static void GetSpeciesBurst(
       in BlobAssetReference<FlowerItemBlobDatas> db1,
@@ -425,7 +425,7 @@ public struct ItemEncyclopediaJob : IJobParallelFor
 
         short id = targetItemIds[index];
 
-        // ¿ì¸®°¡ ¸¸µç Burst ÇÔ¼ö¸¦ ±×´ë·Î È°¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù!
+        // ìš°ë¦¬ê°€ ë§Œë“  Burst í•¨ìˆ˜ë¥¼ ê·¸ëŒ€ë¡œ í™œìš©í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤!
         ItemSearchSystem.GetItemNameBurst(UsableDB, CommonDB, FlowerDB,  id, out var name);
         ItemSearchSystem.GetDescriptionBurst(UsableDB, CommonDB, FlowerDB, id, out var desc);
         ItemSearchSystem.GetAddressBurst(CommonDB, FlowerDB, UsableDB, id, out var spriteAddr);

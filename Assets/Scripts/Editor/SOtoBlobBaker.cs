@@ -8,47 +8,55 @@ using UnityEngine;
 
 public class ItemBlobMaker : EditorWindow
 {
-    // ¸®½ºÆ®·Î ¿©·¯ °³ÀÇ SO¸¦ ¹Ş±â À§ÇØ SerializedObject¸¦ È°¿ëÇÕ´Ï´Ù.
-    [SerializeField] private List<ItemIdData> targetSOList = new List<ItemIdData>();
-    private string savePath = "Assets/Blobs";
+    // ItemIdDataì™€ ItemDetailDataê°€ ì„œë¡œ ìƒì†ê´€ê³„ê°€ ì•„ë‹ˆë¯€ë¡œ ScriptableObjectë¡œ ê´€ë¦¬í•©ë‹ˆë‹¤.
+    [SerializeField] private List<ScriptableObject> targetSOList = new List<ScriptableObject>();
+    private string savePath = "Assets/StreamingAssets/Blobs";
 
     [MenuItem("Tools/Bake Item Data to Blob")]
     public static void ShowWindow() => GetWindow<ItemBlobMaker>("Blobmaker");
 
     private void OnGUI()
     {
-        GUILayout.Label("HPC# µ¥ÀÌÅÍ º£ÀÌÅ· µµ±¸", EditorStyles.boldLabel);
+        GUILayout.Label("HPC# ë°ì´í„° ë² ì´í‚¹ ë„êµ¬ (ID/Flower/Usable ì§€ì›)", EditorStyles.boldLabel);
         EditorGUILayout.Space(10);
 
-        // ¸®½ºÆ® UI¸¦ ÀÎ½ºÆåÅÍÃ³·³ ±ò²ûÇÏ°Ô Ç¥½Ã
         ScriptableObject target = this;
         SerializedObject so = new SerializedObject(target);
         SerializedProperty listProp = so.FindProperty("targetSOList");
-        EditorGUILayout.PropertyField(listProp, new GUIContent("´ë»ó SO ¸®½ºÆ®"), true);
+        EditorGUILayout.PropertyField(listProp, new GUIContent("ëŒ€ìƒ SO ë¦¬ìŠ¤íŠ¸"), true);
         so.ApplyModifiedProperties();
 
-        savePath = EditorGUILayout.TextField("ÀúÀå Æú´õ °æ·Î", savePath);
+        savePath = EditorGUILayout.TextField("íŒŒì¼ ì €ì¥ ê²½ë¡œ", savePath);
 
         EditorGUILayout.Space(20);
 
-        if (GUILayout.Button("¼±ÅÃÇÑ ¸ğµç SO¸¦ °³º° BLOBÀ¸·Î ±Á±â", GUILayout.Height(40)))
+        if (GUILayout.Button("ë¦¬ìŠ¤íŠ¸ì˜ ëª¨ë“  SOë¥¼ ê°ê°ì˜ BLOBìœ¼ë¡œ êµ½ê¸°", GUILayout.Height(40)))
         {
             if (targetSOList == null || targetSOList.Count == 0)
             {
-                EditorUtility.DisplayDialog("°æ°í", "ÆÄÆ®³Ê, ¸®½ºÆ®¿¡ SO ÆÄÀÏÀ» ¸ÕÀú ³Ö¾îÁÖ¼¼¿ä!", "È®ÀÎ");
+                EditorUtility.DisplayDialog("ê²½ê³ ", "ë¦¬ìŠ¤íŠ¸ì— SO ë°ì´í„°ë¥¼ ë„£ì–´ì£¼ì„¸ìš”!", "í™•ì¸");
                 return;
             }
 
             foreach (var itemSO in targetSOList)
             {
-                if (itemSO != null) Bake(itemSO);
+                if (itemSO == null) continue;
+
+                // ìƒì† êµ¬ì¡°ì— ë”°ë¥¸ íƒ€ì… ì²´í¬ ë° ë² ì´í‚¹ ë¶„ê¸°
+                if (itemSO is FlowerIdData flowerId) Bake(flowerId);
+                else if (itemSO is UsableIdData usableId) Bake(usableId);
+                else if (itemSO is FlowerDetailData flowerDetail) BakeDetail(flowerDetail);
+                else if (itemSO is UsableDetailData usableDetail) BakeDetail(usableDetail);
+                else if (itemSO is ItemIdData itemId) Bake(itemId);
+                else Debug.LogWarning($"[Bake] ì§€ì›í•˜ì§€ ì•ŠëŠ” SO íƒ€ì…ì…ë‹ˆë‹¤: {itemSO.name} ({itemSO.GetType()})");
             }
 
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("¿Ï·á", "¸ğµç µ¥ÀÌÅÍ°¡ ¹ÙÀÌ³Ê¸®·Î ±¸¿öÁ³½À´Ï´Ù!", "È®ÀÎ");
+            EditorUtility.DisplayDialog("ì™„ë£Œ", "ëª¨ë“  ë°ì´í„°ê°€ ë°”ì´ë„ˆë¦¬ë¡œ ì €ì¥ë˜ì—ˆìŠµë‹ˆë‹¤!", "í™•ì¸");
         }
     }
 
+    #region Base Item ID Baking (ItemIdData / FlowerIdData / UsableIdData)
     public void Bake(ItemIdData so)
     {
         var builder = new BlobBuilder(Allocator.Temp);
@@ -60,24 +68,71 @@ public class ItemBlobMaker : EditorWindow
             for (short i = 0; i < so.itemName.Count; i++)
             {
                 arrayBuilder[i].ItemId = (short)(so.startId + i);
-
-                arrayBuilder[i].ItemName = (so.itemName[i] == null) ? so.itemName[i] : "";
-                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : "";
-                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : "";
+                arrayBuilder[i].ItemName = so.itemName[i];
+                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
+                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
             }
 
-            if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-            string fullPath = Path.Combine(savePath, $"{so.name}.blob");
-
-            // ¿Ïº®ÇÏ°Ô ±¸¿ö¹ö¸®±â
-            BlobAssetReference<ItemBlobDatas>.Write(builder, fullPath, 1);
-
-            Debug.Log($"<color=green>[Bake ¼º°ø]</color> {so.name} -> {fullPath}");
+            SaveToBlob<ItemBlobDatas>(builder, so.name);
         }
-        finally
+        finally { builder.Dispose(); }
+    }
+    #endregion
+
+    #region Flower Detail Baking
+    public void BakeDetail(FlowerDetailData so)
+    {
+        var builder = new BlobBuilder(Allocator.Temp);
+        try
         {
-            builder.Dispose();
+            ref var root = ref builder.ConstructRoot<FlowerDetailBlobDatas>();
+            int count = so.speciesList.Count; // ì„¸ ë¦¬ìŠ¤íŠ¸ì˜ í¬ê¸°ê°€ ë™ì¼í•˜ë‹¤ê³  ê°€ì •
+            var arrayBuilder = builder.Allocate(ref root.flowerDetails, count);
+
+            for (int i = 0; i < count; i++)
+            {
+                arrayBuilder[i].species = so.speciesList[i];
+                arrayBuilder[i].color = (i < so.colorList.Count) ? so.colorList[i] : default;
+                arrayBuilder[i].floro = (i < so.floroList.Count) ? so.floroList[i] : default;
+            }
+
+            SaveToBlob<FlowerDetailBlobDatas>(builder, so.name);
         }
+        finally { builder.Dispose(); }
+    }
+    #endregion
+
+    #region Usable Detail Baking
+    public void BakeDetail(UsableDetailData so)
+    {
+        var builder = new BlobBuilder(Allocator.Temp);
+        try
+        {
+            ref var root = ref builder.ConstructRoot<UsableDetailBlobDatas>();
+            int count = so.durationList.Count;
+            var arrayBuilder = builder.Allocate(ref root.usableDetails, count);
+
+            for (int i = 0; i < count; i++)
+            {
+                arrayBuilder[i].index = (byte)i;
+                arrayBuilder[i].duration = so.durationList[i];
+                arrayBuilder[i].power = (i < so.powerList.Count) ? so.powerList[i] : (short)0;
+                arrayBuilder[i].chargeInfo = (i < so.chargeInfoList.Count) ? so.chargeInfoList[i] : default;
+            }
+
+            SaveToBlob<UsableDetailBlobDatas>(builder, so.name);
+        }
+        finally { builder.Dispose(); }
+    }
+    #endregion
+
+    private void SaveToBlob<T>(BlobBuilder builder, string fileName) where T : unmanaged
+    {
+        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+        string fullPath = Path.Combine(savePath, $"{fileName}.blob");
+
+        BlobAssetReference<T>.Write(builder, fullPath, 1);
+        Debug.Log($"<color=green>[Bake ì™„ë£Œ]</color> {fileName} -> {fullPath}");
     }
 }
 #endif

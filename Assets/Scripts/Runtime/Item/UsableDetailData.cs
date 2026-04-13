@@ -10,11 +10,11 @@ using UnityEngine;
 public class UsableDetailData : ItemDetailData
 {
     [SerializeField] public List<short> durationList;
-    [SerializeField] public List<byte> powerList;
+    [SerializeField] public List<short> powerList;
     [SerializeField] public List<ChargeInfo> chargeInfoList = new List<ChargeInfo>();
 
     public short Duration(byte index) => durationList[index];
-    public byte Power(byte index) => powerList[index];
+    public short Power(byte index) => powerList[index];
     public ChargeInfo ChargeInfo(byte index) => chargeInfoList[index];
 }
 
@@ -22,7 +22,7 @@ public struct UsableDetailBlobData
 {
     public byte index;
     public short duration;
-    public sbyte power;
+    public short power;
     public ChargeInfo chargeInfo;
 }
 

@@ -10,24 +10,24 @@ public class BlobDataViewer : EditorWindow
 
     private void OnGUI()
     {
-        if (GUILayout.Button("¸¶Áö¸·À¸·Î ±¸¿î Blob ÆÄÀÏ ÀĞ¾îº¸±â", GUILayout.Height(40)))
+        if (GUILayout.Button("ë§ˆì§€ë§‰ìœ¼ë¡œ êµ¬ìš´ Blob íŒŒì¼ ì½ì–´ë³´ê¸°", GUILayout.Height(40)))
         {
-            string path = "Assets/Blobs/IdData.blob"; // ÆÄÆ®³ÊÀÇ ÆÄÀÏ °æ·Î
+            string path = "Assets/Blobs/SO_UsableID.blob"; // íŒŒíŠ¸ë„ˆì˜ íŒŒì¼ ê²½ë¡œ
             if (File.Exists(path))
             {
-                // ¹öÀü ¹øÈ£´Â º£ÀÌÅ·ÇÒ ¶§ ³Ö¾ú´ø °Í°ú ¸ÂÃçÁÖ¼¼¿ä (¿¹: 1)
+                // ë²„ì „ ë²ˆí˜¸ëŠ” ë² ì´í‚¹í•  ë•Œ ë„£ì—ˆë˜ ê²ƒê³¼ ë§ì¶°ì£¼ì„¸ìš” (ì˜ˆ: 1)
                 if (BlobAssetReference<ItemBlobDatas>.TryRead(path, 1, out var blobRef))
                 {
-                    Debug.Log($"<color=yellow>--- Blob µ¥ÀÌÅÍ °Ë»ç ½ÃÀÛ ---</color>");
+                    Debug.Log($"<color=yellow>--- Blob ë°ì´í„° ê²€ì‚¬ ì‹œì‘ ---</color>");
                     for (int i = 0; i < blobRef.Value.Items.Length; i++)
                     {
                         ref var item = ref blobRef.Value.Items[i];
-                        Debug.Log($"[{i}] ID: {item.ItemId} | ÀÌ¸§: {item.ItemName.ToString()} | ¼³¸í: {item.Description.ToString()} | ¼³¸í: {item.SpriteAddress.ToString()}");
+                        Debug.Log($"[{i}] ID: {item.ItemId} | ì´ë¦„: {item.ItemName.ToString()} | ì„¤ëª…: {item.Description.ToString()} | ì„¤ëª…: {item.SpriteAddress.ToString()}");
                     }
                     blobRef.Dispose();
                 }
             }
-            else { Debug.LogError("ÆÄÀÏÀ» Ã£À» ¼ö ¾ø¾î¿ä, ÆÄÆ®³Ê!"); }
+            else { Debug.LogError("íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ì–´ìš”, íŒŒíŠ¸ë„ˆ!"); }
         }
     }
 }
