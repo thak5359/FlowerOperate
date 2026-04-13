@@ -4,20 +4,20 @@ using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
-//ÀüÃ¼ »ç¿ë
+//ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private AudioMixer masterMixer;
-    //Root LifetimeScope¸¦ »ç¿ëÇØ¼­¸ðµç ¾À¿¡¼­ »ç¿ëÇÏ±â!
+    //Root LifetimeScopeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½!
     protected override void Configure(IContainerBuilder builder)
     {
-        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure ½ÃÀÛµÊ! @@@</color>");
+        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure ï¿½ï¿½ï¿½Ûµï¿½! @@@</color>");
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
-        builder.Register<ItemManager>(Lifetime.Singleton).AsSelf();
+        builder.RegisterComponentInHierarchy<ItemManager>().AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
     }
