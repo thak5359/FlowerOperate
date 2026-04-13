@@ -1,0 +1,19 @@
+.PauseUI--Showing {
+    translate: 0 -50%;
+    height: 800px;
+    background-color: rgb(255, 169, 169);
+    width: 600px;
+    align-self: center;
+    align-items: center;
+    justify-content: space-around;
+    top: 50%;
+    transition-duration: 1s;
+}
+
+.PauseUI--Hiding {
+    translate: 0 -200%;
+}
+
+.PauseUI-Setting {
+    translate: 0 100%;
+}
