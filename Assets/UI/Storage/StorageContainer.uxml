@@ -1,0 +1,39 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="SlotRow" src="project://database/Assets/UI/Storage/SlotRow.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow" />
+    <Style src="project://database/Assets/UI/Storage/Storage--default.uss?fileID=7433441132597879392&amp;guid=7e42afa278c22e84393a5fb058718bfd&amp;type=3#Storage--default" />
+    <Style src="project://database/Assets/UI/Storage/StorageContainer--default.uss?fileID=7433441132597879392&amp;guid=e1129d9bf5acf3546871b937a062bd4d&amp;type=3#StorageContainer--default" />
+    <ui:VisualElement name="StorageContainer" class="window-container" style="height: 680px;">
+        <ui:VisualElement name="QuickMoveContainer" class="quick-move-area">
+            <ui:Button name="LeftArrayButton" class="nav-arrow-button" />
+            <ui:Button name="Button_Page1" class="page-dot-button" />
+            <ui:Button name="Button_Page2" class="page-dot-button" />
+            <ui:Button name="Button_Page3" class="page-dot-button" />
+            <ui:Button name="Button_Page4" class="page-dot-button" />
+            <ui:Button name="Button_Page5" class="page-dot-button" />
+            <ui:Button name="Button_Page6" class="page-dot-button" />
+            <ui:Button name="Button_Page7" class="page-dot-button" />
+            <ui:Button name="Button_Page8" class="page-dot-button" />
+            <ui:Button name="Button_Page9" class="page-dot-button" />
+            <ui:Button name="Button_Page10" class="page-dot-button" />
+            <ui:Button name="RightArrayButton" class="nav-arrow-button" style="margin-left: 10px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="StorageBox" style="flex-grow: 0; width: 820px; background-color: rgba(20, 255, 0, 0.49); align-items: center; justify-content: flex-start; height: 520px; border-bottom-width: 0; border-right-width: 0;">
+            <ui:VisualElement name="StorageBoxInfoContainer" style="flex-direction: row; width: 440px; height: 70px; justify-content: space-between; background-color: rgba(143, 255, 235, 0.31);">
+                <ui:Button class="nav-arrow-button" style="align-self: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <ui:DropdownField name="DropdownBoxPage" index="0" style="width: 320px; height: 50px; align-self: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                <ui:Button class="nav-arrow-button" style="align-self: center; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="StorageBoxSlotContainer" style="width: 800px; height: 440px; background-color: rgba(243, 10, 186, 0.57); justify-content: space-between;">
+                <ui:Instance template="SlotRow" />
+                <ui:Instance template="SlotRow" />
+                <ui:Instance template="SlotRow" />
+                <ui:Instance template="SlotRow" />
+                <ui:Instance template="SlotRow" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="OrgaizeButotnContainer" class="action-button-container font-maple" style="margin-top: 10px;">
+            <ui:Button text="박스 정리" name="BoxOrganizeButton" class="btn-sort font-maple-light" style="width: 150px;" />
+			<ui:Button text="확장 정리" name="ExpasionOrganizeButton" class="btn-sort font-maple-light btn-expansion" style="width: 350px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

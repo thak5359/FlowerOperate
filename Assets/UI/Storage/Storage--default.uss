@@ -1,0 +1,48 @@
+.font-maple {
+    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&guid=7f4a2fed048061b479a84b7e1d64a862&type=3#Maplestory OTF Bold");
+    -unity-font-definition: initial;
+}
+
+.font-maple-light {
+    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Light.otf?fileID=12800000&guid=c898bc1e681edb94cadfa44f910b0511&type=3#Maplestory OTF Light");
+    -unity-font-definition: initial;
+}
+
+
+#InventoryContainer {
+    width: 820px;
+    height: 460px;
+    background-color: rgba(255, 23, 23, 0.49);
+    left: 126px;
+    top: 300px;
+    justify-content: space-between;
+}
+
+
+
+
+
+.slot-array {
+    flex-direction: row;
+    justify-content: center;
+    height: 80px;
+    width: auto;
+}
+
+.slot-button {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+
+.nav-arrow-button {
+    width: 50px;
+    height: 50px;
+    border-width: 0;
+    margin: 0;
+}
+

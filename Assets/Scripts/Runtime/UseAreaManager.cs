@@ -10,7 +10,7 @@ using static Constant;
 
 public interface IUseItem
     {
-    public void StartCharging();
+    public void StartCharging(Transform playerTransform, Vector2 heading);
     public void Fire();
 }
 
@@ -139,261 +139,272 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     #region 도끼 영역범위
     List<Vector3> AreaC1 = new List<Vector3>()
 {
-    new Vector3(-1f, 1f, 0f),
-    new Vector3(-1f, 0f, 0f),
     new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, 1f, 0f),
 
-    new Vector3(0f, 1f, 0f),
     new Vector3(0f, -1f, 0f),
+    //new Vector3(0f, 0f, 0f), // 캐릭터 위치는 제외
+    new Vector3(0f, 1f, 0f),
 
-    new Vector3(1f, 1f, 0f),
+
+    new Vector3(1f, -1f, 0f),
     new Vector3(1f, 0f, 0f),
-    new Vector3(1f, -1f, 0f)
+    new Vector3(1f, 1f, 0f)
 };
 
     List<Vector3> AreaC2 = new List<Vector3>()
 {
-    new Vector3(-2f, 1f, 0f),
-    new Vector3(-2f, 0f, 0f),
     new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, 1f, 0f),
 
-    new Vector3(-1f, 2f, 0f),
-    new Vector3(-1f, 1f, 0f),
-    new Vector3(-1f, 0f, 0f),
-    new Vector3(-1f, -1f, 0f),
     new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 2f, 0f),
 
-    new Vector3(0f, 2f, 0f),
-    new Vector3(0f, 1f, 0f),
-    new Vector3(0f, -1f, 0f),
     new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -1f, 0f),
+    //new Vector3(0f, 0f, 0f), // 캐릭터 위치는 제외
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, 2f, 0f),
 
-    new Vector3(1f, 2f, 0f),
-    new Vector3(1f, 1f, 0f),
-    new Vector3(1f, 0f, 0f),
-    new Vector3(1f, -1f, 0f),
     new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 2f, 0f),
 
-    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, -1f, 0f),
     new Vector3(2f, 0f, 0f),
-    new Vector3(2f, -1f, 0f)
+    new Vector3(2f, 1f, 0f)
 };
 
     List<Vector3> AreaC3 = new List<Vector3>()
 {
-    new Vector3(-3f, 1f, 0f),
-    new Vector3(-3f, 0f, 0f),
     new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, 1f, 0f),
 
-    new Vector3(-2f, 2f, 0f),
-    new Vector3(-2f, 1f, 0f),
-    new Vector3(-2f, 0f, 0f),
-    new Vector3(-2f, -1f, 0f),
     new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 2f, 0f),
 
-    new Vector3(-1f, 3f, 0f),
-    new Vector3(-1f, 2f, 0f),
-    new Vector3(-1f, 1f, 0f),
-    new Vector3(-1f, 0f, 0f),
-    new Vector3(-1f, -1f, 0f),
-    new Vector3(-1f, -2f, 0f),
     new Vector3(-1f, -3f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 3f, 0f),
 
-    new Vector3(0f, 3f, 0f),
-    new Vector3(0f, 2f, 0f),
-    new Vector3(0f, 1f, 0f),
-    new Vector3(0f, -1f, 0f),
-    new Vector3(0f, -2f, 0f),
     new Vector3(0f, -3f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -1f, 0f),
+    //new Vector3(0f, 0f, 0f), // 캐릭터 위치는 제외
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 3f, 0f),
 
-    new Vector3(1f, 3f, 0f),
-    new Vector3(1f, 2f, 0f),
-    new Vector3(1f, 1f, 0f),
-    new Vector3(1f, 0f, 0f),
-    new Vector3(1f, -1f, 0f),
-    new Vector3(1f, -2f, 0f),
+
     new Vector3(1f, -3f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 3f, 0f),
 
     new Vector3(2f, -2f, 0f),
-    new Vector3(2f, 1f, 0f),
-    new Vector3(2f, 0f, 0f),
     new Vector3(2f, -1f, 0f),
-    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 2f, 0f),
 
-    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, -1f, 0f),
     new Vector3(3f, 0f, 0f),
-    new Vector3(3f, -1f, 0f)
+    new Vector3(3f, 1f, 0f)
 };
 
     List<Vector3> AreaC4 = new List<Vector3>()
 {
-    new Vector3(-4f, 1f, 0f),
-    new Vector3(-4f, 0f, 0f),
     new Vector3(-4f, -1f, 0f),
+    new Vector3(-4f, 0f, 0f),
+    new Vector3(-4f, 1f, 0f),
 
-    new Vector3(-3f, 2f, 0f),
-    new Vector3(-3f, 1f, 0f),
-    new Vector3(-3f, 0f, 0f),
-    new Vector3(-3f, -1f, 0f),
     new Vector3(-3f, -2f, 0f),
+    new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, 1f, 0f),
+    new Vector3(-3f, 2f, 0f),
 
-    new Vector3(-2f, 3f, 0f),
-    new Vector3(-2f, 2f, 0f),
-    new Vector3(-2f, 1f, 0f),
-    new Vector3(-2f, 0f, 0f),
-    new Vector3(-2f, -1f, 0f),
-    new Vector3(-2f, -2f, 0f),
     new Vector3(-2f, -3f, 0f),
+    new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 2f, 0f),
+    new Vector3(-2f, 3f, 0f),
 
-    new Vector3(-1f, 4f, 0f),
-    new Vector3(-1f, 3f, 0f),
-    new Vector3(-1f, 2f, 0f),
-    new Vector3(-1f, 1f, 0f),
-    new Vector3(-1f, 0f, 0f),
-    new Vector3(-1f, -1f, 0f),
-    new Vector3(-1f, -2f, 0f),
-    new Vector3(-1f, -3f, 0f),
     new Vector3(-1f, -4f, 0f),
+    new Vector3(-1f, -3f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 3f, 0f),
+    new Vector3(-1f, 4f, 0f),
 
-    new Vector3(0f, 4f, 0f),
-    new Vector3(0f, 3f, 0f),
-    new Vector3(0f, 2f, 0f),
-    new Vector3(0f, 1f, 0f),
-    new Vector3(0f, -1f, 0f),
-    new Vector3(0f, -2f, 0f),
-    new Vector3(0f, -3f, 0f),
     new Vector3(0f, -4f, 0f),
+    new Vector3(0f, -3f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -1f, 0f),
+    //new Vector3(0f, 0f, 0f), // 캐릭터 위치는 제외
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 3f, 0f),
+    new Vector3(0f, 4f, 0f),
 
-    new Vector3(1f, 4f, 0f),
-    new Vector3(1f, 3f, 0f),
-    new Vector3(1f, 2f, 0f),
-    new Vector3(1f, 1f, 0f),
-    new Vector3(1f, 0f, 0f),
-    new Vector3(1f, -1f, 0f),
-    new Vector3(1f, -2f, 0f),
-    new Vector3(1f, -3f, 0f),
     new Vector3(1f, -4f, 0f),
+    new Vector3(1f, -3f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 3f, 0f),
+    new Vector3(1f, 4f, 0f),
 
-    new Vector3(2f, 3f, 0f),
-    new Vector3(2f, 2f, 0f),
-    new Vector3(2f, 1f, 0f),
-    new Vector3(2f, 0f, 0f),
-    new Vector3(2f, -1f, 0f),
-    new Vector3(2f, -2f, 0f),
     new Vector3(2f, -3f, 0f),
+    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 3f, 0f),
 
-    new Vector3(3f, 2f, 0f),
-    new Vector3(3f, 1f, 0f),
-    new Vector3(3f, 0f, 0f),
-    new Vector3(3f, -1f, 0f),
     new Vector3(3f, -2f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 2f, 0f),
 
-    new Vector3(4f, 1f, 0f),
+    new Vector3(4f, -1f, 0f),
     new Vector3(4f, 0f, 0f),
-    new Vector3(4f, -1f, 0f)
+    new Vector3(4f, 1f, 0f)
 };
 
     List<Vector3> AreaC5 = new List<Vector3>()
 {
 
-    new Vector3(-5f, 1f, 0f),
-    new Vector3(-5f, 0f, 0f),
     new Vector3(-5f, -1f, 0f),
+    new Vector3(-5f, 0f, 0f),
+    new Vector3(-5f, 1f, 0f),
 
-    new Vector3(-4f, 2f, 0f),
-    new Vector3(-4f, 1f, 0f),
-    new Vector3(-4f, 0f, 0f),
-    new Vector3(-4f, -1f, 0f),
     new Vector3(-4f, -2f, 0f),
+    new Vector3(-4f, -1f, 0f),
+    new Vector3(-4f, 0f, 0f),
+    new Vector3(-4f, 1f, 0f),
+    new Vector3(-4f, 2f, 0f),
 
-    new Vector3(-3f, 3f, 0f),
-    new Vector3(-3f, 2f, 0f),
-    new Vector3(-3f, 1f, 0f),
-    new Vector3(-3f, 0f, 0f),
-    new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, -3f, 0f),
     new Vector3(-3f, -2f, 0f),
+    new Vector3(-3f, -1f, 0f),
+    new Vector3(-3f, 0f, 0f),
+    new Vector3(-3f, 1f, 0f),
+    new Vector3(-3f, 2f, 0f),
     new Vector3(-3f, 3f, 0f),
 
-    new Vector3(-2f, 4f, 0f),
-    new Vector3(-2f, 3f, 0f),
-    new Vector3(-2f, 2f, 0f),
-    new Vector3(-2f, 1f, 0f),
-    new Vector3(-2f, 0f, 0f),
-    new Vector3(-2f, -1f, 0f),
-    new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -4f, 0f),
     new Vector3(-2f, -3f, 0f),
+    new Vector3(-2f, -2f, 0f),
+    new Vector3(-2f, -1f, 0f),
+    new Vector3(-2f, 0f, 0f),
+    new Vector3(-2f, 1f, 0f),
+    new Vector3(-2f, 2f, 0f),
+    new Vector3(-2f, 3f, 0f),
     new Vector3(-2f, 4f, 0f),
 
-    new Vector3(-1f, 5f, 0f),
-    new Vector3(-1f, 4f, 0f),
-    new Vector3(-1f, 3f, 0f),
-    new Vector3(-1f, 2f, 0f),
-    new Vector3(-1f, 1f, 0f),
-    new Vector3(-1f, 0f, 0f),
-    new Vector3(-1f, -1f, 0f),
-    new Vector3(-1f, -2f, 0f),
-    new Vector3(-1f, -3f, 0f),
-    new Vector3(-1f, -4f, 0f),
     new Vector3(-1f, -5f, 0f),
+    new Vector3(-1f, -4f, 0f),
+    new Vector3(-1f, -3f, 0f),
+    new Vector3(-1f, -2f, 0f),
+    new Vector3(-1f, -1f, 0f),
+    new Vector3(-1f, 0f, 0f),
+    new Vector3(-1f, 1f, 0f),
+    new Vector3(-1f, 2f, 0f),
+    new Vector3(-1f, 3f, 0f),
+    new Vector3(-1f, 4f, 0f),
+    new Vector3(-1f, 5f, 0f),
 
-    new Vector3(0f, 5f, 0f),
-    new Vector3(0f, 4f, 0f),
-    new Vector3(0f, 3f, 0f),
-    new Vector3(0f, 2f, 0f),
-    new Vector3(0f, 1f, 0f),
-    new Vector3(0f, -1f, 0f),
-    new Vector3(0f, -2f, 0f),
-    new Vector3(0f, -3f, 0f),
-    new Vector3(0f, -4f, 0f),
     new Vector3(0f, -5f, 0f),
+    new Vector3(0f, -4f, 0f),
+    new Vector3(0f, -3f, 0f),
+    new Vector3(0f, -2f, 0f),
+    new Vector3(0f, -1f, 0f),
+    //new Vector3(0f, 0f, 0f), // 캐릭터 위치는 제외
+    new Vector3(0f, 1f, 0f),
+    new Vector3(0f, 2f, 0f),
+    new Vector3(0f, 3f, 0f),
+    new Vector3(0f, 4f, 0f),
+    new Vector3(0f, 5f, 0f),
 
-    new Vector3(1f, 5f, 0f),
-    new Vector3(1f, 4f, 0f),
-    new Vector3(1f, 3f, 0f),
-    new Vector3(1f, 2f, 0f),
-    new Vector3(1f, 1f, 0f),
-    new Vector3(1f, 0f, 0f),
-    new Vector3(1f, -1f, 0f),
-    new Vector3(1f, -2f, 0f),
-    new Vector3(1f, -3f, 0f),
-    new Vector3(1f, -4f, 0f),
     new Vector3(1f, -5f, 0f),
+    new Vector3(1f, -4f, 0f),
+    new Vector3(1f, -3f, 0f),
+    new Vector3(1f, -2f, 0f),
+    new Vector3(1f, -1f, 0f),
+    new Vector3(1f, 0f, 0f),
+    new Vector3(1f, 1f, 0f),
+    new Vector3(1f, 2f, 0f),
+    new Vector3(1f, 3f, 0f),
+    new Vector3(1f, 4f, 0f),
+    new Vector3(1f, 5f, 0f),
 
-    new Vector3(2f, 4f, 0f),
-    new Vector3(2f, 3f, 0f),
-    new Vector3(2f, 2f, 0f),
-    new Vector3(2f, 1f, 0f),
-    new Vector3(2f, 0f, 0f),
-    new Vector3(2f, -1f, 0f),
-    new Vector3(2f, -2f, 0f),
-    new Vector3(2f, -3f, 0f),
     new Vector3(2f, -4f, 0f),
+    new Vector3(2f, -3f, 0f),
+    new Vector3(2f, -2f, 0f),
+    new Vector3(2f, -1f, 0f),
+    new Vector3(2f, 0f, 0f),
+    new Vector3(2f, 1f, 0f),
+    new Vector3(2f, 2f, 0f),
+    new Vector3(2f, 3f, 0f),
+    new Vector3(2f, 4f, 0f),
 
-    new Vector3(3f, 3f, 0f),
-    new Vector3(3f, 2f, 0f),
-    new Vector3(3f, 1f, 0f),
-    new Vector3(3f, 0f, 0f),
-    new Vector3(3f, -1f, 0f),
-    new Vector3(3f, -2f, 0f),
     new Vector3(3f, -3f, 0f),
+    new Vector3(3f, -2f, 0f),
+    new Vector3(3f, -1f, 0f),
+    new Vector3(3f, 0f, 0f),
+    new Vector3(3f, 1f, 0f),
+    new Vector3(3f, 2f, 0f),
+    new Vector3(3f, 3f, 0f),
 
-    new Vector3(4f, 2f, 0f),
-    new Vector3(4f, 1f, 0f),
-    new Vector3(4f, 0f, 0f),
-    new Vector3(4f, -1f, 0f),
     new Vector3(4f, -2f, 0f),
+    new Vector3(4f, -1f, 0f),
+    new Vector3(4f, 0f, 0f),
+    new Vector3(4f, 1f, 0f),
+    new Vector3(4f, 2f, 0f),
 
-    new Vector3(5f, 1f, 0f),
-    new Vector3(5f, 0f, 0f),
     new Vector3(5f, -1f, 0f),
+    new Vector3(5f, 0f, 0f),
+    new Vector3(5f, 1f, 0f)
 };
     #endregion
 
     #endregion
 
     [Inject] private HotbarManager _hotbar; // 현재 아이템 확인용
-    [Inject] private PlayerController _player; // 위치 및 방향 확인용, 실시간 추적 필요
 
+    private Transform _originTransform;
+    private Vector2 _currentHeading;
+
+
+    public float charTimePerPhase = 1.75f;
     private bool _isCharging;
     private float _chargeStartTime;
     float elapsed;
@@ -435,61 +446,111 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     private UseAreaFunction CreateNewObject()
     {
-        // MonoBehaviour�� �ƴϹǷ� UnityEngine.Object.Instantiate�� ��������� ȣ��
-        GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab, _player.gameObject.transform);
+        if (_loadedPrefab == null)
+        {
+            Debug.LogError("Addressable Prefab이 아직 로드되지 않았습니다!");
+            return null;
+        }
+
+        // 초기화 단계에서는 _originTransform이 null일 수 있으므로 Instantiate 시 부모를 지정하지 않거나 체크해야 함
+        GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab);
         go.SetActive(false);
-        return go.GetComponent<UseAreaFunction>();
+
+        var component = go.GetComponent<UseAreaFunction>();
+        if (component == null)
+        {
+            Debug.LogError("Prefab에 UseAreaFunction 컴포넌트가 없습니다!");
+        }
+        return component;
     }
 
     #endregion
 
-    public void OnUse(InputAction.CallbackContext context)
-    {
-        // 1. 버튼을 누르기 시작했을 때 (Started)
-        if (context.started)
-        {
-            if(_isCharging) return; // 이미 차징 중이면 무시
-            StartCharging();
-        }
 
-        // 2. 버튼을 떼었을 때 (Canceled)
-        if (context.canceled)
-        {
-            Fire();
-        }
-    }
 
-   
-    public void StartCharging()  // context.started일때 모으기 시작
+    public void StartCharging(Transform playerTransform, Vector2 heading)
     {
-        if (_isCharging) return; // 이미 차징 중이면 무시
+        if (_isCharging) return;
         _isCharging = true;
-        _chargeStartTime = Time.time; // 차징 시작 시간 기록 
 
+        _originTransform = playerTransform; // 참조 저장
+        _currentHeading = heading;         // 방향 저장
+        _chargeStartTime = Time.time;
     }
-   
+
     void ITickable.Tick()  // 모았다가...
     {
-        if (!_isCharging) return;
+        if (_loadedPrefab == null || !_isCharging) return;
 
         elapsed = Time.time - _chargeStartTime;
-        // 1. 차징 레벨 계산 (현재 아이템의 데이터 기반)
-        // level = CalculateLevel(elapsed);
 
-        // 2. 영역 표시 업데이트
-        //UpdateTargetLockOn(level);
+        int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
+
+        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기
+        List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingItemId, level);
+
+        if (rawOffsets != null)
+        {
+            // 3. 캐릭터 방향(Heading)에 맞춰 좌표 회전 및 월드 좌표 계산
+            List<Vector3> worldPositions = new List<Vector3>();
+            foreach (var offset in rawOffsets)
+            {
+                Vector3 rotated = RotateOffset(offset, _currentHeading);
+                // 소수점 반올림으로 그리드 스냅 적용
+                Vector3 snapPos = new Vector3(
+                    Mathf.Round(_originTransform.position.x + rotated.x),
+                    0.15f,
+                    Mathf.Round(_originTransform.position.z + rotated.z)
+                );
+                worldPositions.Add(snapPos);
+            }
+
+            // 4. 화면에 영역 표시 (기존 targetLockON 활용)
+            UpdateVisualArea(worldPositions);
+        }
+
 
     }
-   
-    public void Fire() // Context.canceled일때 발사!
+
+    private void UpdateVisualArea(List<Vector3> worldPositions)
+    {
+        // 기존에 켜져있던 애들을 일단 다 끄고 다시 배치 (비효율적일 수 있으나 현재 구조에서 가장 확실함)
+        while (_activeObjects.Count > 0)
+        {
+            ReturnObject(_activeObjects.Pop());
+        }
+
+        foreach (var pos in worldPositions)
+        {
+            UseAreaFunction obj = (_pool.Count > 0) ? _pool.Pop() : CreateNewObject();
+            obj.gameObject.SetActive(true);
+            obj.transform.position = pos;
+            _activeObjects.Push(obj);
+        }
+    }
+
+    // [수정 위치] Fire() 메서드: 현재 활성화된 영역의 좌표를 출력하는 로직 추가
+    public void Fire() // Context.canceled일 때 발사!
     {
         if (!_isCharging) return; // 차징이 시작되지 않았으면 무시
-        
+
+        // --- 좌표 디버깅 로그 시작 ---
+        Debug.Log($"<color=yellow>[UseArea Debug]</color> 현재 생성된 영역 개수: {_activeObjects.Count}");
+
+        int index = 0;
+        foreach (var obj in _activeObjects)
+        {
+            if (obj != null)
+            {
+                Debug.Log($"[{index}] 월드 좌표: {obj.transform.position} | 로컬 좌표: {obj.transform.localPosition}");
+            }
+            index++;
+        }
+        // --- 좌표 디버깅 로그 끝 ---
+
         FireUseAreaFunction(_hotbar.PointingItemId); // 현재 아이템 ID에 따라 발사 함수 호출
 
-
         _isCharging = false;
-
     }
 
 
@@ -543,8 +604,15 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     public void ReturnObject(UseAreaFunction returned)
     {
+        if (returned == null) return;
+
         returned.gameObject.SetActive(false);
-        returned.transform.SetParent(_player.transform);
+
+        // _originTransform이 있을 때만 부모로 설정 (없으면 최상위로)
+        if (_originTransform != null)
+        {
+            returned.transform.SetParent(_originTransform);
+        }
         _pool.Push(returned);
     }
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using static Constant;
 public interface IUseAreaHoeFunc
 {
@@ -33,24 +33,24 @@ public class UseAreaFunction : MonoBehaviour,
     public GameObject _currentTarget;
     public string innerTag;
 
-    private Collision collision;
+    private Collider collision;
 
     private void Awake()
     {
-        collision = GetComponent<Collision>();
+        collision = GetComponent<Collider>();
     }
    
 
     private void OnDisable()
     {
-        // ¿©±â¼­ Âü°íÇÑ °´Ã¼ ÃÊ±âÈ­ ÇÏ±â
+        // ì—¬ê¸°ì„œ ì°¸ê³ í•œ ê°ì²´ ì´ˆê¸°í™” í•˜ê¸°
         innerTag = null;
         _currentTarget = null;
     }
 
     int IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
     {
-        //TODO : ¿©±â¿¡ Âü°íÇÑ °´Ã¼·Î ÇÒ Çàµ¿ ±¸ÇöÇÏ±â. ¼º°øÇÏ¸é 1¹İÈ¯, ½ÇÆĞÇß´Ù¸é 0 ¹İÈ¯, ¿À·ù´Â -100 ¹İÈ¯!
+        //TODO : ì—¬ê¸°ì— ì°¸ê³ í•œ ê°ì²´ë¡œ í•  í–‰ë™ êµ¬í˜„í•˜ê¸°. ì„±ê³µí•˜ë©´ 1ë°˜í™˜, ì‹¤íŒ¨í–ˆë‹¤ë©´ 0 ë°˜í™˜, ì˜¤ë¥˜ëŠ” -100 ë°˜í™˜!
         if(plot == null)
         {
             Debug.LogAssertion("DoHoeFunc error. plot is null");
@@ -59,25 +59,24 @@ public class UseAreaFunction : MonoBehaviour,
 
         if( plot.tag != null)
         {
-            Debug.Log("DoHoeFunc : ÀÌ¹Ì ÇØ´çÄ­¿¡ »ç¹°ÀÌ Á¸ÀçÇÏ¹Ç·Î µ¹¾Æ°©´Ï´Ù! " + plot.tag);
+            Debug.Log("DoHoeFunc : ì´ë¯¸ í•´ë‹¹ì¹¸ì— ì‚¬ë¬¼ì´ ì¡´ì¬í•˜ë¯€ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤! " + plot.tag);
             return 0;
         }
         else
         {
-            //¹ç »ı¼º
+            //ë°­ ìƒì„±
             Instantiate(plot, this.gameObject.transform.position, Quaternion.identity);
             return 1;
         }
-
     }
     int IUseAreaAxeFunc.DoAxeFunc()
     {
-        //TODO : ¿©±â¿¡ Âü°íÇÑ °´Ã¼·Î ÇÒ Çàµ¿ ±¸ÇöÇÏ±â
+        //TODO : ì—¬ê¸°ì— ì°¸ê³ í•œ ê°ì²´ë¡œ í•  í–‰ë™ êµ¬í˜„í•˜ê¸°
         return 1;
     }
     int IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
-        //TODO : ¿©±â¿¡ Âü°íÇÑ °´Ã¼·Î ÇÒ Çàµ¿ ±¸ÇöÇÏ±â
+        //TODO : ì—¬ê¸°ì— ì°¸ê³ í•œ ê°ì²´ë¡œ í•  í–‰ë™ êµ¬í˜„í•˜ê¸°
         return 1;
     }
     int IUseAreaSickleFunc.DoSickleFunc()

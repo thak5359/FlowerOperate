@@ -50,6 +50,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   playerInput: {fileID: 5510041921982328687}
+  masterMixer: {fileID: 24100000, guid: 5f171e3c1cd39ff488490da837375068, type: 2}
 --- !u!114 &5510041921982328687
 MonoBehaviour:
   m_ObjectHideFlags: 0

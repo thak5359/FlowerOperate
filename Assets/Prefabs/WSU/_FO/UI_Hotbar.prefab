@@ -220,6 +220,8 @@ MonoBehaviour:
   toggle: {fileID: 5667988620004965246}
   slotFrame: {fileID: 1048159927230207392}
   bg_img: {fileID: 6069979347246741909}
+  item:
+    itemId: 0
 --- !u!1 &1478501042813448350
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +801,8 @@ MonoBehaviour:
   toggle: {fileID: 799379946839449105}
   slotFrame: {fileID: 1251873702608626301}
   bg_img: {fileID: 9022798883244539800}
+  item:
+    itemId: 0
 --- !u!1 &2786072804226968711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,6 +1173,8 @@ GameObject:
   - component: {fileID: 9139854079353340170}
   - component: {fileID: 2633282060486529964}
   - component: {fileID: 5283464405583891159}
+  - component: {fileID: 4623216283799862923}
+  - component: {fileID: 8793709665916283321}
   m_Layer: 5
   m_Name: movablePart
   m_TagString: Untagged
@@ -1202,8 +1208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 1000, y: 100}
+  m_AnchoredPosition: {x: 0, y: 55}
+  m_SizeDelta: {x: 1100, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2633282060486529964
 MonoBehaviour:
@@ -1222,7 +1228,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 7
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -1244,6 +1250,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AllowSwitchOff: 0
+--- !u!222 &4623216283799862923
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3940602340905014464}
+  m_CullTransparentMesh: 1
+--- !u!114 &8793709665916283321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3940602340905014464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3987946050651058251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1433,8 @@ MonoBehaviour:
   toggle: {fileID: 5772631392584892908}
   slotFrame: {fileID: 3157089044247168233}
   bg_img: {fileID: 3437246870738700942}
+  item:
+    itemId: 0
 --- !u!1 &4078491556664048541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,6 +1580,8 @@ MonoBehaviour:
   toggle: {fileID: 4179025066524126292}
   slotFrame: {fileID: 8179911673478779571}
   bg_img: {fileID: 3888592864182910741}
+  item:
+    itemId: 0
 --- !u!1 &4282549236544124282
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,6 +2488,8 @@ MonoBehaviour:
   toggle: {fileID: 4394097683327413727}
   slotFrame: {fileID: 2250302821977786747}
   bg_img: {fileID: 6742166323595221203}
+  item:
+    itemId: 0
 --- !u!1 &6131969111673090767
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,6 +3103,8 @@ MonoBehaviour:
   toggle: {fileID: 6108741987510925782}
   slotFrame: {fileID: 7271650461814966163}
   bg_img: {fileID: 4396006302906159150}
+  item:
+    itemId: 0
 --- !u!1 &6890987835123803307
 GameObject:
   m_ObjectHideFlags: 0
@@ -3541,6 +3593,8 @@ MonoBehaviour:
   toggle: {fileID: 7281585480781916041}
   slotFrame: {fileID: 7221476111637096259}
   bg_img: {fileID: 3956798606881403335}
+  item:
+    itemId: 0
 --- !u!1 &7297835178656786242
 GameObject:
   m_ObjectHideFlags: 0
@@ -3836,6 +3890,8 @@ MonoBehaviour:
   toggle: {fileID: 2095587308865718865}
   slotFrame: {fileID: 5712591078648662567}
   bg_img: {fileID: 8543823726311602369}
+  item:
+    itemId: 0
 --- !u!1 &8052515169757677550
 GameObject:
   m_ObjectHideFlags: 0
@@ -4056,6 +4112,8 @@ MonoBehaviour:
   toggle: {fileID: 6254494829774151220}
   slotFrame: {fileID: 7144888795601347942}
   bg_img: {fileID: 6165209305447044523}
+  item:
+    itemId: 0
 --- !u!1 &8344468409873329127
 GameObject:
   m_ObjectHideFlags: 0
@@ -4201,6 +4259,8 @@ MonoBehaviour:
   toggle: {fileID: 2451885775695350286}
   slotFrame: {fileID: 4779606619465078099}
   bg_img: {fileID: 6640948179307472961}
+  item:
+    itemId: 0
 --- !u!1 &8578753606149606701
 GameObject:
   m_ObjectHideFlags: 0
