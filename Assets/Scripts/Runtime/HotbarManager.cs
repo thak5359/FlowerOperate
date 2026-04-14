@@ -16,7 +16,7 @@ public class HotbarManager : MonoBehaviour
     private int cachedInt;
     private int pointingSlot = -1;
 
-    private float scrollCooldown = 0.15f;
+    private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
 
     private int pointingItemId;
@@ -114,8 +114,6 @@ public class HotbarManager : MonoBehaviour
 
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
-
-   
 
     public void SyncPlayerItem()
     {

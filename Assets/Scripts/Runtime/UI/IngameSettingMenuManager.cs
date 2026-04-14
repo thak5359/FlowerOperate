@@ -28,10 +28,10 @@ public class IngameSettingMenuManager : MonoBehaviour
     public Button displayButton;
     public Button etcButton;
 
-    public GameObject soundPanel;        // »ç¿îµå ¼³Á¤ ÆÇ³Ú
-    public GameObject displayPanel;      // È­¸é ¼³Á¤ ÆÇ³Ú
-    public GameObject etcPanel;         // ±âÅ¸ ¼³Á¤ ÆÇ³Ú
-    private int usingPanel = 1;// »ç¿ëÁßÀÎ ÆÇ³Ú Ç¥½Ã¿ë [1: »ç¿îµå | 2: È­¸é | 3: ±âÅ¸ ]
+    public GameObject soundPanel;        // ì‚¬ìš´ë“œ ì„¤ì • íŒë„¬
+    public GameObject displayPanel;      // í™”ë©´ ì„¤ì • íŒë„¬
+    public GameObject etcPanel;         // ê¸°íƒ€ ì„¤ì • íŒë„¬
+    private int usingPanel = 1;// ì‚¬ìš©ì¤‘ì¸ íŒë„¬ í‘œì‹œìš© [1: ì‚¬ìš´ë“œ | 2: í™”ë©´ | 3: ê¸°íƒ€ ]
 
 
     [Header("Sound UI References")]
@@ -95,11 +95,11 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     }
 
-    private void SyncUIWithSettings() // ¼³Á¤°ª UI µ¿±âÈ­ ±â´É
+    private void SyncUIWithSettings() // ì„¤ì •ê°’ UI ë™ê¸°í™” ê¸°ëŠ¥
     {
         var s = _settingManager.Settings;
 
-        // ½½¶óÀÌ´õ °ªÀ» ÀúÀåµÈ °ªÀ¸·Î ¼¼ÆÃ (ÀÌº¥Æ® È£Ãâ ¹æÁö¸¦ À§ÇØ SetValueWithoutNotify ±ÇÀå)
+        // ìŠ¬ë¼ì´ë” ê°’ì„ ì €ì¥ëœ ê°’ìœ¼ë¡œ ì„¸íŒ… (ì´ë²¤íŠ¸ í˜¸ì¶œ ë°©ì§€ë¥¼ ìœ„í•´ SetValueWithoutNotify ê¶Œì¥)
         masterVolumeSlider.SetValueWithoutNotify(s.masterVol);
         bgmVolumeSlider.SetValueWithoutNotify(s.bgmVol);
         sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
@@ -111,15 +111,15 @@ public class IngameSettingMenuManager : MonoBehaviour
         sfxVolumeText.changeTextValueInt(s.sfxVol);
         voiceVolumeText.changeTextValueInt(s.voiceVol);
 
-        // ÇØ»óµµ µå·Ó´Ù¿î ÃÊ±âÈ­
+        // í•´ìƒë„ ë“œë¡­ë‹¤ìš´ ì´ˆê¸°í™”
         _settingManager.InitializeResDropdown(resolutionDropdown);
     }
 
-    #region PauseMenu, SettingMenu È£Ãâ/Á¾·á ±â´É
+    #region PauseMenu, SettingMenu í˜¸ì¶œ/ì¢…ë£Œ ê¸°ëŠ¥
 
     public void OnBackAction(InputAction.CallbackContext context)
     {
-        // 1. °øÅë ¹æ¾î ·ÎÁ÷
+        // 1. ê³µí†µ ë°©ì–´ ë¡œì§
         if (this == null || isTransitioning == true || !context.performed) return;
 
         HandleBackActionAsync(context).Forget();
@@ -172,26 +172,26 @@ public class IngameSettingMenuManager : MonoBehaviour
     {
         currentMap = input.getCurrentIAmap();
 
-        // ¼öÁ¤ÇÒ À§Ä¡: PauseMenu UI ¸Å´ÏÀú ½ºÅ©¸³Æ® ³»ºÎÀÇ ¸Ê ºĞ±â Ã³¸® ·ÎÁ÷
+        // ìˆ˜ì •í•  ìœ„ì¹˜: PauseMenu UI ë§¤ë‹ˆì € ìŠ¤í¬ë¦½íŠ¸ ë‚´ë¶€ì˜ ë§µ ë¶„ê¸° ì²˜ë¦¬ ë¡œì§
         if (currentMap == FARM_MAP_NAME || currentMap == SHOP_MAP_NAME)
         {
-            // ³óÀåÀÌ³ª »óÁ¡ -> ÆÛÁî ¸Ş´º ¿­±â
+            // ë†ì¥ì´ë‚˜ ìƒì  -> í¼ì¦ˆ ë©”ë‰´ ì—´ê¸°
             OpenPauseMain(this.GetCancellationTokenOnDestroy()).Forget();
         }
         else if (currentMap == PAUSEMENU_MAP_NAME)
         {
-            // ÆÛÁî ¸ŞÀÎ -> ¸Ş´º ´İ°í º¹±Í
+            // í¼ì¦ˆ ë©”ì¸ -> ë©”ë‰´ ë‹«ê³  ë³µê·€
             await ClosePauseMain();
         }
         else if (currentMap == SETTING_MAP_NAME)
         {
-            // ¼¼ÆÃ È­¸é -> ÆÛÁî ¸ŞÀÎÀ¸·Î µ¹¾Æ°¡±â
+            // ì„¸íŒ… í™”ë©´ -> í¼ì¦ˆ ë©”ì¸ìœ¼ë¡œ ëŒì•„ê°€ê¸°
             await BackToPauseFromSetting();
         }
         else
         {
-            // ±× ¿ÜÀÇ °æ¿ì 
-            Debug.Log($"[PauseMenu] {currentMap} ¸Ê¿¡¼­´Â ÇØ´ç µ¿ÀÛÀÌ Á¤ÀÇµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            // ê·¸ ì™¸ì˜ ê²½ìš° 
+            Debug.Log($"[PauseMenu] {currentMap} ë§µì—ì„œëŠ” í•´ë‹¹ ë™ì‘ì´ ì •ì˜ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
 
 
@@ -205,7 +205,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
         MoveRoutine(showPos, this.GetCancellationTokenOnDestroy()).Forget();
 
-        Debug.Log("½Ã°£À» ¸ØÃç¶ó ¸¶ÀÌ ¿ùµå¾ß~!");
+        Debug.Log("ì‹œê°„ì„ ë©ˆì¶°ë¼ ë§ˆì´ ì›”ë“œì•¼~!");
 
 
         cachedFloat = 0.0f;
@@ -241,7 +241,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
         await MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy());
 
-        Debug.Log("½Ã°£Àº ´Ù½Ã ¿òÁ÷ÀÎ´Ù");
+        Debug.Log("ì‹œê°„ì€ ë‹¤ì‹œ ì›€ì§ì¸ë‹¤");
         Time.timeScale = 1.0f;
         input.changeIAmapPrev();
 
@@ -263,7 +263,7 @@ public class IngameSettingMenuManager : MonoBehaviour
     {
         if (movablePart == null || pauseCanvas == null)
         {
-            Debug.LogError("[SettingMenuManager]: MoveRoutine ½ÇÇà Áß movablePart ¶Ç´Â settingCanvas°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("[SettingMenuManager]: MoveRoutine ì‹¤í–‰ ì¤‘ movablePart ë˜ëŠ” settingCanvasê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -286,7 +286,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     #endregion
 
-    #region ¹öÆ° Å¬¸¯ ±â´É
+    #region ë²„íŠ¼ í´ë¦­ ê¸°ëŠ¥
 
     public void OnClickSoundButton() => PanelChange(1);
     public void OnClickDisplayButton() => PanelChange(2);
@@ -295,6 +295,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     public void OnClickTitleButton()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("MainTitle");
     }
 
@@ -308,7 +309,7 @@ public class IngameSettingMenuManager : MonoBehaviour
     }
     #endregion
 
-    #region º¼·ı °ª Á¶Àı
+    #region ë³¼ë¥¨ ê°’ ì¡°ì ˆ
 
     public void OnMasterVolumeChanged(float value)
     {
@@ -332,7 +333,7 @@ public class IngameSettingMenuManager : MonoBehaviour
 
     #endregion
 
-    #region ÇØ»óµµ µå·Ó´Ù¿î ÃÊ±âÈ­
+    #region í•´ìƒë„ ë“œë¡­ë‹¤ìš´ ì´ˆê¸°í™”
 
     public void OnResolutionChanged(int value)
     {

@@ -5,26 +5,33 @@ using VContainer;
 
 namespace Fungus
 {
-    [CommandInfo("InputAction", "CloseChatBox", "´ëÈ­°¡ Á¾·áµÈ µÚ Á¶ÀÛ±â´ÉÀ» µ¹¸³´Ï´Ù.")]
+    [CommandInfo("InputAction", "CloseChatBox", "ëŒ€í™”ê°€ ì¢…ë£Œëœ ë’¤ ì¡°ì‘ê¸°ëŠ¥ì„ ëŒë¦½ë‹ˆë‹¤.")]
     public class CloseChatBox : Command
     {
         IMapChangable input;
 
-
-        [Inject]
-        void Construct(ActionMapChanger inputManager)
-        {
-            input = inputManager;
-        }
-
+        // ìˆ˜ì • ìœ„ì¹˜: OnEnter ë‚´ë¶€ì—ì„œ ì˜ì¡´ì„± í™•ì¸ ë¡œì§ ì¶”ê°€
         public override void OnEnter()
         {
+            if (input == null)
+            {
+                var scope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
+                if (scope != null)
+                {
+                    input = scope.Container.Resolve<ActionMapChanger>();
+                }
+            }
 
             if (input != null)
+            {
                 input.changeIAmapPrev();
-            else Debug.LogAssertion("input ¾øÀ½!");
-            
-                Continue();
+            }
+            else
+            {
+                Debug.LogError("Fungus Command: ActionMapChangerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+            }
+
+            Continue();
         }
 
 

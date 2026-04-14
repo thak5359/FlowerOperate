@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void Move()
     {
+
+
+
         Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
 
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
@@ -84,7 +87,6 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
             //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
         }
-
         if (moveInput != Vector2.zero)
         {
             if (moveInput.x != 0)
@@ -112,9 +114,12 @@ public class PlayerController : MonoBehaviour, IInteractable
 
             if (Time.time < lastInteractTime + interactCooldown)
             {
+<<<<<<< Updated upstream
 #if UNITY_EDITOR
                 Debug.Log("醫 ?댁궡 醫 ?뚮윭二쇱꽭??..");
 #endif
+=======
+>>>>>>> Stashed changes
                 return;
             }
 

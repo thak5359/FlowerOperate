@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UIElements; // UI Toolkit 사용을 위해 필수
 using System; // DateTime 사용을 위해 필요
 
