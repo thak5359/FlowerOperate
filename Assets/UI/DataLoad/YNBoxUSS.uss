@@ -1,0 +1,16 @@
+.YNBox--Default {
+    flex-grow: 0;
+    width: 800px;
+    height: 500px;
+    justify-content: space-between;
+    align-self: center;
+    align-items: center;
+    background-color: rgb(255, 169, 169);
+    font-size: 50px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Light.otf?fileID=12800000&guid=c898bc1e681edb94cadfa44f910b0511&type=3#Maplestory OTF Light");
+}
+
+.YNBox--Hide {
+    display: none;
+}

@@ -12,7 +12,7 @@ public class GameLifetimeScope : LifetimeScope
     //Root LifetimeScope�� ����ؼ���� ������ ����ϱ�!
     protected override void Configure(IContainerBuilder builder)
     {
-        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure ���۵�! @@@</color>");
+        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure 실행됨! @@@</color>");
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
