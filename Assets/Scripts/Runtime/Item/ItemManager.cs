@@ -39,33 +39,19 @@ public class ItemManager : MonoBehaviour
         System.Array.Clear(masterDb, 0, masterDb.Length);
         foreach (var data in itemIdDatas)
         {
-            switch (data.startId)
+            if (data != null) continue;
+
+            switch (data)
             {
-                case 1:
-                    {
-                        bool flowerControl = InsertDataToMasterDB(data);
-                        if (!flowerControl)
-                            continue;
-                    }
+                case FlowerIdData flowerData:
+                    InsertDataToMasterDB(flowerData);
                     break;
-                case 100:
-                    {
-                        var IDdata = data as UsableIdData;
-                        bool flowControl = InsertDataToMasterDB(IDdata);
-                        if (!flowControl)
-                            continue;
-                    }
+                case UsableIdData usableData:
+                    InsertDataToMasterDB(usableData);
                     break;
-                case 700:
-                    {
-                        var IDdata = data as FlowerIdData;
-                        bool flowControl = InsertDataToMasterDB(IDdata);
-                        if (!flowControl)
-                            continue;
-                    }
+                case ItemIdData itemData:
+                    InsertDataToMasterDB(itemData);
                     break;
-                default:
-                    continue;
             }
         }
         Debug.Log("ItemManager: 데이터베이스 초기화 완료!");

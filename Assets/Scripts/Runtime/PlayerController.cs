@@ -114,12 +114,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
             if (Time.time < lastInteractTime + interactCooldown)
             {
-<<<<<<< Updated upstream
-#if UNITY_EDITOR
-                Debug.Log("醫 ?댁궡 醫 ?뚮윭二쇱꽭??..");
-#endif
-=======
->>>>>>> Stashed changes
                 return;
             }
 

@@ -21,7 +21,7 @@ public class ItemStorageParent : MonoBehaviour, IManager
     //Getter
     public ItemStorageData GetData => _data;
 
-    protected virtual void Initialize(ItemStorageParent storageParent, ItemStorageData data, GameObject slotObject, ref List<ItemObjectData> slotList)
+    protected virtual void Initialize(ItemStorageParent storageParent, ItemStorageData data, ref List<ItemObjectData> slotList)
     {
         if (data == null || data.GetList == null)
         {

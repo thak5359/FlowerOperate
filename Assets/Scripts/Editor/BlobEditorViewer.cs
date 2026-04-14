@@ -12,7 +12,7 @@ public class BlobDataViewer : EditorWindow
     {
         if (GUILayout.Button("마지막으로 구운 Blob 파일 읽어보기", GUILayout.Height(40)))
         {
-            string path = "Assets/Blobs/SO_UsableID.blob"; // 파트너의 파일 경로
+            string path = "Assets/StreamingAssets/Blobs/ItemData.blob"; // 파트너의 파일 경로
             if (File.Exists(path))
             {
                 // 버전 번호는 베이킹할 때 넣었던 것과 맞춰주세요 (예: 1)

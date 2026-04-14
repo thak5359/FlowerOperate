@@ -36,7 +36,7 @@ public class StorageManager : ItemStorageParent
     public override async void Load(SaveDatas saveDatas)
     {
         // base.Initialize를 통해 _data와 slotList(ref)를 초기화
-        base.Initialize(this, saveDatas.GetStorageData, null, ref slotList);
+        base.Initialize(this, saveDatas.GetStorageData, ref slotList);
         await RefreshUI();
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ public class InventoryManager : ItemStorageParent
 
     public override void Load(SaveDatas saveDatas)
     {
-        base.Initialize(this, saveDatas.GetInvenData, slotObject, ref slotList);
+        base.Initialize(this, saveDatas.GetInvenData, ref slotList);
     }
 
     /// <summary>

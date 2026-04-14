@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +49,7 @@ public class PlotManager : ItemStorageParent
     public override void Load(SaveDatas saveDatas)
     {
         // 1. 아이템 데이터 초기화 (List<ItemObjectData>로 직접 로드)
-        base.Initialize(this, saveDatas.GetPlotItemData, null, ref plotItems);
+        base.Initialize(this, saveDatas.GetPlotItemData, ref plotItems);
         
         // 2. 플롯 상태 데이터 복구
         plotComponents = new List<Plot>(this.GetComponentsInChildren<Plot>());

@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public static class GlobalEventManager
 {
     public static event Action<ItemObjectData> OnItemPickedUp;
-    public static event Action<ItemObjectData> OnItemUsed;
 
     public static void InvokeItemPickedUp(ItemObjectData data)
     {
