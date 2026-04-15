@@ -10,6 +10,8 @@ public class InventoryUI : MonoBehaviour
     private List<Button> buttons = new List<Button>();
     VisualElement root;
 
+    private Button closeButton;
+
     private void Awake()
     {
 
@@ -25,7 +27,7 @@ public class InventoryUI : MonoBehaviour
 
         buttons = root.Query<Button>("slot-button").ToList(); // 리스트에 집어넣기
 
-
+        closeButton = root.Query<Button>("CloseButton");
 
     }
     private void OnDisabled()
@@ -35,10 +37,6 @@ public class InventoryUI : MonoBehaviour
 
     public void CloseBTN()
     {
-
+        
     }
-
-
-
-
 }
