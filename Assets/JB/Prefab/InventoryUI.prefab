@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7542906459064642276}
   - component: {fileID: 2070897594945663352}
+  - component: {fileID: 8623123683544225741}
+  - component: {fileID: 6633969012626620820}
   m_Layer: 0
-  m_Name: Inventory
+  m_Name: InventoryUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,6 +53,36 @@ MonoBehaviour:
       amount: 11
       grade: 0
     slotsCount: 30
-  slotList: []
   slotObject: {fileID: 8345891398220901380, guid: e52c138f15d7410439bb7c677c715a63,
     type: 3}
+  slotList: []
+  slots: []
+--- !u!114 &8623123683544225741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572088181700906779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 6eda56ca34913004e90afbc35bf19c0e, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 436db33709b08284dbdf305e1e9d96c8,
+    type: 3}
+  m_SortingOrder: 0
+--- !u!114 &6633969012626620820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572088181700906779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24c32fcc8819e6a4eae2596c23e4092b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

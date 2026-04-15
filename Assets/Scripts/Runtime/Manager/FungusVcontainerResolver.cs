@@ -14,23 +14,27 @@ public class FungusDependencyResolver : IStartable
 
     public void Start()
     {
-        // 씬 내의 모든 Flowchart를 찾습니다.
         var flowcharts = Object.FindObjectsByType<Flowchart>(FindObjectsSortMode.None);
-        
+
         foreach (var flowchart in flowcharts)
         {
-            // Flowchart 내의 모든 Block을 가져옵니다.
+            // Fungus 버전에 따라 Block은 GetComponents<Block>()으로 가져올 수 있습니다.
             var blocks = flowchart.GetComponents<Block>();
             foreach (var block in blocks)
             {
-                // 각 Block 내의 모든 Command에 의존성을 주입합니다.
+                if (block.CommandList == null) continue;
+
                 foreach (var command in block.CommandList)
                 {
-                    _container.Inject(command);
+                    // [수정 핵심]: 명령어가 null인 경우를 반드시 걸러내야 합니다.
+                    if (command != null)
+                    {
+                        _container.Inject(command);
+                    }
                 }
             }
         }
-        
+
         Debug.Log("Fungus Commands에 모든 의존성 주입 완료!");
     }
 }

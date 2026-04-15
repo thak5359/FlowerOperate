@@ -45,7 +45,7 @@ public class HotbarManager : MonoBehaviour
             Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
             if (inventoryManager != null && inventoryManager.getSlotList != null)
             {
-                UpdateHotSlotItems();
+                //UpdateHotSlotItems(); TODO :코드 읽고 고치기
             }
             else
             {
