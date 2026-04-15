@@ -549,7 +549,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         // --- 좌표 디버깅 로그 끝 ---
 
         FireUseAreaFunction(_hotbar.PointingItemId); // 현재 아이템 ID에 따라 발사 함수 호출
-
+        
         _isCharging = false;
     }
 
@@ -594,7 +594,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
             UseAreaFunction obj = _activeObjects.Pop();
             if (obj != null)
             {
-
+                obj.FireFunc(itemId);
 
                 ReturnObject(obj);
             }

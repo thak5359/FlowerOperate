@@ -10,17 +10,21 @@ public class SaveLoadManager : MonoBehaviour
     private InventoryManager _inventoryManager;
     private StorageManager _storageManager;
     private PlotManager _plotManager;
+    private ProgressManager _progressManager;
 
     private string SAVE_FILE_NAME = "SaveData.json";
     public SaveDatas saveData;
 
 
     [Inject]
-    public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot)
+    public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot, 
+        ProgressManager progress)
     {
         _inventoryManager = inven;
         _storageManager = storage;
         _plotManager = plot;
+        _progressManager = progress;
+
         Debug.Log("의존성 주입 완료!");
     }
 
@@ -35,10 +39,10 @@ public class SaveLoadManager : MonoBehaviour
 
         // 참조가 아닌 값(리스트 복사)을 넘겨서 데이터 오염 방지
         saveData = new SaveDatas(
-            ProgressManager.Instance.getDay(),
-            CloneData(_inventoryManager.GetData), 
-            CloneData(_storageManager.GetData), 
-            CloneData(_plotManager.GetData), 
+            _progressManager.getDay(),
+            CloneData(_inventoryManager.GetData),
+            CloneData(_storageManager.GetData),
+            CloneData(_plotManager.GetData),
             new List<PlotData>(_plotManager.GetPlots)
         );
     }

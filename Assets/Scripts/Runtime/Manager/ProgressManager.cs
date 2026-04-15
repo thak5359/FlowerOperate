@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +13,6 @@ public enum Season
 public class ProgressManager : MonoBehaviour
 {
     List<int> list;
-    //시간을 관리하는 매니저
-    public static ProgressManager Instance;
 
     //13개월, 월 28일
     private int Day = 1; // 몇일차
@@ -61,15 +59,5 @@ public class ProgressManager : MonoBehaviour
     public void LoadData(ProgressData saveData) // 세이브/로드 관리하는 쪽에서 진행 상황 불러오기
     {
         Day = saveData.Day;
-    }
-
-    private void Start()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-
-        }
-        else { Destroy(Instance); }
     }
 }
