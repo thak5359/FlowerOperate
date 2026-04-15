@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using VContainer;
 using static Constant;
 public interface IUseAreaHoeFunc
 {
@@ -22,7 +23,7 @@ public interface IUseAreaAxeFunc
 }
 public interface IUseAreaConsumableFunc
 {
-    int DoConsumableFunc();
+    int DoConsumableFunc(int Id);
 }
 
 
@@ -33,7 +34,12 @@ public class UseAreaFunction : MonoBehaviour,
     public GameObject _currentTarget;
     public string innerTag;
 
+    private ProgressManager _progressManager;
     private Collider collision;
+
+    [Inject] 
+    void Construct(ProgressManager progressManager) =>
+        _progressManager = progressManager;
 
     private void Awake()
     {
@@ -77,6 +83,11 @@ public class UseAreaFunction : MonoBehaviour,
     int IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
         //TODO : 여기에 참고한 객체로 할 행동 구현하기
+        if(innerTag == "Plot")
+        {
+            PlotData _currentPlotData = _currentTarget.GetComponent<Plot>().data;
+            _currentPlotData.isWatered = true;
+        }
         return 1;
     }
     int IUseAreaSickleFunc.DoSickleFunc()
@@ -87,8 +98,24 @@ public class UseAreaFunction : MonoBehaviour,
     {
         return 1;
     }
-    int IUseAreaConsumableFunc.DoConsumableFunc()
+    int IUseAreaConsumableFunc.DoConsumableFunc(int Id)
     {
+        if(innerTag == "Plot")
+        {
+            PlotData _currentPlotData = _currentTarget.GetComponent<Plot>().data;
+
+            if(!_currentPlotData.isFertilized)
+            {
+                _currentPlotData.flowerId = Id;
+                _currentPlotData.growth = 0;
+                _currentPlotData.isFertilized = true;
+                _currentPlotData.elapsed = 0;
+                _currentPlotData.lastActivedDay = _progressManager.getDay();
+            }
+
+            return 0;
+        }
+
         return 1;
     }
 
@@ -108,8 +135,8 @@ public class UseAreaFunction : MonoBehaviour,
         else if (itemId > MIN_AXE_ID && itemId < MAX_AXE_ID)
             return ((IUseAreaAxeFunc)this).DoAxeFunc();
 
-        else if (itemId > MIN_CONSUMABLE_ID && itemId < MAX_CONSUMABLE_ID)
-            return ((IUseAreaConsumableFunc)this).DoConsumableFunc();
+        else if (itemId >= MIN_CONSUMABLE_ID && itemId <= MAX_CONSUMABLE_ID)
+            return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
 
         else
             Debug.LogAssertion("Fire Function error. Wrong itemId : " + itemId);

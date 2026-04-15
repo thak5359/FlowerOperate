@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 public enum Anniversary
 {
@@ -13,20 +14,19 @@ public enum Anniversary
 public class EventManager : MonoBehaviour
 {
     [SerializeField]
-    ProgressManager progressManager = ProgressManager.Instance;
+    ProgressManager _progressManager;
     [SerializeField]
     List<Tuple<int, int>> dayList = new List<Tuple<int, int>>();
     
     private Tuple<int, int> today;
 
+    [Inject] void Construct(ProgressManager progress) => _progressManager = progress;
+
     private void Start()
     {
-        if (progressManager == null)
-            progressManager = this.gameObject.GetComponent<ProgressManager>();
-
         if(today == null)
         {
-            today = Tuple.Create((progressManager.getDay() - 1) / 28 + 1, (progressManager.getDay() - 1) % 28 + 1);
+            today = Tuple.Create((_progressManager.getDay() - 1) / 28 + 1, (_progressManager.getDay() - 1) % 28 + 1);
         }
 
         Debug.Log(today.Item1 + ", " +  today.Item2);

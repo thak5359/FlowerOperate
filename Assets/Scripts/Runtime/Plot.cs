@@ -9,7 +9,6 @@ public struct PlotData // 저장용 데이터 바구니
     public float posX;
     public float posY;
 
-    public bool isTilled;
     public bool isWatered;
     public bool isFertilized;
     public int flowerId; // int? 대신 int 사용 (0이면 없는 것으로 처리)
@@ -75,7 +74,6 @@ public class Plot : MonoBehaviour
 
     public PlotData GetSaveData()
     {
-        data.isTilled = this.isTilled;
         data.isWatered = this.isWatered;
         data.isFertilized = this.isFertilized;
         data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
@@ -88,7 +86,6 @@ public class Plot : MonoBehaviour
     public void LoadFromData(PlotData data)
     {
         this.transform.position = new Vector3(data.posX, data.posY);
-        this.isTilled = data.isTilled;
         this.isWatered = data.isWatered;
         this.isFertilized = data.isFertilized;
         this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;

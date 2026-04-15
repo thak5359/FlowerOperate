@@ -112,6 +112,8 @@ public class HotbarManager : MonoBehaviour
         slots[cachedInt].toggle.isOn = true;
         slots[cachedInt].slotFrame.enabled = true;
 
+        // 현재 가리키고 있는 아이템의 ID를 pointingItedId에 대입
+        pointingItemId = items[i].GetItemID;
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
