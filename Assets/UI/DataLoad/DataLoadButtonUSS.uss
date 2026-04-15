@@ -1,4 +1,4 @@
-.DataLoadButtoUSS--Hide {
+.DataLoadButtonUSS--Hide {
     display: none;
     justify-content: space-around;
     height: 100%;

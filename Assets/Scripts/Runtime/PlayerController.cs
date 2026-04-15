@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
             if (Time.time < lastInteractTime + interactCooldown)
             {
+                Debug.Log("잠시 뒤에 말을 걸어보자...");
                 return;
             }
 
