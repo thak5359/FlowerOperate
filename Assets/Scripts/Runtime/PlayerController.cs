@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
 
-    private UseAreamanager _useAreaManager;
+    private UseAreaManager _useAreaManager;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     [SerializeField] private string messageTarget;
 
     public void setTag(string input_tag) => messageTarget = input_tag;
-    public Vector2 heading;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
+    public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
     Vector3 cached3Vec;
 
     void Awake()
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     }
 
     [Inject]
-    void Construct(UseAreamanager input_UseAreaManager)
+    void Construct(UseAreaManager input_UseAreaManager)
     {
         _useAreaManager = input_UseAreaManager;
     }
@@ -82,10 +82,12 @@ public class PlayerController : MonoBehaviour, IInteractable
 
         Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
 
+        //Debug.Log($"MoveInput: {moveInput.x}, {moveInput.y}");
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
         if (moveInput.x != 0)
         {
             //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
+
         }
         if (moveInput != Vector2.zero)
         {

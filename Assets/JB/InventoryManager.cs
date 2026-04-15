@@ -8,7 +8,7 @@ public class InventoryManager : ItemStorageParent
     // 인벤토리 슬롯 리스트
     [SerializeField] List<HotBarSlot> slots = new List<HotBarSlot>();
 
-    // Getter
+    // Getter >  게터는 PascalCase로 작성하는 것이 C#의 관례야! SlotList면 충분해!
     public List<ItemObjectData> getSlotList => slotList;
 
     private void Awake()

@@ -16,6 +16,8 @@ public class HotbarManager : MonoBehaviour
     private int cachedInt;
     private int pointingSlot = -1;
 
+    public int PointingSlot => pointingSlot; //  TODO :: 핫바 번호에 따라서 범위가 바뀌는지 테스트 하기 위한 임시용. 나중에 제대로 지워둬!
+
     private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
 
@@ -57,6 +59,7 @@ public class HotbarManager : MonoBehaviour
         pointSlot(0);
     }
 
+    // 이 함수는 여기가 아니라 인벤토리 쪽에서 가져오고 R키로 인벤토리에서 참조하는 열을 바꾸는게 맞는것 같아. 보류하자
     private void UpdateHotSlotItems()
     {
         for (int i = 0; i < slots.Count; i++)
@@ -113,7 +116,7 @@ public class HotbarManager : MonoBehaviour
         slots[cachedInt].slotFrame.enabled = true;
 
         // 현재 가리키고 있는 아이템의 ID를 pointingItedId에 대입
-        pointingItemId = items[i].GetItemID;
+        //pointingItemId = items[i].GetItemID;
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 

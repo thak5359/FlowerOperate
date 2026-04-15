@@ -18,7 +18,6 @@ public class FungusDependencyResolver : IStartable
 
         foreach (var flowchart in flowcharts)
         {
-            // Fungus 버전에 따라 Block은 GetComponents<Block>()으로 가져올 수 있습니다.
             var blocks = flowchart.GetComponents<Block>();
             foreach (var block in blocks)
             {
@@ -26,7 +25,6 @@ public class FungusDependencyResolver : IStartable
 
                 foreach (var command in block.CommandList)
                 {
-                    // [수정 핵심]: 명령어가 null인 경우를 반드시 걸러내야 합니다.
                     if (command != null)
                     {
                         _container.Inject(command);

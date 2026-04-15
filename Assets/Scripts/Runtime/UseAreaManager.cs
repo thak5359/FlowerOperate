@@ -14,7 +14,7 @@ public interface IUseItem
     public void Fire();
 }
 
-public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
+public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
     #region 영역범위 벡터 리스트
 
@@ -409,12 +409,12 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     private float _chargeStartTime;
     float elapsed;
 
-    //private int currentChargeLevel = 0; // 기본, 1, 2, 3, 4
+    //private int currentChargeLevel = 0; // Charing >> default, 1, 2, 3, 4
     private List<GameObject> pool = new List<GameObject>();
 
     Vector3 defaultArea = new Vector3(1, 0, 0);
 
-    // 오른쪽으로 바라보는 기준으로 작성한 차지타임별 사용 벡터.
+    // Use Area Vector per Chartime on standard that toward right.오른쪽으로 바라보는 기준으로 작성한 차지타임별 사용 벡터.
 
     private GameObject _loadedPrefab;
     private readonly Stack<UseAreaFunction> _pool = new(80); // 인스턴스화된 객체를 풀링해서 관리!
@@ -452,7 +452,6 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
             return null;
         }
 
-        // 초기화 단계에서는 _originTransform이 null일 수 있으므로 Instantiate 시 부모를 지정하지 않거나 체크해야 함
         GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab);
         go.SetActive(false);
 
@@ -467,11 +466,15 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     #endregion
 
 
-
     public void StartCharging(Transform playerTransform, Vector2 heading)
     {
         if (_isCharging) return;
         _isCharging = true;
+
+        if( heading == Vector2.zero) // 방향이 없는 경우 기본값으로 정면으로 설정
+        {
+            heading = Vector2.down;
+        }
 
         _originTransform = playerTransform; // 참조 저장
         _currentHeading = heading;         // 방향 저장
@@ -487,7 +490,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
 
         // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기
-        List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingItemId, level);
+        List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
         if (rawOffsets != null)
         {
@@ -505,7 +508,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
                 worldPositions.Add(snapPos);
             }
 
-            // 4. 화면에 영역 표시 (기존 targetLockON 활용)
+            // 4. 화면에 영역 표시
             UpdateVisualArea(worldPositions);
         }
 
@@ -530,7 +533,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     }
 
     // [수정 위치] Fire() 메서드: 현재 활성화된 영역의 좌표를 출력하는 로직 추가
-    public void Fire() // Context.canceled일 때 발사!
+    public void Fire() // Context.canceled, 버튼을 땠을 때 발사!
     {
         if (!_isCharging) return; // 차징이 시작되지 않았으면 무시
 
@@ -616,7 +619,6 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         _pool.Push(returned);
     }
 
-    // OnDestroy ��� IDisposable.Dispose���� �޸� ����
     public void Dispose()
     {
         while (_pool.Count > 0)
@@ -646,16 +648,46 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     private List<Vector3> GetAreaList(int itemId, int level)
     {
-
-        return level switch
+        if(itemId ==1) // 괭이, 물뿌리개, 망치, 소모품
         {
-            1 => AreaC1,
-            2 => AreaC2,
-            3 => AreaC3,
-            4 => AreaC4,
-            5 => AreaC5,
-            _ => null
-        };
+            return level switch
+            {
+                1 => AreaA1,
+                2 => AreaA2,
+                3 => AreaA3,
+                4 => AreaA4,
+                5 => AreaA5,
+                _ => null
+            };
+        }
+        else if(itemId == 2) // 낫
+        {
+            return level switch
+            {
+                1 => AreaB1,
+                2 => AreaB2,
+                3 => AreaB3,
+                _ => null
+            };
+        }
+        else if (itemId == 3) // 도끼
+        {
+            return level switch
+            {
+                1 => AreaC1,
+                2 => AreaC2,
+                3 => AreaC3,
+                4 => AreaC4,
+                5 => AreaC5,
+                _ => null
+            };
+        }
+        else
+        {
+            Debug.LogWarning($"아이템 ID {itemId}에 대한 영역 데이터가 없습니다.");
+            return null;
+        }
+
     }
 
 }

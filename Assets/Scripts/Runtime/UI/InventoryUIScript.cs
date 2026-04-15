@@ -28,6 +28,7 @@ public class InventoryUI : MonoBehaviour
         buttons = root.Query<Button>("slot-button").ToList(); // 리스트에 집어넣기
 
         closeButton = root.Query<Button>("CloseButton");
+        closeButton.clicked += closeInventory;
 
     }
     private void OnDisabled()
@@ -35,8 +36,14 @@ public class InventoryUI : MonoBehaviour
         buttons.Clear();
     }
 
-    public void CloseBTN()
+    public void closeInventory()
     {
-        
+        root.visible = false;
     }
+
+    public void openInventory()
+    {
+        root.visible = true;
+    }
+
 }
