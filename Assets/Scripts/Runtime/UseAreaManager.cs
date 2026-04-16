@@ -483,7 +483,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     void ITickable.Tick()  // 모았다가...
     {
-        if (_loadedPrefab == null || !_isCharging) return;
+        if (_loadedPrefab == null || _isCharging == false) return;
 
         elapsed = Time.time - _chargeStartTime;
 

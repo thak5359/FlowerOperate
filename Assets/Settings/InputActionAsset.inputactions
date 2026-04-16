@@ -759,7 +759,7 @@
             "id": "c24407a3-54ba-4735-9a14-6ffb5d389b25",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Escape",
                     "type": "Button",
                     "id": "d551bb8f-f3cb-4c29-a825-e7466b6d25a3",
                     "expectedControlType": "",
@@ -772,11 +772,11 @@
                 {
                     "name": "",
                     "id": "66fd7ede-823e-46e5-abe1-0711373a6282",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD_Scheme;Arrow_Scheme",
-                    "action": "New action",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

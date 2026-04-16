@@ -3984,18 +3984,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &220799910 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4626068165378340757, guid: 901f2443acd5cb04ea1624f36f334368,
-    type: 3}
-  m_PrefabInstance: {fileID: 3598777553732813658}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 890166ae8e5166b4588e8dfd0bd446c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &235023275
 GameObject:
   m_ObjectHideFlags: 0
@@ -299800,10 +299788,8 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks:
-  - {fileID: 1618246216}
-  selectedCommands:
-  - {fileID: 1618246223}
+  selectedBlocks: []
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -300098,7 +300084,7 @@ MonoBehaviour:
   message: SeedMaker
 --- !u!114 &1618246223
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -300112,7 +300098,7 @@ MonoBehaviour:
   indentLevel: 0
 --- !u!114 &1618246224
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -309741,6 +309727,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 901f2443acd5cb04ea1624f36f334368, type: 3}
+--- !u!114 &3598777553732813659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2960559874034940714, guid: 901f2443acd5cb04ea1624f36f334368,
+    type: 3}
+  m_PrefabInstance: {fileID: 3598777553732813658}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2628fa61d22c044979a540ef8026c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5520514571793238479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -309871,7 +309869,7 @@ PrefabInstance:
         type: 3}
       propertyPath: pauseMenu
       value: 
-      objectReference: {fileID: 220799910}
+      objectReference: {fileID: 3598777553732813659}
     - target: {fileID: 4114507864807019150, guid: 70eafd9572759294287042bfd95001dd,
         type: 3}
       propertyPath: inventoryUI

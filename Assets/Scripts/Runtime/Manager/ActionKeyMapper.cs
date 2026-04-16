@@ -19,10 +19,11 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
 
 
     private PlayerInput _playerInput;
-    private IngameSettingMenuManager _pauseMenu;
+    private IngameSettingMenuController _pauseMenu;
     private HotbarManager _hotbarManager;
     private PlayerController _playerController;
-    private TitleSettingMenuManager _settingMenuManager;
+    private TitleSettingMenuController _settingMenuManager;
+    private InventoryUIController _inventoryUIContoller;
 
     private string currentSceneName;
 
@@ -32,7 +33,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     {
         _playerInput = input_playerInput;
         // TODO : 별도 씬 이름에 맞춰서 변경하기
-        var pauseMenus = container.Resolve<IReadOnlyList<IngameSettingMenuManager>>();
+        var pauseMenus = container.Resolve<IReadOnlyList<IngameSettingMenuController>>();
         _pauseMenu = pauseMenus.Count > 0 ? pauseMenus[0] : null;
 
         var hotbarmanagers = container.Resolve<IReadOnlyList<HotbarManager>>();
@@ -41,8 +42,11 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         var playerControllers = container.Resolve<IReadOnlyList<PlayerController>>();
         _playerController = playerControllers.Count > 0 ? playerControllers[0] : null;
 
-        var settingMenuManagers = container.Resolve<IReadOnlyList<TitleSettingMenuManager>>();
+        var settingMenuManagers = container.Resolve<IReadOnlyList<TitleSettingMenuController>>();
         _settingMenuManager = settingMenuManagers.Count > 0 ? settingMenuManagers[0] : null;
+
+        var inventoryUIControllers = container.Resolve<IReadOnlyList<InventoryUIController>>();
+        _inventoryUIContoller = inventoryUIControllers.Count > 0 ? inventoryUIControllers[0] : null;
 
         Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");
     }
@@ -76,12 +80,14 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
             FarmMapActionAllocator();
             PauseMapActionAllocator();
             SettingMapActionAllocator();
+            InventoryMapActionAllocator();
             _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME.ToString());
         }
         Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
 
     }
-    //TODO : 할당 되어있는 모든 액션을 해제하기!
+
+
     void IDisposable.Dispose()
     {
         if (_playerInput != null)
@@ -217,8 +223,8 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         map.FindAction("HotSlot0").performed += OnHotSlot0Performed;
         #endregion
 
-        var actionOpenInventory = map.FindAction("OpenInventory");
-        // actionOpenInventory.performed +=   //TODO : 인벤토리 UI를 여는 함수 할당하기
+        var actionInventory = map.FindAction("OpenInventory");
+        actionInventory.performed += _inventoryUIContoller.OnOpenInventory;   //TODO : 인벤토리 UI를 여는 함수 할당하기
 
         map.Enable();
         Debug.Log("FarmActionKey 할당됨!");
@@ -230,6 +236,9 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     void InventoryMapActionAllocator()
     {
         var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
+
+        InputAction actionEscape = map.FindAction("Escape");
+        actionEscape.performed += _inventoryUIContoller.OnEscape;  
     }
     #endregion
 
@@ -240,6 +249,29 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     }
     #endregion
 
+
+    #region
+    void StorageMapActionAllocator()
+    {
+        if (_playerInput == null || _playerInput.actions == null) return;
+        InputActionMap map = _playerInput.actions.FindActionMap(STORAGE_MAP_NAME.ToString());
+        if (map == null) return;
+
+       
+
+        var actionToNextBox = map.FindAction("ToNextBox");
+        // actionToNextBox.performed += .OnToNextBox; //TODO : 다음 창으로 이동하는 함수 할당하기
+        var actionToPrevBox = map.FindAction("ToPrevBox");
+        // actionToPrevBox.performed += .OnToPrevBox; //TODO : 이전 창으로 이동하는 함수 할당하기
+        var SortBox = map.FindAction("SortBox");
+        // actionEscape.performed += .OnBackAction; //TODO : 창 닫는 함수 할당하기
+        var SortAllBox = map.FindAction("SortAllBox");
+        // actionEscape.performed += .OnBackAction; //TODO : 창 닫는 함수 할당하기
+
+
+    }
+
+    #endregion
 
     #region 대화창 조작 키 할당... 일단 써놔
     void ChatboxMapActionAllocator()
@@ -343,6 +375,18 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         map.FindAction("HotSlot8").performed -= OnHotSlot8Performed;
         map.FindAction("HotSlot9").performed -= OnHotSlot9Performed;
         map.FindAction("HotSlot0").performed -= OnHotSlot0Performed;
+    }
+    #endregion
+
+    #region 인벤토리 조작 키 해제
+    void InventoryMapActionDeallocator()
+    {
+        if (_playerInput == null || _playerInput.actions == null) return;
+        InputActionMap map = _playerInput.actions.FindActionMap(FARM_MAP_NAME.ToString());
+        if (map == null) return;
+
+        InputAction actionEscape = map.FindAction("Escape");
+        actionEscape.performed -= _inventoryUIContoller.OnEscape;   
     }
     #endregion
 

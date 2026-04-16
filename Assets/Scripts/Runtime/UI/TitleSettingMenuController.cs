@@ -10,7 +10,7 @@ using UnityEngine.UI;
 using VContainer;
 using static Constant;
 
-public class TitleSettingMenuManager : MonoBehaviour
+public class TitleSettingMenuController : MonoBehaviour
 {
     [Header("UI switch")]
     public Button soundButton;
@@ -18,17 +18,17 @@ public class TitleSettingMenuManager : MonoBehaviour
     public Button etcButton;
 
 
-    public GameObject soundPanel;        // »ç¿îµå ¼³Á¤ ÆÇ³Ú
-    public GameObject displayPanel;      // È­¸é ¼³Á¤ ÆÇ³Ú
-    public GameObject etcPanel;         // ±âÅ¸ ¼³Á¤ ÆÇ³Ú
+    public GameObject soundPanel;        // ì‚¬ìš´ë“œ ì„¤ì • íŒë„¬
+    public GameObject displayPanel;      // í™”ë©´ ì„¤ì • íŒë„¬
+    public GameObject etcPanel;         // ê¸°íƒ€ ì„¤ì • íŒë„¬
 
-    public Button closeButton;        // ¼³Á¤ Ã¢ ´İ´Â ¹öÆ°
+    public Button closeButton;        // ì„¤ì • ì°½ ë‹«ëŠ” ë²„íŠ¼
 
 
     [Header("On/Off MoveSet")]
-    public RectTransform movablePart; // ÀÌµ¿½ÃÅ³ ÃÖ»óÀ§ ºÎ¸ğ ÆĞ³Î
-    public Vector2 showPos;          // È­¸é ¾È À§Ä¡ (¿¹: 0,525)
-    public Vector2 hidePos;          // È­¸é ¹Û À§Ä¡ (¿¹: 0, -525)
+    public RectTransform movablePart; // ì´ë™ì‹œí‚¬ ìµœìƒìœ„ ë¶€ëª¨ íŒ¨ë„
+    public Vector2 showPos;          // í™”ë©´ ì•ˆ ìœ„ì¹˜ (ì˜ˆ: 0,525)
+    public Vector2 hidePos;          // í™”ë©´ ë°– ìœ„ì¹˜ (ì˜ˆ: 0, -525)
     [SerializeField] private const float defaultDuration = 0.5f;
 
 
@@ -52,7 +52,7 @@ public class TitleSettingMenuManager : MonoBehaviour
     public SettingManager _settingManager; 
 
 
-    private int usingPanel = 1;// »ç¿ëÁßÀÎ ÆÇ³Ú Ç¥½Ã¿ë [1: »ç¿îµå | 2: È­¸é | 3: ±âÅ¸ ]
+    private int usingPanel = 1;// ì‚¬ìš©ì¤‘ì¸ íŒë„¬ í‘œì‹œìš© [1: ì‚¬ìš´ë“œ | 2: í™”ë©´ | 3: ê¸°íƒ€ ]
     private Canvas settingCanvas;
 
     bool isTransitioning = false;
@@ -92,7 +92,7 @@ public class TitleSettingMenuManager : MonoBehaviour
     {
         var s = _settingManager.Settings;
 
-        // ½½¶óÀÌ´õ °ªÀ» ÀúÀåµÈ °ªÀ¸·Î ¼¼ÆÃ (ÀÌº¥Æ® È£Ãâ ¹æÁö¸¦ À§ÇØ SetValueWithoutNotify ±ÇÀå)
+        // ìŠ¬ë¼ì´ë” ê°’ì„ ì €ì¥ëœ ê°’ìœ¼ë¡œ ì„¸íŒ… (ì´ë²¤íŠ¸ í˜¸ì¶œ ë°©ì§€ë¥¼ ìœ„í•´ SetValueWithoutNotify ê¶Œì¥)
         masterVolumeSlider.SetValueWithoutNotify(s.masterVol);
         bgmVolumeSlider.SetValueWithoutNotify(s.bgmVol);
         sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
@@ -104,13 +104,13 @@ public class TitleSettingMenuManager : MonoBehaviour
         sfxVolumeText.changeTextValueInt(s.sfxVol);
         voiceVolumeText.changeTextValueInt(s.voiceVol);
 
-        // ÇØ»óµµ µå·Ó´Ù¿î ÃÊ±âÈ­
+        // í•´ìƒë„ ë“œë¡­ë‹¤ìš´ ì´ˆê¸°í™”
         _settingManager.InitializeResDropdown(resolutionDropdown);
     }
 
 
-    #region ¼³Á¤¸Ş´º ÆÇ³Ú ÀüÈ¯ÇÏ±â
-    // Æ¯Á¤ ÆÇ³Ú·Î °¥¾Æ³¢¿ì±â
+    #region ì„¤ì •ë©”ë‰´ íŒë„¬ ì „í™˜í•˜ê¸°
+    // íŠ¹ì • íŒë„¬ë¡œ ê°ˆì•„ë¼ìš°ê¸°
     private void PanelChange(int num)
     {
         switch (num)
@@ -186,7 +186,7 @@ public class TitleSettingMenuManager : MonoBehaviour
 
     private Coroutine moveCoroutine;
 
-    // ¼³Á¤ Ã¢ ¼û±â±â/º¸ÀÌ±â (ÀÌµ¿ ¿¬Ãâ Æ÷ÇÔ) 
+    // ì„¤ì • ì°½ ìˆ¨ê¸°ê¸°/ë³´ì´ê¸° (ì´ë™ ì—°ì¶œ í¬í•¨) 
     public void OnBackAction(InputAction.CallbackContext context)
     {
         if (this == null || !context.performed && isTransitioning == true) return;
@@ -207,8 +207,8 @@ public class TitleSettingMenuManager : MonoBehaviour
         }
         else
         {
-            // ±× ¿ÜÀÇ °æ¿ì
-            Debug.LogError($"[SettingMenuManager]: {currentMap}¸Ê¿¡¼­ ÇØ´ç µ¿ÀÛ¿¡ Á¤ÀÇµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            // ê·¸ ì™¸ì˜ ê²½ìš°
+            Debug.LogError($"[SettingMenuManager]: {currentMap}ë§µì—ì„œ í•´ë‹¹ ë™ì‘ì— ì •ì˜ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
     }
 
@@ -216,7 +216,7 @@ public class TitleSettingMenuManager : MonoBehaviour
     {
         if(movablePart == null || settingCanvas == null)
         {
-            Debug.LogError("[SettingMenuManager]: MoveRoutine ½ÇÇà Áß movablePart ¶Ç´Â settingCanvas°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("[SettingMenuManager]: MoveRoutine ì‹¤í–‰ ì¤‘ movablePart ë˜ëŠ” settingCanvasê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
         if (targetPos == showPos) { settingCanvas.enabled = true; }
@@ -239,7 +239,7 @@ public class TitleSettingMenuManager : MonoBehaviour
 
     #endregion
 
-    #region ¼¼ÆÃ ¸Ş´º ¿©´İ±â
+    #region ì„¸íŒ… ë©”ë‰´ ì—¬ë‹«ê¸°
     public async UniTask OpenSettingMenu()
     {
         if (isTransitioning == true) return;
@@ -276,7 +276,7 @@ public class TitleSettingMenuManager : MonoBehaviour
     }
     #endregion
 
-    #region º¼·ı °ª Á¶Àı, ÇØ»óµµ Á¶Àı
+    #region ë³¼ë¥¨ ê°’ ì¡°ì ˆ, í•´ìƒë„ ì¡°ì ˆ
 
     public void OnMasterVolumeChanged(float value)
     {

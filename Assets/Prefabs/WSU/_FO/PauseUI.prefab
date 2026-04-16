@@ -610,7 +610,7 @@ GameObject:
   - component: {fileID: 3685866613821373179}
   - component: {fileID: 1278653293476132965}
   - component: {fileID: 5838109089722012976}
-  - component: {fileID: 4626068165378340757}
+  - component: {fileID: 2960559874034940714}
   m_Layer: 0
   m_Name: PauseUI
   m_TagString: Untagged
@@ -701,7 +701,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &4626068165378340757
+--- !u!114 &2960559874034940714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -710,7 +710,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 857176092069466207}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 890166ae8e5166b4588e8dfd0bd446c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f2628fa61d22c044979a540ef8026c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movablePart: {fileID: 500033216139901061}

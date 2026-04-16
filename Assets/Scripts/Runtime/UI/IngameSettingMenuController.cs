@@ -9,7 +9,7 @@ using VContainer;
 using VContainer.Unity;
 using static Constant;
 
-public class IngameSettingMenuManager : MonoBehaviour
+public class IngameSettingMenuController : MonoBehaviour
 {
     [Header("Pause Menu")]
     public RectTransform movablePart;

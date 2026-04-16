@@ -6,22 +6,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-public class TitleMenuManager : MonoBehaviour
+public class TitleMenuController : MonoBehaviour
 {
     public Button startButton;
     public Button loadButton;
     public Button settingButton;
     public Button endButton;
-    protected TitleSettingMenuManager _settingMenuManger;
+    protected TitleSettingMenuController _settingMenuManger;
     
     
     
     [Inject] 
-    void Construct(TitleSettingMenuManager input_settingMenuManager)
+    void Construct(TitleSettingMenuController input_settingMenuManager)
     {
         _settingMenuManger = input_settingMenuManager;
         if(_settingMenuManger == null)
-            Debug.LogAssertion("SettingMenuManagerÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogAssertion("SettingMenuManagerì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
     }
 
     void Start()
@@ -37,7 +37,7 @@ public class TitleMenuManager : MonoBehaviour
     }
     private void OnClickLoadButton()
     {
-        Debug.LogAssertion("¾Æ¹«°Íµµ ¾ø¾î¿ä");
+        Debug.LogAssertion("ì•„ë¬´ê²ƒë„ ì—†ì–´ìš”");
     }
     private void OnClickSettingButton()
     {

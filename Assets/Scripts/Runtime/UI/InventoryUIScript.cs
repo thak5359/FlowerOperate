@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUIController : MonoBehaviour
 {
     [SerializeField] private UIDocument _uiDocument;
 
@@ -41,9 +42,19 @@ public class InventoryUI : MonoBehaviour
         root.visible = false;
     }
 
+    public void OnEscape(InputAction.CallbackContext callbackContext)
+    {
+        closeInventory();
+    }
+
     public void openInventory()
     {
         root.visible = true;
+    }
+
+    public void OnOpenInventory(InputAction.CallbackContext callbackContext)
+    {
+        openInventory();
     }
 
 }

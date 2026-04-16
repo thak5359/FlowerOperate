@@ -7,10 +7,10 @@ public class FarmSceneLifetimeScope : LifetimeScope
 {
     [SerializeField] private PlayerController playerController;
     [SerializeField] private HotbarManager hotbarManager;
-    [SerializeField] private IngameSettingMenuManager pauseMenu;
+    [SerializeField] private IngameSettingMenuController pauseMenu;
     [SerializeField] private InventoryManager inventoryManager;
     [SerializeField] private ProgressManager progressManager;
-    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private InventoryUIController inventoryUI;
     // [SerializeField] private //TODO 인벤토리 매니저 추가하기
 
     protected override void Configure(IContainerBuilder builder)
@@ -25,8 +25,8 @@ public class FarmSceneLifetimeScope : LifetimeScope
 
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
-        builder.RegisterComponent<IngameSettingMenuManager>(pauseMenu);
+        builder.RegisterComponent<IngameSettingMenuController>(pauseMenu);
         builder.RegisterComponent<InventoryManager>(inventoryManager).AsSelf();
-        builder.RegisterComponent<InventoryUI>(inventoryUI).AsSelf();
+        builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
     }
 }
