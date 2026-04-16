@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Entities;
@@ -34,7 +34,6 @@ public struct ItemBlobDatas
 
 public class ItemDetailData : ScriptableObject
 {
-
 }
 
 [System.Serializable]
