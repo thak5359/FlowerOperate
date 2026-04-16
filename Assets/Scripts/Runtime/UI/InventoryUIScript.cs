@@ -1,11 +1,16 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using VContainer;
 
 public class InventoryUIController : MonoBehaviour
 {
+    // class for control Inventory UI. Including method for show/hide UI.
     [SerializeField] private UIDocument _uiDocument;
 
     private List<Button> buttons = new List<Button>();
@@ -13,16 +18,28 @@ public class InventoryUIController : MonoBehaviour
 
     private Button closeButton;
 
+
+    private InventoryManager _inventoryManager;
+    private ItemManagerHeavilyModified _itemManager;
+
+
+    [Inject]
+    private void Construct(InventoryManager input_inventorymanager)
+    {
+        _inventoryManager = input_inventorymanager;
+    }
+
+    #region Unity Event
     private void Awake()
     {
-
-        if (_uiDocument != null)
+        if (_uiDocument == null)
             _uiDocument = GetComponent<UIDocument>();
     }
 
-    private void OnEnabled()
+    private void OnEnable()
     {
         root = _uiDocument.rootVisualElement;
+
 
         buttons.Clear();
 
@@ -32,19 +49,41 @@ public class InventoryUIController : MonoBehaviour
         closeButton.clicked += closeInventory;
 
     }
-    private void OnDisabled()
+
+    private async UniTask loadItemDatas()
+    {
+        ushort i = 0;
+        foreach( ItemObjectData data in _inventoryManager.getSlotList)
+        {
+
+            FixedString128Bytes address;
+            _itemManager.GetAddressBurst((short)_inventoryManager.getSlotList[i].GetItemID, out address);
+            Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
+            buttons[i].style.backgroundImage = img;
+
+
+
+            i++;
+
+        }
+
+
+
+    }
+
+
+
+
+    private void OnDisable()
     {
         buttons.Clear();
     }
+    #endregion
 
-    public void closeInventory()
+    #region Open Inventory
+    public void OnOpenInventory(InputAction.CallbackContext callbackContext)
     {
-        root.visible = false;
-    }
-
-    public void OnEscape(InputAction.CallbackContext callbackContext)
-    {
-        closeInventory();
+        openInventory();
     }
 
     public void openInventory()
@@ -52,9 +91,17 @@ public class InventoryUIController : MonoBehaviour
         root.visible = true;
     }
 
-    public void OnOpenInventory(InputAction.CallbackContext callbackContext)
+    #endregion
+
+    #region Close Inventory
+    public void OnEscape(InputAction.CallbackContext callbackContext)
     {
-        openInventory();
+        closeInventory();
     }
+    public void closeInventory()
+    {
+        root.visible = false;
+    }
+    #endregion
 
 }

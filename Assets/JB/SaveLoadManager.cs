@@ -48,9 +48,9 @@ public class SaveLoadManager : MonoBehaviour
     }
 
     // ItemStorageData를 깊은 복사하는 헬퍼 함수
-    private ItemStorageData CloneData(ItemStorageData original)
+    private ItemInstantData CloneData(ItemInstantData original)
     {
-        ItemStorageData clone = new ItemStorageData();
+        ItemInstantData clone = new ItemInstantData();
         clone.SetSlotsCount(original.GetSlotsCount);
         if (original.GetList != null)
         {
@@ -99,23 +99,20 @@ public class SaveDatas
 {
     [SerializeField] private string saveTime;
     [SerializeField] private int playDay;
-    [SerializeField] private ItemStorageData invenData;
-    [SerializeField] private ItemStorageData storageData;
-    [SerializeField] private ItemStorageData plotItemData;
+    [SerializeField] private ItemInstantData invenData;
+    [SerializeField] private ItemInstantData storageData;
     [SerializeField] private List<PlotData> plotData;
 
-    public ItemStorageData GetInvenData => invenData;
-    public ItemStorageData GetStorageData => storageData;
-    public ItemStorageData GetPlotItemData => plotItemData;
+    public ItemInstantData GetInvenData => invenData;
+    public ItemInstantData GetStorageData => storageData;
     public List<PlotData> GetPlotData => plotData;
 
-    public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
+    public SaveDatas(int day, ItemInstantData inventory, ItemInstantData storage, ItemInstantData plotItem, List<PlotData> plot)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;
         this.invenData = inventory;
         this.storageData = storage;
-        this.plotItemData = plotItem;
         this.plotData = plot;
     }
 }

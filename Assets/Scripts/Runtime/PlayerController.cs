@@ -137,10 +137,7 @@ public class PlayerController : MonoBehaviour, IInteractable
                 return;
             }
 
-
-
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
-
         }
 
 

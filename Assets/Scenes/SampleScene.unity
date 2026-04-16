@@ -299755,8 +299755,6 @@ GameObject:
   - component: {fileID: 1618246220}
   - component: {fileID: 1618246219}
   - component: {fileID: 1618246218}
-  - component: {fileID: 1618246224}
-  - component: {fileID: 1618246223}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -299973,11 +299971,11 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1618246222}
   commandList:
-  - {fileID: 1618246224}
+  - {fileID: 0}
   - {fileID: 1618246220}
   - {fileID: 1618246219}
   - {fileID: 1618246218}
-  - {fileID: 1618246223}
+  - {fileID: 0}
   suppressAllAutoSelections: 0
 --- !u!114 &1618246218
 MonoBehaviour:
@@ -300082,34 +300080,6 @@ MonoBehaviour:
   parentBlock: {fileID: 1618246216}
   suppressBlockAutoSelect: 0
   message: SeedMaker
---- !u!114 &1618246223
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd293ffe885b594c8d3c1f526fd7f77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 18
-  indentLevel: 0
---- !u!114 &1618246224
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b55f017339c8324fac1e13ad6ef191a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 17
-  indentLevel: 0
 --- !u!1 &1624771221
 GameObject:
   m_ObjectHideFlags: 0

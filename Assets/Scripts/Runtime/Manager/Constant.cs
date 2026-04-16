@@ -6,9 +6,16 @@ using UnityEngine;
 
 public class Constant
 {
+    // Class for Constant Value in this Project
+
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
 
-    #region ¾ÆÀÌÅÛ ID ¹üÀ§
+
+    public const ushort MAX_COUNT_INVENTORY = 999;
+    public const ushort MAX_COUNT_STORAGE = 9999;
+    public const ushort MAX_SLOT_INVENTORY = 50;
+
+    #region ì•„ì´í…œ ID ë²”ìœ„
 
     public const short USABLE_START_ID = 0;
     public const short COMMON_START_ID = 41;
@@ -20,8 +27,7 @@ public class Constant
 
     #endregion
 
-
-    #region  Àåºñ ¾ÆÀÌÅÛ ID ¹üÀ§
+    #region  ì¥ë¹„ ì•„ì´í…œ ID ë²”ìœ„
 
     public const short MIN_HOE_ID = 0;
     public const short MAX_HOE_ID = 7;
@@ -43,8 +49,7 @@ public class Constant
 
     #endregion
 
-
-    #region ¾×¼Ç ¸Ê, ½ºÅ°¸¶ ÀÌ¸§
+    #region ì•¡ì…˜ ë§µ, ìŠ¤í‚¤ë§ˆ ì´ë¦„
 
     public static readonly FixedString64Bytes TITLE_MAP_NAME = "MAP_TITLE";
     public static readonly FixedString64Bytes SETTING_MAP_NAME = "MAP_SETTING";
@@ -60,8 +65,7 @@ public class Constant
    
     #endregion
 
-
-    #region ¾À ÀÌ¸§
+    #region ì”¬ ì´ë¦„
     
     public static readonly FixedString64Bytes TITLE_SCENE_NAME = "MainTitle";
     public static readonly FixedString64Bytes FARM_SCENE_NAME = "SampleScene";
@@ -69,7 +73,7 @@ public class Constant
     #endregion
 
    
-    #region BLOB µ¥ÀÌÅÍ ÆÄÀÏ °æ·Î
+    #region BLOB ë°ì´í„° íŒŒì¼ ê²½ë¡œ
 
     public const string BLOB_FOLDER = "Blobs";
     public const string ITEM_BLOB = "ItemData.blob";
@@ -80,7 +84,7 @@ public class Constant
 
     #endregion
 
-    #region ¿Àµğ¾î ¹Í¼­ ±×·ì ÀÌ¸§
+    #region ì˜¤ë””ì–´ ë¯¹ì„œ ê·¸ë£¹ ì´ë¦„
 
     public const string MASTER_MIXER_GROUP = "MasterVolume";
     public const string BGM_MIXER_GROUP = "BGMVolume";

@@ -40,5 +40,5 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    border-width: 1px; /* 슬롯 구분선 추가 (선택사항) */
+    border-width: 1px; /* 슬롯 구분선   */
 }

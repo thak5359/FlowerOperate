@@ -11,11 +11,11 @@ using Cysharp.Threading.Tasks;
 public static class AddressableManager
 {
     // [핵심 최적화 1] 딕셔너리의 Key를 FixedString으로 변경하여 검색 시 GC 발생 원천 차단
-    private static Dictionary<FixedString64Bytes, List<AsyncOperationHandle>> labelHandles
-        = new Dictionary<FixedString64Bytes, List<AsyncOperationHandle>>();
+    private static Dictionary<FixedString128Bytes, List<AsyncOperationHandle>> labelHandles
+        = new Dictionary<FixedString128Bytes, List<AsyncOperationHandle>>();
 
     // [핵심 최적화 2] 반환형을 UniTask로 변경하고, label 매개변수도 FixedString으로 통일
-    public static async UniTask<T> LoadAssetAsync<T>(FixedString64Bytes address, FixedString64Bytes label = default) where T : Object
+    public static async UniTask<T> LoadAssetAsync<T>(FixedString128Bytes address, FixedString128Bytes label = default) where T : Object
     {
         // Addressables API 자체는 string을 요구하므로 여기서만 ToString()을 허용합니다.
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.ToString());
@@ -50,7 +50,7 @@ public static class AddressableManager
     }
 
     // 라벨 단위의 메모리 일괄 해제
-    public static void ReleaseAllByLabel(FixedString64Bytes label)
+    public static void ReleaseAllByLabel(FixedString128Bytes label)
     {
         if (label.IsEmpty) return; // 방어 로직
 

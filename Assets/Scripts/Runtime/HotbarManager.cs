@@ -16,6 +16,8 @@ public class HotbarManager : MonoBehaviour
     private int cachedInt;
     private int pointingSlot = -1;
 
+    private byte pointingInventoryArray = 0; // 0~4 
+
     public int PointingSlot => pointingSlot; //  TODO :: 핫바 번호에 따라서 범위가 바뀌는지 테스트 하기 위한 임시용. 나중에 제대로 지워둬!
 
     private float scrollCooldown = 0.05f;
@@ -25,12 +27,6 @@ public class HotbarManager : MonoBehaviour
 
     public int PointingItemId => pointingItemId;
 
-    [Inject]
-    public void Construct(InventoryManager inven)
-    {
-        inventoryManager = inven;
-        Debug.Log("HotbarManager의 InventoryManager 의존성 주입 완료!");
-    }
 
     void Awake()
     {
@@ -128,4 +124,26 @@ public class HotbarManager : MonoBehaviour
             //player.SetItem(slots[pointingSlot].item);
         }
     }
+
+    public void refresHotbarSlots(in List<ItemObjectData> slotList)
+    {
+        int i =  pointingInventoryArray * 10;
+
+        foreach (HotBarSlot slot in slots)
+        {
+            if(slot.ItemIcon != null)
+                AddressableManager.ReleaseAsset(slot.ItemIcon);
+
+
+            i++;
+        
+        
+        }
+
+
+
+
+
+    }
+
 }

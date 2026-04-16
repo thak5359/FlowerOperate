@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using VContainer.Unity;
+using static Constant;
 
 public interface IManager
 {
@@ -15,15 +16,19 @@ public interface IManager
 public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
-    protected ItemStorageData _data = new ItemStorageData();
+    protected ItemInstantData _data = new ItemInstantData(); //인벤토리에 있던 데이터 저장용 Storage는 창고임
     [SerializeField]
-    protected GameObject slotObject;
+    protected GameObject slotObject; // ?
 
     //Getter
-    public ItemStorageData GetData => _data;
+    public ItemInstantData GetData => _data;
 
-    protected virtual void Initialize(ItemStorageParent storageParent, ItemStorageData data, ref List<ItemObjectData> slotList)
+    //storageParent의 목적은? 호출되는곳에서 인자도 this를 넣을거라면 여기서도 this를 쓸수도 있는거같은데
+    protected virtual void Initialize(ItemInstantData data, ref List<ItemObjectData> slotList)
     {
+
+        slotList.Clear();
+
         if (data == null || data.GetList == null)
         {
             Debug.LogWarning("불러온 데이터가 유효하지 않습니다.");
@@ -34,7 +39,6 @@ public class ItemStorageParent : MonoBehaviour, IManager
         _data = data;
         slotList = _data.GetList;
 
-        Debug.Log($"{storageParent.name} 초기화 끝 (아이템 수: {_data.GetList.Count})");
     }
 
     public virtual void Load(SaveDatas saveDatas) { }
@@ -48,13 +52,13 @@ public class ItemStorageParent : MonoBehaviour, IManager
         List<ItemObjectData> emptyList = new List<ItemObjectData>();
         for (int i = 0; i < count; i++) emptyList.Add(default);
 
-        if (_data == null) _data = new ItemStorageData();
+        if (_data == null) _data = new ItemInstantData();
         _data.SetItemList(emptyList);
     }
 
     public virtual void Swap(int idx1, int idx2)
     {
-        //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
+        // 슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
         _data.SwapItem(idx1, idx2);
         Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
     }
@@ -75,7 +79,7 @@ public class ItemStorageParent : MonoBehaviour, IManager
     protected virtual void AddItem(ItemObjectData item)
     {
         _data.AddItem(item);
-        //슬롯의 숫자UI 변경 로직 넣어주세요.
+        // 슬롯의 숫자UI 변경 로직 넣어주세요.
     }
 
     protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
@@ -90,7 +94,74 @@ public class ItemStorageParent : MonoBehaviour, IManager
 }
 
 [Serializable]
-public class ItemStorageData
+public struct ItemInstantDatas
+{
+    private List<ItemObjectData> itemListData;
+    private int slotsCount; // 50으로 초기화는 Constant로
+
+    public List<ItemObjectData> GetList => itemListData;
+    public int GetSlotsCount => slotsCount;
+
+    public void SetItemList(List<ItemObjectData> itemList) => this.itemListData = itemList;
+    public void SetSlotsCount(int slotsCount) => this.slotsCount = slotsCount;
+
+    public void ClearList() => this.itemListData.Clear();
+
+    public void SwapItem(int idx1, int idx2)
+    {
+        (itemListData[idx1], itemListData[idx2]) = (itemListData[idx2], itemListData[idx1]);
+    }
+
+    public void AddItem(ItemObjectData item)
+    {
+        int idx = itemListData.FindIndex(curItem => curItem.GetItemID == item.GetItemID);
+        // 인벤토리에 같은 ID의 아이템이 있을 때
+        if (idx != -1)
+        {
+            if (itemListData[idx].CheckFull())
+            {
+                itemListData.Add(item);
+                return;
+            }
+            itemListData[idx].AddAmount(item.GetAmount);
+            Debug.Log("Same Item");
+        }
+        // 획득한 아이템이 인벤에 없던 아이템 & 빈 슬롯이 존재할 때
+        else if (itemListData.Any(data => data.Equals(null)))
+        {
+            itemListData[GetSlotsCount] = item;
+            SetSlotsCount(GetSlotsCount + 1);
+            Debug.Log("새 아이템");
+        }
+        // 첫 획득에 슬롯이 꽉 차있을 때
+        else
+        {
+            Debug.Log("슬롯 꽉 참");
+        }
+
+    }
+
+    public void CombineItem(ref ItemObjectData start, ref ItemObjectData target)
+    {
+        // 계산을 위해 임시 변수를 활용하는 것이 안전합니다.
+        int totalAmount = start.GetAmount + target.GetAmount;
+
+        if (totalAmount > 100)
+        {
+            target.SetAmount(100);
+            start.SetAmount((short)(totalAmount - 100));
+        }
+        else
+        {
+            target.SetAmount((short)totalAmount);
+            start.SetAmount(0); // 합쳐졌으므로 시작 아이템은 0개가 되어야 함
+        }
+    }
+
+}
+
+[Serializable]
+public class ItemInstantData
 {
     [SerializeField]
     private List<ItemObjectData> itemListData;
@@ -98,8 +169,8 @@ public class ItemStorageData
     private int slotsCount = 50;
 
     //Getter
-    public int GetSlotsCount => slotsCount;
     public List<ItemObjectData> GetList => itemListData;
+    public int GetSlotsCount => slotsCount;
 
     //Setter
     public void SetItemList(List<ItemObjectData> itemList) => this.itemListData = itemList;

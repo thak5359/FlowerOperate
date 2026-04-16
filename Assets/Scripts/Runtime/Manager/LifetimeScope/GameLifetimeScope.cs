@@ -17,6 +17,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
+        builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
     }

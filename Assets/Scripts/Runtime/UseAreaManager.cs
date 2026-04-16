@@ -10,9 +10,10 @@ using static Constant;
 
 public interface IUseItem
     {
-    public void StartCharging(Transform playerTransform, Vector2 heading);
+    public void StartCharging(in Transform playerTransform,in Vector2 heading);
     public void Fire();
 }
+
 
 public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
@@ -414,13 +415,11 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     Vector3 defaultArea = new Vector3(1, 0, 0);
 
-    // Use Area Vector per Chartime on standard that toward right.오른쪽으로 바라보는 기준으로 작성한 차지타임별 사용 벡터.
+    // 오른쪽으로 바라보는 기준으로 작성한 차지타임별 사용 벡터.
 
     private GameObject _loadedPrefab;
     private readonly Stack<UseAreaFunction> _pool = new(80); // 인스턴스화된 객체를 풀링해서 관리!
     private readonly Stack<UseAreaFunction> _activeObjects = new(80); // 현재 활성화된 객체를 관리하는 스택
-
-
 
     #region 초기화 및 오브젝트 풀링
     
@@ -462,22 +461,25 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         }
         return component;
     }
-
     #endregion
 
-
-    public void StartCharging(Transform playerTransform, Vector2 heading)
+    public void StartCharging( in Transform playerTransform, in Vector2 heading)
     {
         if (_isCharging) return;
         _isCharging = true;
 
-        if( heading == Vector2.zero) // 방향이 없는 경우 기본값으로 정면으로 설정
-        {
-            heading = Vector2.down;
-        }
-
         _originTransform = playerTransform; // 참조 저장
-        _currentHeading = heading;         // 방향 저장
+
+        if (heading == Vector2.zero) // 방향이 없는 경우 기본값으로 정면으로 설정
+        {
+            _currentHeading = Vector2.down;
+        }
+        else
+        {
+            _currentHeading = heading;
+        }
+        
+        // 방향 저장
         _chargeStartTime = Time.time;
     }
 
@@ -489,7 +491,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
         int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
 
-        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기
+        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기 ( 현재는 핫슬롯이 가리키는 것의 아이템 데이터를 가져옴.
         List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
         if (rawOffsets != null)

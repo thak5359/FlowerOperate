@@ -100,23 +100,20 @@ public class UseAreaFunction : MonoBehaviour,
     }
     int IUseAreaConsumableFunc.DoConsumableFunc(int Id)
     {
-        if(innerTag == "Plot")
+        if (innerTag == "Plot")
         {
             PlotData _currentPlotData = _currentTarget.GetComponent<Plot>().data;
 
-            if(!_currentPlotData.isFertilized)
-            {
-                _currentPlotData.flowerId = Id;
-                _currentPlotData.growth = 0;
-                _currentPlotData.isFertilized = true;
-                _currentPlotData.elapsed = 0;
-                _currentPlotData.lastActivedDay = _progressManager.getDay();
-            }
+            _currentPlotData.flowerId = Id;
+            _currentPlotData.growth = 0;
+            _currentPlotData.elapsed = 0;
+            _currentPlotData.lastActivedDay = _progressManager.getDay();
 
-            return 0;
+
+
+            return 1;
         }
-
-        return 1;
+        return 0;
     }
 
     public int FireFunc(int itemId, GameObject plot = null)
@@ -139,7 +136,7 @@ public class UseAreaFunction : MonoBehaviour,
             return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
 
         else
-            Debug.LogAssertion("Fire Function error. Wrong itemId : " + itemId);
+            Debug.Log("Fire Function error. Wrong itemId : " + itemId);
             return -100;
     }
 

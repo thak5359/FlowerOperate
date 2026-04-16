@@ -10,8 +10,10 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using VContainer;
 using VContainer.Unity;
 using static Constant;
+using static UnityEditor.Progress;
 
 
 public struct ItemDataStatic
@@ -108,8 +110,7 @@ public struct FlowerItemDataStatic
     public void SetItemDescription(FixedString128Bytes description) => this.Description = description;
 }
 
-
-
+[BurstCompile]
 public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 {
    // bool _isInitialized = false; // 초기화 완료 여부
@@ -201,11 +202,176 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
         }
     }
 
+    #region 공용 데이터 접근
+    [BurstCompile]
+    public void GetItemNameBurst(short id, out FixedString64Bytes name)
+    {
+        if (id >= 0 && id < COMMON_END_ID)
+        {
+            name = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].ItemName;
+        }
+        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
+        {
+            name = _nativeItemDB.Value.Items[id - COMMON_START_ID].ItemName;
+        }
+        else
+        {
+            name = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].ItemName;
+        }
+    }
+
+    [BurstCompile]
+    public void GetDescriptionBurst(short id, out FixedString128Bytes name)
+    {
+        // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
+        if (id >= 0 && id < COMMON_END_ID)
+        {
+            name = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].Description;
+        }
+        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
+        {
+            name = _nativeItemDB.Value.Items[id - COMMON_START_ID].Description;
+        }
+        else
+        {
+            name = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].Description;
+        }
+    }
+
+    [BurstCompile]
+    public void GetAddressBurst(short id, out FixedString128Bytes address)
+    {
+         // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
+        if (id >= 0 && id < COMMON_END_ID)
+        {
+            address = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].SpriteAddress;
+        }
+        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
+        {
+            address = _nativeItemDB.Value.Items[id - COMMON_START_ID].SpriteAddress;
+        }
+        else
+        {
+            address = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].SpriteAddress;
+        }
+    }
+    #endregion
+
+    #region 장비 아이템 데이터 접근
+    [BurstCompile]
+    public  void GetDurationBurst(short id, out short duration)
+    {
+        if (id < 0 || id > USABLE_END_ID)
+        {
+            duration = -1;
+            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index = _nativeUsableItemDB.Value.Items[id].durationIndex;
+            duration = usableDetail.Value.usableDetails[index].duration;
+        }
+    }
+    [BurstCompile]
+    public  void GetPowerBurst( short id, out short power )
+    {
+        if (id < 0 || id > USABLE_END_ID)
+        {
+            power = -1;
+            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index = _nativeUsableItemDB.Value.Items[id].powerIndex;
+            power = usableDetail.Value.usableDetails[index].power;
+        }
+    }
+
+    [BurstCompile]
+    public void GetChargeInfoBurst( short id, out ChargeInfo power)
+    {
+        if (id < 0 || id > USABLE_END_ID)
+        {
+            power = default;
+            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index = _nativeUsableItemDB.Value.Items[id].chargeIndex;
+            power = usableDetail.Value.usableDetails[index].chargeInfo;
+        }
+    }
+    #endregion
+
+    #region 꽃 아이템 전용 데이터 접근
+    [BurstCompile]
+    public  void GetSpeciesBurst(short id, out FixedString64Bytes power)
+    {
+        if (id < COMMON_END_ID || id > FLOWER_END_ID)
+        {
+            power = default;
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index = _nativeFlowerItemDB.Value.Items[id].speciesIndex;
+            power = flowerDetail.Value.flowerDetails[index].species;
+        }
+    }
+
+    [BurstCompile]
+    public void GetColorBurst( short id, out FixedString32Bytes color)
+    {
+        if (id < COMMON_END_ID || id > FLOWER_END_ID)
+        {
+            color = default;
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index = _nativeFlowerItemDB.Value.Items[id].colorIndex;
+            color = flowerDetail.Value.flowerDetails[index].color;
+        }
+    }
+
+    [BurstCompile]
+    public void GetFloroBurst(short id, out FixedString32Bytes floro1, out FixedString32Bytes floro2)
+    {
+        if (id < COMMON_END_ID || id > FLOWER_END_ID)
+        {
+            floro1 = default;
+            floro2 = default;
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            byte index1 = _nativeFlowerItemDB.Value.Items[id].floroIndex;
+            sbyte index2 = _nativeFlowerItemDB.Value.Items[id].floroIndex2;
+            floro1 = flowerDetail.Value.flowerDetails[index1].color;
+            if (index2 >= 0)
+                floro2 = flowerDetail.Value.flowerDetails[index2].color;
+            else floro2 = default;
+        }
+    }
+    #endregion
+
+
 }
 
 [BurstCompile]
 public static class ItemSearchSystem 
 {
+    public static void GetItemNameBurst(short id, out FixedString64Bytes name)// 현재 시도할려고 하는 방향성
+    {
+        GetItemNameBurst(id, out name); // 지금 이건 재귀로 쓰고있음
+    }
+
     #region 공용 데이터 접근
     [BurstCompile]
     public static void GetItemNameBurst(
