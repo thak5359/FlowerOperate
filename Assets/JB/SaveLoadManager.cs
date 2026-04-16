@@ -101,6 +101,7 @@ public class SaveDatas
     [SerializeField] private int playDay;
     [SerializeField] private ItemInstantData invenData;
     [SerializeField] private ItemInstantData storageData;
+    [SerializeField] private Item
     [SerializeField] private List<PlotData> plotData;
 
     public ItemInstantData GetInvenData => invenData;
