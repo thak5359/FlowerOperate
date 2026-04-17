@@ -62,7 +62,6 @@ public class IngameSettingMenuController : MonoBehaviour
     private void Awake()
     {
         pauseCanvas = GetComponent<Canvas>();
-
     }
     
     [Inject]

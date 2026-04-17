@@ -115,7 +115,6 @@ public class UseAreaFunction : MonoBehaviour,
         }
         return 0;
     }
-    `
     public int FireFunc(int itemId, GameObject plot = null)
     {
         if (itemId > MIN_HOE_ID && itemId < MAX_HOE_ID)

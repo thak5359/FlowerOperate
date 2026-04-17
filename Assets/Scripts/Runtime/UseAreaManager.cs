@@ -14,6 +14,7 @@ public interface IUseItem
     public void Fire();
 }
 
+    
 
 public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
@@ -462,6 +463,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         return component;
     }
     #endregion
+
 
     public void StartCharging( in Transform playerTransform, in Vector2 heading)
     {
