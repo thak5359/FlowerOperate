@@ -104,14 +104,13 @@ public class UseAreaFunction : MonoBehaviour,
         {
             PlotData _currentPlotData = _currentTarget.GetComponent<Plot>().data;
 
-            if(!_currentPlotData.isFertilized)
-            {
-                _currentPlotData.flowerId = Id;
-                _currentPlotData.growth = 0;
-                _currentPlotData.isFertilized = true;
-                _currentPlotData.elapsed = 0;
-                _currentPlotData.lastActivedDay = _progressManager.getDay();
-            }
+            //if(!_currentPlotData.isFertilized)
+            //{
+            //    _currentPlotData.flowerId = Id;
+            //    _currentPlotData.growth = 0;
+            //    _currentPlotData.elapsed = 0;
+            //    _currentPlotData.lastActivedDay = _progressManager.getDay();
+            //}
 
             return 0;
         }
