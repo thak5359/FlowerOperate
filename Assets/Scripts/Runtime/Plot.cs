@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static Constant;
+using Unity.Mathematics;
 
 [System.Serializable]
 public struct PlotData // 저장용 데이터 바구니
@@ -24,21 +24,21 @@ public class Plot : MonoBehaviour
     public SpriteRenderer flowerRenderer;
     public int? flowerId = null;
 
-    
-    private int LastActivedDay = 0;// 토지의 마지막 활성화된 날짜
+    int cachedInt; //캐싱용
+
+    int bonusAmount = 0; // 보너스 양   
+
 
     private int cachedDay; //캐싱용
 
-    //토지의 위치 정보(데이터 처리용)
-    public readonly int ChunkNumber;
-    public readonly int plotNumber;
+    private readonly int plotID; // 토지의 고유 ID
 
     // 토지의 인스턴스 데이터 = 저장해야하는거
-    public bool isTilled = false; // 땅이 갈렸는가
     public bool isWatered = false; // 물을 뿌렸는가
     public bool isFertilized; // 비료를 뿌렸는가
     public int growth; // 꽃의 성장 단계 == item.level
     public int elapsed; // 심고 경과한 날짜 또는 페이즈.
+    public int grade;
 
 
     private void Awake()
@@ -53,23 +53,98 @@ public class Plot : MonoBehaviour
         bool input_isFertilized, int input_growth, int input_elapsed)//DB에서 데이터 로드
     {
         this.transform.position = new Vector3(input_posX, input_posY);
-        isTilled = input_isTilled;
         isWatered = input_isWatered;
         flowerId = input_itemID;
         growth = input_growth;
         elapsed = input_elapsed;
     }
 
-    //TODO! 시간 관리 클래스 만들어 이 친구에게 오늘 날짜 갖다주기.
-    //public void OnEnable()
-    //{
-    //    turnOn();
-    //}
+    public int Watering()
+    {
+        if (isWatered == false)
+        {
+            isWatered = true;
+            return 1;
+        }
+        else return 0;
+    }
 
-    //public void OnDisable()
-    //{
-    //    turnOff();
-    //}
+    public int Fertilizing(int itemID)
+    {
+        if (isFertilized == false)
+        {
+            if (QUALITY_FERTILIZER_START_ID <= itemID && itemID < BOUNTIFUL_FERTILIZER_START_ID)
+            {
+                Fertilizer_Quality(itemID);
+            }
+            else if (BOUNTIFUL_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_START_ID)
+            {
+                Fertilizer_Bountiful(itemID);
+            }
+            else if (ALLINONE_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_END_ID)
+            {
+                Fertilizer_AllInOne(itemID);
+            }
+            isFertilized = true;
+            return 1;
+        }
+        else return 0;
+    }
+
+    public void Fertilizer_Quality(int itemID)
+    {
+        cachedInt = itemID - QUALITY_FERTILIZER_START_ID;
+
+        switch (cachedInt)
+        {
+            case 0:
+                grade += 1;
+                break;
+            case 1:
+                grade += 2;
+                break;
+            case 2:
+                grade += 3;
+                break;
+            case 3:
+                grade += 4;
+                break;
+            case 4:
+                grade += 5;
+                break;
+        }
+    }
+
+    public void Fertilizer_Bountiful(int itemID)
+    {
+        cachedInt = itemID - BOUNTIFUL_FERTILIZER_START_ID;
+
+        uint seed = (uint)DateTime.Now.Ticks;
+
+
+        switch (cachedInt)
+        {
+            case 0:
+                grade += 1;
+                break;
+            case 1:
+                grade += 2;
+                break;
+            case 2:
+                grade += 3;
+                break;
+            case 3:
+                grade += 4;
+                break;
+            case 4:
+                grade += 5;
+                break;
+        }
+    }
+    public void Fertilizer_AllInOne(int itemID)
+    {
+
+    }
 
     public PlotData GetSaveData()
     {
@@ -77,7 +152,6 @@ public class Plot : MonoBehaviour
         data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
         data.growth = this.growth;
         data.elapsed = this.elapsed;
-        data.lastActivedDay = this.LastActivedDay;
 
         return data;
     }
@@ -88,36 +162,7 @@ public class Plot : MonoBehaviour
         this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;
         this.growth = data.growth;
         this.elapsed = data.elapsed;
-        this.LastActivedDay = data.lastActivedDay;
     }
-
-    public void turnOn(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            cachedDay = currentDay - LastActivedDay;
-            if (cachedDay > 0)
-            {
-
-                for (int i = 0; i < cachedDay; i++)
-                {
-                    if (growth < 5)
-                    {
-                        growth++;
-                    }
-                }
-            }
-        }
-
-    }
-    public void turnOff(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            LastActivedDay = currentDay;
-        }
-    }
-
 
     public int sowSeed(int input_itemId)
     {

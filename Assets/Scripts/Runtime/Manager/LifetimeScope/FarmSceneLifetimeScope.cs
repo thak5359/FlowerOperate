@@ -20,6 +20,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
         builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
         builder.RegisterEntryPoint<ProgressManager>().AsSelf();
+        //builder.RegisterEntryPoint<PlotManager>().AsImplementedInterfaces().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 

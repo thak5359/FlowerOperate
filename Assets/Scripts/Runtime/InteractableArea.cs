@@ -11,21 +11,19 @@ namespace Fungus
 
         virtual protected void OnTriggerEnter(Collider other)
         {
-            //Debug.Log("¹«¾ğ°¡ µé¾î¿È");
-
+            //Debug.Log("ë¬´ì–¸ê°€ ë“¤ì–´ì˜´");
             if (other != null && other.CompareTag("Interactable"))
             {
                 playerCtrl.setTag(other.gameObject.name);
                 playerCtrl.canInteractive = true;
             }
-
         }
 
         virtual protected void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Interactable"))
             {
-                //Debug.Log("¹«¾ğ°¡ ³ª°¨");
+                //Debug.Log("ë¬´ì–¸ê°€ ë‚˜ê°");
 
                 playerCtrl.setTag(string.Empty);
                 playerCtrl.canInteractive = false;

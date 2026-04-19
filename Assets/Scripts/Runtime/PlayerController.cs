@@ -20,8 +20,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
-    [SerializeField] public GameObject UseArea; // 아이템 사용 범위 (추후 삭제할 예정)
-    [SerializeField] public GameObject Plot;
 
 
     // 차징 관리용
@@ -35,7 +33,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     private Rigidbody rb;
 
     // 상호작용 연속 방지용 
-    private float interactCooldown = 0.2f;
+    private float interactCooldown = 1f;
     private float lastInteractTime = 0f;
 
     [SerializeField] private string messageTarget;
@@ -57,10 +55,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void Start()
     {
-        if (UseArea.activeSelf == true)
-        {
-            UseArea.SetActive(false);
-        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -72,7 +66,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
         Move();
         interactableArea.localPosition = cached3Vec;
-        SnapToWorldGrid(UseArea.transform, cached3Vec);
     }
 
     void Move()
@@ -125,17 +118,11 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-    // 나중에 삭제할 시연용 코드. 인벤토리까지 완성되면 변경.
     public void OnUse(InputAction.CallbackContext context)
     {
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
-            if (UseArea.activeSelf == true)
-            {
-                Debug.LogAssertion("오류! 키입력이 잘못됨!");
-                return;
-            }
 
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
         }
@@ -144,17 +131,8 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
-
-
             _useAreaManager.Fire(); // 발사!
         }
-    }
-
-    private void SnapToWorldGrid(Transform targetPos, Vector3 offset)
-    {
-        Vector3 targetWorldPos = transform.position + offset;
-
-        targetPos.position = new Vector3(Mathf.Round(targetWorldPos.x), 0.15f, Mathf.Round(targetWorldPos.z));
     }
 
     void IInteractable.Interact(string Tag)

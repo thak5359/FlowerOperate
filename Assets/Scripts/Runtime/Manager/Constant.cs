@@ -9,7 +9,7 @@ public class Constant
     // Class for Constant Value in this Project
 
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
-
+    public static readonly FixedString64Bytes ADDRESSABLE_PLOT= "Prefab_Plot";
 
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
@@ -24,6 +24,13 @@ public class Constant
     public const short USABLE_END_ID = 40;
     public const short COMMON_END_ID = 300;
     public const short FLOWER_END_ID = 1000;
+
+    public const short QUALITY_FERTILIZER_START_ID = 600;
+    public const short BOUNTIFUL_FERTILIZER_START_ID = 605;
+    public const short ALLINONE_FERTILIZER_START_ID = 610;
+
+    public const short ALLINONE_FERTILIZER_END_ID = 614;
+
 
     #endregion
 
@@ -46,6 +53,7 @@ public class Constant
 
     public const short MIN_CONSUMABLE_ID = 500;
     public const short MAX_CONSUMABLE_ID = 7;
+
 
     #endregion
 
@@ -84,7 +92,7 @@ public class Constant
 
     #endregion
 
-    #region 오디어 믹서 그룹 이름
+    #region 오디오 믹서 그룹 이름
 
     public const string MASTER_MIXER_GROUP = "MasterVolume";
     public const string BGM_MIXER_GROUP = "BGMVolume";
@@ -92,4 +100,19 @@ public class Constant
     public const string VOICE_MIXER_GROUP = "VoiceVolume";
 
     #endregion
+
+
+    #region LayerName ( For LayerMask on UseAreaFunction)
+    public const string LAYER_TREE = "Tree";
+    public const string LAYER_PLOT = "Plot";
+    public const string LAYER_OBSTACLE = "Obstacle";
+    public const string LAYER_INTERACTABLE = "Interactable";
+    public const string LAYER_ORE = "Ore";
+    public const string LAYER_GRASS = "Grass";
+    #endregion
+
+
+
+
 }
+
