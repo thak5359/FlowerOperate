@@ -230,7 +230,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2207307605254700113}
-  - component: {fileID: 5676575799135920534}
   m_Layer: 8
   m_Name: Plot
   m_TagString: Plot
@@ -256,30 +255,3 @@ Transform:
   - {fileID: 2923687123172572342}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5676575799135920534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7471584695582903488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da8567a338669f84a9f0f629f53b697c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    posX: 0
-    posY: 0
-    isWatered: 0
-    flowerId: 0
-    growth: 0
-    elapsed: 0
-    lastActivedDay: 0
-  plotRenderer: {fileID: 963622037534828117}
-  flowerRenderer: {fileID: 911332243200406309}
-  isWatered: 0
-  isFertilized: 0
-  growth: 0
-  elapsed: 0
-  grade: 0
