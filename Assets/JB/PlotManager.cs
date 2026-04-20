@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
+using System.Linq;
 
 public class PlotManager : ItemStorageParent
 {
 
     // 플롯ID : 플롯데이터 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
-    [SerializeField] public SerializedDictionary<int, PlotData> plotDataDict 
-    {get; private set; }
+    [SerializeField] public SerializedDictionary<int, PlotData> plotDataDict;
 
     private void Awake()
     {
@@ -31,15 +31,17 @@ public class PlotManager : ItemStorageParent
     {
         // 1. 아이템 데이터 초기화 (List<ItemObjectData>로 직접 로드)
         //base.Initialize(this, saveDatas.GetPlotItemData, ref plotItems);
-        
+
         // 2. 플롯 상태 데이터 복구
         var loadedPlots = saveDatas.GetPlotData;
+        plotDataDict = loadedPlots;
+
+        int[] id = plotDataDict.Keys.ToArray();
 
         for (int i = 0; i < loadedPlots.Count; i++)
         {
             var plot = Instantiate(slotObject, this.transform);
-            plot.GetComponent<Plot>().LoadFromData(loadedPlots[i]);
-            plotDataDict.Add(loadedPlots[i].plotId, loadedPlots[i]);
+            plot.GetComponent<Plot>().LoadFromData(loadedPlots[id[i]]);
         }
     }
 
@@ -60,7 +62,7 @@ public class PlotManager : ItemStorageParent
     //    for (int i = 0; i < plotItems.Count; i++)
     //    {
     //        ItemObjectData plant = plotItems[i];
-            
+
     //        if (plant.GetItemID == 0) continue; // 빈 공간 제외
 
     //        // 기간 감소
@@ -73,9 +75,9 @@ public class PlotManager : ItemStorageParent
     //            // TODO: 성장 테이블(CSV)을 참조하도록 개선 필요
     //            plant.SetItemID((ushort)(plant.GetItemID + 1));
     //        }
-            
+
     //        plotItems[i] = plant; // struct이므로 다시 대입
-            
+
     //        // 자식 Plot 오브젝트의 시각적 상태 업데이트 (필요 시)
     //        if (i < plotComponents.Count)
     //        {
@@ -83,7 +85,7 @@ public class PlotManager : ItemStorageParent
     //            // plotComponents[i].UpdateVisual(plant); 
     //        }
     //    }
-        
+
     //    if (_data != null)
     //        _data.SetItemList(plotItems);
     //}

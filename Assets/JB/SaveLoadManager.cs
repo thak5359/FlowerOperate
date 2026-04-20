@@ -103,11 +103,11 @@ public class SaveDatas
     [SerializeField] private ItemStorageData invenData;
     [SerializeField] private ItemStorageData storageData;
     [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
-    [SerializeField] private List<PlotData> plotData;
 
     public ItemStorageData GetInvenData => invenData;
     public ItemStorageData GetStorageData => storageData;
-    public List<PlotData> GetPlotData => plotData;
+    public SerializedDictionary<int, PlotData> GetPlotData => plotDataDict;
+    
 
     public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, SerializedDictionary<int, PlotData> plotData)
     {
