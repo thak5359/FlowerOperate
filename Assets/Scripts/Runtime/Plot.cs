@@ -26,7 +26,7 @@ public class Plot : MonoBehaviour
 
     int cachedInt; //캐싱용
 
-    int bonusAmount = 0; // 보너스 양   
+    //int bonusAmount = 0; // 보너스 양   
 
 
     private int cachedDay; //캐싱용
