@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
+    public float decelereationRate = 0.5f;
+
+    bool isCharging = false;
+
     public bool canInteractive = false;
 
     [Header("캐릭터가 상호작용 가능한 위치")]
@@ -27,10 +31,16 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
 
+
+    [Header("캐릭터 이미지 칸 [앞] [옆] [뒤]")]
+    [SerializeField] public List<Sprite> CharacterSprite = new(3);
+
+
     private UseAreaManager _useAreaManager;
 
     private Vector2 moveInput;
     private Rigidbody rb;
+    private SpriteRenderer sprRenderer;
 
     // 상호작용 연속 방지용 
     private float interactCooldown = 1f;
@@ -45,6 +55,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        sprRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     [Inject]
@@ -55,6 +66,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void Start()
     {
+        sprRenderer.sprite = CharacterSprite[0];
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -70,39 +82,40 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void Move()
     {
+        Vector3 targetVelocity;
+        if (isCharging == true)
+        { targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed * decelereationRate; }
+        else
+            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
 
-
-
-        Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
 
         //Debug.Log($"MoveInput: {moveInput.x}, {moveInput.y}");
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
-        if (moveInput.x != 0)
-        {
-            //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
-
-        }
-        if (moveInput != Vector2.zero)
+        if (moveInput != Vector2.zero && isCharging == false)
         {
             if (moveInput.x != 0)
             {
+
+                switchSpr(1);
+                
+                sprRenderer.flipX = (moveInput.x > 0) ? true : false;
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
+
                 cached3Vec.Set(heading.x, 0.0f, 0.0f);
             }
             else
             {
+                _ = (moveInput.y > 0) ? switchSpr(2) : switchSpr(0);
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
                 cached3Vec.Set(0.0f, 0.0f, heading.y);
 
             }
-
         }
 
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-
 
         if (canInteractive == true && context.canceled)
         {
@@ -123,14 +136,14 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
-
+            isCharging = true;
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
         }
-
 
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
+            isCharging = false;
             _useAreaManager.Fire(); // 발사!
         }
     }
@@ -140,5 +153,21 @@ public class PlayerController : MonoBehaviour, IInteractable
         Debug.Log($"메세지 송신 to :{Tag}");
         Fungus.Flowchart.BroadcastFungusMessage(Tag);
     }
+    /// <summary>
+    /// [Front: 0] [Side : 1] [Rear : 2]
+    /// </summary>
+    /// <param name="idx"></param>
+    int switchSpr(int idx)
+    {
 
+        if (CharacterSprite.Count < 3)
+        {
+            Debug.Log($"CharacerSprite.count is {CharacterSprite.Count}!");
+            return -1;
+        }
+
+        if (sprRenderer.sprite != CharacterSprite[idx])
+            sprRenderer.sprite = CharacterSprite[idx];
+        return 0;
+    }
 }
