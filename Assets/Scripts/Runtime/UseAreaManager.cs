@@ -420,8 +420,13 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
 
     private GameObject _plotPrefab;
-
     private GameObject _useAreaPrefab;
+    
+    bool isPlotPrefabLoaded = false;
+    bool isUseAreaPrefabLoaded = false;
+    bool isPoolInitialized = false;
+    public bool IsReady => isPlotPrefabLoaded && isUseAreaPrefabLoaded && isPoolInitialized;
+
     private readonly Stack<UseAreaFunction> _pool = new(80); // 인스턴스화된 객체를 풀링해서 관리!
     private readonly Stack<UseAreaFunction> _activeObjects = new(80); // 현재 활성화된 객체를 관리하는 스택
 
@@ -430,14 +435,18 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         _useAreaPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
-
+        if (_plotPrefab != null) isUseAreaPrefabLoaded = true;
         _plotPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_PLOT);
+        if (_useAreaPrefab != null ) isPlotPrefabLoaded = true;
 
         if (_useAreaPrefab != null)
         {
             InitializePool(80);
         }
         _activeObjects.Clear();
+
+        if(_pool.Count > 0) isPoolInitialized = true;
+
     }
 
     // pool에 객체 생성해서 UseAreFunction 컴포넌트로 관리.
@@ -473,6 +482,13 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     public void StartCharging( in Transform playerTransform, in Vector2 heading)
     {
         if (_isCharging) return;
+        if ( !IsReady)
+        {
+            Debug.Log($"차징 시작 불가: 준비 상태={IsReady}");
+            return;
+        }
+
+
         _isCharging = true;
 
         _originTransform = playerTransform; // 참조 저장
@@ -546,25 +562,37 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     {
         if (!_isCharging) return; // 차징이 시작되지 않았으면 무시
 
-        // --- 좌표 디버깅 로그 시작 ---
-        //Debug.Log($"<color=yellow>[UseArea Debug]</color> 현재 생성된 영역 개수: {_activeObjects.Count}");
-
-        //int index = 0;
-        //foreach (var obj in _activeObjects)
-        //{
-        //    if (obj != null)
-        //    {
-        //        Debug.Log($"[{index}] 월드 좌표: {obj.transform.position} | 로컬 좌표: {obj.transform.localPosition}");
-        //    }
-        //    index++;
-        //}
-        // --- 좌표 디버깅 로그 끝 ---
-
-        FireUseAreaFunction(_hotbar.PointingSlot + 1); // 현재 아이템 ID에 따라 발사 함수 호출
-        
-        _isCharging = false;
+        try
+        {
+            FireUseAreaFunction(_hotbar.PointingSlot + 1);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.StackTrace}");
+        }
+        finally
+        {
+            _isCharging = false;
+            ClearActiveArea();
+        }
     }
 
+    private void ClearActiveArea()
+    {
+        while (_activeObjects.Count > 0)
+        {
+            ReturnObject(_activeObjects.Pop());
+        }
+
+        Debug.Log("영역 청소!");
+    }
+
+    public void CancelCharging()
+    {
+        _isCharging = false;
+        ClearActiveArea();
+        Debug.Log("캐릭터가 메모리에서 해제됨. 강제로 차징이 취소되었습니다.");
+    }
 
     // 3Vec을 회전시키는 용도의 함수
     private Vector3 RotateOffset(Vector3 offset, Vector2 heading)

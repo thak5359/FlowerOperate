@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
     Vector3 cachedPosition = new Vector3(0.0f, 0.0f, -1.0f);
-    Quaternion cachedRotation;
+    Quaternion cachedRotation = Quaternion.identity;
 
     private  Vector3 interactableBoxScale;
 
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         rb = GetComponent<Rigidbody>();
         sprRenderer = GetComponentInChildren<SpriteRenderer>();
         _mask = LayerMask.GetMask(LAYER_INTERACTABLE);
-
+        interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
     }
 
     [Inject]
@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     void Start()
     {
         sprRenderer.sprite = CharacterSprite[0];
-        interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -124,8 +123,9 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        
         //Debug.Log("OnInteracted has been detected 1 ");
-        if (/*isInteracting == false &&*/ context.canceled)
+        if (isCharging == false && context.canceled)
         {
             Debug.Log("OnInteracted has been detected 2 ");
             if (Time.time < lastInteractTime + interactCooldown)
@@ -179,6 +179,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         if (context.canceled)
         {
             isCharging = false;
+            //Debug.Log("Use 버튼이 떼어졌습니다. 아이템 사용 시도!");
             _useAreaManager.Fire(); // 발사!
         }
     }
@@ -223,4 +224,10 @@ public class PlayerController : MonoBehaviour, IInteractable
             cachedRotation = Quaternion.identity;
         }
     }
+
+    private void OnDisable()
+    {
+        _useAreaManager.CancelCharging();
+    }
+
 }
