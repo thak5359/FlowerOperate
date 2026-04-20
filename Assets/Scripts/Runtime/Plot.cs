@@ -20,6 +20,7 @@ public struct PlotData // 저장용 데이터 바구니
 public class Plot : MonoBehaviour
 {
     public PlotData data = new PlotData();
+    [Header("땅의 SpriteRender와 꽃의 SpriteRenderer를 드래그 해주세요! GetComponentInChildren으로는 좀 힘듦!")]
     public SpriteRenderer plotRenderer;
     public SpriteRenderer flowerRenderer;
     public int? flowerId = null;

@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 3471891343406285304}
   - component: {fileID: 4804915813984513521}
   m_Layer: 0
-  m_Name: Renderer2
+  m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,12 +140,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 535090082, guid: 26d643c27be075e4a92f2030b4fe4b73, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9bbf0e824db4c5a429a6a43e35a8f04f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.7838601, y: 1.9102455}
+  m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -229,9 +229,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  decelereationRate: 0.5
   canInteractive: 0
   interactableArea: {fileID: 6364007864105736048}
   charTimePerPhase: 1.75
+  CharacterSprite:
+  - {fileID: 21300000, guid: 9bbf0e824db4c5a429a6a43e35a8f04f, type: 3}
+  - {fileID: 21300000, guid: 56fb2b799831596429925519702de7c7, type: 3}
+  - {fileID: 21300000, guid: 87e5d11ddfc9f894fb90ab031c89ce32, type: 3}
   messageTarget: 
   heading: {x: 0, y: 0}
 --- !u!95 &2746495836826919488
