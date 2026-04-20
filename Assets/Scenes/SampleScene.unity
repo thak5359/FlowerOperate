@@ -1362,9 +1362,7 @@ MonoBehaviour:
     slotsCount: 50
   slotObject: {fileID: 0}
   plotDataDict:
-    m_Keys: 
-    m_Values: []
-  plots: []
+    _serializedList: []
 --- !u!1 &364400327
 GameObject:
   m_ObjectHideFlags: 0
