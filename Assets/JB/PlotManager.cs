@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
 
 public class PlotManager : ItemStorageParent
 {
-    
-    // 시각적 상태와 작물 성장을 담당하는 플롯 컴포넌트 리스트 (자식 오브젝트)
-    private List<Plot> plotComponents = new List<Plot>();
-    
-    [SerializeField]
-    private List<PlotData> plots = new List<PlotData>();
 
-    public List<PlotData> GetPlots => plots;
+    // 플롯ID : 플롯데이터 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
+    [SerializedDictionary("PlotID", "PlotData")]
+    [SerializeField] public SerializedDictionary<int, PlotData> plotDataDict 
+    {get; private set; }
 
     private void Awake()
     {
@@ -23,13 +21,9 @@ public class PlotManager : ItemStorageParent
     /// </summary>
     private void RefreshPlotCache()
     {
-        // 자식 Plot 컴포넌트 수집
-        plotComponents = new List<Plot>(this.GetComponentsInChildren<Plot>());
-        
-        plots = new List<PlotData>();
-        foreach (var plot in plotComponents)
+        foreach (var plot in this.GetComponentsInChildren<Plot>())
         {
-            plots.Add(plot.GetSaveData());
+            plotDataDict.Add(plot.plotId, plot.GetSaveData());
         }
     }
 
@@ -39,30 +33,20 @@ public class PlotManager : ItemStorageParent
         //base.Initialize(this, saveDatas.GetPlotItemData, ref plotItems);
         
         // 2. 플롯 상태 데이터 복구
-        plotComponents = new List<Plot>(this.GetComponentsInChildren<Plot>());
         var loadedPlots = saveDatas.GetPlotData;
 
-        for (int i = 0; i < plotComponents.Count; i++)
+        for (int i = 0; i < loadedPlots.Count; i++)
         {
-            if (i < loadedPlots.Count)
-            {
-                plotComponents[i].LoadFromData(loadedPlots[i]);
-                // 시각적 데이터 업데이트가 필요하다면 여기서 호출
-            }
+            var plot = Instantiate(slotObject, this.transform);
+            plot.GetComponent<Plot>().LoadFromData(loadedPlots[i]);
+            plotDataDict.Add(loadedPlots[i].plotId, loadedPlots[i]);
         }
-        
-        plots = loadedPlots;
     }
 
     public void SyncItemState()
     {
-
-        // 플롯 상태(수분, 비료 등) 데이터 동기화
-        plots.Clear();
-        foreach (var plot in plotComponents)
-        {
-            plots.Add(plot.GetSaveData());
-        }
+        plotDataDict.Clear();
+        RefreshPlotCache();
     }
 
     public void AfterHarvest()

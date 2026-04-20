@@ -4,15 +4,16 @@ using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
-//��ü ���
+//전체 설정
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private AudioMixer masterMixer;
-    //Root LifetimeScope�� ����ؼ���� ������ ����ϱ�!
+
+    //Root LifetimeScope를 상속받아서 설정을 관리하기!
     protected override void Configure(IContainerBuilder builder)
     {
-        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure ���۵�! @@@</color>");
+        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure 시작됨! @@@</color>");
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();

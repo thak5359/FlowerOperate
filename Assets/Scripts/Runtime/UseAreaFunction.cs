@@ -87,6 +87,7 @@ public class UseAreaFunction : MonoBehaviour,
         {
             PlotData _currentPlotData = _currentTarget.GetComponent<Plot>().data;
             _currentPlotData.isWatered = true;
+            return 0;
         }
         return 1;
     }

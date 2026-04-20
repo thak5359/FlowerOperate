@@ -34,6 +34,7 @@ public class Plot : MonoBehaviour
     public readonly int plotNumber;
 
     // 토지의 인스턴스 데이터 = 저장해야하는거
+    public int plotId; // 토지 고유 번호
     public bool isTilled = false; // 땅이 갈렸는가
     public bool isWatered = false; // 물을 뿌렸는가
     public bool isFertilized; // 비료를 뿌렸는가
@@ -43,7 +44,7 @@ public class Plot : MonoBehaviour
 
     private void Awake()
     {
-        flowerId = this.gameObject.GetComponent<ItemDataContainer>().GetItemID;
+        plotId = Guid.NewGuid().GetHashCode(); // 고유한 ID 생성
     }
 
     //OnEnable일때 타 관리 클래스에서 loadData 실행하기!
@@ -71,6 +72,8 @@ public class Plot : MonoBehaviour
 
     public PlotData GetSaveData()
     {
+        data.plotId = this.plotId;
+        data.Position = this.transform.position;
         data.isWatered = this.isWatered;
         data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
         data.growth = this.growth;
@@ -81,6 +84,8 @@ public class Plot : MonoBehaviour
     }
     public void LoadFromData(PlotData data)
     {
+        this.plotId = data.plotId;
+        this.transform.position = data.Position;
         this.isWatered = data.isWatered;
         this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;
         this.growth = data.growth;

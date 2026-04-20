@@ -1,7 +1,9 @@
+using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using VContainer;
 using VContainer.Unity;
 
@@ -42,8 +44,7 @@ public class SaveLoadManager : MonoBehaviour
             _progressManager.getDay(),
             CloneData(_inventoryManager.GetData),
             CloneData(_storageManager.GetData),
-            CloneData(_plotManager.GetData),
-            new List<PlotData>(_plotManager.GetPlots)
+            _plotManager.plotDataDict
         );
     }
 
@@ -101,21 +102,19 @@ public class SaveDatas
     [SerializeField] private int playDay;
     [SerializeField] private ItemStorageData invenData;
     [SerializeField] private ItemStorageData storageData;
-    [SerializeField] private ItemStorageData plotItemData;
+    [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
     [SerializeField] private List<PlotData> plotData;
 
     public ItemStorageData GetInvenData => invenData;
     public ItemStorageData GetStorageData => storageData;
-    public ItemStorageData GetPlotItemData => plotItemData;
     public List<PlotData> GetPlotData => plotData;
 
-    public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, ItemStorageData plotItem, List<PlotData> plot)
+    public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, SerializedDictionary<int, PlotData> plotData)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;
         this.invenData = inventory;
         this.storageData = storage;
-        this.plotItemData = plotItem;
-        this.plotData = plot;
+        this.plotDataDict = plotData;
     }
 }
