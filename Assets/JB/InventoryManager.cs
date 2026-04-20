@@ -18,8 +18,6 @@ public class InventoryManager : ItemStorageParent
         
     }
 
-
-
     void OnEnable()
     {
         GlobalEventManager.OnItemPickedUp += AddItem;
