@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2923687123172572342}
   - component: {fileID: 1352000233217349953}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8355127442538123775}
   - component: {fileID: 963622037534828117}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2207307605254700113}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plot
   m_TagString: Plot
   m_Icon: {fileID: 0}

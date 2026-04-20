@@ -9,7 +9,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private IngameSettingMenuController pauseMenu;
     [SerializeField] private InventoryManager inventoryManager;
-    [SerializeField] private ProgressManager progressManager;
     [SerializeField] private InventoryUIController inventoryUI;
     // [SerializeField] private //TODO 인벤토리 매니저 추가하기
 
@@ -20,7 +19,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
         builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
         builder.RegisterEntryPoint<ProgressManager>().AsSelf();
-        //builder.RegisterEntryPoint<PlotManager>().AsImplementedInterfaces().AsSelf();
+        //builder.RegisterEntryPoint<PlotManager>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 

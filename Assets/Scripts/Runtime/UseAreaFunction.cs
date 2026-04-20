@@ -1,46 +1,64 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Collections;
 using UnityEditor.Build;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using VContainer;
 using static Constant;
+using static UnityEditor.Progress;
 public interface IUseAreaHoeFunc
 {
-    int DoHoeFunc(GameObject plot);
+    UseAreaResult DoHoeFunc(GameObject plot);
 }
 public interface IUseAreaWateringCanFunc
 {
-    int DoWateringCanFunc();
+    UseAreaResult DoWateringCanFunc();
 }
 public interface IUseAreaHammerFunc
 {
-    int DoHammerFunc();
+    UseAreaResult DoHammerFunc();
 }
 public interface IUseAreaSickleFunc
 {
-    int DoSickleFunc();
+    UseAreaResult DoSickleFunc();
 }
 public interface IUseAreaAxeFunc
 {
-    int DoAxeFunc();
+    UseAreaResult DoAxeFunc();
 }
 public interface IUseAreaConsumableFunc
 {
-    int DoConsumableFunc(int Id);
+    UseAreaResult DoConsumableFunc(int Id);
 }
 
+public struct UseAreaResult
+{
+    public enum ResultType { Success, Failed, Error }
+
+    private ResultType result;
+    FixedString128Bytes errorCode { get; }
+
+    public UseAreaResult(ResultType input_result, FixedString128Bytes input_errorCode = default)
+    {
+        result = input_result;
+        errorCode = input_errorCode;
+    }
+}
 
 
 public class UseAreaFunction : MonoBehaviour,
     IUseAreaAxeFunc, IUseAreaHoeFunc, IUseAreaWateringCanFunc,
     IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConsumableFunc
 {
-
+    
     private PlotManager _plotManager;
 
-    private int _hoeMask;
-    private int _treatMask;
-    private int _hammerMask;
-    private int _sickleMask;
-    private int _axeMask;
+    private static int _hoeMask;
+    private static int _treatMask;
+    private static int _hammerMask;
+    private static int _sickleMask;
+    private static int _axeMask;
 
     private readonly Vector3 _smallBox = new Vector3(0.1f, 0.1f, 0.1f);
     private LayerMask detectionLayer;
@@ -64,87 +82,156 @@ public class UseAreaFunction : MonoBehaviour,
         _axeMask = LayerMask.GetMask(LAYER_TREE);
         _sickleMask = LayerMask.GetMask(LAYER_PLOT,LAYER_GRASS);
         _hammerMask = LayerMask.GetMask(LAYER_ORE);
+
+        
     }
 
-    int IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
+    UseAreaResult IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
     {
-
-        //TODO : 여기에 참고한 객체로 할 행동 구현하기. 성공하면 1반환, 실패했다면 0 반환, 오류는 -100 반환!
+        try { 
         if (plot == null)
         {
-            Debug.LogAssertion("DoHoeFunc error. plot is null");
-            return -100;
+            FixedString128Bytes errorCode = "DoHoeFunc error. plot is null";
+            Debug.LogAssertion(errorCode);
+            return new UseAreaResult(UseAreaResult.ResultType.Error, errorCode);
         }
         Collider[] hits = GetHits(_hoeMask);
 
 
         if (hits.Length == 0)
         {
-            Instantiate(plot, transform.position, Quaternion.identity);
-            return 1;
+            GameObject created = Instantiate(plot, transform.position, Quaternion.identity);
+                int IID = created.GetInstanceID();
+
+            Debug.Log($"<color=green>DoHoeFunc success! targetID = {IID}</color>");
+            return new UseAreaResult(UseAreaResult.ResultType.Success);
         }
         else
         {
-            Debug.Log("DoHoeFunc failed. Something is already there.");
-            return 0; // 설치 실패}
+            Debug.Log($"<color=red>DoHoeFunc failed. Something is already there.</color>");
+            return new UseAreaResult(UseAreaResult.ResultType.Failed); // 설치 실패}
+        }
+        }
+        catch(Exception e)
+        {
+            Debug.Log($"DoHoeFuncError : {e.Message}");
+            return new UseAreaResult(UseAreaResult.ResultType.Error, "HOE_FUNC_EXCEPTION");
         }
     }
 
 
-    int IUseAreaAxeFunc.DoAxeFunc()
+    UseAreaResult IUseAreaAxeFunc.DoAxeFunc()
     {
-
-        Collider[] hits = GetHits(_axeMask);    
-
-
-        if (hits.Length > 0)
+        try
         {
-            // 나무 제거
-            foreach (Collider hitCollider in hits)
+            Collider[] hits = GetHits(_axeMask);
+
+
+            if (hits.Length > 0)
             {
-                // TODO : 나무 제거 및 아이템 드랍 구현
-            }
-            return 1; // 제거 성공
-        }
-        else
-        {
-            Debug.Log("DoAxeFunc error. No tree detected.");
-            return 0; // 제거 실패
-        }
-    }
-    int IUseAreaWateringCanFunc.DoWateringCanFunc()
-    {
-        Collider[] hits = GetHits(_treatMask);
-
-        if (hits.Length > 0)
-        {
-            foreach (Collider hitCollider in hits)
-            {
-                Plot targetPlot = hitCollider.gameObject.GetComponent<Plot>();
-                if (targetPlot != null)
+                // 나무 제거
+                foreach (Collider hitCollider in hits)
                 {
-                    targetPlot.isWatered = true;
+                    // TODO : 나무 제거 및 아이템 드랍 구현
                 }
+                return new UseAreaResult(UseAreaResult.ResultType.Success); // 제거 성공
             }
-
-
+            else
+            {
+                Debug.Log("DoAxeFunc error. No tree detected.");
+                return new UseAreaResult(UseAreaResult.ResultType.Failed); // 제거 실패
+            }
         }
-        return 1;
+        catch( Exception e)
+        {
+            Debug.Log($"DoAxeFunc Error : {e.Message}");
+            return new UseAreaResult(UseAreaResult.ResultType.Error, "AXE_FUNC_EXCEPTION");
+        }
     }
-    int IUseAreaSickleFunc.DoSickleFunc()
+    UseAreaResult IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
-        return 1;
+        try
+        {
+            Collider[] hits = GetHits(_treatMask);
+
+            if (hits.Length == 1)
+            {
+                foreach (Collider hitCollider in hits)
+                {
+                    Plot targetPlot = hitCollider.gameObject.GetComponent<Plot>();
+                    if (targetPlot != null)
+                    {
+                        targetPlot.isWatered = true;
+                    }
+                }
+
+                return new UseAreaResult(UseAreaResult.ResultType.Success);
+
+            }
+            else if ( hits.Length == 0)
+            {
+                return new UseAreaResult(UseAreaResult.ResultType.Failed);
+            }
+            else
+            {
+                FixedString128Bytes errorCode = $" DoWateringCanFunc error. Unexpected amount of target : {hits.Length} ";
+                return new UseAreaResult(UseAreaResult.ResultType.Error);
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.Log($"DoWateringCanFunc Error : {e.Message}");
+            return new UseAreaResult(UseAreaResult.ResultType.Error, "WATERINGCAN_FUNC_EXCEPTION");
+        }
+
+
     }
-    int IUseAreaHammerFunc.DoHammerFunc()
+    UseAreaResult IUseAreaSickleFunc.DoSickleFunc()
     {
-        return 1;
+        return new UseAreaResult(UseAreaResult.ResultType.Error, "Func doesn't coded");
     }
-    int IUseAreaConsumableFunc.DoConsumableFunc(int Id)
+    UseAreaResult IUseAreaHammerFunc.DoHammerFunc()
     {
-        
-        return 0;
+        try
+        {
+            Collider[] hits = GetHits(_hammerMask);
+
+            if (hits.Length == 1)
+            {
+                foreach (Collider hitCollider in hits)
+                {
+                    Plot targetPlot = hitCollider.gameObject.GetComponent<Plot>();
+                    if (targetPlot != null)
+                    {
+                        targetPlot.isWatered = true;
+                    }
+                }
+
+                return new UseAreaResult(UseAreaResult.ResultType.Success);
+
+            }
+            else if (hits.Length == 0)
+            {
+                return new UseAreaResult(UseAreaResult.ResultType.Failed);
+            }
+            else
+            {
+                FixedString128Bytes errorCode = $" DoHammerFunc error. Unexpected amount of target : {hits.Length} ";
+                return new UseAreaResult(UseAreaResult.ResultType.Error);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"DoWateringCanFunc Error : {e.Message}");
+            return new UseAreaResult(UseAreaResult.ResultType.Error, "HAMMER_FUNC_EXCEPTION");
+        }
     }
-    public int FireFunc(int itemId, GameObject plot = null)
+    UseAreaResult IUseAreaConsumableFunc.DoConsumableFunc(int Id)
+    {
+
+        return new UseAreaResult(UseAreaResult.ResultType.Error, "Func doesn't coded");
+    }
+    public UseAreaResult FireFunc(int itemId, GameObject plot = null)
     {
         // TODO : 이전에 FireFuncTest로 실행된 부분을 FIreFunc로 바꾸기.
         if (itemId > MIN_HOE_ID && itemId < MAX_HOE_ID)
@@ -165,10 +252,12 @@ public class UseAreaFunction : MonoBehaviour,
             return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
 
         else
-            Debug.Log("Fire Function error. Wrong itemId : " + itemId);
-        return -100;
+        {
+            FixedString128Bytes errorCode = ("Fire Function error. Wrong itemId : " + itemId);
+            Debug.Log(errorCode);
+            return new UseAreaResult(UseAreaResult.ResultType.Error,errorCode);
+        }
     }
-
     
     /// <summary>
     /// 테스트용 함수! 나중에는 FireFunc()를 사용하라구!
@@ -176,15 +265,15 @@ public class UseAreaFunction : MonoBehaviour,
     /// <param name="pointingslot"></param>
     /// <param name="plot"></param>
     /// <returns></returns>
-    public int FireFuncTest(int pointingslot, GameObject plot = null)
+    public UseAreaResult FireFuncTest(int pointingslot, GameObject plot = null)
     {
         if (pointingslot == 1)
             return ((IUseAreaHoeFunc)this).DoHoeFunc(plot);
         else
-            Debug.Log("Fire Function Test error. 1번일때만 동작함 : " + pointingslot);
-        return -100;
+        {
+            FixedString128Bytes errorCode = ("Fire Function Test error. 1번일때만 동작함 : " + pointingslot);
+            Debug.Log(errorCode);
+            return new UseAreaResult(UseAreaResult.ResultType.Error, errorCode);
+        }
     }
-
-
-
 }
