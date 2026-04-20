@@ -11,7 +11,7 @@ public class TransparentWall : MonoBehaviour
     virtual protected void OnCollisonEnter(Collision other)
     {
         other.collider.CompareTag("Player");
-        Debug.Log("¹«¾ğ°¡ µé¾î¿È");
+        Debug.Log("ë¬´ì–¸ê°€ ë“¤ì–´ì˜´");
         if (other.collider.CompareTag("Player"))
         {
             pMovement = other.collider.GetComponent<PlayerController>();
@@ -33,7 +33,7 @@ public class TransparentWall : MonoBehaviour
 
     virtual protected void OnTriggerEnter(Collider other )
     {
-        Debug.Log("¹«¾ğ°¡ µé¾î¿È");
+        Debug.Log("ë¬´ì–¸ê°€ ë“¤ì–´ì˜´");
         if (other.CompareTag("Player"))
         {
             pMovement = other.GetComponent<PlayerController>();
@@ -53,14 +53,10 @@ public class TransparentWall : MonoBehaviour
 
     virtual protected void OnTriggerExit(Collider other)
     {
-        Debug.Log("¹«¾ğ°¡ ³ª°¨");
+        Debug.Log("ë¬´ì–¸ê°€ ë‚˜ê°");
         if (other.CompareTag("Player"))
         {
             pMovement = other.GetComponent<PlayerController>();
-            if (pMovement != null)
-            {
-                pMovement.canInteractive = false;
-            }
 
             pRenderer = other.GetComponentInChildren<SpriteRenderer>();
             if (pRenderer != null)

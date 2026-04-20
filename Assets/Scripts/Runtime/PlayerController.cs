@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using VContainer;
+using static Constant;
 
 public interface IInteractable
 {
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     bool isCharging = false;
 
-    public bool canInteractive = false;
+    //public bool isInteracting = false;
 
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
@@ -46,16 +48,21 @@ public class PlayerController : MonoBehaviour, IInteractable
     private float interactCooldown = 1f;
     private float lastInteractTime = 0f;
 
-    [SerializeField] private string messageTarget;
 
-    public void setTag(string input_tag) => messageTarget = input_tag;
     public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
-    Vector3 cached3Vec;
+    Vector3 cachedPosition = new Vector3(0.0f, 0.0f, -1.0f);
+    Quaternion cachedRotation;
+
+    private  Vector3 interactableBoxScale;
+
+    private static int _mask;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         sprRenderer = GetComponentInChildren<SpriteRenderer>();
+        _mask = LayerMask.GetMask(LAYER_INTERACTABLE);
+
     }
 
     [Inject]
@@ -67,6 +74,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     void Start()
     {
         sprRenderer.sprite = CharacterSprite[0];
+        interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -77,7 +85,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
-        interactableArea.localPosition = cached3Vec;
+        interactableArea.localPosition = cachedPosition;
+        interactableArea.localRotation = cachedRotation;
     }
 
     void Move()
@@ -97,38 +106,64 @@ public class PlayerController : MonoBehaviour, IInteractable
             {
 
                 switchSpr(1);
-                
+
                 sprRenderer.flipX = (moveInput.x > 0) ? true : false;
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
 
-                cached3Vec.Set(heading.x, 0.0f, 0.0f);
             }
             else
             {
                 _ = (moveInput.y > 0) ? switchSpr(2) : switchSpr(0);
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
-                cached3Vec.Set(0.0f, 0.0f, heading.y);
 
             }
+            locateInteractable();
         }
 
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-
-        if (canInteractive == true && context.canceled)
+        //Debug.Log("OnInteracted has been detected 1 ");
+        if (/*isInteracting == false &&*/ context.canceled)
         {
-
+            Debug.Log("OnInteracted has been detected 2 ");
             if (Time.time < lastInteractTime + interactCooldown)
             {
                 Debug.Log("잠시 뒤에 말을 걸어보자...");
                 return;
             }
 
-            // 나 자신(this)을 IInteractable로 형변환해서 호출
-            ((IInteractable)this).Interact(this.messageTarget);
+            Collider[] hits = GetHits();
+            if (hits.Length == 1)
+            {
+
+                if (hits[0].CompareTag(TAG_STORAGE))
+                {
+                // TODO:: 창고 여는 스크립트 여기에 작성하기
+                }
+
+
+                ((IInteractable)this).Interact(hits[0].gameObject.tag);
+            }
+            else if( hits.Length > 1)
+            {
+                Debug.Log($"한번에 여러 상호작용 대상이 들어왔습니다 \n. {hits.ToString()}");
+            }
         }
+    }
+
+
+    void IInteractable.Interact(string Tag)
+    {
+        Debug.Log($"메세지 송신 to :{Tag}");
+        Debug.Log("OnInteracted has been detected 3 ");
+        Fungus.Flowchart.BroadcastFungusMessage(Tag);
+    }
+
+    private Collider[] GetHits()
+    {
+        return Physics.OverlapBox(interactableArea.position, interactableBoxScale, cachedRotation, _mask);
     }
 
     public void OnUse(InputAction.CallbackContext context)
@@ -148,18 +183,15 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
     }
 
-    void IInteractable.Interact(string Tag)
-    {
-        Debug.Log($"메세지 송신 to :{Tag}");
-        Fungus.Flowchart.BroadcastFungusMessage(Tag);
-    }
+
+
+
     /// <summary>
     /// [Front: 0] [Side : 1] [Rear : 2]
     /// </summary>
     /// <param name="idx"></param>
     int switchSpr(int idx)
     {
-
         if (CharacterSprite.Count < 3)
         {
             Debug.Log($"CharacerSprite.count is {CharacterSprite.Count}!");
@@ -169,5 +201,26 @@ public class PlayerController : MonoBehaviour, IInteractable
         if (sprRenderer.sprite != CharacterSprite[idx])
             sprRenderer.sprite = CharacterSprite[idx];
         return 0;
+    }
+
+    private void locateInteractable()
+    {
+        if (heading == Vector2.right)
+        {
+            cachedPosition.Set(heading.x, 0.0f, 0.0f);
+
+            cachedRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        }
+        if (heading == Vector2.left)
+        {
+            cachedPosition.Set(heading.x, 0.0f, 0.0f);
+
+            cachedRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+        }
+        if (heading == Vector2.up || heading == Vector2.down)
+        {
+            cachedPosition.Set(0.0f, 0.0f, heading.y);
+            cachedRotation = Quaternion.identity;
+        }
     }
 }

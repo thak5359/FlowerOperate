@@ -486,7 +486,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             _currentHeading = heading;
         }
         
-        // 방향 저장
         _chargeStartTime = Time.time;
     }
 

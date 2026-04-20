@@ -5,10 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
-  - Interactable
   - Plot
   - Item
   - Obstacles
+  - Storage
+  - Yuuna
+  - SeedMaker
   layers:
   - Default
   - TransparentFX

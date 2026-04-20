@@ -111,8 +111,12 @@ public class Constant
     public const string LAYER_GRASS = "Grass";
     #endregion
 
+    #region TagName
+    public const string TAG_YUUNA = "Yuuna";
+    public const string TAG_STORAGE = "Storage";
+    public const string TAG_SEEDMAKER = "SeedMaker";
 
-
+    #endregion
 
 }
 

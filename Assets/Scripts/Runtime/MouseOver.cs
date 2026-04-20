@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,13 +16,9 @@ public class MouseOver : MonoBehaviour, IPointerEnterHandler, IPointerMoveHandle
     {
         Debug.Log($"마우스 움직임 감지됨 : {pointerEventData}");
     }
-
     public void OnPointerExit(PointerEventData pointerEventData)
     {
 
     }
     //TODO : Panel 하나 잡아서 아이템 데이터 띄우는 거 만들기
 }
-
-
-

@@ -61,7 +61,7 @@ public class UseAreaFunction : MonoBehaviour,
     private static int _axeMask;
 
     private readonly Vector3 _smallBox = new Vector3(0.1f, 0.1f, 0.1f);
-    private LayerMask detectionLayer;
+
 
     //[Inject]
     //void Construct(PlotManager input_plotManagear) =>
@@ -126,6 +126,7 @@ public class UseAreaFunction : MonoBehaviour,
         {
             Collider[] hits = GetHits(_axeMask);
 
+            
 
             if (hits.Length > 0)
             {
