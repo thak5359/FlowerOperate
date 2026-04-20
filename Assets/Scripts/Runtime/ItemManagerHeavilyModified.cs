@@ -142,6 +142,8 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
         if (_nativeItemDB.IsCreated) _nativeItemDB.Dispose();
         if (_nativeFlowerItemDB.IsCreated) _nativeFlowerItemDB.Dispose();
         if (_nativeUsableItemDB.IsCreated) _nativeUsableItemDB.Dispose();
+        if(flowerDetail.IsCreated) flowerDetail.Dispose();
+        if(usableDetail.IsCreated) usableDetail.Dispose();
     }
 
     private async UniTask LoadBlob<T> (string fileName, Action<BlobAssetReference<T>> assignActrion) where T : unmanaged
