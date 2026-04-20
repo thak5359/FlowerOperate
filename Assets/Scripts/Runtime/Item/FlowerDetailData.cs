@@ -12,8 +12,7 @@ public class FlowerDetailData : ItemDetailData
     [SerializeField] public List<FixedString64Bytes> speciesList;
     [SerializeField] public List<FixedString32Bytes> colorList;
     [SerializeField] public List<FixedString32Bytes> floroList;
-    [SerializeField] public List<byte> growthDuration;
-    [SerializeField] public List<Tuple<byte, byte>> harvestAmount;
+
 
     public FixedString64Bytes Species(byte index) => speciesList[index];
     public FixedString32Bytes Color(byte index) => colorList[index];
