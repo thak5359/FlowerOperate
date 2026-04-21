@@ -70,6 +70,9 @@ public class ActionMapChanger : IMapChangable
     void IMapChangable.changeIAmapShop() => PushAndChange(SHOP_MAP_NAME);
     void IMapChangable.changeIAmapFarm() => PushAndChange(FARM_MAP_NAME);
     void IMapChangable.changeIAmapChatBox() => PushAndChange(CHATBOX_MAP_NAME);
+
+
+
     void IMapChangable.changeIAmapPrev()
     {
         if (_playerInput != null && prevMapStack.Count > 0)

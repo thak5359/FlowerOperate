@@ -102,6 +102,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
                 PauseMapActionDeallocator();
                 SettingMapActionDeallocator();
                 FarmMapActionDeallocator();
+                InventoryMapActionDeallocator();
             }
         }
 
@@ -235,8 +236,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     #region 인벤토리 조작 키 할당
     void InventoryMapActionAllocator()
     {
-        var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
-
+        var map = _playerInput.actions.FindActionMap(INVENTORY_MAP_NAME.ToString());
         InputAction actionEscape = map.FindAction("Escape");
         actionEscape.performed += _inventoryUIContoller.OnEscape;  
     }
@@ -363,6 +363,10 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
 
         var actionEscape = map.FindAction("Escape");
         actionEscape.performed -= _pauseMenu.OnBackAction;
+
+        var actionInventory = map.FindAction("OpenInventory");
+        actionInventory.performed -= _inventoryUIContoller.OnOpenInventory;
+
 
         // 핫슬롯 1~0번 해제 (하드 코딩)
         map.FindAction("HotSlot1").performed -= OnHotSlot1Performed;

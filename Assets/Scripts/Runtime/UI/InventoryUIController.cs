@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using VContainer;
+using static Constant;
 
 public class InventoryUIController : MonoBehaviour
 {
@@ -21,12 +22,14 @@ public class InventoryUIController : MonoBehaviour
 
     private InventoryManager _inventoryManager;
     private ItemManagerHeavilyModified _itemManager;
+    private IMapChangable _mapChanger;
 
 
     [Inject]
-    private void Construct(InventoryManager input_inventorymanager)
+    private void Construct(InventoryManager input_inventorymanager, IMapChangable input_mapChanger)
     {
         _inventoryManager = input_inventorymanager;
+        _mapChanger = input_mapChanger;
     }
 
     #region Unity Event
@@ -34,13 +37,26 @@ public class InventoryUIController : MonoBehaviour
     {
         if (_uiDocument == null)
             _uiDocument = GetComponent<UIDocument>();
+        if (_uiDocument == null)
+            Debug.Log("<color=red>GetComponent on Awake is failed</color>");
+        else
+            Debug.Log("<color=green>GetComponent on Awake is success</color>");
+    }
+
+    private void Start()
+    {
+        if (_uiDocument == null)
+            _uiDocument = GetComponent<UIDocument>();
+        if (_uiDocument == null)
+            Debug.Log("<color=red>GetComponent on Start is failed</color>");
+        Debug.Log("<color=green>GetComponent on Start is success</color>");
     }
 
     private void OnEnable()
     {
         root = _uiDocument.rootVisualElement;
 
-
+        root.visible = false;
         buttons.Clear();
 
         buttons = root.Query<Button>("slot-button").ToList(); // 리스트에 집어넣기
@@ -61,18 +77,9 @@ public class InventoryUIController : MonoBehaviour
             Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
             buttons[i].style.backgroundImage = img;
 
-
-
             i++;
-
         }
-
-
-
     }
-
-
-
 
     private void OnDisable()
     {
@@ -88,19 +95,38 @@ public class InventoryUIController : MonoBehaviour
 
     public void openInventory()
     {
-        root.visible = true;
-    }
+        if ( _mapChanger.getCurrentIAmap() != INVENTORY_MAP_NAME)
+        {
+            _mapChanger.changeIAmapInventory();
 
+
+        if (root == null)
+        {
+            Debug.LogError("파트너, UIDocument의 Root를 찾을 수 없어요! 패널 설정을 확인해 주세요.");
+            return;
+        }
+
+        root.visible = true;
+
+        }
+    }
     #endregion
 
     #region Close Inventory
     public void OnEscape(InputAction.CallbackContext callbackContext)
     {
+        Debug.Log("OnEscape has been called");
         closeInventory();
     }
     public void closeInventory()
     {
-        root.visible = false;
+        Debug.Log("closeInventory Has been Called");
+
+        if (_mapChanger.getCurrentIAmap() == INVENTORY_MAP_NAME)
+        {
+            root.visible = false;
+            _mapChanger.changeIAmapPrev();
+        }
     }
     #endregion
 
