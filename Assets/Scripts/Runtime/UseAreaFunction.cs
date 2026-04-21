@@ -127,13 +127,13 @@ public class UseAreaFunction : MonoBehaviour,
             Collider[] hits = GetHits(_axeMask);
 
             
-
             if (hits.Length > 0)
             {
                 // 나무 제거
                 foreach (Collider hitCollider in hits)
                 {
-                    // TODO : 나무 제거 및 아이템 드랍 구현
+                    hitCollider.gameObject.SetActive(false);
+
                 }
                 return new UseAreaResult(UseAreaResult.ResultType.Success); // 제거 성공
             }

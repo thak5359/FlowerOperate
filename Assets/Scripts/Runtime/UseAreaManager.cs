@@ -434,10 +434,12 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        _useAreaPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
-        if (_plotPrefab != null) isUseAreaPrefabLoaded = true;
+
         _plotPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_PLOT);
-        if (_useAreaPrefab != null ) isPlotPrefabLoaded = true;
+        if (_plotPrefab != null) isPlotPrefabLoaded = true; 
+
+        _useAreaPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
+        if (_useAreaPrefab != null ) isUseAreaPrefabLoaded = true;
 
         if (_useAreaPrefab != null)
         {
@@ -484,7 +486,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         if (_isCharging) return;
         if ( !IsReady)
         {
-            Debug.Log($"차징 시작 불가: 준비 상태={IsReady}");
+            Debug.Log($"차징 시작 불가: 준비 상태 \n plot 프리펩 로드 = {isPlotPrefabLoaded} \n UseArea 프리펩 로드 = {isUseAreaPrefabLoaded} \n 오브젝트 풀 로드 = {isPoolInitialized}");
             return;
         }
 

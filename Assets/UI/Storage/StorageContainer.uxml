@@ -33,7 +33,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="OrgaizeButotnContainer" class="action-button-container font-maple" style="margin-top: 10px;">
             <ui:Button text="박스 정리" name="BoxOrganizeButton" class="btn-sort font-maple-light" style="width: 150px;" />
-			<ui:Button text="확장 정리" name="ExpasionOrganizeButton" class="btn-sort font-maple-light btn-expansion" style="width: 350px;" />
+            <ui:Button text="확장 정리" name="ExpansionOrganizeButton" class="btn-sort font-maple-light btn-expansion" style="width: 350px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
