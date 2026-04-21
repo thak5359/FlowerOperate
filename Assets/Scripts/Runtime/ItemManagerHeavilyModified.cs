@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Unity.Burst;
@@ -9,11 +7,8 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using VContainer;
 using VContainer.Unity;
 using static Constant;
-using static UnityEditor.Progress;
 
 
 public struct ItemDataStatic
