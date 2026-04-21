@@ -4,13 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - NPC
-  - Plot
-  - Item
-  - Obstacles
-  - Storage
   - Yuuna
   - SeedMaker
+  - Storage
+  - Bed
   layers:
   - Default
   - TransparentFX
@@ -23,8 +20,8 @@ TagManager:
   - Plot
   - Ore
   - Grass
-  - 
-  - 
+  - Tree
+  - Fogs
   - 
   - 
   - 
