@@ -39,12 +39,14 @@ public class SaveLoadManager : MonoBehaviour
         _storageManager.SyncItemState();
         _plotManager.SyncItemState();
 
+        int day = (_progressManager != null) ? _progressManager.getDay() : 0;
+
         // 참조가 아닌 값(리스트 복사)을 넘겨서 데이터 오염 방지
         saveData = new SaveDatas(
-            _progressManager.getDay(),
+            day,
             CloneData(_inventoryManager.GetData),
             CloneData(_storageManager.GetData),
-            _plotManager.plotDataDict
+            _plotManager.getPlotDataDict
         );
     }
 
@@ -104,10 +106,12 @@ public class SaveDatas
     [SerializeField] private ItemStorageData storageData;
     [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
 
+    public string GetSaveTime => saveTime;
     public ItemStorageData GetInvenData => invenData;
     public ItemStorageData GetStorageData => storageData;
     public SerializedDictionary<int, PlotData> GetPlotData => plotDataDict;
     
+    public SaveDatas() { }
 
     public SaveDatas(int day, ItemStorageData inventory, ItemStorageData storage, SerializedDictionary<int, PlotData> plotData)
     {

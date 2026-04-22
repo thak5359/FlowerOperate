@@ -12,7 +12,7 @@ public class BlobDataViewer : EditorWindow
     {
         if (GUILayout.Button("마지막으로 구운 Blob 파일 읽어보기", GUILayout.Height(40)))
         {
-            string path = "Assets/StreamingAssets/Blobs/ItemData.blob"; // 파트너의 파일 경로
+            string path = "Assets/StreamingAssets/Blobs/FlowerData.blob"; // 파트너의 파일 경로
             if (File.Exists(path))
             {
                 // 버전 번호는 베이킹할 때 넣었던 것과 맞춰주세요 (예: 1)
@@ -22,7 +22,7 @@ public class BlobDataViewer : EditorWindow
                     for (int i = 0; i < blobRef.Value.Items.Length; i++)
                     {
                         ref var item = ref blobRef.Value.Items[i];
-                        Debug.Log($"[{i}] ID: {item.ItemId} | 이름: {item.ItemName.ToString()} | 설명: {item.Description.ToString()} | 설명: {item.SpriteAddress.ToString()}");
+                        Debug.Log($"[{i}] ID: {item.ItemId} | 이름: {item.ItemName.ToString()} | 설명: {item.Description.ToString()} | 설명: {item.SpriteAddress.ToString()} | 가격: {item.Price}");
                     }
                     blobRef.Dispose();
                 }

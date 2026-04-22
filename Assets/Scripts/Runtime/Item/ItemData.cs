@@ -12,10 +12,12 @@ public class ItemIdData : ScriptableObject
     [SerializeField] public List<FixedString64Bytes> itemName;
     [SerializeField] public List<FixedString128Bytes> description;
     [SerializeField] public List<FixedString64Bytes> spriteAddress;
+    [SerializeField] public List<short> price;
 
     public FixedString64Bytes ItemName(byte i) => itemName[i];
     public FixedString128Bytes Description(byte i) => description[i];
     public FixedString64Bytes Address(byte i) => spriteAddress[i];
+    public short Price(byte i) => price[i];
 }
 
 
@@ -25,6 +27,7 @@ public struct ItemBlobData
     public FixedString64Bytes ItemName;      
     public FixedString128Bytes Description; 
     public FixedString64Bytes SpriteAddress;
+    public short Price;
 }
 
 public struct ItemBlobDatas

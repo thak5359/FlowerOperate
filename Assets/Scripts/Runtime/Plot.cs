@@ -13,7 +13,6 @@ public struct PlotData // 저장용 데이터 바구니
     public int flowerId; // int? 대신 int 사용 (0이면 없는 것으로 처리)
     public int growth;
     public int elapsed;
-    public int lastActivedDay;
 }
 
 [Serializable]
@@ -37,7 +36,6 @@ public class Plot : MonoBehaviour
     public int plotId; // 토지 고유 번호
     public bool isTilled = false; // 땅이 갈렸는가
     public bool isWatered = false; // 물을 뿌렸는가
-    public bool isFertilized; // 비료를 뿌렸는가
     public int growth; // 꽃의 성장 단계 == item.level
     public int elapsed; // 심고 경과한 날짜 또는 페이즈.
 
@@ -59,17 +57,6 @@ public class Plot : MonoBehaviour
         elapsed = input_elapsed;
     }
 
-    //TODO! 시간 관리 클래스 만들어 이 친구에게 오늘 날짜 갖다주기.
-    //public void OnEnable()
-    //{
-    //    turnOn();
-    //}
-
-    //public void OnDisable()
-    //{
-    //    turnOff();
-    //}
-
     public PlotData GetSaveData()
     {
         data.plotId = this.plotId;
@@ -78,7 +65,6 @@ public class Plot : MonoBehaviour
         data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
         data.growth = this.growth;
         data.elapsed = this.elapsed;
-        data.lastActivedDay = this.LastActivedDay;
 
         return data;
     }
@@ -90,34 +76,6 @@ public class Plot : MonoBehaviour
         this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;
         this.growth = data.growth;
         this.elapsed = data.elapsed;
-        this.LastActivedDay = data.lastActivedDay;
-    }
-
-    public void turnOn(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            cachedDay = currentDay - LastActivedDay;
-            if (cachedDay > 0)
-            {
-
-                for (int i = 0; i < cachedDay; i++)
-                {
-                    if (growth < 5)
-                    {
-                        growth++;
-                    }
-                }
-            }
-        }
-
-    }
-    public void turnOff(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            LastActivedDay = currentDay;
-        }
     }
 
 

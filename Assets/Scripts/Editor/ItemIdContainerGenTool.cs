@@ -100,6 +100,9 @@ public class ItemIdContainerGenTool : EditorWindow
         so.colorIndex = new List<byte>();
         so.floroIndex = new List<byte>();
         so.floroIndex2 = new List<sbyte>();
+        so.growthDuration = new List<byte>();
+        so.harvestAmount = new List<byte>();
+        so.price = new List<short>();
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -113,16 +116,15 @@ public class ItemIdContainerGenTool : EditorWindow
             so.itemName.Add(data[1].Trim());
             so.description.Add(""); // 필요시 CSV 인덱스 추가 가능
             so.spriteAddress.Add("");
+            so.price.Add(data.Length > 8 &&  byte.TryParse(data[8], out byte p) ? p : (byte) 0);
 
             // Flower 전용 인덱스 채우기
             so.speciesIndex.Add(data.Length > 2 && byte.TryParse(data[2], out byte s) ? s : (byte)0);
             so.colorIndex.Add(data.Length > 3 && byte.TryParse(data[3], out byte c) ? c : (byte)0);
             so.floroIndex.Add(data.Length > 4 && byte.TryParse(data[4], out byte f) ? f : (byte)0);
-
-            if (data.Length > 5 && sbyte.TryParse(data[5], out sbyte f2))
-                so.floroIndex2.Add(f2);
-            else
-                so.floroIndex2.Add(-1);
+            so.floroIndex2.Add(data.Length > 5 && sbyte.TryParse(data[5], out sbyte f2) ? f2 : (sbyte)-1);
+            so.growthDuration.Add(data.Length > 6 &&  byte.TryParse(data[6], out byte g) ? (byte)(g + 4) : (byte)1);
+            so.harvestAmount.Add(data.Length > 7 &&  byte.TryParse(data[7], out byte h) ? h : (byte)0);
         }
 
         SaveAsset(so, "Assets/ScriptableObjects/Flower/FlowerIdData.asset");

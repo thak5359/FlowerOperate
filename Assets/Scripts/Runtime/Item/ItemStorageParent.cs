@@ -74,7 +74,6 @@ public class ItemStorageParent : MonoBehaviour, IManager
     protected virtual void AddItem(ItemObjectData item)
     {
         _data.AddItem(item);
-        //슬롯의 숫자UI 변경 로직 넣어주세요.
     }
 
     protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
