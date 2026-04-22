@@ -490,7 +490,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             return;
         }
 
-
         _isCharging = true;
 
         _originTransform = playerTransform; // 참조 저장
@@ -540,6 +539,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
 
     }
+
     private void UpdateVisualArea(List<Vector3> worldPositions)
     {
         // 기존에 켜져있던 애들을 일단 다 끄고 다시 배치 (비효율적일 수 있으나 현재 구조에서 가장 확실함)
@@ -556,8 +556,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             _activeObjects.Push(obj);
         }
     }
-
-
 
 
     public void Fire() // Context.canceled, 버튼을 땠을 때 발사!
@@ -661,8 +659,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         foreach (var obj in pool) obj.SetActive(false);
 
     }
-
-
     private List<Vector3> GetAreaList(int itemId, int level)
     {
         if(itemId ==1) // 괭이, 물뿌리개, 망치, 소모품
@@ -704,7 +700,5 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             Debug.LogWarning($"아이템 ID {itemId}에 대한 영역 데이터가 없습니다.");
             return null;
         }
-
     }
-
 }

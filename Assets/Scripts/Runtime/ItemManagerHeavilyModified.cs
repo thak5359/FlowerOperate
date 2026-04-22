@@ -11,100 +11,6 @@ using VContainer.Unity;
 using static Constant;
 
 
-public struct ItemDataStatic
-{
-    public short ItemId;
-    public FixedString64Bytes ItemName;
-    public FixedString128Bytes Description;
-    public FixedString64Bytes SpriteAddress;
-
-    public ItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName,
-        FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress)
-    {
-        ItemId = input_itemId;
-        ItemName  = input_ItemName;
-        Description = input_Description;
-        SpriteAddress = input_SpriteAddress;
-    }
-}
-
-public struct UsableItemDataStatic 
-{
-    public short ItemId;
-    public FixedString64Bytes ItemName;
-    public FixedString128Bytes Description;
-    public FixedString64Bytes SpriteAddress;
-
-    public short Duration;
-    public sbyte Power;
-    public ChargeInfo chargeInfo;
-
-    public UsableItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName,
-        FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress,
-        short input_Duration, sbyte input_Power, ChargeInfo input_ChargeInfo)
-    {
-        ItemId = input_itemId;
-        ItemName = input_ItemName;
-        Description = input_Description;
-        SpriteAddress = input_SpriteAddress;
-
-        Duration = input_Duration;
-        Power = input_Power;
-        chargeInfo = input_ChargeInfo;
-    }
-}
-
-public struct FlowerItemDataStatic
-{
-    public short ItemId;
-    public FixedString64Bytes ItemName;
-    public FixedString128Bytes Description;
-    public FixedString64Bytes SpriteAddress;
-
-    public FixedString32Bytes Species;
-    public FixedString32Bytes Color;
-    public FixedString32Bytes Floro1;
-    public FixedString32Bytes Floro2;
-
-    bool isSeed;
-
-    public FlowerItemDataStatic(short input_itemId, FixedString64Bytes input_ItemName,
-        FixedString128Bytes input_Description, FixedString64Bytes input_SpriteAddress,
-        FixedString32Bytes input_species, FixedString32Bytes input_Color,
-        FixedString32Bytes input_Floro1, FixedString32Bytes input_Floro2 = default,
-        bool input_isSeed = false)
-    {
-        ItemId = input_itemId;
-        ItemName = input_ItemName;
-        Description = input_Description;
-        SpriteAddress = input_SpriteAddress;
-
-        Species = input_species;
-        Color = input_Color;
-        Floro1 = input_Floro1;
-        Floro2 = input_Floro2;
-        isSeed = input_isSeed;
-    }
-
-    public FlowerItemDataStatic(FlowerItemDataStatic copy)
-    {
-        ItemId = copy.ItemId;
-        ItemName = copy.ItemName;
-        Description = copy.Description;
-        SpriteAddress = copy.SpriteAddress;
-
-        Species = copy.Species;
-        Color = copy.Color;
-        Floro1 = copy.Floro1;
-        Floro2 = copy.Floro2;
-        isSeed = copy.isSeed;
-    }
-
-    public void SetItemName(FixedString64Bytes itemName) => this.ItemName = itemName;
-    public void SetIsSeed(bool isSeed = false) => this.isSeed = isSeed;
-    public void SetItemDescription(FixedString128Bytes description) => this.Description = description;
-}
-
 [BurstCompile]
 public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 {
@@ -147,56 +53,6 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 
         byte[] data = await File.ReadAllBytesAsync(path);
         assignActrion(BlobAssetReference<T>.Create(data));
-    }
-
-    public async UniTask LoadFlowerEncyclopedia()
-    {
-        int count = FLOWER_END_ID - FLOWER_START_ID + 1; // 예: 700개
-
-        // 1. 필요한 메모리 할당 (NativeArray)
-        var targetIds = new NativeArray<short>(count, Allocator.TempJob);
-        var outNames = new NativeArray<FixedString64Bytes>(count, Allocator.TempJob);
-        var outDescs = new NativeArray<FixedString128Bytes>(count, Allocator.TempJob);
-        var outAddrs = new NativeArray<FixedString128Bytes>(count, Allocator.TempJob);
-
-        // 2. 대상 ID 채우기 (여기는 메인 스레드에서 한 번만 수행)
-        for (int i = 0; i < count; i++)
-        {
-            targetIds[i] = (short)(FLOWER_START_ID + i);
-        }
-
-        // 3. Job 설정
-        ItemEncyclopediaJob job = new ItemEncyclopediaJob
-        {
-            targetItemIds = targetIds,
-            CommonDB = _nativeItemDB,
-            FlowerDB = _nativeFlowerItemDB,
-            UsableDB = _nativeUsableItemDB,
-            OutNames = outNames,
-            OutDescriptions = outDescs,
-            OutSpriteAddresses = outAddrs
-        };
-        try
-        {
-
-            // 4. Job 실행 (700번의 Execute를 병렬로 돌려라!)
-            JobHandle handle = job.Schedule(count, 64); // 64개씩 묶어서 스레드에 배분
-
-            // 5. 완료 대기 (비동기로 기다리기)
-            //await handle.ToUniTask();
-            await handle.WaitAsync(PlayerLoopTiming.Update);
-
-            // 6. 결과 활용 (이제 outNames 등을 사용해 UI 리스트 생성)
-            // ... UI 생성 로직 ...
-        }
-        finally
-        {
-            // 7. 메모리 해제
-            targetIds.Dispose();
-            outNames.Dispose();
-            outDescs.Dispose();
-            outAddrs.Dispose();
-        }
     }
 
     #region 공용 데이터 접근
@@ -573,7 +429,6 @@ public static class ItemSearchSystem
 [BurstCompile ]
 public struct ItemEncyclopediaJob : IJobParallelFor
 {
-
     [ReadOnly] public NativeArray<short> targetItemIds;
     [ReadOnly] public BlobAssetReference<ItemBlobDatas> CommonDB;
     [ReadOnly] public BlobAssetReference<FlowerItemBlobDatas> FlowerDB;
@@ -588,7 +443,6 @@ public struct ItemEncyclopediaJob : IJobParallelFor
 
         short id = targetItemIds[index];
 
-        // 우리가 만든 Burst 함수를 그대로 활용할 수 있습니다!
         ItemSearchSystem.GetItemNameBurst(UsableDB, CommonDB, FlowerDB,  id, out var name);
         ItemSearchSystem.GetDescriptionBurst(UsableDB, CommonDB, FlowerDB, id, out var desc);
         ItemSearchSystem.GetAddressBurst(CommonDB, FlowerDB, UsableDB, id, out var spriteAddr);

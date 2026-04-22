@@ -306,6 +306,7 @@ Shader "Shader Graphs/Fixed 3d Skew"
         {
             float3 BaseColor;
             float Alpha;
+            float AlphaClipThreshold;
         };
         
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
@@ -319,6 +320,7 @@ Shader "Shader Graphs/Fixed 3d Skew"
             float _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_A_7_Float = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.a;
             surface.BaseColor = (_SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.xyz);
             surface.Alpha = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_A_7_Float;
+            surface.AlphaClipThreshold = float(0.5);
             return surface;
         }
         

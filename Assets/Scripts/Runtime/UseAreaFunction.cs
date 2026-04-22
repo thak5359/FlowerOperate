@@ -265,6 +265,10 @@ public class UseAreaFunction : MonoBehaviour,
     {
         if (pointingslot == 1)
             return ((IUseAreaHoeFunc)this).DoHoeFunc(plot);
+        else if (pointingslot== 3)
+        {
+            return ((IUseAreaAxeFunc)this).DoAxeFunc();
+        }
         else
         {
             FixedString128Bytes errorCode = ("Fire Function Test error. 1번일때만 동작함 : " + pointingslot);
