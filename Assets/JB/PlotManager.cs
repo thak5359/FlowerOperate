@@ -9,8 +9,11 @@ public class PlotManager : ItemStorageParent
 
     // 플롯ID : 플롯데이터 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
-    [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
+    [SerializeField] 
+    private SerializedDictionary<int, PlotData> plotDataDict;
 
+    [SerializeField]
+    private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> getPlotDataDict => this.plotDataDict;
 
     private void Awake()
@@ -42,7 +45,7 @@ public class PlotManager : ItemStorageParent
 
         for (int i = 0; i < loadedPlots.Count; i++)
         {
-            var plot = Instantiate(slotObject, this.transform);
+            var plot = Instantiate(plotPrefab, this.transform);
             plot.GetComponent<Plot>().LoadFromData(loadedPlots[id[i]]);
         }
     }

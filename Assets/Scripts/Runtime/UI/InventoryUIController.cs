@@ -69,11 +69,11 @@ public class InventoryUIController : MonoBehaviour
     private async UniTask loadItemDatas()
     {
         ushort i = 0;
-        foreach( ItemObjectData data in _inventoryManager.getSlotList)
+        foreach( ItemObjectData data in _inventoryManager.SlotList)
         {
 
             FixedString128Bytes address;
-            _itemManager.GetAddressBurst((short)_inventoryManager.getSlotList[i].GetItemID, out address);
+            _itemManager.GetAddressBurst((short)_inventoryManager.SlotList[i].GetItemID, out address);
             Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
             buttons[i].style.backgroundImage = img;
 

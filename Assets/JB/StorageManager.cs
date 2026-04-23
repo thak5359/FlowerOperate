@@ -15,28 +15,12 @@ public class StorageManager : ItemStorageParent
 
     private void Awake()
     {
-        // _data가 초기화되어 있다고 가정하고 슬롯 생성 및 초기화
-        if (_data != null)
-        {
-            // 이미 생성된 자식이 있다면 리스트에 추가하고, 부족하면 생성
-            hotbarSlots.AddRange(GetComponentsInChildren<HotBarSlot>());
-
-            for (int i = hotbarSlots.Count; i < _data.GetSlotsCount; i++)
-            {
-                if (slotObject != null)
-                {
-                    GameObject go = Instantiate(slotObject, this.transform);
-                    HotBarSlot slot = go.GetComponent<HotBarSlot>();
-                    if (slot != null) hotbarSlots.Add(slot);
-                }
-            }
-        }
     }
 
     public override async void Load(SaveDatas saveDatas)
     {
         // base.Initialize를 통해 _data와 slotList(ref)를 초기화
-        base.Initialize(saveDatas.GetStorageData, ref slotList);
+        base.Initialize(saveDatas.GetStorageData);
         await RefreshUI();
     }
 

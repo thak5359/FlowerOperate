@@ -9,7 +9,7 @@ using VContainer.Unity;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private InventoryManager _inventoryManager;
+    private InventoryDataManager _inventoryManager;
     private StorageManager _storageManager;
     private PlotManager _plotManager;
     private ProgressManager _progressManager;
@@ -19,7 +19,7 @@ public class SaveLoadManager : MonoBehaviour
 
 
     [Inject]
-    public void Construct(InventoryManager inven, StorageManager storage, PlotManager plot, 
+    public void Construct(InventoryDataManager inven, StorageManager storage, PlotManager plot, 
         ProgressManager progress)
     {
         _inventoryManager = inven;

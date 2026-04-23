@@ -17,18 +17,13 @@ public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
     protected ItemInstantData _data = new ItemInstantData(); //인벤토리에 있던 데이터 저장용 Storage는 창고임
-    [SerializeField]
-    protected GameObject slotObject; // ?
 
     //Getter
     public ItemInstantData GetData => _data;
 
     //storageParent의 목적은? 호출되는곳에서 인자도 this를 넣을거라면 여기서도 this를 쓸수도 있는거같은데
-    protected virtual void Initialize(ItemInstantData data, ref List<ItemObjectData> slotList)
+    protected virtual void Initialize(ItemInstantData data)
     {
-
-        slotList.Clear();
-
         if (data == null || data.GetList == null)
         {
             Debug.LogWarning("불러온 데이터가 유효하지 않습니다.");
@@ -37,8 +32,6 @@ public class ItemStorageParent : MonoBehaviour, IManager
 
         // 1. 데이터 교체 (ResetData를 먼저 하면 안됨)
         _data = data;
-        slotList = _data.GetList;
-
     }
 
     public virtual void Load(SaveDatas saveDatas) { }
@@ -58,7 +51,6 @@ public class ItemStorageParent : MonoBehaviour, IManager
 
     public virtual void Swap(int idx1, int idx2)
     {
-        // 슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
         _data.SwapItem(idx1, idx2);
         Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
     }
@@ -156,7 +148,6 @@ public struct ItemInstantDatas
             start.SetAmount(0); // 합쳐졌으므로 시작 아이템은 0개가 되어야 함
         }
     }
-
 }
 
 [Serializable]
