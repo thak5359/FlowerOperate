@@ -17,6 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 77d8ef05cbe2b3e46a6802d82660b02d
   m_SerializeEntries:
+  - m_GUID: 31c593af5d3a3ba4ba8e88620038d292
+    m_Address: Spr_Plot_Watered
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bb275bace6ad02409e5e122621180b3
+    m_Address: Spr_Plot_Default
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b712121e49f702d4bb1c3cfe733f59c4
     m_Address: Prefab_Plot
     m_ReadOnly: 0
