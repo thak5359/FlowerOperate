@@ -67,28 +67,6 @@ public class Plot : MonoBehaviour
         else return 0;
     }
 
-    public int Fertilizing(int itemID)
-    {
-        if (isFertilized == false)
-        {
-            if (QUALITY_FERTILIZER_START_ID <= itemID && itemID < BOUNTIFUL_FERTILIZER_START_ID)
-            {
-                Fertilizer_Quality(itemID);
-            }
-            else if (BOUNTIFUL_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_START_ID)
-            {
-                Fertilizer_Bountiful(itemID);
-            }
-            else if (ALLINONE_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_END_ID)
-            {
-                Fertilizer_AllInOne(itemID);
-            }
-            isFertilized = true;
-            return 1;
-        }
-        else return 0;
-    }
-
     public void Fertilizer_Quality(int itemID)
     {
         cachedInt = itemID - QUALITY_FERTILIZER_START_ID;

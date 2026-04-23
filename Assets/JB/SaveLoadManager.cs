@@ -113,7 +113,7 @@ public class SaveDatas
     
     public SaveDatas() { }
 
-    public SaveDatas(int day, ItemInstantData inventory, ItemInstantData storage, ItemInstantData plotItem, SerializedDictionary<int, PlotData> plotData)
+    public SaveDatas(int day, ItemInstantData inventory, ItemInstantData storage, SerializedDictionary<int, PlotData> plotData)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;

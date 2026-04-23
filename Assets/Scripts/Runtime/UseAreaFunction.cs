@@ -171,7 +171,6 @@ public class UseAreaFunction : MonoBehaviour,
                 FixedString128Bytes errorCode = $" DoWateringCanFunc error. Unexpected amount of target : {hits.Length} ";
                 return new UseAreaResult(UseAreaResult.ResultType.Error);
             }
-            return 0;
         }
         catch(Exception e)
         {
