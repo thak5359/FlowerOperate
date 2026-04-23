@@ -57,6 +57,34 @@ public class ItemBlobMaker : EditorWindow
     }
 
     #region Base Item ID Baking (ItemIdData / FlowerIdData / UsableIdData)
+    public void Bake(FlowerIdData so)
+    {
+        var builder = new BlobBuilder(Allocator.Temp);
+        try
+        {
+            ref var root = ref builder.ConstructRoot<FlowerItemBlobDatas>();
+            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
+
+            for (short i = 0; i < so.itemName.Count; i++)
+            {
+                arrayBuilder[i].ItemId = (short)(so.startId + i);
+                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
+                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
+                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+
+                arrayBuilder[i].speciesIndex = (i < so.speciesIndex.Count) ? so.speciesIndex[i] : (byte)0;
+                arrayBuilder[i].colorIndex = (i < so.colorIndex.Count) ? so.colorIndex[i] : (byte)0;
+                arrayBuilder[i].floroIndex = (i < so.floroIndex.Count) ? so.floroIndex[i] : (byte)0;
+                arrayBuilder[i].floroIndex2 = (i < so.floroIndex2.Count) ? so.floroIndex2[i] : (sbyte)0;
+                arrayBuilder[i].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
+                arrayBuilder[i].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
+            }
+
+            SaveToBlob<FlowerItemBlobDatas>(builder, so.name);
+        }
+        finally { builder.Dispose(); }
+    }
+
     public void Bake(ItemIdData so)
     {
         var builder = new BlobBuilder(Allocator.Temp);
@@ -70,7 +98,7 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].ItemId = (short)(so.startId + i);
                 arrayBuilder[i].ItemName = so.itemName[i];
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : default;
             }
 
             SaveToBlob<ItemBlobDatas>(builder, so.name);
@@ -94,6 +122,7 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].species = so.speciesList[i];
                 arrayBuilder[i].color = (i < so.colorList.Count) ? so.colorList[i] : default;
                 arrayBuilder[i].floro = (i < so.floroList.Count) ? so.floroList[i] : default;
+                arrayBuilder[i].floro2 = (i < so.floro2List.Count) ? so.floro2List[i] : default;
             }
 
             SaveToBlob<FlowerDetailBlobDatas>(builder, so.name);

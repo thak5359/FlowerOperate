@@ -6,15 +6,13 @@ using UnityEngine;
 [System.Serializable]
 public struct PlotData // 저장용 데이터 바구니
 {
-    public float posX;
-    public float posY;
+    public int plotId;
 
+    public Vector3 Position;
     public bool isWatered;
-    public bool isFertilized;
     public int flowerId; // int? 대신 int 사용 (0이면 없는 것으로 처리)
     public int growth;
     public int elapsed;
-    public int lastActivedDay;
 }
 
 [Serializable]
@@ -35,18 +33,16 @@ public class Plot : MonoBehaviour
     public readonly int plotNumber;
 
     // 토지의 인스턴스 데이터 = 저장해야하는거
+    public int plotId; // 토지 고유 번호
     public bool isTilled = false; // 땅이 갈렸는가
     public bool isWatered = false; // 물을 뿌렸는가
-    public bool isFertilized; // 비료를 뿌렸는가
     public int growth; // 꽃의 성장 단계 == item.level
     public int elapsed; // 심고 경과한 날짜 또는 페이즈.
 
 
     private void Awake()
     {
-        flowerId = this.gameObject.GetComponent<ItemDataContainer>().GetItemID;
-        data.posX = this.gameObject.transform.position.x;
-        data.posY = this.gameObject.transform.position.y;
+        plotId = Guid.NewGuid().GetHashCode(); // 고유한 ID 생성
     }
 
     //OnEnable일때 타 관리 클래스에서 loadData 실행하기!
@@ -61,64 +57,25 @@ public class Plot : MonoBehaviour
         elapsed = input_elapsed;
     }
 
-    //TODO! 시간 관리 클래스 만들어 이 친구에게 오늘 날짜 갖다주기.
-    //public void OnEnable()
-    //{
-    //    turnOn();
-    //}
-
-    //public void OnDisable()
-    //{
-    //    turnOff();
-    //}
-
     public PlotData GetSaveData()
     {
+        data.plotId = this.plotId;
+        data.Position = this.transform.position;
         data.isWatered = this.isWatered;
-        data.isFertilized = this.isFertilized;
         data.flowerId = this.flowerId ?? 0; // null이면 0으로 저장
         data.growth = this.growth;
         data.elapsed = this.elapsed;
-        data.lastActivedDay = this.LastActivedDay;
 
         return data;
     }
     public void LoadFromData(PlotData data)
     {
-        this.transform.position = new Vector3(data.posX, data.posY);
+        this.plotId = data.plotId;
+        this.transform.position = data.Position;
         this.isWatered = data.isWatered;
-        this.isFertilized = data.isFertilized;
         this.flowerId = data.flowerId == 0 ? (int?)null : data.flowerId;
         this.growth = data.growth;
         this.elapsed = data.elapsed;
-        this.LastActivedDay = data.lastActivedDay;
-    }
-
-    public void turnOn(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            cachedDay = currentDay - LastActivedDay;
-            if (cachedDay > 0)
-            {
-
-                for (int i = 0; i < cachedDay; i++)
-                {
-                    if (growth < 5)
-                    {
-                        growth++;
-                    }
-                }
-            }
-        }
-
-    }
-    public void turnOff(int currentDay)
-    {
-        if (flowerId != 0)
-        {
-            LastActivedDay = currentDay;
-        }
     }
 
 

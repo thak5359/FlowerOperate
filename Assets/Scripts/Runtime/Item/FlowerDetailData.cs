@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -11,10 +12,13 @@ public class FlowerDetailData : ItemDetailData
     [SerializeField] public List<FixedString64Bytes> speciesList;
     [SerializeField] public List<FixedString32Bytes> colorList;
     [SerializeField] public List<FixedString32Bytes> floroList;
+    [SerializeField] public List<FixedString32Bytes> floro2List;
+
 
     public FixedString64Bytes Species(byte index) => speciesList[index];
     public FixedString32Bytes Color(byte index) => colorList[index];
     public FixedString32Bytes Floro(sbyte index) => (index != -1) ? floroList[index] : null;
+    public FixedString32Bytes Floro2(sbyte index) => (index != -1) ? floro2List[index] : null;
 }
 
 public struct FlowerDetailBlobData
@@ -22,6 +26,7 @@ public struct FlowerDetailBlobData
     public FixedString64Bytes species;
     public FixedString32Bytes color;
     public FixedString32Bytes floro;
+    public FixedString32Bytes floro2;
 }
 
 public struct FlowerDetailBlobDatas
