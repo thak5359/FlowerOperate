@@ -14,6 +14,8 @@ public class ItemIdData : ScriptableObject
     [SerializeField] public List<FixedString64Bytes> spriteAddress;
     [SerializeField] public List<short> price;
 
+    public ItemIdData() => this.startId = Constant.COMMON_START_ID;
+
     public FixedString64Bytes ItemName(byte i) => itemName[i];
     public FixedString128Bytes Description(byte i) => description[i];
     public FixedString64Bytes Address(byte i) => spriteAddress[i];

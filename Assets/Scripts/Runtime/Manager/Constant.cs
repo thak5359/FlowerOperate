@@ -17,9 +17,9 @@ public class Constant
 
     #region 아이템 ID 범위
 
-    public const short USABLE_START_ID = 0;
-    public const short COMMON_START_ID = 41;
-    public const short FLOWER_START_ID = 301;
+    public const short USABLE_START_ID = 100;
+    public const short COMMON_START_ID = 1;
+    public const short FLOWER_START_ID = 700;
 
     public const short USABLE_END_ID = 40;
     public const short COMMON_END_ID = 300;
