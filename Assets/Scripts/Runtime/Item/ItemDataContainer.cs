@@ -30,7 +30,8 @@ public class ItemDataContainer : MonoBehaviour
 
     public void DestroyItem()
     {
-        ObjectPool.ReturnObject(gameObject);
+        //오브젝트 풀에 리턴시킬 메소드 입력
+        // ObjectPool.ReturnObject(gameObject);
     }
 }
 

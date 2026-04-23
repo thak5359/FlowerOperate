@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -12,11 +13,15 @@ public class FlowerIdData : ItemIdData
     [SerializeField] public List<byte> colorIndex;
     [SerializeField] public List<byte> floroIndex; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
     [SerializeField] public List<sbyte> floroIndex2; // 한 꽃에 복수의 꽃말이 존재함 > List로 관리
-
+    [SerializeField] public List<byte> growthDuration;
+    [SerializeField] public List<byte> harvestAmount;
+    
     public byte SpeciesIndex(byte i) => speciesIndex[i];
     public byte ColorIndex(byte i) => colorIndex[i];
     public byte FloroIndex(byte i) => floroIndex[i];
     public sbyte FloroIndex2(sbyte i) => floroIndex2[i];
+    public byte GrowthDuration(byte i) => growthDuration[i];
+    public byte HarvestAmount(byte i) => harvestAmount[i];
 }
 
 public struct FlowerItemBlobData
@@ -30,6 +35,8 @@ public struct FlowerItemBlobData
     public byte colorIndex;
     public byte floroIndex;
     public sbyte floroIndex2;
+    public byte growthDuration;
+    public byte harvestAmount;
 }
 
 public struct FlowerItemBlobDatas

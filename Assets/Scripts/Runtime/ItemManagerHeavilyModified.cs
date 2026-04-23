@@ -367,12 +367,12 @@ public static class ItemSearchSystem
         if (id < COMMON_END_ID || id > FLOWER_END_ID)
         {
             power = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetSpeciesBurst: Invalid ID {id}");
             return;
         }
         else
         {
-            byte index = db1.Value.Items[id].speciesIndex;
+            byte index = db1.Value.Items[id - FLOWER_START_ID].speciesIndex;
             power = db2.Value.flowerDetails[index].species;
         }
     }
@@ -387,12 +387,12 @@ public static class ItemSearchSystem
         if (id < COMMON_END_ID || id > FLOWER_END_ID)
         {
             color = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetColorBurst: Invalid ID {id}");
             return;
         }
         else
         {
-            byte index = db1.Value.Items[id].colorIndex;
+            byte index = db1.Value.Items[id - FLOWER_START_ID].colorIndex;
             color = db2.Value.flowerDetails[index].color;
         }
     }
@@ -408,17 +408,53 @@ public static class ItemSearchSystem
         {
             floro1 = default;
             floro2 = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetFloroBurst: Invalid ID {id}");
             return;
         }
         else
         {
-            byte index1 = db1.Value.Items[id].floroIndex;
-            sbyte index2 = db1.Value.Items[id].floroIndex2;
+            byte index1 = db1.Value.Items[id - FLOWER_START_ID].floroIndex;
+            sbyte index2 = db1.Value.Items[id - FLOWER_START_ID].floroIndex2;
             floro1 = db2.Value.flowerDetails[index1].color;
             if( index2 >= 0)
                 floro2 = db2.Value.flowerDetails[index2].color;
             else floro2 = default;
+        }
+    }
+
+    [BurstCompile]
+    public static void GetGrowthDurationBurst(
+      in BlobAssetReference<FlowerItemBlobDatas> db1,
+      short id, out byte duration
+      )
+    {
+        if (id < COMMON_END_ID || id > FLOWER_END_ID)
+        {
+            duration = default;
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetGrowthDurationBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            duration = db1.Value.Items[id - FLOWER_START_ID].growthDuration;
+        }
+    }
+
+    [BurstCompile]
+    public static void GetHarvestAmountBurst(
+      in BlobAssetReference<FlowerItemBlobDatas> db1,
+      short id, out byte amount
+      )
+    {
+        if (id < COMMON_END_ID || id > FLOWER_END_ID)
+        {
+            amount = default;
+            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetHarvestAmountBurst: Invalid ID {id}");
+            return;
+        }
+        else
+        {
+            amount = db1.Value.Items[id - FLOWER_START_ID].harvestAmount;
         }
     }
     #endregion
