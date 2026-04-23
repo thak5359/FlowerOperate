@@ -13,8 +13,19 @@ public class PlotManager : ItemStorageParent
 
     public SerializedDictionary<int, PlotData> getPlotDataDict => this.plotDataDict;
 
+    public static PlotManager Instance { get; private set; }
+
     private void Awake()
     {
+        // 수정할 위치: 싱글톤 로직 추가
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+
+        // 기존 코드
         RefreshPlotCache();
     }
 

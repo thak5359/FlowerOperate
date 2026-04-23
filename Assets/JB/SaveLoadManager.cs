@@ -35,7 +35,6 @@ public class SaveLoadManager : MonoBehaviour
         if (_inventoryManager == null || _storageManager == null || _plotManager == null) return;
         
         // 저장 전 동기화 호출
-        _inventoryManager.SyncItemState();
         _storageManager.SyncItemState();
         _plotManager.SyncItemState();
 
@@ -43,6 +42,11 @@ public class SaveLoadManager : MonoBehaviour
 
         // 참조가 아닌 값(리스트 복사)을 넘겨서 데이터 오염 방지
         saveData = new SaveDatas(
+
+
+
+
+
             day,
             CloneData(_inventoryManager.GetData),
             CloneData(_storageManager.GetData),
@@ -113,7 +117,7 @@ public class SaveDatas
     
     public SaveDatas() { }
 
-    public SaveDatas(int day, ItemInstantData inventory, ItemInstantData storage, ItemInstantData plotItem, SerializedDictionary<int, PlotData> plotData)
+    public SaveDatas(int day, ItemInstantData inventory, ItemInstantData storage,  SerializedDictionary<int, PlotData> plotData)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;

@@ -11,6 +11,13 @@ public class Constant
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
     public static readonly FixedString64Bytes ADDRESSABLE_PLOT= "Prefab_Plot";
 
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_DEFAULT = "Spr_Plot_Default";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_WATERED = "Spr_Plot_Watered";
+
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_FLOWER_SEED;
+    
+
+
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
     public const ushort MAX_SLOT_INVENTORY = 50;
@@ -19,7 +26,7 @@ public class Constant
 
     public const short USABLE_START_ID = 0;
     public const short COMMON_START_ID = 41;
-    public const short FLOWER_START_ID = 301;
+    public const short FLOWER_START_ID = 700;
 
     public const short USABLE_END_ID = 40;
     public const short COMMON_END_ID = 300;
@@ -51,8 +58,8 @@ public class Constant
     public const short MIN_AXE_ID = 32;
     public const short MAX_AXE_ID = 39;
 
-    public const short MIN_CONSUMABLE_ID = 500;
-    public const short MAX_CONSUMABLE_ID = 7;
+    public const short MIN_CONSUMABLE_ID = 600;
+    public const short MAX_CONSUMABLE_ID = 614;
 
 
     #endregion
@@ -115,8 +122,13 @@ public class Constant
     public const string TAG_YUUNA = "Yuuna";
     public const string TAG_STORAGE = "Storage";
     public const string TAG_SEEDMAKER = "SeedMaker";
+    public const string TAG_BED = "Bed";
+
+
 
     #endregion
+
+    public const int MAX_GROWTH = 4;
 
 }
 

@@ -448,7 +448,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         _activeObjects.Clear();
 
         if(_pool.Count > 0) isPoolInitialized = true;
-
     }
 
     // pool에 객체 생성해서 UseAreFunction 컴포넌트로 관리.
@@ -661,7 +660,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     }
     private List<Vector3> GetAreaList(int itemId, int level)
     {
-        if(itemId ==1) // 괭이, 물뿌리개, 망치, 소모품
+        if(itemId ==1 || itemId ==4 || itemId ==5 || itemId ==6 || itemId ==7) // 괭이, 물뿌리개, 망치, 소모품
         {
             return level switch
             {
