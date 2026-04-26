@@ -33,7 +33,7 @@ Shader "Shader Graphs/Fixed 3d Skew"
         Cull Off
         Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         ZTest LEqual
-        ZWrite Off
+        ZWrite On
         
         // Debug
         // <None>
@@ -131,6 +131,7 @@ Shader "Shader Graphs/Fixed 3d Skew"
         struct SurfaceDescriptionInputs
         {
              float4 uv0;
+             float3 WorldSpacePosition;
         };
         struct VertexDescriptionInputs
         {
@@ -312,15 +313,23 @@ Shader "Shader Graphs/Fixed 3d Skew"
         SurfaceDescription SurfaceDescriptionFunction(SurfaceDescriptionInputs IN)
         {
             SurfaceDescription surface = (SurfaceDescription)0;
+
+            // texture Sampling
             UnityTexture2D _Property_4780750396944792b3bbf553a6178993_Out_0_Texture2D = UnityBuildTexture2DStructNoScale(_MainTex);
             float4 _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4 = SAMPLE_TEXTURE2D(_Property_4780750396944792b3bbf553a6178993_Out_0_Texture2D.tex, _Property_4780750396944792b3bbf553a6178993_Out_0_Texture2D.samplerstate, _Property_4780750396944792b3bbf553a6178993_Out_0_Texture2D.GetTransformedUV(IN.uv0.xy) );
             float _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_R_4_Float = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.r;
             float _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_G_5_Float = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.g;
             float _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_B_6_Float = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.b;
             float _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_A_7_Float = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.a;
+           
+            // surface description
             surface.BaseColor = (_SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_RGBA_0_Vector4.xyz);
             surface.Alpha = _SampleTexture2D_2eff4c1ed6b74013ba01dd1b498a01bc_A_7_Float;
+           
+
             surface.AlphaClipThreshold = float(0.5);
+            clip(surface.Alpha - surface.AlphaClipThreshold);
+            
             return surface;
         }
         
@@ -377,6 +386,7 @@ Shader "Shader Graphs/Fixed 3d Skew"
         #endif
         #undef BUILD_SURFACE_DESCRIPTION_INPUTS_OUTPUT_FACESIGN
         
+        output.WorldSpacePosition = input.positionWS;
                 return output;
         }
         
