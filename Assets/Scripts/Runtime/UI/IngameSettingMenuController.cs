@@ -272,7 +272,7 @@ public class IngameSettingMenuController : MonoBehaviour
 
         while (elapsed < defaultDuration)
         {
-            elapsed += Time.unscaledDeltaTime;
+            elapsed += Time.unscaledDeltaTime; // 시간 정지 상태에서도 애니메이션이 자연스럽게 진행되도록 unscaledDeltaTime 사용
             float t = elapsed / defaultDuration;
             t = t * t * (3f - 2f * t);
 

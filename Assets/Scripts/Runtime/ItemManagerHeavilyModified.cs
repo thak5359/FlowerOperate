@@ -14,9 +14,6 @@ using static Constant;
 [BurstCompile]
 public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
 {
-   // bool _isInitialized = false; // 초기화 완료 여부
-
-    //  Burst가 접근 가능한 고속 데이터 배열
     private BlobAssetReference<ItemBlobDatas> _nativeItemDB;
     private BlobAssetReference<FlowerItemBlobDatas> _nativeFlowerItemDB;
     private BlobAssetReference<UsableItemBlobDatas> _nativeUsableItemDB;
@@ -33,6 +30,15 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
             LoadBlob<FlowerDetailBlobDatas>(FLOWER_DETAIL_BLOB, (res) => flowerDetail = res),
             LoadBlob<UsableDetailBlobDatas>(USABLE_DETAIL_BLOB, (res) => usableDetail = res)
         );
+
+        GlobalItemDB.Instance.Data = new ItemDatabaseAccessor
+        {
+            ItemDB = _nativeItemDB,
+            FlowerDB = _nativeFlowerItemDB,
+            UsableDB = _nativeUsableItemDB,
+            FlowerDetail = flowerDetail,
+            UsableDetail = usableDetail
+        };
 
         Debug.Log("<color=green>[Blob]</color> 모든 데이터 로드 완료!");
         //_isInitialized = true;
@@ -54,437 +60,153 @@ public class ItemManagerHeavilyModified : IAsyncStartable, IDisposable
         byte[] data = await File.ReadAllBytesAsync(path);
         assignActrion(BlobAssetReference<T>.Create(data));
     }
-
-    #region 공용 데이터 접근
-    [BurstCompile]
-    public void GetItemNameBurst(short id, out FixedString64Bytes name)
-    {
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            name = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].ItemName;
-        }
-        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            name = _nativeItemDB.Value.Items[id - COMMON_START_ID].ItemName;
-        }
-        else
-        {
-            name = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].ItemName;
-        }
-    }
-
-    [BurstCompile]
-    public void GetDescriptionBurst(short id, out FixedString128Bytes name)
-    {
-        // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            name = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].Description;
-        }
-        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            name = _nativeItemDB.Value.Items[id - COMMON_START_ID].Description;
-        }
-        else
-        {
-            name = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].Description;
-        }
-    }
-
-    [BurstCompile]
-    public void GetAddressBurst(short id, out FixedString128Bytes address)
-    {
-         // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            address = _nativeUsableItemDB.Value.Items[id - USABLE_START_ID].SpriteAddress;
-        }
-        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            address = _nativeItemDB.Value.Items[id - COMMON_START_ID].SpriteAddress;
-        }
-        else
-        {
-            address = _nativeFlowerItemDB.Value.Items[id - FLOWER_START_ID].SpriteAddress;
-        }
-    }
-    #endregion
-
-    #region 장비 아이템 데이터 접근
-    [BurstCompile]
-    public  void GetDurationBurst(short id, out short duration)
-    {
-        if (id < 0 || id > USABLE_END_ID)
-        {
-            duration = -1;
-            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = _nativeUsableItemDB.Value.Items[id].durationIndex;
-            duration = usableDetail.Value.usableDetails[index].duration;
-        }
-    }
-    [BurstCompile]
-    public  void GetPowerBurst( short id, out short power )
-    {
-        if (id < 0 || id > USABLE_END_ID)
-        {
-            power = -1;
-            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = _nativeUsableItemDB.Value.Items[id].powerIndex;
-            power = usableDetail.Value.usableDetails[index].power;
-        }
-    }
-
-    [BurstCompile]
-    public void GetChargeInfoBurst( short id, out ChargeInfo power)
-    {
-        if (id < 0 || id > USABLE_END_ID)
-        {
-            power = default;
-            Debug.LogError($"<color=red>[ItemSearch]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = _nativeUsableItemDB.Value.Items[id].chargeIndex;
-            power = usableDetail.Value.usableDetails[index].chargeInfo;
-        }
-    }
-    #endregion
-
-    #region 꽃 아이템 전용 데이터 접근
-    [BurstCompile]
-    public  void GetSpeciesBurst(short id, out FixedString64Bytes power)
-    {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            power = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = _nativeFlowerItemDB.Value.Items[id].speciesIndex;
-            power = flowerDetail.Value.flowerDetails[index].species;
-        }
-    }
-
-    [BurstCompile]
-    public void GetColorBurst( short id, out FixedString32Bytes color)
-    {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            color = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = _nativeFlowerItemDB.Value.Items[id].colorIndex;
-            color = flowerDetail.Value.flowerDetails[index].color;
-        }
-    }
-
-    [BurstCompile]
-    public void GetFloroBurst(short id, out FixedString32Bytes floro1, out FixedString32Bytes floro2)
-    {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            floro1 = default;
-            floro2 = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index1 = _nativeFlowerItemDB.Value.Items[id].floroIndex;
-            sbyte index2 = _nativeFlowerItemDB.Value.Items[id].floroIndex2;
-            floro1 = flowerDetail.Value.flowerDetails[index1].color;
-            if (index2 >= 0)
-                floro2 = flowerDetail.Value.flowerDetails[index2].color;
-            else floro2 = default;
-        }
-    }
-    #endregion
+}
 
 
+public struct ItemDatabaseAccessor
+{
+    public BlobAssetReference<ItemBlobDatas> ItemDB;
+    public BlobAssetReference<FlowerItemBlobDatas> FlowerDB;
+    public BlobAssetReference<UsableItemBlobDatas> UsableDB;
+    public BlobAssetReference<FlowerDetailBlobDatas> FlowerDetail;
+    public BlobAssetReference<UsableDetailBlobDatas> UsableDetail;
+
+    public bool IsInitialized => ItemDB.IsCreated;
 }
 
 [BurstCompile]
-public static class ItemSearchSystem 
+public static class GlobalItemDB //: IJobParallelFor
 {
-    public static void GetItemNameBurst(short id, out FixedString64Bytes name)// 현재 시도할려고 하는 방향성
-    {
-        GetItemNameBurst(id, out name); // 지금 이건 재귀로 쓰고있음
-    }
+    private struct Context { }
 
-    #region 공용 데이터 접근
-    [BurstCompile]
-    public static void GetItemNameBurst(
-        in BlobAssetReference<UsableItemBlobDatas> usableDB,
-        in BlobAssetReference<ItemBlobDatas> itemDB,
-        in BlobAssetReference<FlowerItemBlobDatas> flowerDB,
-        short id,
-        out FixedString64Bytes name)
-    {
-        // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            name = usableDB.Value.Items[id - USABLE_START_ID].ItemName;
-        }
-        else if ( id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            name = itemDB.Value.Items[id - COMMON_START_ID].ItemName;
-        }
-        else
-        {
-            name = flowerDB.Value.Items[id- FLOWER_START_ID].ItemName;
-        }
-    }
-    [BurstCompile]
-    public static void GetDescriptionBurst(
-       in BlobAssetReference<UsableItemBlobDatas> usableDB,
-       in BlobAssetReference<ItemBlobDatas> itemDB,
-       in BlobAssetReference<FlowerItemBlobDatas> flowerDB,
-       short id,
-       out FixedString128Bytes name)
-    {
-        // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            name = usableDB.Value.Items[id- USABLE_START_ID].Description;
-        }
-        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            name = itemDB.Value.Items[id - COMMON_START_ID].Description;
-        }
-        else
-        {
-            name = flowerDB.Value.Items[id - FLOWER_START_ID].Description;
-        }
-    }
-    [BurstCompile]
-    public static void GetAddressBurst(
-   in BlobAssetReference<ItemBlobDatas> db1,
-   in BlobAssetReference<FlowerItemBlobDatas> db2,
-   in BlobAssetReference<UsableItemBlobDatas> db3,
-   short id,
-   out FixedString128Bytes name)
-    {
-        // 인덱스 테이블 로직: ID 범위에 따라 적절한 BLOB의 Value.Items[index]에 접근
-        if (id >= 0 && id < COMMON_END_ID)
-        {
-            name = db3.Value.Items[id - USABLE_START_ID].SpriteAddress;
-        }
-        else if (id >= COMMON_END_ID && id < FLOWER_END_ID)
-        {
-            name = db1.Value.Items[id - COMMON_START_ID].SpriteAddress;
-        }
-        else
-        {
-            name = db2.Value.Items[id - FLOWER_START_ID].SpriteAddress;
-        }
-    }
-    #endregion
-    
-    #region 사용 아이템 전용 데이터 접근
+    // Burst와 Managed가 공유하는 메모리 영역에 데이터 접근을 제공하는 SharedStatic
+    public static readonly SharedStatic<ItemDatabaseAccessor> Instance =
+        SharedStatic<ItemDatabaseAccessor>.GetOrCreate<Context>();
+
+
+    // 데이터 존재 여부 확인용
+    public static bool IsInitialized => Instance.Data.IsInitialized;
+
+    #region 공용 데이터 접근 (Managed & Burst 호환)
 
     [BurstCompile]
-    public static void GetDurationBurst(
-        in BlobAssetReference<UsableItemBlobDatas> db1,
-        in BlobAssetReference<UsableDetailBlobDatas> db2,
-        short id, out short duration
-        )
+    public static void GetItemName(short id, out FixedString64Bytes name)
     {
-        if (id < 0 || id > USABLE_END_ID )
-        {
-            duration = -1;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
+        name = default;
+        if (!IsInitialized) return;
+
+        ref var db = ref Instance.Data;
+        if (id >= 0 && id < Constant.COMMON_END_ID)
+            name = db.UsableDB.Value.Items[id - Constant.USABLE_START_ID].ItemName;
+        else if (id >= Constant.COMMON_END_ID && id < Constant.FLOWER_END_ID)
+            name = db.ItemDB.Value.Items[id - Constant.COMMON_START_ID].ItemName;
         else
-        {
-            byte index = db1.Value.Items[id].durationIndex;
-            duration = db2.Value.usableDetails[index].duration;
-        }
-    }
-    [BurstCompile]
-    public static void GetPowerBurst(
-       in BlobAssetReference<UsableItemBlobDatas> db1,
-       in BlobAssetReference<UsableDetailBlobDatas> db2,
-       short id, out short power
-       )
-    {
-        if (id < 0 || id > USABLE_END_ID)
-        {
-            power = -1;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = db1.Value.Items[id].powerIndex;
-            power = db2.Value.usableDetails[index].power;
-        }
+            name = db.FlowerDB.Value.Items[id - Constant.FLOWER_START_ID].ItemName;
     }
 
     [BurstCompile]
-    public static void GetChargeInfoBurst(
-       in BlobAssetReference<UsableItemBlobDatas> db1,
-       in BlobAssetReference<UsableDetailBlobDatas> db2,
-       short id, out ChargeInfo power
-       )
+    public static void GetAddress(short id, out FixedString128Bytes address)
     {
-        if (id < 0 || id > USABLE_END_ID)
-        {
-            power = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetDurationBurst: Invalid ID {id}");
-            return;
-        }
+        address = default;
+        if (!IsInitialized) return;
+
+        ref var db = ref Instance.Data;
+        if (id >= 0 && id < Constant.COMMON_END_ID)
+            address = db.UsableDB.Value.Items[id - Constant.USABLE_START_ID].SpriteAddress;
+        else if (id >= Constant.COMMON_END_ID && id < Constant.FLOWER_END_ID)
+            address = db.ItemDB.Value.Items[id - Constant.COMMON_START_ID].SpriteAddress;
         else
-        {
-            byte index = db1.Value.Items[id].chargeIndex;
-            power = db2.Value.usableDetails[index].chargeInfo;
-        }
+            address = db.FlowerDB.Value.Items[id - Constant.FLOWER_START_ID].SpriteAddress;
+    }
+
+    //  UI, Addressables용
+    public static string GetAddressString(short id)
+    {
+        GetAddress(id, out var addr);
+        return addr.IsEmpty ? null : addr.ToString();
     }
     #endregion
 
-    #region 꽃 아이템 전용 데이터 접근
+    #region 장비(Usable) 아이템 데이터 접근
     [BurstCompile]
-    public static void GetSpeciesBurst(
-      in BlobAssetReference<FlowerItemBlobDatas> db1,
-      in BlobAssetReference<FlowerDetailBlobDatas> db2,
-      short id, out FixedString64Bytes power
-      )
+    public static void GetDuration(short id, out short duration)
     {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            power = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetSpeciesBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = db1.Value.Items[id - FLOWER_START_ID].speciesIndex;
-            power = db2.Value.flowerDetails[index].species;
-        }
+        duration = -1;
+        if (!IsInitialized || id < 0 || id > USABLE_END_ID) return;
+
+        ref var db = ref Instance.Data;
+        // ID에서 시작 오프셋을 빼서 정확한 배열 인덱스를 계산합니다.
+        int indexInArray = id - USABLE_START_ID;
+        byte detailIndex = db.UsableDB.Value.Items[indexInArray].durationIndex;
+        duration = db.UsableDetail.Value.usableDetails[detailIndex].duration;
     }
 
     [BurstCompile]
-    public static void GetColorBurst(
-     in BlobAssetReference<FlowerItemBlobDatas> db1,
-     in BlobAssetReference<FlowerDetailBlobDatas> db2,
-     short id, out FixedString32Bytes color
-     )
+    public static void GetPower(short id, out short power)
     {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            color = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetColorBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index = db1.Value.Items[id - FLOWER_START_ID].colorIndex;
-            color = db2.Value.flowerDetails[index].color;
-        }
+        power = -1;
+        if (!IsInitialized || id < 0 || id > USABLE_END_ID) return;
+
+        ref var db = ref Instance.Data;
+        int indexInArray = id - USABLE_START_ID;
+        byte detailIndex = db.UsableDB.Value.Items[indexInArray].powerIndex;
+        power = db.UsableDetail.Value.usableDetails[detailIndex].power;
     }
 
     [BurstCompile]
-    public static void GetFloroBurst(
-     in BlobAssetReference<FlowerItemBlobDatas> db1,
-     in BlobAssetReference<FlowerDetailBlobDatas> db2,
-     short id, out FixedString32Bytes floro1, out FixedString32Bytes floro2
-     )
+    public static void GetChargeInfo(short id, out ChargeInfo charge)
     {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            floro1 = default;
-            floro2 = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetFloroBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            byte index1 = db1.Value.Items[id - FLOWER_START_ID].floroIndex;
-            sbyte index2 = db1.Value.Items[id - FLOWER_START_ID].floroIndex2;
-            floro1 = db2.Value.flowerDetails[index1].color;
-            if( index2 >= 0)
-                floro2 = db2.Value.flowerDetails[index2].color;
-            else floro2 = default;
-        }
-    }
+        charge = default;
+        if (!IsInitialized || id < 0 || id > USABLE_END_ID) return;
 
-    [BurstCompile]
-    public static void GetGrowthDurationBurst(
-      in BlobAssetReference<FlowerItemBlobDatas> db1,
-      short id, out byte duration
-      )
-    {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            duration = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetGrowthDurationBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            duration = db1.Value.Items[id - FLOWER_START_ID].growthDuration;
-        }
-    }
-
-    [BurstCompile]
-    public static void GetHarvestAmountBurst(
-      in BlobAssetReference<FlowerItemBlobDatas> db1,
-      short id, out byte amount
-      )
-    {
-        if (id < COMMON_END_ID || id > FLOWER_END_ID)
-        {
-            amount = default;
-            Debug.LogError($"<color=red>[ItemSearchSystem]</color> GetHarvestAmountBurst: Invalid ID {id}");
-            return;
-        }
-        else
-        {
-            amount = db1.Value.Items[id - FLOWER_START_ID].harvestAmount;
-        }
+        ref var db = ref Instance.Data;
+        int indexInArray = id - USABLE_START_ID;
+        byte detailIndex = db.UsableDB.Value.Items[indexInArray].chargeIndex;
+        charge = db.UsableDetail.Value.usableDetails[detailIndex].chargeInfo;
     }
     #endregion
 
-}
-
-
-[BurstCompile ]
-public struct ItemEncyclopediaJob : IJobParallelFor
-{
-    [ReadOnly] public NativeArray<short> targetItemIds;
-    [ReadOnly] public BlobAssetReference<ItemBlobDatas> CommonDB;
-    [ReadOnly] public BlobAssetReference<FlowerItemBlobDatas> FlowerDB;
-    [ReadOnly] public BlobAssetReference<UsableItemBlobDatas> UsableDB;
-
-    public NativeArray<FixedString64Bytes> OutNames;
-    public NativeArray<FixedString128Bytes> OutDescriptions;
-    public NativeArray<FixedString128Bytes> OutSpriteAddresses;
-
-    public void Execute(int index)
+    #region 꽃(Flower) 아이템 전용 데이터 접근
+    [BurstCompile]
+    public static void GetSpecies(short id, out FixedString64Bytes species)
     {
+        species = default;
+        if (!IsInitialized || id < COMMON_END_ID || id > FLOWER_END_ID) return;
 
-        short id = targetItemIds[index];
-
-        ItemSearchSystem.GetItemNameBurst(UsableDB, CommonDB, FlowerDB,  id, out var name);
-        ItemSearchSystem.GetDescriptionBurst(UsableDB, CommonDB, FlowerDB, id, out var desc);
-        ItemSearchSystem.GetAddressBurst(CommonDB, FlowerDB, UsableDB, id, out var spriteAddr);
-
-        OutNames[index] = name;
-        OutDescriptions[index] = desc;
-        OutSpriteAddresses[index] = spriteAddr;
+        ref var db = ref Instance.Data;
+        int indexInArray = id - FLOWER_START_ID;
+        byte detailIndex = db.FlowerDB.Value.Items[indexInArray].speciesIndex;
+        species = db.FlowerDetail.Value.flowerDetails[detailIndex].species;
     }
+
+    [BurstCompile]
+    public static void GetColor(short id, out FixedString32Bytes color)
+    {
+        color = default;
+        if (!IsInitialized || id < COMMON_END_ID || id > FLOWER_END_ID) return;
+
+        ref var db = ref Instance.Data;
+        int indexInArray = id - FLOWER_START_ID;
+        byte detailIndex = db.FlowerDB.Value.Items[indexInArray].colorIndex;
+        color = db.FlowerDetail.Value.flowerDetails[detailIndex].color;
+    }
+
+    [BurstCompile]
+    public static void GetFloro(short id, out FixedString32Bytes floro1, out FixedString32Bytes floro2)
+    {
+        floro1 = default;
+        floro2 = default;
+        if (!IsInitialized || id < COMMON_END_ID || id > FLOWER_END_ID) return;
+
+        ref var db = ref Instance.Data;
+        int indexInArray = id - FLOWER_START_ID;
+
+        byte idx1 = db.FlowerDB.Value.Items[indexInArray].floroIndex;
+        sbyte idx2 = db.FlowerDB.Value.Items[indexInArray].floroIndex2;
+
+        floro1 = db.FlowerDetail.Value.flowerDetails[idx1].color;
+        if (idx2 >= 0)
+            floro2 = db.FlowerDetail.Value.flowerDetails[idx2].color;
+    }
+    #endregion
 }

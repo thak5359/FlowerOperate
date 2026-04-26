@@ -513,12 +513,10 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
         int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
 
-        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기 ( 현재는 핫슬롯이 가리키는 것의 아이템 데이터를 가져옴.
         List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
         if (rawOffsets != null)
         {
-            // 3. 캐릭터 방향(Heading)에 맞춰 좌표 회전 및 월드 좌표 계산
             List<Vector3> worldPositions = new List<Vector3>();
             foreach (var offset in rawOffsets)
             {
