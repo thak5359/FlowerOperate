@@ -10,6 +10,7 @@ public enum Season
     WINTER
 }
 
+
 public partial class ProgressManager
 {
     List<int> list;

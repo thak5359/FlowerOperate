@@ -1,6 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+using UnityEngine.SceneManagement;
+using static Constant;
+
+public enum MonthName
+{
+    마갈,
+    보병,
+    유어,
+    백양,
+
+    금우,
+    쌍령,
+    거해,
+    영사,
+
+    순백,
+    권형,
+    천갈,
+    사부,
+    인마
+}
+
 
 public partial class ProgressManager
 {
@@ -8,8 +28,6 @@ public partial class ProgressManager
     {
         GlobalEventManager.InvokeNextDay();
         nextDay();
-        // SceneManager.Load()로 다음 씬으로!
+        SceneManager.LoadScene(TITLE_SCENE_NAME.ToString());
     }
-
-    
 }

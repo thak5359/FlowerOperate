@@ -60,6 +60,15 @@ public class InventoryUIController : MonoBehaviour
 
         buttons = root.Query<Button>("slot-button").ToList(); // 리스트에 집어넣기
 
+        //int i = 0;
+        //foreach(Button button in buttons)
+        //{
+        //   button.clicked += -_inventoryManager.isClicked(i++);
+        //}
+
+
+
+
         closeButton = root.Query<Button>("CloseButton");
         closeButton.clicked += closeInventory;
 

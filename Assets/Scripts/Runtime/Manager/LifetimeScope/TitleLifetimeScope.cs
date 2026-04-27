@@ -5,15 +5,15 @@ using VContainer.Unity;
 
 public class TittleLifetimeScope : LifetimeScope
 {
-    [SerializeField] private TitleMenuController tmm;
-    [SerializeField] private TitleSettingMenuController tsmm;
+    [SerializeField] private TitleMenuController TitleMenuController;
+    [SerializeField] private TitleSettingMenuController TitleUIController;
 
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 
-        builder.RegisterComponent<TitleMenuController>(tmm);
-        builder.RegisterComponent<TitleSettingMenuController>(tsmm);
+        builder.RegisterComponent<TitleMenuController>(TitleMenuController);
+        builder.RegisterComponent<TitleSettingMenuController>(TitleUIController);
     }
 }
