@@ -36,13 +36,15 @@
     margin: 0;
 }
 
-/* È®Àå Á¤¸® ¹öÆ°ÀÇ ±âº» »óÅÂ */
+/* í™•ì¥ ì •ë¦¬ ë²„íŠ¼ì˜ ê¸°ë³¸ ìƒíƒœ */
 .btn-expansion {
     visibility: visible;
 }
 
-/* ºÎ¸ğ(StorageContainer)¿¡ 'hide-expansion' Å¬·¡½º°¡ Ãß°¡µÇ¸é 
-   ±× ¾ÈÀÇ 'btn-expansion' Å¬·¡½º¸¦ °¡Áø ¿ä¼Ò¸¦ ¼û±é´Ï´Ù.
+
+
+/* ë¶€ëª¨(StorageContainer)ì— 'hide-expansion' í´ë˜ìŠ¤ê°€ ì¶”ê°€ë˜ë©´ 
+   ê·¸ ì•ˆì˜ 'btn-expansion' í´ë˜ìŠ¤ë¥¼ ê°€ì§„ ìš”ì†Œë¥¼ ìˆ¨ê¹ë‹ˆë‹¤.
 */
 .hide-expansion .btn-expansion {
     visibility: hidden;
