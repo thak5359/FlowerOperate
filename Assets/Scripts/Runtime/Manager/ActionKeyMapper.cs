@@ -13,10 +13,8 @@ using System;
 
 public class ActionKeyMapper : IAsyncStartable, IDisposable
 {
-
     // Wasd 조작법 쓸거면 true 아니면 False
     [SerializeField] public bool isWASDKeySetting = true;
-
 
     private PlayerInput _playerInput;
     private IngameSettingMenuController _pauseMenu;
@@ -84,7 +82,6 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
             _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME.ToString());
         }
         Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
-
     }
 
 
@@ -105,7 +102,6 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
                 InventoryMapActionDeallocator();
             }
         }
-
     }
 
     #region wasd, 화살표 조작법 선택/변경
@@ -279,7 +275,6 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         var map = _playerInput.actions.FindActionMap(SETTING_MAP_NAME.ToString());
     }
     #endregion
-
     #endregion
 
 
@@ -386,7 +381,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     void InventoryMapActionDeallocator()
     {
         if (_playerInput == null || _playerInput.actions == null) return;
-        InputActionMap map = _playerInput.actions.FindActionMap(FARM_MAP_NAME.ToString());
+        InputActionMap map = _playerInput.actions.FindActionMap(INVENTORY_MAP_NAME.ToString());
         if (map == null) return;
 
         InputAction actionEscape = map.FindAction("Escape");

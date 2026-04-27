@@ -19,10 +19,9 @@ public class FarmSceneLifetimeScope : LifetimeScope
 
         //밑에 두 코드는 테스트용, 나중에 상점 씬 생기면 삭제해야함.
         builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
-        builder.RegisterEntryPoint<ProgressManager>().AsSelf();
-        //builder.RegisterEntryPoint<PlotManager>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
+        builder.Register<ProgressManager>(Lifetime.Singleton).AsSelf();  
 
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);

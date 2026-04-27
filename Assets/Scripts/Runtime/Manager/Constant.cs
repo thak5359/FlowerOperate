@@ -1,15 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Collections;
-using UnityEngine;
 
 
 public class Constant
 {
+
+    
+
     // Class for Constant Value in this Project
 
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
     public static readonly FixedString64Bytes ADDRESSABLE_PLOT= "Prefab_Plot";
+
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_DEFAULT = "Spr_Plot_Default";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_WATERED = "Spr_Plot_Watered";
+
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_FLOWER_SEED;
+    
+
 
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
@@ -51,8 +58,6 @@ public class Constant
     public const short MIN_AXE_ID = 32;
     public const short MAX_AXE_ID = 39;
 
-    public const short MIN_CONSUMABLE_ID = 500;
-    public const short MAX_CONSUMABLE_ID = 7;
 
 
     #endregion
@@ -115,8 +120,13 @@ public class Constant
     public const string TAG_YUUNA = "Yuuna";
     public const string TAG_STORAGE = "Storage";
     public const string TAG_SEEDMAKER = "SeedMaker";
+    public const string TAG_BED = "Bed";
+
+
 
     #endregion
+
+    public const int MAX_GROWTH = 4;
 
 }
 

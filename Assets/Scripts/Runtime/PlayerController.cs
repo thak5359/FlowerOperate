@@ -143,6 +143,11 @@ public class PlayerController : MonoBehaviour, IInteractable
                 // TODO:: 창고 여는 스크립트 여기에 작성하기
                 }
 
+                if (hits[0].CompareTag(TAG_BED))
+                {
+
+                }
+
 
                 ((IInteractable)this).Interact(hits[0].gameObject.tag);
             }

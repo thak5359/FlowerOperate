@@ -448,7 +448,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         _activeObjects.Clear();
 
         if(_pool.Count > 0) isPoolInitialized = true;
-
     }
 
     // pool에 객체 생성해서 UseAreFunction 컴포넌트로 관리.
@@ -514,12 +513,10 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
         int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
 
-        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기 ( 현재는 핫슬롯이 가리키는 것의 아이템 데이터를 가져옴.
         List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
         if (rawOffsets != null)
         {
-            // 3. 캐릭터 방향(Heading)에 맞춰 좌표 회전 및 월드 좌표 계산
             List<Vector3> worldPositions = new List<Vector3>();
             foreach (var offset in rawOffsets)
             {
@@ -661,7 +658,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     }
     private List<Vector3> GetAreaList(int itemId, int level)
     {
-        if(itemId ==1) // 괭이, 물뿌리개, 망치, 소모품
+        if(itemId ==1 || itemId ==4 || itemId ==5 || itemId ==6 || itemId ==7) // 괭이, 물뿌리개, 망치, 소모품
         {
             return level switch
             {

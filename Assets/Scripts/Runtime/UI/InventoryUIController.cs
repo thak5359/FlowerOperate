@@ -21,7 +21,6 @@ public class InventoryUIController : MonoBehaviour
 
 
     private InventoryManager _inventoryManager;
-    private ItemManagerHeavilyModified _itemManager;
     private IMapChangable _mapChanger;
 
 
@@ -69,11 +68,14 @@ public class InventoryUIController : MonoBehaviour
     private async UniTask loadItemDatas()
     {
         ushort i = 0;
-        foreach( ItemObjectData data in _inventoryManager.SlotList)
+        int targetItemID;
+        foreach ( ItemObjectData data in _inventoryManager.getSlotList)
         {
 
-            FixedString128Bytes address;
-            _itemManager.GetAddressBurst((short)_inventoryManager.SlotList[i].GetItemID, out address);
+            string address;
+            targetItemID = _inventoryManager.getSlotList[i].GetItemID;
+            if (targetItemID == 0) continue;
+            address = GlobalItemDB.GetAddressString((short)targetItemID);
             Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
             buttons[i].style.backgroundImage = img;
 

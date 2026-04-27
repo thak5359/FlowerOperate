@@ -1,33 +1,45 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using VContainer.Unity;
 using UnityEngine.Audio;
-using static Constant;
+using VContainer.Unity;
 using TMPro;
-using UnityEngine.UI;
-using System;
+
+using static Constant;
 
 [System.Serializable]
-public class GameSettings
+public struct GameSettings
 {
-    //// ´ëÈ­ °ü·Ã
+    //// ëŒ€í™” ê´€ë ¨
     //public float writingSpeed = 30f;
     //public float puncSliderRaw = 3f;
     ////public bool isAutoMode = false;
     //public float autoWaitTime = 2.0f;
 
-    // »ç¿îµå °ü·Ã (0~100)
-    public float masterVol = 100f;
-    public float bgmVol = 100f;
-    public float sfxVol = 100f;
-    public float voiceVol = 100f;
+    // ì‚¬ìš´ë“œ ê´€ë ¨ (0~100)
+    public float masterVol;
+    public float bgmVol;
+    public float sfxVol;
+    public float voiceVol;
 
-    // ÇØ»óµµ ¹× È­¸é ¼³Á¤
+    // í•´ìƒë„ ë° í™”ë©´ ì„¤ì •
 
-    public int resWidth = 1920;
-    public int resHeight = 1080;
-    public bool isFullScreen = true;
+    public int resWidth;
+    public int resHeight;
+    public FullScreenMode screenMode;
+
+    public GameSettings(float Vol)
+    {
+        masterVol = Vol;
+        bgmVol = Vol;
+        sfxVol = Vol;
+        voiceVol = Vol;
+
+        resWidth = 1920;
+        resHeight = 1080;
+
+        screenMode = FullScreenMode.FullScreenWindow;
+    }
 }
 
 
@@ -35,14 +47,16 @@ public class GameSettings
 public class SettingManager : IStartable, IDisposable
 {
     private readonly AudioMixer _masterMixer;
-    private GameSettings _settings;
-
+    private GameSettings _settings = new GameSettings(100.0f);
 
     private struct ResOption
     {
         public int w, h;
-        public bool isFull;
     }
+
+    public FullScreenMode screenMode;
+
+
     private List<ResOption> resOptions = new List<ResOption>();
     private List<string> options = new List<string>();
 
@@ -67,12 +81,12 @@ public class SettingManager : IStartable, IDisposable
         resOptions?.Clear();
         options?.Clear();
 
-        Debug.Log("<color=red>[SettingManager]</color> ¸ğµç ÀÚ¿ø ÇØÁ¦ ¹× µ¥ÀÌÅÍ ÃÖÁ¾ ÀúÀå ¿Ï·á");
+        Debug.Log("<color=red>[SettingManager]</color> ëª¨ë“  ìì› í•´ì œ ë° ë°ì´í„° ìµœì¢… ì €ì¥ ì™„ë£Œ");
     }
 
 
 
-    #region µ¥ÀÌÅÍ °ü¸® (Save/Load)
+    #region ë°ì´í„° ê´€ë¦¬ (Save/Load)
     public void SaveSettings()
     {
         string json = JsonUtility.ToJson(_settings);
@@ -90,11 +104,10 @@ public class SettingManager : IStartable, IDisposable
         }
         else
         {
-            // ÃÖÃÊ ½ÇÇà ½Ã ±âº»°ª ¼³Á¤
+            // ìµœì´ˆ ì‹¤í–‰ ì‹œ ê¸°ë³¸ê°’ ì„¤ì •
             _settings = new GameSettings();
             SetDefaultHighestResolution();
         }
-
     }
 
     private void InitResolutionOptions()
@@ -109,21 +122,12 @@ public class SettingManager : IStartable, IDisposable
         for (int i = allResolutions.Length - 1; i >= 0; i--)
         {
             Resolution res = allResolutions[i];
-            string baseText = $"{res.width} x {res.height}";
 
             if (resOptions.Exists(r => r.w == res.width && r.h == res.height)) continue;
-
-            // ÀüÃ¼È­¸é Ãß°¡
-            options.Add($"{baseText} ÀüÃ¼È­¸é");
-            resOptions.Add(new ResOption { w = res.width, h = res.height, isFull = true });
-
-            // Ã¢¸ğµå Ãß°¡ (¸ğ´ÏÅÍº¸´Ù ÀÛÀ» ¶§¸¸)
-            if (res.width < maxW && res.height < maxH)
-            {
-                options.Add($"{baseText} Ã¢¸ğµå");
-                resOptions.Add(new ResOption { w = res.width, h = res.height, isFull = false });
-            }
+            options.Add($"{res.width} x {res.height}");
+            resOptions.Add(new ResOption { w = res.width, h = res.height});
         }
+
     }
 
     private void SetDefaultHighestResolution()
@@ -134,44 +138,51 @@ public class SettingManager : IStartable, IDisposable
             Resolution maxRes = allRes[allRes.Length - 1];
             _settings.resWidth = maxRes.width;
             _settings.resHeight = maxRes.height;
-            _settings.isFullScreen = true;
+            _settings.screenMode = FullScreenMode.FullScreenWindow;
         }
     }
     #endregion
 
-    #region ½ÇÁ¦ ¼³Á¤ Àû¿ë (Apply Logic)
+    #region ì‹¤ì œ ì„¤ì • ì ìš© (Apply Logic)
     public void ApplyAllSettings()
     {
-        ApplyResolution(_settings.resWidth, _settings.resHeight, _settings.isFullScreen);
+        ApplyResolution(_settings.resWidth, _settings.resHeight);
         ApplyVolume("MasterVolume", _settings.masterVol);
         ApplyVolume("BGMVolume", _settings.bgmVol);
         ApplyVolume("SFXVolume", _settings.sfxVol);
         ApplyVolume("VoiceVolume", _settings.voiceVol);
     }
 
-    public void ApplyResolution(int index)
+    public void ChangeResolution(int index)
     {
         if (index < 0 || index >= resOptions.Count) return;
         var opt = resOptions[index];
-        ApplyResolution(opt.w, opt.h, opt.isFull);
+        ApplyResolution(opt.w, opt.h);
     }
 
-    // ÇØ»óµµ º¯°æ ÇÔ¼ö
-    public void ApplyResolution(int width, int height, bool isFull)
+    public void ChangeScreenMode(FullScreenMode input_screenMode)
     {
-        _settings.resWidth = width;
-        _settings.resHeight = height;
-        _settings.isFullScreen = isFull;
-
-        Screen.SetResolution(width, height, isFull);
+        _settings.screenMode = input_screenMode;
+        Screen.SetResolution(_settings.resWidth,_settings.resHeight, input_screenMode);
         SaveSettings();
     }
 
 
-    // º¼·ı º¯°æ ÇÔ¼ö
+    public void ApplyResolution(int width, int height)
+    {
+        _settings.resWidth = width;
+        _settings.resHeight = height;
+
+        Screen.SetResolution(width, height, _settings.screenMode);
+        SaveSettings();
+    }
+
+    
+
+    // ë³¼ë¥¨ ë³€ê²½ í•¨ìˆ˜
     public void ApplyVolume(string parameterName, float value)
     {
-        // ¼±Çü °ª(0~100)À» µ¥½Ãº§(-80~0)·Î º¯È¯
+        // ì„ í˜• ê°’(0~100)ì„ ë°ì‹œë²¨(-80~0)ë¡œ ë³€í™˜
         float linearValue = value / 100f;
         float dB = linearValue > 0.0001f ? Mathf.Log10(linearValue) * 20f : -80f;
 
@@ -180,7 +191,7 @@ public class SettingManager : IStartable, IDisposable
             _masterMixer.SetFloat(parameterName, dB);
         }
 
-        // µ¥ÀÌÅÍ °»½Å
+        // ë°ì´í„° ê°±ì‹ 
         switch (parameterName)
         {
             case "MasterVolume": _settings.masterVol = value; break;
@@ -198,11 +209,11 @@ public class SettingManager : IStartable, IDisposable
         dropdown.AddOptions(options);
 
         int currentIndex = resOptions.FindIndex(r =>
-            r.w == _settings.resWidth && r.h == _settings.resHeight && r.isFull == _settings.isFullScreen);
+            r.w == _settings.resWidth && r.h == _settings.resHeight);
 
         if (currentIndex != -1)
         {
-            dropdown.SetValueWithoutNotify(currentIndex); // ÀÌº¥Æ® Áßº¹ ¹æÁö
+            dropdown.SetValueWithoutNotify(currentIndex); // ì´ë²¤íŠ¸ ì¤‘ë³µ ë°©ì§€
             dropdown.RefreshShownValue();
         }
     }

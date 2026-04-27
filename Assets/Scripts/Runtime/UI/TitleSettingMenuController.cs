@@ -1,9 +1,7 @@
 using Cysharp.Threading.Tasks;
-using Fungus;
-using System;
-using System.Collections;
 using System.Threading;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -20,7 +18,7 @@ public class TitleSettingMenuController : MonoBehaviour
 
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
-    public GameObject etcPanel;         // 기타 설정 판넬
+    public GameObject keyBindPanel;         // 기타 설정 판넬
 
     public Button closeButton;        // 설정 창 닫는 버튼
 
@@ -39,7 +37,7 @@ public class TitleSettingMenuController : MonoBehaviour
     public Slider voiceVolumeSlider;
 
 
-    [Header ("Sound UI Value Shower")]
+    [Header("Sound UI Value Shower")]
     public TextValueEdtior masterVolumeText;
     public TextValueEdtior bgmVolumeText;
     public TextValueEdtior sfxVolumeText;
@@ -48,11 +46,32 @@ public class TitleSettingMenuController : MonoBehaviour
     [Header("Resolution UI Reference")]
     public TMP_Dropdown resolutionDropdown;
 
+    public Toggle ExclusiveFullScreenToggle;
+    public Toggle FullScreenWindowToggle;
+    public Toggle WindowedToggle;
 
-    public SettingManager _settingManager; 
+
+    private SettingManager _settingManager;
+
+    public enum PanelMode { Sound, Display, KeyBind }
+
+    private struct UIState
+    {
+        public PanelMode usingPanel;
+        public bool isTransitioning;
+        public FixedString64Bytes currentMap;
+
+        public UIState(PanelMode input_mode, bool transitionCondition, FixedString64Bytes input_currentMap)
+        {
+            usingPanel = input_mode;
+            isTransitioning = transitionCondition;
+            currentMap = input_currentMap;
+        }
+    }
+
+    private UIState uiState = new UIState(PanelMode.Sound, false, "MAP_TITLE");
 
 
-    private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
     private Canvas settingCanvas;
 
     bool isTransitioning = false;
@@ -99,10 +118,35 @@ public class TitleSettingMenuController : MonoBehaviour
         voiceVolumeSlider.SetValueWithoutNotify(s.voiceVol);
 
 
+        switch (s.screenMode)
+        {
+            case (FullScreenMode.ExclusiveFullScreen):
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(true);
+
+                FullScreenWindowToggle.SetIsOnWithoutNotify(false);
+                WindowedToggle.SetIsOnWithoutNotify(false);
+                break;
+            case (FullScreenMode.FullScreenWindow):
+                FullScreenWindowToggle.SetIsOnWithoutNotify(true);
+
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(false);
+                WindowedToggle.SetIsOnWithoutNotify(false);
+                break;
+            case (FullScreenMode.Windowed):
+                WindowedToggle.SetIsOnWithoutNotify(true);
+
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(false);
+                FullScreenWindowToggle.SetIsOnWithoutNotify(false);
+                break;
+        }
+
+
         masterVolumeText.changeTextValueInt(s.masterVol);
         bgmVolumeText.changeTextValueInt(s.bgmVol);
         sfxVolumeText.changeTextValueInt(s.sfxVol);
         voiceVolumeText.changeTextValueInt(s.voiceVol);
+
+
 
         // 해상도 드롭다운 초기화
         _settingManager.InitializeResDropdown(resolutionDropdown);
@@ -111,43 +155,40 @@ public class TitleSettingMenuController : MonoBehaviour
 
     #region 설정메뉴 판넬 전환하기
     // 특정 판넬로 갈아끼우기
-    private void PanelChange(int num)
+    private void PanelChange(PanelMode input)
     {
-        switch (num)
+        switch (input)
         {
-            case 1:
+            case PanelMode.Sound:
                 {
                     soundPanel.SetActive(true);
                     displayPanel.SetActive(false);
-                    etcPanel.SetActive(false);
+                    keyBindPanel.SetActive(false);
 
-                    usingPanel = num;
                     break;
                 }
-            case 2:
+            case PanelMode.Display:
                 {
                     soundPanel.SetActive(false);
                     displayPanel.SetActive(true);
-                    etcPanel.SetActive(false);
+                    keyBindPanel.SetActive(false);
 
-                    usingPanel = num;
                     break;
                 }
-            case 3:
+            case PanelMode.KeyBind:
                 {
                     soundPanel.SetActive(false);
                     displayPanel.SetActive(false);
-                    etcPanel.SetActive(true);
+                    keyBindPanel.SetActive(true);
 
-                    usingPanel = num;
                     break;
                 }
         }
     }
 
-    public void OnClickSoundButton() => PanelChange(1);
-    public void OnClickDisplayButton() => PanelChange(2);
-    public void OnClickEtcButton() => PanelChange(3);
+    public void OnClickSoundButton() => PanelChange(PanelMode.Sound);
+    public void OnClickDisplayButton() => PanelChange(PanelMode.Display);
+    public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
 
 
 
@@ -155,9 +196,9 @@ public class TitleSettingMenuController : MonoBehaviour
     {
         if (context.ReadValueAsButton() && context.performed)
         {
-            if (usingPanel != 1)
+            if (uiState.usingPanel != PanelMode.Sound)
             {
-                PanelChange(1);
+                PanelChange(PanelMode.Sound);
             }
         }
     }
@@ -166,20 +207,20 @@ public class TitleSettingMenuController : MonoBehaviour
     {
         if (context.ReadValueAsButton() && context.performed)
         {
-            if (usingPanel != 2)
+            if (uiState.usingPanel != PanelMode.Display)
             {
-                PanelChange(2);
+                PanelChange(PanelMode.Display);
             }
         }
     }
 
-    public void OpenEtcPanel(InputAction.CallbackContext context)
+    public void OpenKeyBindPanel(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton() && context.performed)
         {
-            if (usingPanel != 3)
+            if (uiState.usingPanel != PanelMode.KeyBind)
             {
-                PanelChange(3);
+                PanelChange(PanelMode.KeyBind);
             }
         }
     }
@@ -214,7 +255,7 @@ public class TitleSettingMenuController : MonoBehaviour
 
     private async UniTask MoveRoutine(Vector2 targetPos, CancellationToken token = default)
     {
-        if(movablePart == null || settingCanvas == null)
+        if (movablePart == null || settingCanvas == null)
         {
             Debug.LogError("[SettingMenuManager]: MoveRoutine 실행 중 movablePart 또는 settingCanvas가 할당되지 않았습니다.");
             return;
@@ -300,7 +341,7 @@ public class TitleSettingMenuController : MonoBehaviour
 
     public void OnResolutionChanged(int value)
     {
-        _settingManager.ApplyResolution(value);
+        _settingManager.ChangeResolution(value);
 
     }
 
