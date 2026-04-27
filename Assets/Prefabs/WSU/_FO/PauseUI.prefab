@@ -737,7 +737,7 @@ MonoBehaviour:
   sfxVolumeText: {fileID: 7804494102154118672}
   voiceVolumeText: {fileID: 3685493355103364350}
   resolutionDropdown: {fileID: 7067179056693125217}
-  ExclusiveFulScreenToggle: {fileID: 3165051694324686523}
+  ExclusiveFullScreenToggle: {fileID: 3165051694324686523}
   FullScreenWindowToggle: {fileID: 2628975093599974664}
   WindowedToggle: {fileID: 1954314388510383776}
 --- !u!1 &887448617337858235

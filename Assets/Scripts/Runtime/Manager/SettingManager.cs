@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using VContainer.Unity;
-using TMPro;
-
 using static Constant;
 
 [System.Serializable]
@@ -40,8 +40,24 @@ public struct GameSettings
 
         screenMode = FullScreenMode.FullScreenWindow;
     }
+
 }
 
+public enum PanelMode { Sound, Display, KeyBind }
+
+public struct UIState
+{
+    public PanelMode usingPanel;
+    public bool isTransitioning;
+    public FixedString64Bytes currentMap;
+
+    public UIState(PanelMode input_mode, bool transitionCondition, FixedString64Bytes input_currentMap)
+    {
+        usingPanel = input_mode;
+        isTransitioning = transitionCondition;
+        currentMap = input_currentMap;
+    }
+}
 
 
 public class SettingManager : IStartable, IDisposable
@@ -105,7 +121,7 @@ public class SettingManager : IStartable, IDisposable
         else
         {
             // 최초 실행 시 기본값 설정
-            _settings = new GameSettings();
+            _settings = new GameSettings(100.0f);
             SetDefaultHighestResolution();
         }
     }
@@ -146,6 +162,8 @@ public class SettingManager : IStartable, IDisposable
     #region 실제 설정 적용 (Apply Logic)
     public void ApplyAllSettings()
     {
+
+        Debug.Log($"{_settings}");
         ApplyResolution(_settings.resWidth, _settings.resHeight);
         ApplyVolume("MasterVolume", _settings.masterVol);
         ApplyVolume("BGMVolume", _settings.bgmVol);
@@ -199,7 +217,6 @@ public class SettingManager : IStartable, IDisposable
             case "SFXVolume": _settings.sfxVol = value; break;
             case "VoiceVolume": _settings.voiceVol = value; break;
         }
-
         SaveSettings();
     }
 

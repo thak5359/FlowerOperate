@@ -50,32 +50,15 @@ public class TitleSettingMenuController : MonoBehaviour
     public Toggle FullScreenWindowToggle;
     public Toggle WindowedToggle;
 
+    //-----------------------------------------------------------------------------
 
     private SettingManager _settingManager;
-
-    public enum PanelMode { Sound, Display, KeyBind }
-
-    private struct UIState
-    {
-        public PanelMode usingPanel;
-        public bool isTransitioning;
-        public FixedString64Bytes currentMap;
-
-        public UIState(PanelMode input_mode, bool transitionCondition, FixedString64Bytes input_currentMap)
-        {
-            usingPanel = input_mode;
-            isTransitioning = transitionCondition;
-            currentMap = input_currentMap;
-        }
-    }
 
     private UIState uiState = new UIState(PanelMode.Sound, false, "MAP_TITLE");
 
 
     private Canvas settingCanvas;
 
-    bool isTransitioning = false;
-    private string currentMap;
 
     IMapChangable input; // Injection
 
@@ -98,14 +81,15 @@ public class TitleSettingMenuController : MonoBehaviour
         displayButton.onClick.AddListener(() => OnClickDisplayButton());
         closeButton.onClick.AddListener(() => CloseSetttingMenu().Forget());
 
-
         masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
         bgmVolumeSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
         sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         voiceVolumeSlider.onValueChanged.AddListener(OnVoiceVolumeChanged);
 
         resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
-
+        ExclusiveFullScreenToggle.onValueChanged.AddListener(SetScreenMode_ExclusiveFullScreen);
+        FullScreenWindowToggle.onValueChanged.AddListener(SetScreenMode_FullScreenWindow);
+        WindowedToggle.onValueChanged.AddListener(SetScreenMode_Windowded);
     }
     private void SyncUIWithSettings()
     {
@@ -117,6 +101,10 @@ public class TitleSettingMenuController : MonoBehaviour
         sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
         voiceVolumeSlider.SetValueWithoutNotify(s.voiceVol);
 
+        masterVolumeText.changeTextValueInt(s.masterVol);
+        bgmVolumeText.changeTextValueInt(s.bgmVol);
+        sfxVolumeText.changeTextValueInt(s.sfxVol);
+        voiceVolumeText.changeTextValueInt(s.voiceVol);
 
         switch (s.screenMode)
         {
@@ -140,18 +128,9 @@ public class TitleSettingMenuController : MonoBehaviour
                 break;
         }
 
-
-        masterVolumeText.changeTextValueInt(s.masterVol);
-        bgmVolumeText.changeTextValueInt(s.bgmVol);
-        sfxVolumeText.changeTextValueInt(s.sfxVol);
-        voiceVolumeText.changeTextValueInt(s.voiceVol);
-
-
-
         // 해상도 드롭다운 초기화
         _settingManager.InitializeResDropdown(resolutionDropdown);
     }
-
 
     #region 설정메뉴 판넬 전환하기
     // 특정 판넬로 갈아끼우기
@@ -230,26 +209,26 @@ public class TitleSettingMenuController : MonoBehaviour
     // 설정 창 숨기기/보이기 (이동 연출 포함) 
     public void OnBackAction(InputAction.CallbackContext context)
     {
-        if (this == null || !context.performed && isTransitioning == true) return;
+        if (this == null || !context.performed && uiState.isTransitioning == true) return;
         HandleBackActionAsync(context).Forget();
     }
 
     private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
     {
-        currentMap = input.getCurrentIAmap();
+        uiState.currentMap = input.getCurrentIAmap();
 
-        if (currentMap == TITLE_MAP_NAME)
+        if (uiState.currentMap == TITLE_MAP_NAME)
         {
             await OpenSettingMenu();
         }
-        else if (currentMap == SETTING_MAP_NAME)
+        else if (uiState.currentMap == SETTING_MAP_NAME)
         {
             await CloseSetttingMenu();
         }
         else
         {
             // 그 외의 경우
-            Debug.LogError($"[SettingMenuManager]: {currentMap}맵에서 해당 동작에 정의되지 않았습니다.");
+            Debug.LogError($"[SettingMenuManager]: {uiState.currentMap}맵에서 해당 동작에 정의되지 않았습니다.");
         }
     }
 
@@ -283,41 +262,41 @@ public class TitleSettingMenuController : MonoBehaviour
     #region 세팅 메뉴 여닫기
     public async UniTask OpenSettingMenu()
     {
-        if (isTransitioning == true) return;
-        isTransitioning = true;
+        if (uiState.isTransitioning == true) return;
+        uiState.isTransitioning = true;
 
         input.changeIAmapSetting();
         await MoveRoutine(showPos, this.GetCancellationTokenOnDestroy());
 
-        isTransitioning = false;
+        uiState.isTransitioning = false;
     }
 
     private async UniTask CloseSetttingMenu()
     {
-        if (isTransitioning == true) return;
-        isTransitioning = true;
+        if (uiState.isTransitioning == true) return;
+        uiState.isTransitioning = true;
 
         input.changeIAmapPrev();
         await MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy());
 
-        isTransitioning = false;
+        uiState.isTransitioning = false;
     }
 
     public void OnClickSettingOpen()
     {
-        if (isTransitioning == true) return;
+        if (uiState.isTransitioning == true) return;
         OpenSettingMenu().Forget();
     }
 
     public void OnClickSettingClose()
     {
-        if (isTransitioning == true) return;
+        if (uiState.isTransitioning == true) return;
         input.changeIAmapPrev();
         MoveRoutine(hidePos, this.GetCancellationTokenOnDestroy()).Forget();
     }
     #endregion
 
-    #region 볼륨 값 조절, 해상도 조절
+    #region 볼륨 값 조절
 
     public void OnMasterVolumeChanged(float value)
     {
@@ -338,7 +317,9 @@ public class TitleSettingMenuController : MonoBehaviour
     {
         _settingManager.ApplyVolume(VOICE_MIXER_GROUP, value);
     }
+    #endregion
 
+    #region 해상도 조절
     public void OnResolutionChanged(int value)
     {
         _settingManager.ChangeResolution(value);
@@ -348,6 +329,32 @@ public class TitleSettingMenuController : MonoBehaviour
     public void InitializeResDropdown()
     {
         _settingManager.InitializeResDropdown(resolutionDropdown);
+    }
+    #endregion
+
+    #region ScreenMode Toggle
+
+    /// <summary>
+    /// FullScreen (Blinking when Alt+Tab)
+    /// </summary>
+    public void SetScreenMode_ExclusiveFullScreen(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.ExclusiveFullScreen);
+    }
+    /// <summary>
+    /// Borderless
+    /// </summary>
+    public void SetScreenMode_FullScreenWindow(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.FullScreenWindow);
+    }
+
+    public void SetScreenMode_Windowded(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.Windowed);
     }
 
     #endregion

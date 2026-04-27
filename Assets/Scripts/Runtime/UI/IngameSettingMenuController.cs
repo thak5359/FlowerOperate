@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -31,7 +32,6 @@ public class IngameSettingMenuController : MonoBehaviour
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
     public GameObject etcPanel;         // 기타 설정 판넬
-    private int usingPanel = 1;// 사용중인 판넬 표시용 [1: 사운드 | 2: 화면 | 3: 기타 ]
 
 
     [Header("Sound UI References")]
@@ -60,7 +60,12 @@ public class IngameSettingMenuController : MonoBehaviour
     private IMapChangable input;
     private SettingManager _settingManager;
 
-    private string currentMap;
+
+
+    private UIState uiState = new UIState(PanelMode.Sound, false, "MAP_TITLE");
+
+
+
 
     private bool isTransitioning;
     private void Awake()
@@ -77,7 +82,6 @@ public class IngameSettingMenuController : MonoBehaviour
 
     private void Start()
     {
-
         SyncUIWithSettings();
 
         #region PauseMenu Control
@@ -119,11 +123,32 @@ public class IngameSettingMenuController : MonoBehaviour
         sfxVolumeSlider.SetValueWithoutNotify(s.sfxVol);
         voiceVolumeSlider.SetValueWithoutNotify(s.voiceVol);
 
-
         masterVolumeText.changeTextValueInt(s.masterVol);
         bgmVolumeText.changeTextValueInt(s.bgmVol);
         sfxVolumeText.changeTextValueInt(s.sfxVol);
         voiceVolumeText.changeTextValueInt(s.voiceVol);
+
+        switch (s.screenMode)
+        {
+            case (FullScreenMode.ExclusiveFullScreen):
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(true);
+
+                FullScreenWindowToggle.SetIsOnWithoutNotify(false);
+                WindowedToggle.SetIsOnWithoutNotify(false);
+                break;
+            case (FullScreenMode.FullScreenWindow):
+                FullScreenWindowToggle.SetIsOnWithoutNotify(true);
+
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(false);
+                WindowedToggle.SetIsOnWithoutNotify(false);
+                break;
+            case (FullScreenMode.Windowed):
+                WindowedToggle.SetIsOnWithoutNotify(true);
+
+                ExclusiveFullScreenToggle.SetIsOnWithoutNotify(false);
+                FullScreenWindowToggle.SetIsOnWithoutNotify(false);
+                break;
+        }
 
         // 해상도 드롭다운 초기화
         _settingManager.InitializeResDropdown(resolutionDropdown);
@@ -140,35 +165,35 @@ public class IngameSettingMenuController : MonoBehaviour
 
     }
 
-    private void PanelChange(int num)
+    private void PanelChange(PanelMode input)
     {
-        switch (num)
+        switch (input)
         {
-            case 1:
+            case PanelMode.Sound:
                 {
                     soundPanel.SetActive(true);
                     displayPanel.SetActive(false);
                     etcPanel.SetActive(false);
 
-                    usingPanel = num;
+                    uiState.usingPanel = input;
                     break;
                 }
-            case 2:
+            case PanelMode.Display:
                 {
                     soundPanel.SetActive(false);
                     displayPanel.SetActive(true);
                     etcPanel.SetActive(false);
 
-                    usingPanel = num;
+                    uiState.usingPanel = input;
                     break;
                 }
-            case 3:
+            case PanelMode.KeyBind:
                 {
                     soundPanel.SetActive(false);
                     displayPanel.SetActive(false);
                     etcPanel.SetActive(true);
 
-                    usingPanel = num;
+                    uiState.usingPanel = input;
                     break;
                 }
         }
@@ -176,20 +201,20 @@ public class IngameSettingMenuController : MonoBehaviour
 
     private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
     {
-        currentMap = input.getCurrentIAmap();
+        uiState.currentMap = input.getCurrentIAmap();
 
         // 수정할 위치: PauseMenu UI 매니저 스크립트 내부의 맵 분기 처리 로직
-        if (currentMap == FARM_MAP_NAME || currentMap == SHOP_MAP_NAME)
+        if (uiState.currentMap == FARM_MAP_NAME || uiState.currentMap == SHOP_MAP_NAME)
         {
             // 농장이나 상점 -> 퍼즈 메뉴 열기
             OpenPauseMain(this.GetCancellationTokenOnDestroy()).Forget();
         }
-        else if (currentMap == PAUSEMENU_MAP_NAME)
+        else if (uiState.currentMap == PAUSEMENU_MAP_NAME)
         {
             // 퍼즈 메인 -> 메뉴 닫고 복귀
             await ClosePauseMain();
         }
-        else if (currentMap == SETTING_MAP_NAME)
+        else if (uiState.currentMap == SETTING_MAP_NAME)
         {
             // 세팅 화면 -> 퍼즈 메인으로 돌아가기
             await BackToPauseFromSetting();
@@ -197,7 +222,7 @@ public class IngameSettingMenuController : MonoBehaviour
         else
         {
             // 그 외의 경우 
-            Debug.Log($"[PauseMenu] {currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
+            Debug.Log($"[PauseMenu] {uiState.currentMap} 맵에서는 해당 동작이 정의되지 않았습니다.");
         }
 
 
@@ -235,7 +260,7 @@ public class IngameSettingMenuController : MonoBehaviour
         isTransitioning = true;
 
         input.changeIAmapSetting();
-        PanelChange(1);
+        PanelChange(PanelMode.Sound);
         await (MoveRoutine(settingPos, this.GetCancellationTokenOnDestroy()));
 
         isTransitioning = false;
@@ -293,10 +318,9 @@ public class IngameSettingMenuController : MonoBehaviour
 
     #region 버튼 클릭 기능
 
-    public void OnClickSoundButton() => PanelChange(1);
-    public void OnClickDisplayButton() => PanelChange(2);
-
-    public void OnClickEtcButton() => PanelChange(3);
+    public void OnClickSoundButton() => PanelChange(PanelMode.Sound);
+    public void OnClickDisplayButton() => PanelChange(PanelMode.Display);
+    public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
 
     public void OnClickTitleButton()
     {
@@ -320,17 +344,14 @@ public class IngameSettingMenuController : MonoBehaviour
     {
         _settingManager.ApplyVolume(MASTER_MIXER_GROUP, value);
     }
-
     public void OnBGMVolumeChanged(float value)
     {
         _settingManager.ApplyVolume(BGM_MIXER_GROUP, value);
     }
-
     public void OnSFXVolumeChanged(float value)
     {
         _settingManager.ApplyVolume(SFX_MIXER_GROUP, value);
     }
-
     public void OnVoiceVolumeChanged(float value)
     {
         _settingManager.ApplyVolume(VOICE_MIXER_GROUP, value);
@@ -364,7 +385,6 @@ public class IngameSettingMenuController : MonoBehaviour
     }
 
     #endregion
-
 
     #region 해상도 드롭다운 초기화
 
