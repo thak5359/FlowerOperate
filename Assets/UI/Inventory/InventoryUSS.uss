@@ -1,4 +1,4 @@
-﻿/* 인벤토리 전체 배경판 */
+/* 인벤토리 전체 배경판 */
 .inventory-root {
     width: 870px;
     height: 460px;
@@ -40,5 +40,5 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    border-width: 1px; /* 슬롯 구분선 추가 (선택사항) */
+    border-width: 1px; /* 슬롯 구분선   */
 }

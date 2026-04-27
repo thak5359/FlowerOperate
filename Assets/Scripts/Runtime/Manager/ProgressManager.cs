@@ -10,7 +10,8 @@ public enum Season
     WINTER
 }
 
-public class ProgressManager : MonoBehaviour
+
+public partial class ProgressManager
 {
     List<int> list;
 

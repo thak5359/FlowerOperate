@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using VContainer;
+using static Constant;
 
 public interface IInteractable
 {
@@ -16,12 +18,14 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
-    public bool canInteractive = false;
+    public float decelereationRate = 0.5f;
+
+    bool isCharging = false;
+
+    //public bool isInteracting = false;
 
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
-    [SerializeField] public GameObject UseArea; // 아이템 사용 범위 (추후 삭제할 예정)
-    [SerializeField] public GameObject Plot;
 
 
     // 차징 관리용
@@ -29,38 +33,47 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
 
-    private UseAreamanager _useAreaManager;
+
+    [Header("캐릭터 이미지 칸 [앞] [옆] [뒤]")]
+    [SerializeField] public List<Sprite> CharacterSprite = new(3);
+
+
+    private UseAreaManager _useAreaManager;
 
     private Vector2 moveInput;
     private Rigidbody rb;
+    private SpriteRenderer sprRenderer;
 
     // 상호작용 연속 방지용 
-    private float interactCooldown = 0.2f;
+    private float interactCooldown = 1f;
     private float lastInteractTime = 0f;
 
-    [SerializeField] private string messageTarget;
 
-    public void setTag(string input_tag) => messageTarget = input_tag;
-    public Vector2 heading;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
-    Vector3 cached3Vec;
+    public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
+    Vector3 cachedPosition = new Vector3(0.0f, 0.0f, -1.0f);
+    Quaternion cachedRotation = Quaternion.identity;
+
+    private  Vector3 interactableBoxScale;
+
+    private static int _mask;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        sprRenderer = GetComponentInChildren<SpriteRenderer>();
+        _mask = LayerMask.GetMask(LAYER_INTERACTABLE);
+        interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
     }
 
     [Inject]
-    void Construct(UseAreamanager input_UseAreaManager)
+    void Construct(UseAreaManager input_UseAreaManager)
     {
         _useAreaManager = input_UseAreaManager;
     }
 
     void Start()
     {
-        if (UseArea.activeSelf == true)
-        {
-            UseArea.SetActive(false);
-        }
+        sprRenderer.sprite = CharacterSprite[0];
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -71,97 +84,155 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
-        interactableArea.localPosition = cached3Vec;
-        SnapToWorldGrid(UseArea.transform, cached3Vec);
+        interactableArea.localPosition = cachedPosition;
+        interactableArea.localRotation = cachedRotation;
     }
 
     void Move()
     {
+        Vector3 targetVelocity;
+        if (isCharging == true)
+        { targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed * decelereationRate; }
+        else
+            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
 
 
-
-        Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
-
+        //Debug.Log($"MoveInput: {moveInput.x}, {moveInput.y}");
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
-        if (moveInput.x != 0)
-        {
-            //spriteRenderer.flipX = (moveInput.x < 0); // TODO :: MeshRenderer 변경하는 기능으로 만들기!
-        }
-        if (moveInput != Vector2.zero)
+        if (moveInput != Vector2.zero && isCharging == false)
         {
             if (moveInput.x != 0)
             {
+
+                switchSpr(1);
+
+                sprRenderer.flipX = (moveInput.x > 0) ? true : false;
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
-                cached3Vec.Set(heading.x, 0.0f, 0.0f);
+
             }
             else
             {
+                _ = (moveInput.y > 0) ? switchSpr(2) : switchSpr(0);
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
-                cached3Vec.Set(0.0f, 0.0f, heading.y);
 
             }
-
+            locateInteractable();
         }
 
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-
-
-        if (canInteractive == true && context.canceled)
+        
+        //Debug.Log("OnInteracted has been detected 1 ");
+        if (isCharging == false && context.canceled)
         {
-
+            Debug.Log("OnInteracted has been detected 2 ");
             if (Time.time < lastInteractTime + interactCooldown)
             {
                 Debug.Log("잠시 뒤에 말을 걸어보자...");
                 return;
             }
 
-            // 나 자신(this)을 IInteractable로 형변환해서 호출
-            ((IInteractable)this).Interact(this.messageTarget);
+            Collider[] hits = GetHits();
+            if (hits.Length == 1)
+            {
+
+                if (hits[0].CompareTag(TAG_STORAGE))
+                {
+                // TODO:: 창고 여는 스크립트 여기에 작성하기
+                }
+
+                if (hits[0].CompareTag(TAG_BED))
+                {
+
+                }
+
+
+                ((IInteractable)this).Interact(hits[0].gameObject.tag);
+            }
+            else if( hits.Length > 1)
+            {
+                Debug.Log($"한번에 여러 상호작용 대상이 들어왔습니다 \n. {hits.ToString()}");
+            }
         }
     }
 
-    // 나중에 삭제할 시연용 코드. 인벤토리까지 완성되면 변경.
+
+    void IInteractable.Interact(string Tag)
+    {
+        Debug.Log($"메세지 송신 to :{Tag}");
+        Debug.Log("OnInteracted has been detected 3 ");
+        Fungus.Flowchart.BroadcastFungusMessage(Tag);
+    }
+
+    private Collider[] GetHits()
+    {
+        return Physics.OverlapBox(interactableArea.position, interactableBoxScale, cachedRotation, _mask);
+    }
+
     public void OnUse(InputAction.CallbackContext context)
     {
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
-            if (UseArea.activeSelf == true)
-            {
-                Debug.LogAssertion("오류! 키입력이 잘못됨!");
-                return;
-            }
-
-
-
+            isCharging = true;
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
-
         }
-
 
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
-
-
+            isCharging = false;
+            //Debug.Log("Use 버튼이 떼어졌습니다. 아이템 사용 시도!");
             _useAreaManager.Fire(); // 발사!
         }
     }
 
-    private void SnapToWorldGrid(Transform targetPos, Vector3 offset)
-    {
-        Vector3 targetWorldPos = transform.position + offset;
 
-        targetPos.position = new Vector3(Mathf.Round(targetWorldPos.x), 0.15f, Mathf.Round(targetWorldPos.z));
+
+
+    /// <summary>
+    /// [Front: 0] [Side : 1] [Rear : 2]
+    /// </summary>
+    /// <param name="idx"></param>
+    int switchSpr(int idx)
+    {
+        if (CharacterSprite.Count < 3)
+        {
+            Debug.Log($"CharacerSprite.count is {CharacterSprite.Count}!");
+            return -1;
+        }
+
+        if (sprRenderer.sprite != CharacterSprite[idx])
+            sprRenderer.sprite = CharacterSprite[idx];
+        return 0;
     }
 
-    void IInteractable.Interact(string Tag)
+    private void locateInteractable()
     {
-        Debug.Log($"메세지 송신 to :{Tag}");
-        Fungus.Flowchart.BroadcastFungusMessage(Tag);
+        if (heading == Vector2.right)
+        {
+            cachedPosition.Set(heading.x, 0.0f, 0.0f);
+
+            cachedRotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+        }
+        if (heading == Vector2.left)
+        {
+            cachedPosition.Set(heading.x, 0.0f, 0.0f);
+
+            cachedRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+        }
+        if (heading == Vector2.up || heading == Vector2.down)
+        {
+            cachedPosition.Set(0.0f, 0.0f, heading.y);
+            cachedRotation = Quaternion.identity;
+        }
+    }
+
+    private void OnDisable()
+    {
+        _useAreaManager.CancelCharging();
     }
 
 }

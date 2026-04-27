@@ -2,66 +2,81 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using UnityEngine;
+using static Constant;
 
 public interface IManager
 {
     public void Load(SaveDatas saveDatas);
+    public void Sort();
+}
+
+public enum ContainerType
+{
+    INVENTORY,
+    STORAGE
 }
 
 [Serializable]
 public class ItemStorageParent : MonoBehaviour, IManager
 {
     [SerializeField]
-    protected ItemStorageData _data = new ItemStorageData();
-    [SerializeField]
-    protected GameObject slotObject;
+    protected ItemInstantData _Data = new ItemInstantData();
 
     //Getter
-    public ItemStorageData GetData => _data;
-
-    protected virtual void Initialize(ItemStorageParent storageParent, ItemStorageData data, ref List<ItemObjectData> slotList)
+    public ItemInstantData GetData => _Data;
+    void OnEnable()
     {
-        if (data == null || data.GetList == null)
+        GlobalEventManager.OnItemPickedUp += AddItem;
+    }
+
+    void OnDisable()
+    {
+        GlobalEventManager.OnItemPickedUp -= AddItem;
+    }
+
+    // 상속받은 클래스에서 기본으로 사용할 타입을 지정 (예: InventoryDataManager는 INVENTORY)
+    protected virtual ContainerType currentType => ContainerType.INVENTORY;
+
+    protected virtual void Initialize(ItemInstantData data)
+    {
+        if (data.GetList(currentType) == null)
         {
-            Debug.LogWarning("불러온 데이터가 유효하지 않습니다.");
+            Debug.LogWarning($"{currentType} 데이터가 유효하지 않습니다.");
             return;
         }
 
-        // 1. 데이터 교체 (ResetData를 먼저 하면 안됨)
-        _data = data;
-        slotList = _data.GetList;
-
-        Debug.Log($"{storageParent.name} 초기화 끝 (아이템 수: {_data.GetList.Count})");
+        _Data = data;
+        GlobalEventManager.InvokeDataChanged();
     }
 
-    public virtual void Load(SaveDatas saveDatas) { }
-
-    protected void ResetData()
+    public virtual void Load(SaveDatas saveDatas)
     {
-        // 리스트를 완전히 비우는 것이 아니라, 슬롯 수만큼 기본값으로 채웁니다.
-        int count = (_data != null) ? _data.GetSlotsCount : 50;
+        Initialize(saveDatas.GetItemData);
+    }
+
+    protected void ResetData(ContainerType type)
+    {
+        int count = (_Data.GetList(type).Count != 0) ? _Data.GetSlotsCount : 50;
         if (count <= 0) count = 50;
 
         List<ItemObjectData> emptyList = new List<ItemObjectData>();
         for (int i = 0; i < count; i++) emptyList.Add(default);
 
-        if (_data == null) _data = new ItemStorageData();
-        _data.SetItemList(emptyList);
+        _Data.SetItemList(type, emptyList);
+        GlobalEventManager.InvokeDataChanged();
     }
 
-    public virtual void Swap(int idx1, int idx2)
+    public virtual void Swap(ContainerType startPoint, ContainerType endPoint, int idx1, int idx2)
     {
-        //슬롯의 아이템 스프라이트 변경 로직 넣어주세요.
-        _data.SwapItem(idx1, idx2);
-        Debug.Log($"{idx1}번과 {idx2}번 슬롯의 아이템 위치 스왑");
+        _Data.SwapItem(startPoint, endPoint, idx1, idx2);
+        GlobalEventManager.InvokeDataChanged();
+        Debug.Log($"{startPoint}[{idx1}] <-> {endPoint}[{idx2}] 아이템 위치 스왑");
     }
 
-    // 아이템 합치기 함수
     public virtual void EngraftItem(ref ItemObjectData a, ref ItemObjectData b)
     {
-        if (a.CheckFull() || b.CheckEmpty())
+        if (a.CheckFull() || b.CheckEmpty() || a.GetItemID != b.GetItemID || a.GetGrade != b.GetGrade)
             return;
 
         int space = 100 - a.GetAmount;
@@ -69,91 +84,147 @@ public class ItemStorageParent : MonoBehaviour, IManager
 
         a.SetAmount((short)(a.GetAmount + amountToMove));
         b.SetAmount((short)(b.GetAmount - amountToMove));
+        
+        if (b.CheckEmpty())
+            b = default;
+
+        GlobalEventManager.InvokeDataChanged();
     }
 
-    protected virtual void AddItem(ItemObjectData item)
-    {
-        _data.AddItem(item);
-    }
+    public void Sort() => Sort(currentType);
 
-    protected List<ItemObjectData> LoadChangedDataList(List<ItemDataContainer> changedDataList)
+    public void Sort(ContainerType type)
     {
-        List<ItemObjectData> tempOD = new List<ItemObjectData>();
-        foreach (ItemDataContainer data in changedDataList)
+        Debug.Log($"{type} 아이템 정리 시작");
+        _Data.SortList(type);
+        
+        var list = _Data.GetList(type);
+        for (int i = 0; i < list.Count - 1; i++)
         {
-            tempOD.Add(data.GetData);
+            ItemObjectData itemL = list[i];
+            ItemObjectData itemR = list[i + 1];
+
+            EngraftItem(ref itemL, ref itemR);
+
+            list[i] = itemL;
+            list[i + 1] = itemR;
         }
-        return tempOD;
+        _Data.SortList(type);
+        GlobalEventManager.InvokeDataChanged();
+    }
+
+    protected virtual void AddItem(ItemObjectData item) => AddItem(currentType, item);
+
+    public virtual void AddItem(ContainerType type, ItemObjectData item)
+    {
+        _Data.AddItem(type, item);
+        GlobalEventManager.InvokeDataChanged();
+    }
+
+    public bool RemoveItem(ContainerType type, ushort id, int count)
+    {
+        if (!HasItem(type, id, count)) return false;
+
+        var list = _Data.GetList(type);
+        int remainingToRemove = count;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var item = list[i];
+            if (item.GetItemID == id)
+            {
+                int toTake = Mathf.Min(remainingToRemove, item.GetAmount);
+                item.SetAmount((short)(item.GetAmount - toTake));
+                remainingToRemove -= toTake;
+
+                list[i] = item.GetAmount <= 0 ? default : item;
+                if (remainingToRemove <= 0) break;
+            }
+        }
+        GlobalEventManager.InvokeDataChanged();
+        return true;
+    }
+
+    public bool HasItem(ContainerType type, ushort id, int count)
+    {
+        int totalAmount = _Data.GetList(type)
+            .Where(item => item.GetItemID == id)
+            .Sum(item => (int)item.GetAmount);
+        return totalAmount >= count;
     }
 }
 
 [Serializable]
-public class ItemStorageData
+public struct ItemInstantData
 {
-    [SerializeField]
-    private List<ItemObjectData> itemListData;
-    [SerializeField]
-    private int slotsCount = 50;
+    [SerializeField] private List<ItemObjectData> storageList;
+    [SerializeField] private List<ItemObjectData> invenList;
+    [SerializeField] private int slotsCount;
 
-    //Getter
+    // Getter
+    public List<ItemObjectData> GetList(ContainerType type) => (type == ContainerType.INVENTORY) ? invenList : storageList;
     public int GetSlotsCount => slotsCount;
-    public List<ItemObjectData> GetList => itemListData;
 
-    //Setter
-    public void SetItemList(List<ItemObjectData> itemList) => this.itemListData = itemList;
+    // Setter
+    public void SetItemList(ContainerType type, List<ItemObjectData> itemList)
+    {
+        if (type == ContainerType.INVENTORY) invenList = itemList;
+        else storageList = itemList;
+    }
+
     public void SetSlotsCount(int slotsCount) => this.slotsCount = slotsCount;
 
-    public void ClearList() => this.itemListData.Clear();
-    public void SwapItem(int idx1, int idx2)
+    public void ClearList(ContainerType type) => GetList(type).Clear();
+
+    public void SwapItem(ContainerType startPoint, ContainerType endPoint, int idx1, int idx2)
     {
-        ItemObjectData temp = itemListData[idx1];
-        itemListData[idx1] = itemListData[idx2];
-        itemListData[idx2] = temp;
+        List<ItemObjectData> target1 = GetList(startPoint);
+        List<ItemObjectData> target2 = GetList(endPoint);
+
+        ItemObjectData temp = target1[idx1];
+        target1[idx1] = target2[idx2];
+        target2[idx2] = temp;
     }
 
-    public void AddItem(ItemObjectData item)
+    public void AddItem(ContainerType type, ItemObjectData item)
     {
-        int idx = itemListData.FindIndex(curItem => curItem.GetItemID == item.GetItemID);
-        // 인벤토리에 같은 ID의 아이템이 있을 때
+        List<ItemObjectData> targetList = GetList(type);
+        
+        // 1. 같은 아이템이 있고 겹칠 수 있는 슬롯 확인
+        int idx = targetList.FindIndex(curItem => curItem.GetItemID == item.GetItemID && !curItem.CheckFull());
+        
         if (idx != -1)
         {
-            if (itemListData[idx].CheckFull())
+            var existingItem = targetList[idx];
+            existingItem.AddAmount(item.GetAmount);
+            targetList[idx] = existingItem;
+            Debug.Log($"[{type}] 기존 슬롯에 합치기");
+        }
+        else 
+        {
+            // 2. 빈 슬롯 확인
+            int emptyIdx = targetList.FindIndex(data => data.GetItemID == 0);
+            if (emptyIdx != -1)
             {
-                itemListData.Add(item);
-                return;
+                targetList[emptyIdx] = item;
+                Debug.Log($"[{type}] 새 슬롯에 추가");
             }
-            itemListData[idx].AddAmount(item.GetAmount);
-            Debug.Log("Same Item");
-        }
-        // 획득한 아이템이 인벤에 없던 아이템 & 빈 슬롯이 존재할 때
-        else if (itemListData.Any(data => data.Equals(null)))
-        {
-            itemListData[GetSlotsCount] = item;
-            SetSlotsCount(GetSlotsCount + 1);
-            Debug.Log("새 아이템");
-        }
-        // 첫 획득에 슬롯이 꽉 차있을 때
-        else
-        {
-            Debug.Log("슬롯 꽉 참");
+            else
+            {
+                Debug.Log($"[{type}] 슬롯 가득 참");
+            }
         }
     }
 
-    // 함수 정의: 매개변수 앞에 ref를 붙입니다.
-    public void CombineItem(ref ItemObjectData start, ref ItemObjectData target)
+    public void SortList(ContainerType type)
     {
-        // 계산을 위해 임시 변수를 활용하는 것이 안전합니다.
-        int totalAmount = start.GetAmount + target.GetAmount;
+        var sortedList = GetList(type)
+            .OrderByDescending(item => item.GetItemID != 0)
+            .ThenBy(item => item.GetItemID)
+            .ThenByDescending(item => item.GetAmount)
+            .ToList();
 
-        if (totalAmount > 100)
-        {
-            target.SetAmount(100);
-            start.SetAmount((short)(totalAmount - 100));
-        }
-        else
-        {
-            target.SetAmount((short)totalAmount);
-            start.SetAmount(0); // 합쳐졌으므로 시작 아이템은 0개가 되어야 함
-        }
+        SetItemList(type, sortedList);
     }
+
+    public bool IsFull(ContainerType type) => !GetList(type).Any(item => item.GetItemID == 0);
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
@@ -11,7 +11,7 @@ public class UsableIdData : ItemIdData
     [SerializeField] public List<byte> powerIndex;
     [SerializeField] public List<byte> chargeIndex;
 
-
+    public UsableIdData() => base.startId = Constant.USABLE_START_ID;
     public byte DuratIndex(byte idx) => durationIndex[idx];
     public byte ChargeIndex(byte idx) => chargeIndex[idx];
     public byte PowerIndex(byte idx) => powerIndex[idx];

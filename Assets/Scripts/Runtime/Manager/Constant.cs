@@ -1,27 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Collections;
-using UnityEngine;
 
 
 public class Constant
 {
+
+    
+
+    // Class for Constant Value in this Project
+
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
+    public static readonly FixedString64Bytes ADDRESSABLE_PLOT= "Prefab_Plot";
 
-    #region æ∆¿Ã≈€ ID π¸¿ß
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_DEFAULT = "Spr_Plot_Default";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_WATERED = "Spr_Plot_Watered";
 
-    public const short USABLE_START_ID = 0;
-    public const short COMMON_START_ID = 41;
-    public const short FLOWER_START_ID = 301;
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_FLOWER_SEED;
+    
+
+
+    public const ushort MAX_COUNT_INVENTORY = 999;
+    public const ushort MAX_COUNT_STORAGE = 9999;
+    public const ushort MAX_SLOT_INVENTORY = 50;
+
+    #region ÏïÑÏù¥ÌÖú ID Î≤îÏúÑ
+
+    public const short USABLE_START_ID = 100;
+    public const short COMMON_START_ID = 1;
+    public const short FLOWER_START_ID = 700;
 
     public const short USABLE_END_ID = 40;
     public const short COMMON_END_ID = 300;
     public const short FLOWER_END_ID = 1000;
 
+    public const short QUALITY_FERTILIZER_START_ID = 600;
+    public const short BOUNTIFUL_FERTILIZER_START_ID = 605;
+    public const short ALLINONE_FERTILIZER_START_ID = 610;
+
+    public const short ALLINONE_FERTILIZER_END_ID = 614;
+
+
     #endregion
 
-
-    #region  ¿Â∫Ò æ∆¿Ã≈€ ID π¸¿ß
+    #region  Ïû•ÎπÑ ÏïÑÏù¥ÌÖú ID Î≤îÏúÑ
 
     public const short MIN_HOE_ID = 0;
     public const short MAX_HOE_ID = 7;
@@ -38,13 +58,11 @@ public class Constant
     public const short MIN_AXE_ID = 32;
     public const short MAX_AXE_ID = 39;
 
-    public const short MIN_CONSUMABLE_ID = 500;
-    public const short MAX_CONSUMABLE_ID = 7;
+
 
     #endregion
 
-
-    #region æ◊º« ∏ , Ω∫≈∞∏∂ ¿Ã∏ß
+    #region Ïï°ÏÖò Îßµ, Ïä§ÌÇ§Îßà Ïù¥Î¶Ñ
 
     public static readonly FixedString64Bytes TITLE_MAP_NAME = "MAP_TITLE";
     public static readonly FixedString64Bytes SETTING_MAP_NAME = "MAP_SETTING";
@@ -60,8 +78,7 @@ public class Constant
    
     #endregion
 
-
-    #region æ¿ ¿Ã∏ß
+    #region Ïî¨ Ïù¥Î¶Ñ
     
     public static readonly FixedString64Bytes TITLE_SCENE_NAME = "MainTitle";
     public static readonly FixedString64Bytes FARM_SCENE_NAME = "SampleScene";
@@ -69,7 +86,7 @@ public class Constant
     #endregion
 
    
-    #region BLOB µ•¿Ã≈Õ ∆ƒ¿œ ∞Ê∑Œ
+    #region BLOB Îç∞Ïù¥ÌÑ∞ ÌååÏùº Í≤ΩÎ°ú
 
     public const string BLOB_FOLDER = "Blobs";
     public const string ITEM_BLOB = "ItemData.blob";
@@ -80,7 +97,7 @@ public class Constant
 
     #endregion
 
-    #region ø¿µæÓ πÕº≠ ±◊∑Ï ¿Ã∏ß
+    #region Ïò§ÎîîÏò§ ÎØπÏÑú Í∑∏Î£π Ïù¥Î¶Ñ
 
     public const string MASTER_MIXER_GROUP = "MasterVolume";
     public const string BGM_MIXER_GROUP = "BGMVolume";
@@ -88,4 +105,28 @@ public class Constant
     public const string VOICE_MIXER_GROUP = "VoiceVolume";
 
     #endregion
+
+
+    #region LayerName ( For LayerMask on UseAreaFunction)
+    public const string LAYER_TREE = "Tree";
+    public const string LAYER_PLOT = "Plot";
+    public const string LAYER_OBSTACLE = "Obstacle";
+    public const string LAYER_INTERACTABLE = "Interactable";
+    public const string LAYER_ORE = "Ore";
+    public const string LAYER_GRASS = "Grass";
+    #endregion
+
+    #region TagName
+    public const string TAG_YUUNA = "Yuuna";
+    public const string TAG_STORAGE = "Storage";
+    public const string TAG_SEEDMAKER = "SeedMaker";
+    public const string TAG_BED = "Bed";
+
+
+
+    #endregion
+
+    public const int MAX_GROWTH = 4;
+
 }
+

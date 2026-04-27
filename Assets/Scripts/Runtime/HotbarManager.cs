@@ -11,10 +11,12 @@ public class HotbarManager : MonoBehaviour
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
-    private InventoryManager inventoryManager;
-
     private int cachedInt;
     private int pointingSlot = -1;
+
+    private byte pointingInventoryArray = 0; // 0~4 
+
+    public int PointingSlot => pointingSlot; //  TODO :: 핫바 번호에 따라서 범위가 바뀌는지 테스트 하기 위한 임시용. 나중에 제대로 지워둬!
 
     private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
@@ -23,12 +25,6 @@ public class HotbarManager : MonoBehaviour
 
     public int PointingItemId => pointingItemId;
 
-    [Inject]
-    public void Construct(InventoryManager inven)
-    {
-        inventoryManager = inven;
-        Debug.Log("HotbarManager의 InventoryManager 의존성 주입 완료!");
-    }
 
     void Awake()
     {
@@ -41,37 +37,38 @@ public class HotbarManager : MonoBehaviour
     private void Start()
     {
         if (items == null || items.Count == 0)
-        {
-            Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
-            if (inventoryManager != null && inventoryManager.getSlotList != null)
-            {
-                UpdateHotSlotItems();
-            }
-            else
-            {
-                items = new List<ItemObjectData>();
-            }
-        }
+        //{
+        //    Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
+        //    if (inventoryManager != null && inventoryManager.SlotList != null)
+        //    {
+        //        //UpdateHotSlotItems(); TODO :코드 읽고 고치기
+        //    }
+        //    else
+        //    {
+        //        items = new List<ItemObjectData>();
+        //    }
+        //}
 
         lastScrollTime = -scrollCooldown;
         pointSlot(0);
     }
 
+    // 이 함수는 여기가 아니라 인벤토리 쪽에서 가져오고 R키로 인벤토리에서 참조하는 열을 바꾸는게 맞는것 같아. 보류하자
     private void UpdateHotSlotItems()
     {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if (i < inventoryManager.getSlotList.Count)
-            {
-                items.Add(inventoryManager.getSlotList[i]);
-                Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
-            }
-            else
-            {
-                items[i] = default;
-                Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
-            }
-        }
+        //for (int i = 0; i < slots.Count; i++)
+        //{
+        //    if (i < inventoryManager.SlotList.Count)
+        //    {
+        //        items.Add(inventoryManager.SlotList[i]);
+        //        Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
+        //    }
+        //    else
+        //    {
+        //        items[i] = default;
+        //        Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
+        //    }
+        //}
     }
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
@@ -113,7 +110,7 @@ public class HotbarManager : MonoBehaviour
         slots[cachedInt].slotFrame.enabled = true;
 
         // 현재 가리키고 있는 아이템의 ID를 pointingItedId에 대입
-        pointingItemId = items[i].GetItemID;
+        //pointingItemId = items[i].GetItemID;
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
@@ -125,4 +122,26 @@ public class HotbarManager : MonoBehaviour
             //player.SetItem(slots[pointingSlot].item);
         }
     }
+
+    public void refresHotbarSlots(in List<ItemObjectData> slotList)
+    {
+        int i =  pointingInventoryArray * 10;
+
+        foreach (HotBarSlot slot in slots)
+        {
+            if(slot.ItemIcon != null)
+                AddressableManager.ReleaseAsset(slot.ItemIcon);
+
+
+            i++;
+        
+        
+        }
+
+
+
+
+
+    }
+
 }

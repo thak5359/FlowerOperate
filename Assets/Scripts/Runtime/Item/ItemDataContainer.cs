@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +36,7 @@ public class ItemDataContainer : MonoBehaviour
 }
 
 [System.Serializable]
-public struct ItemObjectData
+public struct ItemObjectData /// ItemInstantData
 {
     [SerializeField] ushort itemID;
     [SerializeField] short Duration;

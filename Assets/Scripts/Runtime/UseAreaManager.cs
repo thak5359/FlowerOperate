@@ -10,29 +10,31 @@ using static Constant;
 
 public interface IUseItem
     {
-    public void StartCharging(Transform playerTransform, Vector2 heading);
+    public void StartCharging(in Transform playerTransform,in Vector2 heading);
     public void Fire();
 }
 
-public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
+    
+
+public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
     #region 영역범위 벡터 리스트
 
     #region 괭이, 물뿌리개, 망치, 소모품 영역범위
-    List<Vector3> AreaA1 = new List<Vector3>()
+    static readonly List<Vector3> AreaA1 = new List<Vector3>()
 {
     new Vector3(1f, 0f, 0f),
     new Vector3(2f, 0f, 0f),
 };
 
-    List<Vector3> AreaA2 = new List<Vector3>()
+    static readonly List<Vector3> AreaA2 = new List<Vector3>()
 {
     new Vector3(1f, 1f, 0f),
     new Vector3(1f, 0f, 0f),
     new Vector3(1f, -1f, 0f)
 };
 
-    List<Vector3> AreaA3 = new List<Vector3>()
+    static readonly List<Vector3> AreaA3 = new List<Vector3>()
 {
     new Vector3(1f, 0f, 0f),
     new Vector3(1f, -1f, 0f),
@@ -43,7 +45,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(2f, -1f, 0f)
 };
 
-    List<Vector3> AreaA4 = new List<Vector3>()
+    static readonly List<Vector3> AreaA4 = new List<Vector3>()
 {
     new Vector3(1f, 1f, 0f),
     new Vector3(1f, 0f, 0f),
@@ -58,7 +60,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(3f, -1f, 0f),
 };
 
-    List<Vector3> AreaA5 = new List<Vector3>()
+    static readonly List<Vector3> AreaA5 = new List<Vector3>()
 {
     new Vector3(1f, 2f, 0f),
     new Vector3(1f, 1f, 0f),
@@ -95,14 +97,14 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     #endregion
 
     #region 낫 영역범위
-    List<Vector3> AreaB1 = new List<Vector3>()
+    static readonly List<Vector3> AreaB1 = new List<Vector3>()
 {
     new Vector3(1f, 1f, 0f),
     new Vector3(1f, 0f, 0f),
     new Vector3(1f, -1f, 0f)
 };
 
-    List<Vector3> AreaB2 = new List<Vector3>()
+    static readonly List<Vector3> AreaB2 = new List<Vector3>()
 {
     new Vector3(1f, 1f, 0f),
     new Vector3(1f, 0f, 0f),
@@ -116,7 +118,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
 };
 
-    List<Vector3> AreaB3 = new List<Vector3>()
+    static readonly List<Vector3> AreaB3 = new List<Vector3>()
 {
     new Vector3(1f, 1f, 0f),
     new Vector3(1f, 0f, 0f),
@@ -137,7 +139,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     #endregion
 
     #region 도끼 영역범위
-    List<Vector3> AreaC1 = new List<Vector3>()
+    static readonly List<Vector3> AreaC1 = new List<Vector3>()
 {
     new Vector3(-1f, -1f, 0f),
     new Vector3(-1f, 0f, 0f),
@@ -153,7 +155,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(1f, 1f, 0f)
 };
 
-    List<Vector3> AreaC2 = new List<Vector3>()
+    static readonly List<Vector3> AreaC2 = new List<Vector3>()
 {
     new Vector3(-2f, -1f, 0f),
     new Vector3(-2f, 0f, 0f),
@@ -182,7 +184,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(2f, 1f, 0f)
 };
 
-    List<Vector3> AreaC3 = new List<Vector3>()
+    static readonly List<Vector3> AreaC3 = new List<Vector3>()
 {
     new Vector3(-3f, -1f, 0f),
     new Vector3(-3f, 0f, 0f),
@@ -230,7 +232,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(3f, 1f, 0f)
 };
 
-    List<Vector3> AreaC4 = new List<Vector3>()
+    static readonly List<Vector3> AreaC4 = new List<Vector3>()
 {
     new Vector3(-4f, -1f, 0f),
     new Vector3(-4f, 0f, 0f),
@@ -299,7 +301,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     new Vector3(4f, 1f, 0f)
 };
 
-    List<Vector3> AreaC5 = new List<Vector3>()
+    static readonly List<Vector3> AreaC5 = new List<Vector3>()
 {
 
     new Vector3(-5f, -1f, 0f),
@@ -409,30 +411,43 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
     private float _chargeStartTime;
     float elapsed;
 
-    //private int currentChargeLevel = 0; // 기본, 1, 2, 3, 4
+    //private int currentChargeLevel = 0; // Charing >> default, 1, 2, 3, 4
     private List<GameObject> pool = new List<GameObject>();
 
     Vector3 defaultArea = new Vector3(1, 0, 0);
 
     // 오른쪽으로 바라보는 기준으로 작성한 차지타임별 사용 벡터.
 
-    private GameObject _loadedPrefab;
+
+    private GameObject _plotPrefab;
+    private GameObject _useAreaPrefab;
+    
+    bool isPlotPrefabLoaded = false;
+    bool isUseAreaPrefabLoaded = false;
+    bool isPoolInitialized = false;
+    public bool IsReady => isPlotPrefabLoaded && isUseAreaPrefabLoaded && isPoolInitialized;
+
     private readonly Stack<UseAreaFunction> _pool = new(80); // 인스턴스화된 객체를 풀링해서 관리!
     private readonly Stack<UseAreaFunction> _activeObjects = new(80); // 현재 활성화된 객체를 관리하는 스택
-
-
 
     #region 초기화 및 오브젝트 풀링
     
     public async UniTask StartAsync(CancellationToken cancellation)
     {
-        _loadedPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
 
-        if (_loadedPrefab != null)
+        _plotPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_PLOT);
+        if (_plotPrefab != null) isPlotPrefabLoaded = true; 
+
+        _useAreaPrefab = await AddressableManager.LoadAssetAsync<GameObject>(ADDRESSABLE_USEAREA);
+        if (_useAreaPrefab != null ) isUseAreaPrefabLoaded = true;
+
+        if (_useAreaPrefab != null)
         {
             InitializePool(80);
         }
         _activeObjects.Clear();
+
+        if(_pool.Count > 0) isPoolInitialized = true;
     }
 
     // pool에 객체 생성해서 UseAreFunction 컴포넌트로 관리.
@@ -446,14 +461,13 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     private UseAreaFunction CreateNewObject()
     {
-        if (_loadedPrefab == null)
+        if (_useAreaPrefab == null)
         {
             Debug.LogError("Addressable Prefab이 아직 로드되지 않았습니다!");
             return null;
         }
 
-        // 초기화 단계에서는 _originTransform이 null일 수 있으므로 Instantiate 시 부모를 지정하지 않거나 체크해야 함
-        GameObject go = UnityEngine.Object.Instantiate(_loadedPrefab);
+        GameObject go = UnityEngine.Object.Instantiate(_useAreaPrefab);
         go.SetActive(false);
 
         var component = go.GetComponent<UseAreaFunction>();
@@ -463,35 +477,46 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         }
         return component;
     }
-
     #endregion
 
 
-
-    public void StartCharging(Transform playerTransform, Vector2 heading)
+    public void StartCharging( in Transform playerTransform, in Vector2 heading)
     {
         if (_isCharging) return;
+        if ( !IsReady)
+        {
+            Debug.Log($"차징 시작 불가: 준비 상태 \n plot 프리펩 로드 = {isPlotPrefabLoaded} \n UseArea 프리펩 로드 = {isUseAreaPrefabLoaded} \n 오브젝트 풀 로드 = {isPoolInitialized}");
+            return;
+        }
+
         _isCharging = true;
 
         _originTransform = playerTransform; // 참조 저장
-        _currentHeading = heading;         // 방향 저장
+
+        if (heading == Vector2.zero) // 방향이 없는 경우 기본값으로 정면으로 설정
+        {
+            _currentHeading = Vector2.down;
+        }
+        else
+        {
+            _currentHeading = heading;
+        }
+        
         _chargeStartTime = Time.time;
     }
 
     void ITickable.Tick()  // 모았다가...
     {
-        if (_loadedPrefab == null || !_isCharging) return;
+        if (_useAreaPrefab == null || _isCharging == false) return;
 
         elapsed = Time.time - _chargeStartTime;
 
         int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
 
-        // 2. 현재 아이템 종류와 레벨에 맞는 데이터 가져오기
-        List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingItemId, level);
+        List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
         if (rawOffsets != null)
         {
-            // 3. 캐릭터 방향(Heading)에 맞춰 좌표 회전 및 월드 좌표 계산
             List<Vector3> worldPositions = new List<Vector3>();
             foreach (var offset in rawOffsets)
             {
@@ -505,7 +530,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
                 worldPositions.Add(snapPos);
             }
 
-            // 4. 화면에 영역 표시 (기존 targetLockON 활용)
+            // 4. 화면에 영역 표시
             UpdateVisualArea(worldPositions);
         }
 
@@ -529,51 +554,41 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         }
     }
 
-    // [수정 위치] Fire() 메서드: 현재 활성화된 영역의 좌표를 출력하는 로직 추가
-    public void Fire() // Context.canceled일 때 발사!
+
+    public void Fire() // Context.canceled, 버튼을 땠을 때 발사!
     {
         if (!_isCharging) return; // 차징이 시작되지 않았으면 무시
 
-        // --- 좌표 디버깅 로그 시작 ---
-        Debug.Log($"<color=yellow>[UseArea Debug]</color> 현재 생성된 영역 개수: {_activeObjects.Count}");
-
-        int index = 0;
-        foreach (var obj in _activeObjects)
+        try
         {
-            if (obj != null)
-            {
-                Debug.Log($"[{index}] 월드 좌표: {obj.transform.position} | 로컬 좌표: {obj.transform.localPosition}");
-            }
-            index++;
+            FireUseAreaFunction(_hotbar.PointingSlot + 1);
         }
-        // --- 좌표 디버깅 로그 끝 ---
-
-        FireUseAreaFunction(_hotbar.PointingItemId); // 현재 아이템 ID에 따라 발사 함수 호출
-        
-        _isCharging = false;
+        catch (Exception e)
+        {
+            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.StackTrace}");
+        }
+        finally
+        {
+            _isCharging = false;
+            ClearActiveArea();
+        }
     }
 
-
-    //외부에서 아이템을 사용하기 전에 영역을 미리 표시하는 함수. 조준!
-    public void targetLockON(List<Vector3> vecList)
+    private void ClearActiveArea()
     {
-        for (int i = 0; i < vecList.Count; i++)
+        while (_activeObjects.Count > 0)
         {
-            UseAreaFunction obj;
-            if (_pool.Count > 0)
-            {
-                 obj = _pool.Pop();
-                obj.gameObject.SetActive(true);
-                obj.gameObject.transform.position = vecList[i];
-            }
-            else
-            {
-                obj = CreateNewObject();
-                obj.gameObject.SetActive(true);
-                obj.gameObject.transform.position = vecList[i];
-            }
-            _activeObjects.Push(obj);
+            ReturnObject(_activeObjects.Pop());
         }
+
+        Debug.Log("영역 청소!");
+    }
+
+    public void CancelCharging()
+    {
+        _isCharging = false;
+        ClearActiveArea();
+        Debug.Log("캐릭터가 메모리에서 해제됨. 강제로 차징이 취소되었습니다.");
     }
 
     // 3Vec을 회전시키는 용도의 함수
@@ -594,7 +609,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
             UseAreaFunction obj = _activeObjects.Pop();
             if (obj != null)
             {
-                obj.FireFunc(itemId);
+                obj.FireFuncTest(itemId, _plotPrefab);
 
                 ReturnObject(obj);
             }
@@ -616,7 +631,6 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         _pool.Push(returned);
     }
 
-    // OnDestroy ��� IDisposable.Dispose���� �޸� ����
     public void Dispose()
     {
         while (_pool.Count > 0)
@@ -625,7 +639,7 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
             if (obj != null) UnityEngine.Object.Destroy(obj.gameObject);
         }
 
-        AddressableManager.ReleaseAsset(_loadedPrefab);
+        AddressableManager.ReleaseAsset(_useAreaPrefab);
         Debug.Log("[UseAreaSpawner] 메모리에서 정상적으로 해제되었음!");
     }
 
@@ -642,20 +656,46 @@ public class UseAreamanager : IAsyncStartable, IDisposable, ITickable, IUseItem
         foreach (var obj in pool) obj.SetActive(false);
 
     }
-
-
     private List<Vector3> GetAreaList(int itemId, int level)
     {
-
-        return level switch
+        if(itemId ==1 || itemId ==4 || itemId ==5 || itemId ==6 || itemId ==7) // 괭이, 물뿌리개, 망치, 소모품
         {
-            1 => AreaC1,
-            2 => AreaC2,
-            3 => AreaC3,
-            4 => AreaC4,
-            5 => AreaC5,
-            _ => null
-        };
+            return level switch
+            {
+                1 => AreaA1,
+                2 => AreaA2,
+                3 => AreaA3,
+                4 => AreaA4,
+                5 => AreaA5,
+                _ => null
+            };
+        }
+        else if(itemId == 2) // 낫
+        {
+            return level switch
+            {
+                1 => AreaB1,
+                2 => AreaB2,
+                3 => AreaB3,
+                _ => null
+            };
+        }
+        else if (itemId == 3) // 도끼
+        {
+            return level switch
+            {
+                1 => AreaC1,
+                2 => AreaC2,
+                3 => AreaC3,
+                4 => AreaC4,
+                5 => AreaC5,
+                _ => null
+            };
+        }
+        else
+        {
+            Debug.LogWarning($"아이템 ID {itemId}에 대한 영역 데이터가 없습니다.");
+            return null;
+        }
     }
-
 }

@@ -13,12 +13,12 @@ public class GameLifetimeScope : LifetimeScope
     //Root LifetimeScope를 상속받아서 설정을 관리하기!
     protected override void Configure(IContainerBuilder builder)
     {
-        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure 시작됨! @@@</color>");
+        Debug.Log("<color=green>@@@ GameLifetimeScope: Configure 실행됨! @@@</color>");
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
-        builder.RegisterComponentInHierarchy<ItemManager>().AsSelf();
+        builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
     }

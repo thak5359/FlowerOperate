@@ -67,7 +67,7 @@ public class ItemBlobMaker : EditorWindow
 
             for (short i = 0; i < so.itemName.Count; i++)
             {
-                arrayBuilder[i].ItemId = (short)(so.startId + i);
+                arrayBuilder[i].ItemId = (short)(so.startId + i*2);
                 arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
                 arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
@@ -79,7 +79,6 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
                 arrayBuilder[i].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
             }
-
             SaveToBlob<FlowerItemBlobDatas>(builder, so.name);
         }
         finally { builder.Dispose(); }

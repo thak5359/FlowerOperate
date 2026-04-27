@@ -872,7 +872,7 @@ GameObject:
   - component: {fileID: 8123043892629020213}
   - component: {fileID: 3014887687534900203}
   - component: {fileID: 8349895801779359490}
-  - component: {fileID: 4229323124132389499}
+  - component: {fileID: 6297364377984874844}
   m_Layer: 0
   m_Name: TitleUI
   m_TagString: Untagged
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &4229323124132389499
+--- !u!114 &6297364377984874844
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -973,14 +973,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5963097232693206972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c28643a32102c2f44a3e95cf23ca333e, type: 3}
+  m_Script: {fileID: 11500000, guid: e982694c82c472340bf854020de7922a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startButton: {fileID: 414022159085251983}
   loadButton: {fileID: 1159940228125531510}
   settingButton: {fileID: 6514577134530032004}
   endButton: {fileID: 3732404603406325940}
-  SMM: {fileID: 0}
 --- !u!1 &5971033547487960901
 GameObject:
   m_ObjectHideFlags: 0

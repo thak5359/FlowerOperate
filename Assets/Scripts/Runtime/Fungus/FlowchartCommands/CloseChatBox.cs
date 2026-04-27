@@ -16,6 +16,7 @@ namespace Fungus
             if (input == null)
             {
                 var scope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
+
                 if (scope != null)
                 {
                     input = scope.Container.Resolve<ActionMapChanger>();

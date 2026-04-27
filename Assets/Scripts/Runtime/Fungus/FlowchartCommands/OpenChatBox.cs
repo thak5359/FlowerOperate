@@ -1,32 +1,38 @@
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Fungus
 {
-    [CommandInfo("InputAction", "OpenChatBox", "대화가 나오는 도중 조작이 불가능하게 합니다.")]
+    [CommandInfo("InputAction", "OpenChatBox", "대화 중 조작을 불가능하게 합니다.")]
     public class OpenChatBox : Command
     {
-        IMapChangable input;
-        // 수정 위치: [Inject] 대신 런타임에 직접 Resolve 하도록 변경
+        private IMapChangable _input;
+
         public override void OnEnter()
         {
-            // 현재 씬의 LifetimeScope에서 직접 의존성을 찾아옵니다.
-            if (input == null)
+            // 1. 캐싱된 값이 없다면 현재 씬의 컨테이너에서 찾아옵니다.
+            if (_input == null)
             {
-                var scope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
-                if (scope != null)
+                // 현재 활성화된 LifetimeScope를 찾습니다.
+                var scope = LifetimeScope.Find<LifetimeScope>();
+
+                if (scope != null && scope.Container != null)
                 {
-                    input = scope.Container.Resolve<ActionMapChanger>();
+                    // [핵심] 인터페이스로 Resolve 하여 유연성을 높입니다.
+                    _input = scope.Container.Resolve<IMapChangable>();
                 }
             }
 
-            if (input != null)
+            // 2. 안전하게 명령을 실행합니다.
+            if (_input != null)
             {
-                input.changeIAmapChatBox();
+                _input.changeIAmapChatBox();
+                Debug.Log("<color=green>[Fungus]</color> ChatBox Action Map으로 전환 성공!");
             }
             else
             {
-                Debug.LogError("Fungus Command: ActionMapChanger를 찾을 수 없습니다!");
+                Debug.LogError("<color=red>[Fungus Error]</color> IMapChangable 의존성을 찾을 수 없습니다! LifetimeScope 등록을 확인하세요.");
             }
 
             Continue();

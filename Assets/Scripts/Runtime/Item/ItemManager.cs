@@ -90,6 +90,7 @@ public class ItemManager : MonoBehaviour
         }
         return true;
     }
+
     private bool InsertDataToMasterDB(FlowerIdData data) //꽃 아이템
     {
         if (data == null)
@@ -117,6 +118,7 @@ public class ItemManager : MonoBehaviour
         }
         return true;
     }
+
     #endregion
 
     // --- 데이터 접근 엔진 ---
