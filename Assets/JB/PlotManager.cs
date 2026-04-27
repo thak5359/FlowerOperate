@@ -4,7 +4,7 @@ using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
 
-public class PlotManager : ItemStorageParent
+public class PlotManager : MonoBehaviour
 {
 
     // 플롯ID : 플롯데이터 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
@@ -32,7 +32,7 @@ public class PlotManager : ItemStorageParent
         }
     }
 
-    public override void Load(SaveDatas saveDatas)
+    public void Load(SaveDatas saveDatas)
     {
         // 1. 아이템 데이터 초기화 (List<ItemObjectData>로 직접 로드)
         //base.Initialize(this, saveDatas.GetPlotItemData, ref plotItems);
@@ -53,12 +53,6 @@ public class PlotManager : ItemStorageParent
     public void SyncItemState()
     {
         plotDataDict.Clear();
-        RefreshPlotCache();
-    }
-
-    public void AfterHarvest()
-    {
-        base.ResetData();
         RefreshPlotCache();
     }
 

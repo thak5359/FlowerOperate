@@ -8,8 +8,8 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<SaveLoadManager>()
             .AsImplementedInterfaces()
             .AsSelf();
-        builder.RegisterComponentInHierarchy<InventoryDataManager>()
-            .As<ItemStorageParent>()
+        builder.RegisterComponentInHierarchy<ItemStorageParent>()
+            .AsImplementedInterfaces()
             .AsSelf();
         builder.RegisterComponentInHierarchy<StorageManager>()
             .As<ItemStorageParent>()
