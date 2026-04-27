@@ -1,4 +1,4 @@
-﻿using VContainer;
+using VContainer;
 using VContainer.Unity;
 
 public class JBLifetimeScope : LifetimeScope
@@ -8,8 +8,8 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<SaveLoadManager>()
             .AsImplementedInterfaces()
             .AsSelf();
-        builder.RegisterComponentInHierarchy<InventoryManager>()
-            .As<ItemStorageParent>()
+        builder.RegisterComponentInHierarchy<ItemStorageParent>()
+            .AsImplementedInterfaces()
             .AsSelf();
         builder.RegisterComponentInHierarchy<StorageManager>()
             .As<ItemStorageParent>()

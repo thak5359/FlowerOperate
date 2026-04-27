@@ -16,6 +16,8 @@ public class FlowerIdData : ItemIdData
     [SerializeField] public List<byte> growthDuration;
     [SerializeField] public List<byte> harvestAmount;
     
+    public FlowerIdData() => base.startId = Constant.FLOWER_START_ID;
+
     public byte SpeciesIndex(byte i) => speciesIndex[i];
     public byte ColorIndex(byte i) => colorIndex[i];
     public byte FloroIndex(byte i) => floroIndex[i];

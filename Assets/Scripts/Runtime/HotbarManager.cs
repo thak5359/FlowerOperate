@@ -41,7 +41,7 @@ public class HotbarManager : MonoBehaviour
         if (items == null || items.Count == 0)
         {
             Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
-            if (inventoryManager != null && inventoryManager.getSlotList != null)
+            if (inventoryManager != null && inventoryManager.SlotList != null)
             {
                 //UpdateHotSlotItems(); TODO :코드 읽고 고치기
             }
@@ -60,9 +60,9 @@ public class HotbarManager : MonoBehaviour
     {
         for (int i = 0; i < slots.Count; i++)
         {
-            if (i < inventoryManager.getSlotList.Count)
+            if (i < inventoryManager.SlotList.Count)
             {
-                items.Add(inventoryManager.getSlotList[i]);
+                items.Add(inventoryManager.SlotList[i]);
                 Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
             }
             else
