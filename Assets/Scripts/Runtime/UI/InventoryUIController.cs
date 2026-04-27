@@ -19,15 +19,12 @@ public class InventoryUIController : MonoBehaviour
 
     private Button closeButton;
 
-
-    private InventoryManager _inventoryManager;
     private IMapChangable _mapChanger;
 
 
     [Inject]
-    private void Construct(InventoryManager input_inventorymanager, IMapChangable input_mapChanger)
+    private void Construct(IMapChangable input_mapChanger)
     {
-        _inventoryManager = input_inventorymanager;
         _mapChanger = input_mapChanger;
     }
 
@@ -74,23 +71,23 @@ public class InventoryUIController : MonoBehaviour
 
     }
 
-    private async UniTask loadItemDatas()
-    {
-        ushort i = 0;
-        int targetItemID;
-        foreach ( ItemObjectData data in _inventoryManager.getSlotList)
-        {
+    //private async UniTask loadItemDatas()
+    //{
+    //    ushort i = 0;
+    //    int targetItemID;
+    //    foreach ( ItemObjectData data in _inventoryManager.getSlotList)
+    //    {
 
-            string address;
-            targetItemID = _inventoryManager.getSlotList[i].GetItemID;
-            if (targetItemID == 0) continue;
-            address = GlobalItemDB.GetAddressString((short)targetItemID);
-            Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
-            buttons[i].style.backgroundImage = img;
+    //        string address;
+    //        targetItemID = _inventoryManager.getSlotList[i].GetItemID;
+    //        if (targetItemID == 0) continue;
+    //        address = GlobalItemDB.GetAddressString((short)targetItemID);
+    //        Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
+    //        buttons[i].style.backgroundImage = img;
 
-            i++;
-        }
-    }
+    //        i++;
+    //    }
+    //}
 
     private void OnDisable()
     {

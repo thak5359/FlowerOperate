@@ -11,8 +11,6 @@ public class HotbarManager : MonoBehaviour
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
-    private InventoryManager inventoryManager;
-
     private int cachedInt;
     private int pointingSlot = -1;
 
@@ -39,17 +37,17 @@ public class HotbarManager : MonoBehaviour
     private void Start()
     {
         if (items == null || items.Count == 0)
-        {
-            Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
-            if (inventoryManager != null && inventoryManager.SlotList != null)
-            {
-                //UpdateHotSlotItems(); TODO :코드 읽고 고치기
-            }
-            else
-            {
-                items = new List<ItemObjectData>();
-            }
-        }
+        //{
+        //    Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
+        //    if (inventoryManager != null && inventoryManager.SlotList != null)
+        //    {
+        //        //UpdateHotSlotItems(); TODO :코드 읽고 고치기
+        //    }
+        //    else
+        //    {
+        //        items = new List<ItemObjectData>();
+        //    }
+        //}
 
         lastScrollTime = -scrollCooldown;
         pointSlot(0);
@@ -58,19 +56,19 @@ public class HotbarManager : MonoBehaviour
     // 이 함수는 여기가 아니라 인벤토리 쪽에서 가져오고 R키로 인벤토리에서 참조하는 열을 바꾸는게 맞는것 같아. 보류하자
     private void UpdateHotSlotItems()
     {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if (i < inventoryManager.SlotList.Count)
-            {
-                items.Add(inventoryManager.SlotList[i]);
-                Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
-            }
-            else
-            {
-                items[i] = default;
-                Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
-            }
-        }
+        //for (int i = 0; i < slots.Count; i++)
+        //{
+        //    if (i < inventoryManager.SlotList.Count)
+        //    {
+        //        items.Add(inventoryManager.SlotList[i]);
+        //        Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
+        //    }
+        //    else
+        //    {
+        //        items[i] = default;
+        //        Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
+        //    }
+        //}
     }
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
