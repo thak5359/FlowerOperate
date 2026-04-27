@@ -15,7 +15,7 @@ public class IngameSettingMenuController : MonoBehaviour
     public RectTransform movablePart;
     public Vector2 hidePos = new Vector2(0, 1000);
     public Vector2 showPos = new Vector2(0, 0);
-    public Vector2 settingPos = new Vector2 ( 0, -1000);
+    public Vector2 settingPos = new Vector2(0, -1000);
 
     public Button buttonResume;
     public Button buttonSetting;
@@ -37,8 +37,8 @@ public class IngameSettingMenuController : MonoBehaviour
     [Header("Sound UI References")]
     public Slider masterVolumeSlider;
     public Slider bgmVolumeSlider;
-    public Slider sfxVolumeSlider;
-    public Slider voiceVolumeSlider;
+    public Slider sfxVolumeSlider;public Slider voiceVolumeSlider;
+
 
     [Header("Sound UI Value Shower")]
     public TextValueEdtior masterVolumeText;
@@ -49,12 +49,16 @@ public class IngameSettingMenuController : MonoBehaviour
     [Header("Resolution UI Reference")]
     public TMP_Dropdown resolutionDropdown;
 
+    public Toggle ExclusiveFullScreenToggle;
+    public Toggle FullScreenWindowToggle;
+    public Toggle WindowedToggle;
+
     [SerializeField] protected const float defaultDuration = 0.5f;
 
     private Canvas pauseCanvas;
     private float cachedFloat = 0.0f;
     private IMapChangable input;
-    private  SettingManager _settingManager;
+    private SettingManager _settingManager;
 
     private string currentMap;
 
@@ -63,9 +67,9 @@ public class IngameSettingMenuController : MonoBehaviour
     {
         pauseCanvas = GetComponent<Canvas>();
     }
-    
+
     [Inject]
-    public  void Construct(IMapChangable input_Imapchangable, SettingManager input_settingManager)
+    public void Construct(IMapChangable input_Imapchangable, SettingManager input_settingManager)
     {
         input = input_Imapchangable;
         _settingManager = input_settingManager;
@@ -76,22 +80,33 @@ public class IngameSettingMenuController : MonoBehaviour
 
         SyncUIWithSettings();
 
+        #region PauseMenu Control
         buttonResume.onClick.AddListener(() => ClosePauseMain().Forget());
         buttonSetting.onClick.AddListener(() => OpenSettingMenu().Forget());
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
         buttonCloseSetting.onClick.AddListener(() => BackToPauseFromSetting().Forget());
+        #endregion
 
+        #region SettingPanel Control
         soundButton.onClick.AddListener(() => OnClickSoundButton());
         displayButton.onClick.AddListener(() => OnClickDisplayButton());
+        #endregion
 
+        #region Volume Control
         masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
-        bgmVolumeSlider   .onValueChanged.AddListener(OnBGMVolumeChanged);
-        sfxVolumeSlider   .onValueChanged.AddListener(OnSFXVolumeChanged);
+        bgmVolumeSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
+        sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         voiceVolumeSlider.onValueChanged.AddListener(OnVoiceVolumeChanged);
+        #endregion
 
+        #region ResolutionMode Control
         resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
 
+        ExclusiveFullScreenToggle.onValueChanged.AddListener(SetScreenMode_ExclusiveFullScreen);
+        FullScreenWindowToggle.onValueChanged.AddListener(SetScreenMode_FullScreenWindow);
+        WindowedToggle.onValueChanged.AddListener(SetScreenMode_Windowded);
+        #endregion
     }
 
     private void SyncUIWithSettings() // 설정값 UI 동기화 기능
@@ -159,14 +174,6 @@ public class IngameSettingMenuController : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
     private async UniTaskVoid HandleBackActionAsync(InputAction.CallbackContext context)
     {
         currentMap = input.getCurrentIAmap();
@@ -196,7 +203,7 @@ public class IngameSettingMenuController : MonoBehaviour
 
     }
 
-    private  async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
+    private async UniTask OpenPauseMain(CancellationToken cancellationToken = default)
     {
         isTransitioning = true;
 
@@ -208,14 +215,14 @@ public class IngameSettingMenuController : MonoBehaviour
 
 
         cachedFloat = 0.0f;
-        while (cachedFloat < 1.0f )
+        while (cachedFloat < 1.0f)
         {
             cachedFloat += Time.unscaledDeltaTime;
             float warpedT = Mathf.Sin(cachedFloat / 1.0f * Mathf.PI * 0.5f);
 
             Time.timeScale = Mathf.SmoothStep(1, 0, warpedT);
             await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
-            
+
         }
         Time.timeScale = 0f;
 
@@ -229,7 +236,7 @@ public class IngameSettingMenuController : MonoBehaviour
 
         input.changeIAmapSetting();
         PanelChange(1);
-        await(MoveRoutine(settingPos, this.GetCancellationTokenOnDestroy()));
+        await (MoveRoutine(settingPos, this.GetCancellationTokenOnDestroy()));
 
         isTransitioning = false;
     }
@@ -245,7 +252,6 @@ public class IngameSettingMenuController : MonoBehaviour
         input.changeIAmapPrev();
 
         isTransitioning = false;
-
     }
 
     public async UniTask BackToPauseFromSetting()
@@ -300,15 +306,15 @@ public class IngameSettingMenuController : MonoBehaviour
 
     public void OnClickGameEndButton()
     {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-    #else
+#else
         Application.Quit();
-    #endif
+#endif
     }
     #endregion
 
-    #region 볼륨 값 조절
+    #region Volume Slider
 
     public void OnMasterVolumeChanged(float value)
     {
@@ -332,12 +338,39 @@ public class IngameSettingMenuController : MonoBehaviour
 
     #endregion
 
+    #region ScreenMode Toggle
+
+    /// <summary>
+    /// FullScreen (Blinking when Alt+Tab)
+    /// </summary>
+    public void SetScreenMode_ExclusiveFullScreen(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.ExclusiveFullScreen);
+    }
+    /// <summary>
+    /// Borderless
+    /// </summary>
+    public void SetScreenMode_FullScreenWindow(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.FullScreenWindow);
+    }
+
+    public void SetScreenMode_Windowded(bool Toggle)
+    {
+        if (Toggle == true)
+            _settingManager.ChangeScreenMode(FullScreenMode.Windowed);
+    }
+
+    #endregion
+
+
     #region 해상도 드롭다운 초기화
 
     public void OnResolutionChanged(int value)
     {
-        _settingManager.ApplyResolution(value);
-
+        _settingManager.ChangeResolution(value);
     }
     #endregion
 
