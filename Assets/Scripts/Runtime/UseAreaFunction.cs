@@ -4,6 +4,9 @@ using Unity.Collections;
 using UnityEngine;
 using VContainer;
 using static Constant;
+using Unity.Mathematics;
+using System.Runtime.CompilerServices;
+using System.Collections;
 public interface IUseAreaHoeFunc
 {
     FarmActionResult DoHoeFunc(GameObject plot);
@@ -30,8 +33,8 @@ public interface IUseAreaConsumableFunc
 }
 public interface IUseAreaConsumableFuncTest
 {
-    FarmActionResult DoConsumableFuncTest1();
-    FarmActionResult DoConsumableFuncTest2();
+    FarmActionResult DoSeedFunc(int itemID);
+    FarmActionResult DoFertilizerFunc(int itemID);
 }
 
 public struct FarmActionResult
@@ -39,7 +42,7 @@ public struct FarmActionResult
     public enum ResultType { Success, Failed, Error }
 
     private ResultType result;
-    FixedString128Bytes errorMessage { get; }
+    public FixedString128Bytes errorMessage { get; private set; }
 
     public ResultType Result() => result;
 
@@ -48,6 +51,19 @@ public struct FarmActionResult
         result = input_result;
         errorMessage = input_errorCode;
     }
+    public void Combine(FarmActionResult resultB)
+    {
+        if (resultB.Result() == ResultType.Error)
+        {
+            result = ResultType.Error;
+            errorMessage = resultB.errorMessage;
+        }
+        else if (resultB.Result() == ResultType.Failed && result != ResultType.Error)
+        {
+            result = ResultType.Failed;
+        }
+    }
+
 }
 
 
@@ -55,6 +71,9 @@ public class UseAreaFunction : MonoBehaviour,
     IUseAreaAxeFunc, IUseAreaHoeFunc, IUseAreaWateringCanFunc,
     IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConsumableFunc, IUseAreaConsumableFuncTest
 {
+    static readonly uint RandSeed = (uint)DateTime.Now.Ticks;
+
+    Unity.Mathematics.Random mathRand = new Unity.Mathematics.Random(RandSeed);
 
     private PlotManager _plotManager;
 
@@ -66,7 +85,8 @@ public class UseAreaFunction : MonoBehaviour,
 
     private readonly Vector3 _smallBox = new Vector3(0.1f, 0.1f, 0.1f);
 
-    
+    private int cachedItemLevel;
+    private int cachedBountyAmount;
 
     // TODO :: 아이템 사용 성공/ 실패 구조체 추가
 
@@ -85,7 +105,6 @@ public class UseAreaFunction : MonoBehaviour,
         _hammerMask = LayerMask.GetMask(LAYER_ORE, LAYER_PLOT);
 
         _plotManager = PlotManager.Instance;
-
     }
 
     FarmActionResult IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
@@ -165,6 +184,7 @@ public class UseAreaFunction : MonoBehaviour,
                 else
                 {
                     FixedString128Bytes errorCode = $" DoWateringCanFunc error. Unexpected Error : {hits.Length} ";
+                    Debug.Log(errorCode);
                     return new FarmActionResult(FarmActionResult.ResultType.Error);
                 }
             }
@@ -175,6 +195,7 @@ public class UseAreaFunction : MonoBehaviour,
             else
             {
                 FixedString128Bytes errorCode = $" DoWateringCanFunc error. Unexpected amount of target : {hits.Length} ";
+                Debug.Log(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error);
             }
         }
@@ -207,6 +228,7 @@ public class UseAreaFunction : MonoBehaviour,
                 else
                 {
                     FixedString128Bytes errorCode = $" DoHammerFunc error. Unexpected Error : {hits.Length} ";
+                    Debug.Log(errorCode);
                     return new FarmActionResult(FarmActionResult.ResultType.Error);
                 }
             }
@@ -217,6 +239,7 @@ public class UseAreaFunction : MonoBehaviour,
             else
             {
                 FixedString128Bytes errorCode = $" DoHammerFunc error. Unexpected amount of target : {hits.Length} ";
+                Debug.Log(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error);
             }
         }
@@ -231,13 +254,145 @@ public class UseAreaFunction : MonoBehaviour,
 
         return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
     }
-    FarmActionResult IUseAreaConsumableFuncTest.DoConsumableFuncTest1()
+    FarmActionResult IUseAreaConsumableFuncTest.DoSeedFunc(int itemID)
     {
-        return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
+        try
+        {
+            Debug.Log("DoSeedFunc has been Executed");
+            Collider[] hits = GetHits(_treatMask);
+
+            if (hits.Length == 1)
+            {
+                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                if (targetPlot != null)
+                {
+                    return targetPlot.Sowing(itemID);
+                }
+                else
+                {
+                    FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected Error : {hits.Length} ";
+                    Debug.Log(errorCode);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error);
+                }
+            }
+            else if (hits.Length == 0)
+            {
+                return new FarmActionResult(FarmActionResult.ResultType.Failed);
+            }
+            else
+            {
+                FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected amount of target : {hits.Length} ";
+                Debug.Log(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"DoSeedFunc Error : {e.Message}");
+            return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
+        }
     }
-    FarmActionResult IUseAreaConsumableFuncTest.DoConsumableFuncTest2()
+    FarmActionResult IUseAreaConsumableFuncTest.DoFertilizerFunc(int itemID)
     {
-        return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
+        try
+        {
+            Debug.Log("DoSeedFunc has been Executed");
+            Collider[] hits = GetHits(_treatMask);
+
+            if (hits.Length == 1)
+            {
+                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                if (targetPlot != null)
+                {
+                    if (QUALITY_FERTILIZER_START_ID <= itemID && itemID < BOUNTIFUL_FERTILIZER_START_ID)
+                    {
+                        if (mathRand.NextInt(1, 10) <= (itemID - QUALITY_FERTILIZER_START_ID + 1) * 2)
+                        {
+                            return targetPlot.QualityUp();
+                        }
+                        else
+                        {
+                            return new FarmActionResult(FarmActionResult.ResultType.Failed);
+                        }
+                    }
+                    else if (BOUNTIFUL_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_START_ID)
+                    {
+                        cachedItemLevel = itemID - BOUNTIFUL_FERTILIZER_START_ID + 1;
+
+                        if (cachedItemLevel % 2 == 0)
+                        {
+                            cachedBountyAmount = cachedItemLevel / 2;
+                            if (mathRand.NextFloat(0, 1) <= 0.5f)
+                                cachedBountyAmount++;
+                            return targetPlot.BountyUP(cachedBountyAmount);
+                        }
+                        else
+                        {
+                            cachedBountyAmount = (cachedItemLevel + 1) / 2;
+                            return targetPlot.BountyUP(cachedBountyAmount);
+                        }
+
+
+                    }
+                    else if (ALLINONE_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_END_ID)
+                    {
+                        cachedItemLevel = itemID - ALLINONE_FERTILIZER_START_ID + 1;
+
+                        FarmActionResult resultA;
+
+                        if (mathRand.NextInt(1, 10) <= (cachedItemLevel * 2))
+                        {
+                            resultA = targetPlot.QualityUp();
+                        }
+                        else
+                        {
+                            resultA = new FarmActionResult(FarmActionResult.ResultType.Failed);
+                        }
+
+                        if (cachedItemLevel % 2 == 0)
+                        {
+                            cachedBountyAmount = cachedItemLevel / 2;
+                            if (mathRand.NextFloat(0, 1) <= 0.5f)
+                                cachedBountyAmount++;
+                            resultA.Combine(targetPlot.BountyUP(cachedBountyAmount));
+                        }
+                        else
+                        {
+                            cachedBountyAmount = (cachedItemLevel + 1) / 2;
+                            resultA.Combine(targetPlot.BountyUP(cachedBountyAmount));
+                        }
+                        return resultA;
+                    }
+                    else
+                    {
+                        FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected ItemID : {itemID} ";
+                        Debug.Log(errorCode);
+                        return new FarmActionResult(FarmActionResult.ResultType.Error);
+                    }
+                }
+                else
+                {
+                    FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected Error : {hits.Length} ";
+                    Debug.Log(errorCode);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error);
+                }
+            }
+            else if (hits.Length == 0)
+            {
+                return new FarmActionResult(FarmActionResult.ResultType.Failed);
+            }
+            else
+            {
+                FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected amount of target : {hits.Length} ";
+                Debug.Log(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"DoSeedFunc Error : {e.Message}");
+            return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
+        }
     }
 
     public FarmActionResult FireFunc(int itemId, GameObject plot = null)
@@ -257,7 +412,7 @@ public class UseAreaFunction : MonoBehaviour,
         else if (itemId > MIN_AXE_ID && itemId < MAX_AXE_ID)
             return ((IUseAreaAxeFunc)this).DoAxeFunc();
 
-        else if (itemId >= MIN_CONSUMABLE_ID && itemId <= MAX_CONSUMABLE_ID)
+        else if (itemId >= QUALITY_FERTILIZER_START_ID && itemId <= ALLINONE_FERTILIZER_END_ID && itemId%2 == 0)
             return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
 
         else
@@ -267,7 +422,6 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
         }
     }
-
 
     /// <summary>
     /// 테스트용 함수! 나중에는 FireFunc()를 사용하라구!
@@ -301,11 +455,11 @@ public class UseAreaFunction : MonoBehaviour,
                 }
             case 6:
                 {
-                    return ((IUseAreaConsumableFuncTest)this).DoConsumableFuncTest1();
+                    return ((IUseAreaConsumableFuncTest)this).DoSeedFunc(pointingslot);
                 }
             case 7:
                 {
-                    return ((IUseAreaConsumableFuncTest)this).DoConsumableFuncTest2();
+                    return ((IUseAreaConsumableFuncTest)this).DoFertilizerFunc(pointingslot);
                 }
             default:
                 {

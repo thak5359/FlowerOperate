@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Collections;
-using UnityEngine;
 
 
 public class Constant
 {
+
+    
+
     // Class for Constant Value in this Project
 
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
@@ -58,8 +58,6 @@ public class Constant
     public const short MIN_AXE_ID = 32;
     public const short MAX_AXE_ID = 39;
 
-    public const short MIN_CONSUMABLE_ID = 600;
-    public const short MAX_CONSUMABLE_ID = 614;
 
 
     #endregion

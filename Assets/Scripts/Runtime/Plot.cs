@@ -38,7 +38,7 @@ public class Plot : MonoBehaviour
     private int grade;
     int bonusAmount = 0; // 보너스 양   
 
-    private bool isWatered = false; 
+    private bool isWatered = false;
     private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
 
     private void Awake()
@@ -48,23 +48,23 @@ public class Plot : MonoBehaviour
 
     private void OnDisable()
     {
-        if(plotSprite != null) AddressableManager.ReleaseAsset(plotSprite);
+        if (plotSprite != null) AddressableManager.ReleaseAsset(plotSprite);
         if (flowerSprite != null) AddressableManager.ReleaseAsset(flowerSprite);
     }
 
     #region Method for Farming
-    public FarmActionResult Sowing(ItemObjectData seed) // 씨뿌리기
+    public FarmActionResult Sowing(int seedID) // 씨뿌리기
     {
         try
         {
-            if (flowerId == 0)
-            {
-                flowerId = seed.GetItemID;
-                return new FarmActionResult(FarmActionResult.ResultType.Success);
-            }
-            else if (flowerId > 0)
+            if (flowerId > 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
+            }
+            else if (flowerId == 0)
+            {
+                flowerId = seedID;
+                return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
             else
             {
@@ -100,7 +100,7 @@ public class Plot : MonoBehaviour
             Debug.Log($"Watering Error : {e.Message}");
             return new FarmActionResult(FarmActionResult.ResultType.Error, "WATERING_EXCEPTION");
         }
-       
+
     }
 
     public FarmActionResult Reaping() // 수확
@@ -115,12 +115,12 @@ public class Plot : MonoBehaviour
             else
                 return new FarmActionResult(FarmActionResult.ResultType.Failed);
         }
-        catch (Exception e )
+        catch (Exception e)
         {
             Debug.Log($"Reaping Error : {e.Message}");
             return new FarmActionResult(FarmActionResult.ResultType.Error, "REAPING_EXCEPTION");
         }
-       
+
     }
 
     public FarmActionResult Ruining() // 파멸의 일격!!
@@ -139,7 +139,7 @@ public class Plot : MonoBehaviour
                 flowerId = 0;
                 growth = 0;
             }
-                return new FarmActionResult(FarmActionResult.ResultType.Success);
+            return new FarmActionResult(FarmActionResult.ResultType.Success);
         }
         catch (Exception e)
         {
@@ -223,8 +223,8 @@ public class Plot : MonoBehaviour
 
     private async UniTask changePlotSpr()
     {
-        if(plotSprite != null)
-        AddressableManager.ReleaseAsset(plotSprite);
+        if (plotSprite != null)
+            AddressableManager.ReleaseAsset(plotSprite);
 
         if (isWatered == false)
             plotSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
@@ -232,39 +232,30 @@ public class Plot : MonoBehaviour
             plotSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
 
         plotRenderer.sprite = plotSprite;
-    } 
+    }
 
-    //private async UniTask changeFlowerSpr()
-    //{
-    //    switch(growth)
-    //    {
-    //        case (0):
-    //            {
-    //                break;
-    //            }
-    //        case (1):
-    //            {
-    //                break;
-    //            }
-    //        case (2):
-    //            {
-    //                break;
-    //            }
-    //            case (3):
-    //            {
-    //                break;  
-    //            }
-    //            case (4):
-    //            {
-    //                break;
-    //            }
-    //        case (5):
-    //            {
-    //                break;
-    //            }
-    //    }
+    private async UniTask changeFlowerSpr()
+    {
+               if (flowerSprite != null)
+            AddressableManager.ReleaseAsset(flowerSprite);
 
-    //}
+        if( flowerId != 0 && growth == 0)
+        {
+            flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_FLOWER_SEED);
+            flowerRenderer.sprite = flowerSprite;
+        }
+        else if (flowerId != 0)
+        {
+            FixedString128Bytes address =   GlobalItemDB.GetAddressString((short)flowerId);
+            flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
+            flowerRenderer.sprite = flowerSprite;
+        }
+        else
+        {
+            flowerRenderer.sprite = null;
+        }
+    }
+
 
 
     public PlotData GetSaveData()

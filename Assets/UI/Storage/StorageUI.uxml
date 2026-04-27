@@ -3,8 +3,8 @@
     <ui:Template name="StorageContainer" src="project://database/Assets/UI/Storage/StorageContainer.uxml?fileID=9197481963319205126&amp;guid=79acece248f90b943be790082ac635d8&amp;type=3#StorageContainer" />
     <Style src="project://database/Assets/UI/Storage/Storage--default.uss?fileID=7433441132597879392&amp;guid=7e42afa278c22e84393a5fb058718bfd&amp;type=3#Storage--default" />
     <Style src="project://database/Assets/UI/Storage/StorageContainer--default.uss?fileID=7433441132597879392&amp;guid=e1129d9bf5acf3546871b937a062bd4d&amp;type=3#StorageContainer--default" />
-    <ui:VisualElement name="rootVisualElement" style="flex-grow: 1; transition-property: all, ignored; transition-duration: 0s, 0s; transition-timing-function: ease, ease; transition-delay: 0s, 0s;">
-        <ui:VisualElement name="MovableContainer" class="Storage--Default">
+    <ui:VisualElement name="rootVisualElement" style="flex-grow: 1; transition-property: all, ignored; transition-duration: 0s, 0s; transition-timing-function: ease, ease; transition-delay: 0s, 0s; display: flex;">
+        <ui:VisualElement name="MovableContainer" class="Storage--Default" style="display: flex;">
             <ui:VisualElement name="InventoryContainer" style="position: relative; justify-content: space-between; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; height: 460px; translate: 0 0%;">
                 <ui:Instance template="SlotRow" />
                 <ui:Instance template="SlotRow" />
