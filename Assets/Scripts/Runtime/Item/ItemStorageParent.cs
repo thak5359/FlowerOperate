@@ -174,6 +174,12 @@ public struct ItemInstantData
         List<ItemObjectData> target1 = GetList(startPoint);
         List<ItemObjectData> target2 = GetList(endPoint);
 
+        if(target1.Count <= idx1 ||  target2.Count <= idx2)
+        {
+            Debug.LogError("<b> [에러(Swap)] </b> 인덱스가 리스트의 범위를 초과");
+            return;
+        }
+
         ItemObjectData temp = target1[idx1];
         target1[idx1] = target2[idx2];
         target2[idx2] = temp;

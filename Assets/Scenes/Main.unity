@@ -948,8 +948,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Data:
-    storageList: []
-    invenList: []
+    storageList:
+    - itemID: 0
+      Duration: 0
+      amount: 0
+      grade: 0
+    invenList:
+    - itemID: 0
+      Duration: 0
+      amount: 0
+      grade: 0
+    - itemID: 1
+      Duration: 0
+      amount: 1
+      grade: 0
     slotsCount: 0
 --- !u!4 &904018122
 Transform:
