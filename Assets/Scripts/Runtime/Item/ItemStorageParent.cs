@@ -115,16 +115,16 @@ public class ItemStorageParent : MonoBehaviour
         GlobalEventManager.InvokeDataChanged();
     }
 
-    public bool RemoveItem(ContainerType type, ushort id, int count)
+    public bool RemoveItem(ContainerType type, ushort id, byte grade,int count)
     {
-        if (!HasItem(type, id, count)) return false;
+        if (!HasItem(type, id, grade, count)) return false;
 
         var list = _Data.GetList(type);
         int remainingToRemove = count;
         for (int i = 0; i < list.Count; i++)
         {
             var item = list[i];
-            if (item.GetItemID == id)
+            if (item.GetItemID == id && item.GetGrade == grade)
             {
                 int toTake = Mathf.Min(remainingToRemove, item.GetAmount);
                 item.SetAmount((short)(item.GetAmount - toTake));
@@ -138,10 +138,10 @@ public class ItemStorageParent : MonoBehaviour
         return true;
     }
 
-    public bool HasItem(ContainerType type, ushort id, int count)
+    public bool HasItem(ContainerType type, ushort id, byte grade, int count)
     {
         int totalAmount = _Data.GetList(type)
-            .Where(item => item.GetItemID == id)
+            .Where(item => item.GetItemID == id && item.GetGrade == grade)
             .Sum(item => (int)item.GetAmount);
         return totalAmount >= count;
     }
