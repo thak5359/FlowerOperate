@@ -84,6 +84,31 @@ public class ItemBlobMaker : EditorWindow
         finally { builder.Dispose(); }
     }
 
+    public void Bake(UsableIdData so)
+    {
+        var builder = new BlobBuilder(Allocator.Temp);
+        try
+        {
+            ref var root = ref builder.ConstructRoot<UsableItemBlobDatas>();
+            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
+
+            for (short i = 0; i < so.itemName.Count; i++)
+            {
+                arrayBuilder[i].ItemId = (short)(so.startId + i);
+                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
+                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
+                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+
+                arrayBuilder[i].durationIndex = (i < so.durationIndex.Count) ? so.durationIndex[i] : (byte)0;
+                arrayBuilder[i].powerIndex = (i < so.powerIndex.Count) ? so.powerIndex[i] : (byte)0;
+                arrayBuilder[i].chargeIndex = (i < so.chargeIndex.Count) ? so.chargeIndex[i] : (byte)0;
+            }
+
+            SaveToBlob<UsableItemBlobDatas>(builder, so.name);
+        }
+        finally { builder.Dispose(); }
+    }
+
     public void Bake(ItemIdData so)
     {
         var builder = new BlobBuilder(Allocator.Temp);
@@ -95,9 +120,10 @@ public class ItemBlobMaker : EditorWindow
             for (short i = 0; i < so.itemName.Count; i++)
             {
                 arrayBuilder[i].ItemId = (short)(so.startId + i);
-                arrayBuilder[i].ItemName = so.itemName[i];
+                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : default;
+                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
             }
 
             SaveToBlob<ItemBlobDatas>(builder, so.name);

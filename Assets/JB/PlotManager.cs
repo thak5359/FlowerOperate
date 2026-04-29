@@ -7,7 +7,7 @@ using System.Linq;
 public class PlotManager : MonoBehaviour
 {
 
-    // 플롯ID : 플롯데이터 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
+    // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
     [SerializeField] 
     private SerializedDictionary<int, PlotData> plotDataDict;
@@ -45,9 +45,6 @@ public class PlotManager : MonoBehaviour
 
     public void Load(SaveDatas saveDatas)
     {
-        // 1. 아이템 데이터 초기화 (List<ItemObjectData>로 직접 로드)
-        //base.Initialize(this, saveDatas.GetPlotItemData, ref plotItems);
-
         // 2. 플롯 상태 데이터 복구
         var loadedPlots = saveDatas.GetPlotData;
         plotDataDict = loadedPlots;
