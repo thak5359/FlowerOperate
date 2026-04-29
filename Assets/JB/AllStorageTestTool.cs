@@ -73,7 +73,7 @@ public class AllStorageTestTool : EditorWindow
     }
     private void RemoveItem(ContainerType storageType, ushort itemID, short amount)
     {
-        if (targetStorage.RemoveItem(storageType, itemID, amount) == false)
+        if (targetStorage.RemoveItem(storageType, itemID, grade, amount) == false)
         {
             Debug.LogError("아이템이 존재하지 않습니다.");
             return;
