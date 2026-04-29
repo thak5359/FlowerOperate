@@ -10,7 +10,7 @@ public class ItemDatabaseWindow : EditorWindow
 {
     private BlobAssetReference<ItemBlobDatas> _itemDB;
     private BlobAssetReference<FlowerItemBlobDatas> _flowerDB;
-    private BlobAssetReference<ItemBlobDatas> _usableDB;
+    private BlobAssetReference<UsableItemBlobDatas> _usableDB; // 타입 수정
     private BlobAssetReference<FlowerDetailBlobDatas> _flowerDetail;
     private BlobAssetReference<UsableDetailBlobDatas> _usableDetail;
 
@@ -28,30 +28,28 @@ public class ItemDatabaseWindow : EditorWindow
         DisposeBlobs();
         string blobPath = Path.Combine(Application.streamingAssetsPath, BLOB_FOLDER);
 
-        // 분석 결과: 36바이트를 건너뛰어야 정확한 BlobArray Header(Offset 8, Length XX)가 시작됨
-        _itemDB = LoadBlobWithSkip<ItemBlobDatas>(Path.Combine(blobPath, ITEM_BLOB));
-        _flowerDB = LoadBlobWithSkip<FlowerItemBlobDatas>(Path.Combine(blobPath, FLOWER_BLOB));
-        _usableDB = LoadBlobWithSkip<ItemBlobDatas>(Path.Combine(blobPath, USABLE_BLOB));
-        _flowerDetail = LoadBlobWithSkip<FlowerDetailBlobDatas>(Path.Combine(blobPath, FLOWER_DETAIL_BLOB));
-        _usableDetail = LoadBlobWithSkip<UsableDetailBlobDatas>(Path.Combine(blobPath, USABLE_DETAIL_BLOB));
+        // 표준 TryRead 방식으로 변경 (버전 1)
+        _itemDB = LoadBlob<ItemBlobDatas>(Path.Combine(blobPath, ITEM_BLOB));
+        _flowerDB = LoadBlob<FlowerItemBlobDatas>(Path.Combine(blobPath, FLOWER_BLOB));
+        _usableDB = LoadBlob<UsableItemBlobDatas>(Path.Combine(blobPath, USABLE_BLOB)); // 타입 수정
+        _flowerDetail = LoadBlob<FlowerDetailBlobDatas>(Path.Combine(blobPath, FLOWER_DETAIL_BLOB));
+        _usableDetail = LoadBlob<UsableDetailBlobDatas>(Path.Combine(blobPath, USABLE_DETAIL_BLOB));
         
         Repaint();
     }
 
-    private BlobAssetReference<T> LoadBlobWithSkip<T>(string path) where T : unmanaged
+    private BlobAssetReference<T> LoadBlob<T>(string path) where T : unmanaged
     {
         if (!File.Exists(path)) return default;
-        try {
-            byte[] fullData = File.ReadAllBytes(path);
-            if (fullData.Length <= 36) return default;
-
-            // 정밀 분석 결과에 따라 36바이트 헤더를 제거합니다.
-            byte[] pureData = new byte[fullData.Length - 36];
-            Array.Copy(fullData, 36, pureData, 0, pureData.Length);
-
-            return BlobAssetReference<T>.Create(pureData);
+        
+        // 유니티 표준 Blob 읽기 방식 사용
+        if (BlobAssetReference<T>.TryRead(path, 1, out var blobRef))
+        {
+            return blobRef;
         }
-        catch { return default; }
+        
+        Debug.LogError($"Blob 파일을 읽는데 실패했습니다: {path}");
+        return default;
     }
 
     private void DisposeBlobs()
@@ -72,6 +70,7 @@ public class ItemDatabaseWindow : EditorWindow
 
         _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
 
+        // Value.Items를 넘겨줌으로써 타입에 유연하게 대응
         if (_usableDB.IsCreated) DrawSection("Usable Items", ref _usableDB.Value.Items, USABLE_START_ID);
         if (_itemDB.IsCreated) DrawSection("Common Items", ref _itemDB.Value.Items, COMMON_START_ID);
         if (_flowerDB.IsCreated) DrawSection("Flower Items", ref _flowerDB.Value.Items, FLOWER_START_ID);
@@ -91,7 +90,7 @@ public class ItemDatabaseWindow : EditorWindow
             int itemId = GetIndex(item);
             
             if (!string.IsNullOrEmpty(_searchQuery)) {
-                if (!itemName.ToLower().Contains(_searchQuery.ToLower()) && !(startId + i).ToString().Contains(_searchQuery))
+                if (!itemName.ToLower().Contains(_searchQuery.ToLower()) && !itemId.ToString().Contains(_searchQuery))
                     continue;
             }
 
@@ -115,7 +114,7 @@ public class ItemDatabaseWindow : EditorWindow
         try
         {
             var field = typeof(T).GetField("ItemId");
-            if (field != null) return int.Parse(field.GetValue(item).ToString());
+            if (field != null) return (short)field.GetValue(item);
         }
         catch {}
         return -1;

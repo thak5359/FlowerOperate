@@ -5,12 +5,6 @@ using System.Linq;
 using UnityEngine;
 using static Constant;
 
-public interface IManager
-{
-    public void Load(SaveDatas saveDatas);
-    public void Sort();
-}
-
 public enum ContainerType
 {
     INVENTORY,
@@ -18,7 +12,7 @@ public enum ContainerType
 }
 
 [Serializable]
-public class ItemStorageParent : MonoBehaviour, IManager
+public class ItemStorageParent : MonoBehaviour
 {
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
