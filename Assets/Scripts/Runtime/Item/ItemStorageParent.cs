@@ -5,12 +5,6 @@ using System.Linq;
 using UnityEngine;
 using static Constant;
 
-public interface IManager
-{
-    public void Load(SaveDatas saveDatas);
-    public void Sort();
-}
-
 public enum ContainerType
 {
     INVENTORY,
@@ -18,7 +12,7 @@ public enum ContainerType
 }
 
 [Serializable]
-public class ItemStorageParent : MonoBehaviour, IManager
+public class ItemStorageParent : MonoBehaviour
 {
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
@@ -179,6 +173,12 @@ public struct ItemInstantData
     {
         List<ItemObjectData> target1 = GetList(startPoint);
         List<ItemObjectData> target2 = GetList(endPoint);
+
+        if(target1.Count <= idx1 ||  target2.Count <= idx2)
+        {
+            Debug.LogError("<b> [에러(Swap)] </b> 인덱스가 리스트의 범위를 초과");
+            return;
+        }
 
         ItemObjectData temp = target1[idx1];
         target1[idx1] = target2[idx2];

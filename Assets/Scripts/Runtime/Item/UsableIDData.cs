@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UsableIdData", menuName = "UsableData/IdData")]
 public class UsableIdData : ItemIdData
 {
+    [Header("장비 스탯")]
     [SerializeField] public List<byte> durationIndex;
     [SerializeField] public List<byte> powerIndex;
     [SerializeField] public List<byte> chargeIndex;
