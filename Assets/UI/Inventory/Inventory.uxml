@@ -1,26 +1,26 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="SlotRow" src="project://database/Assets/UI/Storage/SlotRow.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow" />
+    <ui:Template name="SlotRow" src="project://database/Assets/UI/Common/SlotRow.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow" />
     <Style src="project://database/Assets/UI/Inventory/InventoryUSS.uss?fileID=7433441132597879392&amp;guid=0dbcc085fbbe8b54ba4859a96be446bb&amp;type=3#InventoryUSS" />
-    <ui:VisualElement name="rootVisualElement" style="flex-grow: 0; align-items: flex-start; align-self: center; flex-direction: column; width: 870px; height: 460px; position: absolute; left: 50%; top: 50%; right: 0%; bottom: 0%; justify-content: space-between; transform-origin: center; translate: -50% -50%; background-color: rgb(202, 155, 166); border-top-width: 0; border-bottom-width: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; margin-right: 0; margin-top: 0; margin-bottom: 0; margin-left: 0; border-right-width: 0; border-left-width: 0; background-image: none; display: flex;">
-        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="CloseButton" style="position: absolute; align-self: flex-end; right: 65px; width: 50px; height: 50px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; translate: 130% -120%; background-image: url(&apos;project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack_Close.png?fileID=2800000&amp;guid=85d402ceab6923f45ae572ea4b8aadb5&amp;type=3#Sprite sheet for Basic Pack_Close&apos;);" />
-        <ui:VisualElement name="InventoryArray1" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row;">
-            <ui:VisualElement name="HotSlotPointer" style="flex-grow: 1; width: 40px; padding-right: 10px; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-right: 0;" />
+    <ui:VisualElement name="rootVisualElement" style="flex-grow: 0; align-items: flex-start; align-self: center; flex-direction: column; width: 870px; height: 460px; position: absolute; left: 50%; top: 50%; right: 0%; bottom: 0%; justify-content: space-between; transform-origin: center; translate: -50% -50%; border-top-width: 0; border-bottom-width: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-right-width: 0; border-left-width: 0; background-image: url(&quot;project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Setting%20menu.png?fileID=1499518513&amp;guid=04d5b3b4820da6d45aabc85c80f9960c&amp;type=3#Setting menu_1&quot;); display: flex;">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="CloseButton" class="CloseButton" style="translate: 0% 0%; top: -50px; right: 0;" />
+        <ui:VisualElement name="InventoryArray1" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; padding-top: -3px; padding-right: -3px; padding-bottom: -3px; padding-left: -3px;">
+            <ui:VisualElement name="HotSlotPointer" class="HotSlotPointer--Default HotSlotPointer HotSlotPointer--Activated" />
             <ui:Instance template="SlotRow" name="SlotRow1" />
         </ui:VisualElement>
         <ui:VisualElement name="InventoryArray2" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row;">
-            <ui:VisualElement name="HotSlotPointer" style="flex-grow: 1; width: 40px; padding-right: 10px; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-right: 0;" />
+            <ui:VisualElement name="HotSlotPointer" class="HotSlotPointer--Default HotSlotPointer" />
             <ui:Instance template="SlotRow" name="SlotRow2" />
         </ui:VisualElement>
         <ui:VisualElement name="InventoryArray3" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row;">
-            <ui:VisualElement name="HotSlotPointer" style="flex-grow: 1; width: 40px; padding-right: 10px; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-right: 0;" />
+            <ui:VisualElement name="HotSlotPointer" class="HotSlotPointer--Default HotSlotPointer" />
             <ui:Instance template="SlotRow" name="SlotRow3" />
         </ui:VisualElement>
         <ui:VisualElement name="InventoryArray4" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row;">
-            <ui:VisualElement name="HotSlotPointer" style="flex-grow: 1; width: 40px; padding-right: 10px; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-right: 0;" />
+            <ui:VisualElement name="HotSlotPointer" class="HotSlotPointer--Default HotSlotPointer" />
             <ui:Instance template="SlotRow" name="SlotRow4" />
         </ui:VisualElement>
         <ui:VisualElement name="InventoryArray5" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row;">
-            <ui:VisualElement name="HotSlotPointer" style="flex-grow: 1; width: 40px; padding-right: 10px; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-right: 0;" />
+            <ui:VisualElement name="HotSlotPointer" class="HotSlotPointer--Default HotSlotPointer" />
             <ui:Instance template="SlotRow" name="SlotRow5" />
         </ui:VisualElement>
     </ui:VisualElement>
