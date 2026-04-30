@@ -7,7 +7,7 @@ using VContainer;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private ItemStorageParent _storageParent;
+    private StorageDataManager _storageParent;
     private PlotManager _plotManager;
     private ProgressManager _progressManager;
 
@@ -15,7 +15,7 @@ public class SaveLoadManager : MonoBehaviour
     public SaveDatas saveData;
 
     [Inject]
-    public void Construct(ItemStorageParent storageParent, PlotManager plot, 
+    public void Construct(StorageDataManager storageParent, PlotManager plot, 
         ProgressManager progress)
     {
         _storageParent = storageParent;

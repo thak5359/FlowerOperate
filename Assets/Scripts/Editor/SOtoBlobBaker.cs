@@ -63,11 +63,11 @@ public class ItemBlobMaker : EditorWindow
         try
         {
             ref var root = ref builder.ConstructRoot<FlowerItemBlobDatas>();
-            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
+            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count*2);
 
-            for (short i = 0; i < so.itemName.Count; i++)
+            for (short i = 0; i < so.itemName.Count; i += 2)
             {
-                arrayBuilder[i].ItemId = (short)(so.startId + i*2);
+                arrayBuilder[i].ItemId = (short)(so.startId + i);
                 arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
                 arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
@@ -78,6 +78,10 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].floroIndex2 = (i < so.floroIndex2.Count) ? so.floroIndex2[i] : (sbyte)0;
                 arrayBuilder[i].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
                 arrayBuilder[i].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
+
+                arrayBuilder[i+1] = arrayBuilder[i];
+                arrayBuilder[i+1].ItemId = (short)(arrayBuilder[i].ItemId + 1);
+                arrayBuilder[i+1].ItemName = arrayBuilder[i].ItemName + "씨앗";
             }
             SaveToBlob<FlowerItemBlobDatas>(builder, so.name);
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 using Unity.Collections;
 using System.Threading.Tasks;
 
-public class StorageManager : ItemStorageParent
+public class StorageManager : StorageDataManager
 {
     // 실제 아이템 데이터를 직접 관리하는 리스트
     [SerializeField] List<ItemObjectData> slotList = new List<ItemObjectData>();

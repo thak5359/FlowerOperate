@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
 using VContainer;
@@ -46,12 +47,24 @@ public class Plot : MonoBehaviour
         plotId = Guid.NewGuid().GetHashCode(); // 고유한 ID 생성
     }
 
+    private void OnEnable()
+    {
+        GlobalEventManager.NextDay += OnNextDay;
+    }
+
     private void OnDisable()
     {
         if (plotSprite != null) AddressableManager.ReleaseAsset(plotSprite);
         if (flowerSprite != null) AddressableManager.ReleaseAsset(flowerSprite);
     }
 
+    private async void OnNextDay()
+    {
+        if(GrowUp().Result() == FarmActionResult.ResultType.Success)
+        {
+            await changeFlowerSpr();
+        }
+    }
     #region Method for Farming
     public FarmActionResult Sowing(int seedID) // 씨뿌리기
     {
