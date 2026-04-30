@@ -117,6 +117,8 @@ public class SwapWindow : EditorWindow
     private ContainerType endStorage;
     private int startIndex;
     private int endIndex;
+    private int startBoxIndex = 0;
+    private int endBoxIndex = 0;
 
     public static void ShowWindow() => GetWindow<SwapWindow>("Swap Option");
     private void OnGUI()
@@ -135,6 +137,11 @@ public class SwapWindow : EditorWindow
         startStorage = (ContainerType)EditorGUILayout.EnumPopup("시작지", startStorage);
 
         //인덱스 설정 텍스트박스
+        if (startStorage == ContainerType.STORAGE)
+        {
+            GUILayout.Label("[대상 박스의 순번 입력]", EditorStyles.boldLabel);
+            startBoxIndex = EditorGUILayout.IntField(startBoxIndex);
+        }
         GUILayout.Label("[대상 인덱스 입력]", EditorStyles.boldLabel);
         startIndex = (int)EditorGUILayout.IntField(startIndex);
 
@@ -147,9 +154,13 @@ public class SwapWindow : EditorWindow
         endStorage = (ContainerType)EditorGUILayout.EnumPopup("목적지", endStorage);
 
         //인덱스 설정 텍스트박스
+        if(endStorage == ContainerType.STORAGE)
+        {
+            GUILayout.Label("[대상 박스의 순번 입력]", EditorStyles.boldLabel);
+            endBoxIndex = EditorGUILayout.IntField(endBoxIndex);
+        }
         GUILayout.Label("[대상 인덱스 입력]", EditorStyles.boldLabel);
         endIndex = (int)EditorGUILayout.IntField(endIndex);
-
         GUILayout.EndVertical();
 
         #endregion
@@ -158,7 +169,7 @@ public class SwapWindow : EditorWindow
 
         if(GUILayout.Button("Start", GUILayout.Height(30)))
         {
-            StorageTestTool.targetStorage.Swap(startStorage, endStorage, startIndex, endIndex);
+            StorageTestTool.targetStorage.Swap(startStorage, endStorage, startIndex, endIndex, startBoxIndex, endBoxIndex);
         }
 
         EditorGUIUtility.labelWidth = originalLabelWidth;
