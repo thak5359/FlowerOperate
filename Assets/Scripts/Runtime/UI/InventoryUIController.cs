@@ -130,24 +130,6 @@ public class InventoryUIController : MonoBehaviour
     //}
 
 
-    //private async UniTask loadItemDatas()
-    //{
-    //    ushort i = 0;
-    //    int targetItemID;
-    //    foreach ( ItemObjectData data in _inventoryManager.getSlotList)
-    //    {
-
-    //        string address;
-    //        targetItemID = _inventoryManager.getSlotList[i].GetItemID;
-    //        if (targetItemID == 0) continue;
-    //        address = GlobalItemDB.GetAddressString((short)targetItemID);
-    //        Texture2D img = await AddressableManager.LoadAssetAsync<Texture2D>(address);
-    //        buttons[i].style.backgroundImage = img;
-
-    //        i++;
-    //    }
-    //}
-
     #endregion
 
     #region Open Inventory
