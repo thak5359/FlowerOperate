@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7542906459064642276}
-  - component: {fileID: 2070897594945663352}
   - component: {fileID: 8623123683544225741}
   - component: {fileID: 6633969012626620820}
   m_Layer: 0
@@ -34,29 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2070897594945663352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6572088181700906779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3692583c99e31ed429a748396f7e9cc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    itemListData:
-    - itemID: 2
-      Duration: 0
-      amount: 11
-      grade: 0
-    slotsCount: 30
-  slotObject: {fileID: 8345891398220901380, guid: e52c138f15d7410439bb7c677c715a63,
-    type: 3}
-  slotList: []
-  slots: []
 --- !u!114 &8623123683544225741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +49,7 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 436db33709b08284dbdf305e1e9d96c8,
     type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 9999
 --- !u!114 &6633969012626620820
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,10 @@
+using AYellowpaper.SerializedCollections.Editor;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -20,12 +24,18 @@ public class InventoryUIController : MonoBehaviour
     private Button closeButton;
 
     private IMapChangable _mapChanger;
+    private ItemStorageParent _inventoryManager;
 
+    private int dragStartIdx;
+    private int dragEndIdx;
+
+    const ContainerType type = ContainerType.INVENTORY;
 
     [Inject]
-    private void Construct(IMapChangable input_mapChanger)
+    private void Construct(IMapChangable input_mapChanger, ItemStorageParent input_inventoryManager)
     {
         _mapChanger = input_mapChanger;
+        _inventoryManager = input_inventoryManager;
     }
 
     #region Unity Event
@@ -55,21 +65,70 @@ public class InventoryUIController : MonoBehaviour
         root.visible = false;
         buttons.Clear();
 
-        buttons = root.Query<Button>("slot-button").ToList(); // 리스트에 집어넣기
+        buttons = root.Query<Button>("SlotButton").ToList(); // 리스트에 집어넣기
 
-        //int i = 0;
-        //foreach(Button button in buttons)
-        //{
-        //   button.clicked += -_inventoryManager.isClicked(i++);
-        //}
+        for (int i =0; i < buttons.Count; i++)
+        {
+            int ClosureFixer = i;
+            buttons[ClosureFixer].text = ClosureFixer.ToString();
 
+            buttons[ClosureFixer].RegisterCallback<PointerDownEvent>(evt =>
+            {
+                OnSlotDown(evt);
+            },TrickleDown.TrickleDown);
 
+            buttons[ClosureFixer].RegisterCallback<PointerUpEvent>(evt =>
+            {
+                OnSlotUp(evt);
+                _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
+            }, TrickleDown.TrickleDown);
+        }
 
+        Debug.Log($"On buttons[39], Text is {buttons[39].text}");
 
         closeButton = root.Query<Button>("CloseButton");
         closeButton.clicked += closeInventory;
-
     }
+
+    private void OnDisable()
+    {
+        for (int i =0; i < buttons.Count; i++)
+        {
+            int ClosureFixer = i;
+            buttons[ClosureFixer].UnregisterCallback<PointerDownEvent>(evt =>
+            {
+                OnSlotDown(evt);
+            });
+            buttons[ClosureFixer].UnregisterCallback<PointerUpEvent>(evt =>
+            {
+                OnSlotUp(evt);
+                _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
+            });
+        }
+        buttons.Clear();
+    }
+
+    //private void RefreshUI()
+    //{
+    //    _inventoryManager.GetData.GetList(type).ForEach((itemData, idx) =>
+    //    {
+    //        if (itemData.GetItemID == 0)
+    //        {
+    //            buttons[idx].style.backgroundImage = null;
+    //            buttons[idx].text = "";
+    //        }
+    //        else
+    //        {
+    //            string address = GlobalItemDB.GetAddressString((short)itemData.GetItemID);
+    //            AddressableManager.LoadAssetAsync<Texture2D>(address).ContinueWith(texture =>
+    //            {
+    //                buttons[idx].style.backgroundImage = texture;
+    //                buttons[idx].text = itemData.GetAmount.ToString();
+    //            });
+    //        }
+    //    });
+    //}
+
 
     //private async UniTask loadItemDatas()
     //{
@@ -89,10 +148,6 @@ public class InventoryUIController : MonoBehaviour
     //    }
     //}
 
-    private void OnDisable()
-    {
-        buttons.Clear();
-    }
     #endregion
 
     #region Open Inventory
@@ -101,20 +156,48 @@ public class InventoryUIController : MonoBehaviour
         openInventory();
     }
 
+    // 드래그 시작 (눌린 버튼의 번호를 그대로 가져옴)
+    private void OnSlotDown(PointerDownEvent evt)
+    {
+        if (evt.currentTarget is Button btn)
+        {
+            dragStartIdx = int.Parse(btn.text);
+            Debug.Log($"시작: {dragStartIdx}");
+        }
+    }
+
+    // 드래그 종료 (놓은 위치의 버튼을 '조사'해서 가져옴)
+    private void OnSlotUp(PointerUpEvent evt)
+    {
+        // 현재 마우스 위치 아래에 있는 요소를 픽업
+        VisualElement picked = root.panel.Pick(evt.position);
+        Button targetBtn = picked as Button ?? picked?.GetFirstAncestorOfType<Button>();
+
+        if (targetBtn != null && int.Parse(targetBtn.text) is int endIdx)
+        {
+            dragEndIdx = endIdx;
+            Debug.Log($"종료: {dragEndIdx}");
+            _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
+        }
+    }
+
+
+
+
     public void openInventory()
     {
-        if ( _mapChanger.getCurrentIAmap() != INVENTORY_MAP_NAME)
+        if (_mapChanger.getCurrentIAmap() != INVENTORY_MAP_NAME)
         {
             _mapChanger.changeIAmapInventory();
 
 
-        if (root == null)
-        {
-            Debug.LogError("파트너, UIDocument의 Root를 찾을 수 없어요! 패널 설정을 확인해 주세요.");
-            return;
-        }
+            if (root == null)
+            {
+                Debug.LogError("파트너, UIDocument의 Root를 찾을 수 없어요! 패널 설정을 확인해 주세요.");
+                return;
+            }
 
-        root.visible = true;
+            root.visible = true;
 
         }
     }
