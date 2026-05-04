@@ -16,10 +16,6 @@
     background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=-2129137182&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_0");
 }
 
-.slotButton:hover {
-    background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=-1601931806&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_2");
-}
-
-.slotButton:active {
+.slotButton:disabled {
     background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=-1601931806&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_2");
 }
