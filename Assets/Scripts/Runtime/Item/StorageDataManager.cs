@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using static Constant;
 
@@ -151,8 +152,11 @@ public class StorageDataManager : MonoBehaviour
 }
 
 [Serializable]
+[StructLayout(LayoutKind.Sequential)]
 public struct ItemInstantData
 {
+    [SerializeField] private int money;
+    [SerializeField] private int reputation;
     [SerializeField] private List<ItemObjectData> invenList;
     [SerializeField] private List<StorageBox> storageBoxList;
     [SerializeField] private int slotsCount;
@@ -247,6 +251,7 @@ public struct ItemInstantData
 }
 
 [Serializable]
+[StructLayout(LayoutKind.Sequential)]
 public class StorageBox
 {
     [SerializeField] private string boxName;

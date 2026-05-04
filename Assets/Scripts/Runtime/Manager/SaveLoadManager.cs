@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using VContainer;
 
@@ -74,10 +75,13 @@ public class SaveLoadManager : MonoBehaviour
 }
 
 [Serializable]
+[StructLayout(LayoutKind.Sequential)]
 public class SaveDatas
 {
     [SerializeField] private string saveTime;
     [SerializeField] private int playDay;
+    [SerializeField] private int money;
+    [SerializeField] private int reputation;
     [SerializeField] private ItemInstantData itemData; // 인벤토리와 창고 리스트가 포함된 통합 구조체
     [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
 
@@ -88,11 +92,13 @@ public class SaveDatas
     
     public SaveDatas() { }
 
-    public SaveDatas(int day, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotData)
+    public SaveDatas(int day, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotData, int money = 0, int reputation = 0)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;
         this.itemData = itemData;
         this.plotDataDict = plotData;
+        this.money = money;
+        this.reputation = reputation;
     }
 }

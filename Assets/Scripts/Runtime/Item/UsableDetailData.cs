@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class UsableDetailData : ItemDetailData
     public ChargeInfo ChargeInfo(byte index) => chargeInfoList[index];
 }
 
+[StructLayout(LayoutKind.Sequential)]
 public struct UsableDetailBlobData
 {
     public byte index;
@@ -26,6 +28,7 @@ public struct UsableDetailBlobData
     public ChargeInfo chargeInfo;
 }
 
+[StructLayout(LayoutKind.Sequential)]
 public struct UsableDetailBlobDatas
 {
     public BlobArray<UsableDetailBlobData> usableDetails;

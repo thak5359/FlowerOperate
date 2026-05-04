@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
@@ -7,6 +8,7 @@ using VContainer;
 using static Constant;
 
 [System.Serializable]
+[StructLayout(LayoutKind.Sequential)]
 public struct PlotData // 저장용 데이터 바구니
 {
     public int plotId;
