@@ -34,6 +34,7 @@ public struct FlowerItemBlobData
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString128Bytes SpriteAddress;
+    public short Price;
 
     public byte speciesIndex;
     public byte colorIndex;

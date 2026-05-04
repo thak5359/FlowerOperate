@@ -71,6 +71,7 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
                 arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
 
                 arrayBuilder[i].speciesIndex = (i < so.speciesIndex.Count) ? so.speciesIndex[i] : (byte)0;
                 arrayBuilder[i].colorIndex = (i < so.colorIndex.Count) ? so.colorIndex[i] : (byte)0;
@@ -102,6 +103,7 @@ public class ItemBlobMaker : EditorWindow
                 arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
                 arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
                 arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
 
                 arrayBuilder[i].durationIndex = (i < so.durationIndex.Count) ? so.durationIndex[i] : (byte)0;
                 arrayBuilder[i].powerIndex = (i < so.powerIndex.Count) ? so.powerIndex[i] : (byte)0;

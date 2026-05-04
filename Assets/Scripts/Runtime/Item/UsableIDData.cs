@@ -26,6 +26,7 @@ public struct UsableItemBlobData
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString64Bytes SpriteAddress;
+    public short Price;
 
     public byte durationIndex;
     public byte powerIndex;
