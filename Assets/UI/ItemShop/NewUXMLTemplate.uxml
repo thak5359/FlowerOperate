@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="rootVisualElement" style="flex-grow: 0; width: 1500px; height: 800px; top: 140px; align-self: center; -unity-text-align: middle-center; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Light.otf?fileID=12800000&amp;guid=c898bc1e681edb94cadfa44f910b0511&amp;type=3#Maplestory OTF Light&quot;); flex-direction: row; padding-top: 40px; padding-right: 50px; padding-bottom: 40px; padding-left: 50px; background-color: rgb(70, 70, 70);">
+        <ui:ScrollView name="ScrollView" style="width: 800px; height: 100%; background-color: rgb(48, 48, 48);" />
+        <ui:VisualElement name="DescriptionView" style="flex-grow: 1; background-color: rgb(96, 96, 96);" />
+    </ui:VisualElement>
+</ui:UXML>
