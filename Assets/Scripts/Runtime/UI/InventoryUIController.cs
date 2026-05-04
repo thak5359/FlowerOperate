@@ -67,7 +67,7 @@ public class InventoryUIController : MonoBehaviour
 
         buttons = root.Query<Button>("SlotButton").ToList(); // 리스트에 집어넣기
 
-        for (int i =0; i < buttons.Count; i++)
+        for (int i = 0; i < buttons.Count; i++)
         {
             int ClosureFixer = i;
             buttons[ClosureFixer].text = ClosureFixer.ToString();
@@ -75,12 +75,11 @@ public class InventoryUIController : MonoBehaviour
             buttons[ClosureFixer].RegisterCallback<PointerDownEvent>(evt =>
             {
                 OnSlotDown(evt);
-            },TrickleDown.TrickleDown);
+            }, TrickleDown.TrickleDown);
 
             buttons[ClosureFixer].RegisterCallback<PointerUpEvent>(evt =>
             {
                 OnSlotUp(evt);
-                _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
             }, TrickleDown.TrickleDown);
         }
 
@@ -92,7 +91,7 @@ public class InventoryUIController : MonoBehaviour
 
     private void OnDisable()
     {
-        for (int i =0; i < buttons.Count; i++)
+        for (int i = 0; i < buttons.Count; i++)
         {
             int ClosureFixer = i;
             buttons[ClosureFixer].UnregisterCallback<PointerDownEvent>(evt =>
@@ -102,7 +101,6 @@ public class InventoryUIController : MonoBehaviour
             buttons[ClosureFixer].UnregisterCallback<PointerUpEvent>(evt =>
             {
                 OnSlotUp(evt);
-                _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
             });
         }
         buttons.Clear();
@@ -151,6 +149,8 @@ public class InventoryUIController : MonoBehaviour
     // 드래그 종료 (놓은 위치의 버튼을 '조사'해서 가져옴)
     private void OnSlotUp(PointerUpEvent evt)
     {
+
+        Debug.Log($"{evt}");
         // 현재 마우스 위치 아래에 있는 요소를 픽업
         VisualElement picked = root.panel.Pick(evt.position);
         Button targetBtn = picked as Button ?? picked?.GetFirstAncestorOfType<Button>();
@@ -163,15 +163,11 @@ public class InventoryUIController : MonoBehaviour
         }
     }
 
-
-
-
     public void openInventory()
     {
         if (_mapChanger.getCurrentIAmap() != INVENTORY_MAP_NAME)
         {
             _mapChanger.changeIAmapInventory();
-
 
             if (root == null)
             {
@@ -180,7 +176,6 @@ public class InventoryUIController : MonoBehaviour
             }
 
             root.visible = true;
-
         }
     }
     #endregion

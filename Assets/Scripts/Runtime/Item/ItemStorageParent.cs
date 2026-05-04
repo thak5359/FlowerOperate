@@ -151,6 +151,7 @@ public class ItemStorageParent : MonoBehaviour
 [Serializable]
 public struct ItemInstantData
 {
+
     [SerializeField] private List<ItemObjectData> storageList;
     [SerializeField] private List<ItemObjectData> invenList;
     [SerializeField] private int slotsCount;
