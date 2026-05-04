@@ -1,6 +1,8 @@
+using Fungus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -9,7 +11,8 @@ using static Constant;
 public enum ContainerType
 {
     INVENTORY,
-    STORAGE
+    STORAGE,
+    SELLING
 }
 
 [Serializable]
@@ -17,22 +20,24 @@ public class StorageDataManager : MonoBehaviour
 {
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
-    
+
     // 현재 활성화된 박스 번호 (기본값 0)
     [SerializeField] private int _currentBoxIndex = 0;
     public int CurrentBoxIndex { get => _currentBoxIndex; set => _currentBoxIndex = value; }
 
     //Getter
     public ItemInstantData GetData => _Data;
-    
+
     void OnEnable()
     {
         GlobalEventManager.OnItemPickedUp += AddItem;
+        GlobalEventManager.NextDay += CalculateMoney;
     }
 
     void OnDisable()
     {
         GlobalEventManager.OnItemPickedUp -= AddItem;
+        GlobalEventManager.NextDay -= CalculateMoney;
     }
 
     protected virtual ContainerType currentType => ContainerType.INVENTORY;
@@ -80,7 +85,7 @@ public class StorageDataManager : MonoBehaviour
 
         a.SetAmount((short)(a.GetAmount + amountToMove));
         b.SetAmount((short)(b.GetAmount - amountToMove));
-        
+
         if (b.CheckEmpty())
             b = default;
 
@@ -92,7 +97,7 @@ public class StorageDataManager : MonoBehaviour
     public void Sort(ContainerType type, int boxNum = 0)
     {
         _Data.SortList(type, boxNum);
-        
+
         var list = _Data.GetItemList(type, boxNum);
         for (int i = 0; i < list.Count - 1; i++)
         {
@@ -149,6 +154,18 @@ public class StorageDataManager : MonoBehaviour
             .Sum(item => (int)item.GetAmount);
         return totalAmount >= count;
     }
+
+    public void CalculateMoney()
+    {
+        var sellingBox = _Data.GetItemList(ContainerType.SELLING);
+        if (sellingBox == null) return;
+
+        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice((short)item.GetItemID) * item.GetAmount);
+        _Data.SetItemList(ContainerType.SELLING, new List<ItemObjectData>(new ItemObjectData[50]));
+        _Data.SetItemList(ContainerType.INVENTORY, _Data.GetItemList(ContainerType.INVENTORY).ToList()); // 인벤토리 갱신 트리거
+        GlobalEventManager.InvokeDataChanged();
+        Debug.Log($"하루가 지나 판매 완료. 총 수익: {totalMoney}골드");
+    } 
 }
 
 [Serializable]
@@ -161,21 +178,24 @@ public struct ItemInstantData
     [SerializeField] private List<StorageBox> storageBoxList;
     [SerializeField] private int slotsCount;
 
+    [NonSerialized] private List<ItemObjectData> sellingBox;
+
     // 인벤토리나 특정 창고 박스를 IList 형태로 반환 (배열과 리스트 공통 처리)
     public IList<ItemObjectData> GetItemList(ContainerType type, int boxNum = 0)
     {
         if (type == ContainerType.INVENTORY) return invenList;
-        if (storageBoxList == null || storageBoxList.Count <= boxNum) return null;
-        return storageBoxList[boxNum].BoxSlots;
+        if (type == ContainerType.STORAGE) return storageBoxList[boxNum].BoxSlots;
+        if (type == ContainerType.SELLING) return sellingBox;
+        return null;
     }
 
-    // 하위 호환성을 위한 메서드 (기본 박스 혹은 인벤토리 리스트 반환)
-    public List<ItemObjectData> GetInvenList(ContainerType type)
-    {
-        if (type == ContainerType.INVENTORY) return invenList;
-        if (storageBoxList != null && storageBoxList.Count > 0) return storageBoxList[0].BoxSlots.ToList();
-        return new List<ItemObjectData>();
-    }
+    // // 하위 호환성을 위한 메서드 (기본 박스 혹은 인벤토리 리스트 반환)
+    // public List<ItemObjectData> GetInvenList(ContainerType type)
+    // {
+    //     if (type == ContainerType.INVENTORY) return invenList;
+    //     if (storageBoxList != null && storageBoxList.Count > 0) return storageBoxList[0].BoxSlots.ToList();
+    //     return new List<ItemObjectData>();
+    // }
 
     public List<StorageBox> GetStorageBoxes => storageBoxList;
     public int GetSlotsCount => slotsCount;
@@ -228,7 +248,7 @@ public struct ItemInstantData
                 return;
             }
         }
-        
+
         Debug.Log($"[{type} Box:{boxNum}] 슬롯 가득 참");
     }
 
