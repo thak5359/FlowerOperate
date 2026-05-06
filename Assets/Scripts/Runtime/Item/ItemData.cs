@@ -23,7 +23,7 @@ public class ItemIdData : ScriptableObject
     public short Price(byte i) => price[i];
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ItemBlobData
 {
     public short ItemId;
@@ -33,19 +33,19 @@ public struct ItemBlobData
     public short Price;
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ItemBlobDatas
 {
     public BlobArray<ItemBlobData> Items;
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public class ItemDetailData : ScriptableObject
 {
 }
 
 [System.Serializable]
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ChargeInfo
 {
     public float ChargeTime;

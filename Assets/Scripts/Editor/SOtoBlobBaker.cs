@@ -63,26 +63,33 @@ public class ItemBlobMaker : EditorWindow
         try
         {
             ref var root = ref builder.ConstructRoot<FlowerItemBlobDatas>();
-            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count*2);
+            // 품종마다 아이템 + 씨앗 2개씩 생성하므로 크기는 itemName.Count * 2
+            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count * 2);
 
-            for (short i = 0; i < so.itemName.Count; i += 2)
+            for (int i = 0; i < so.itemName.Count; i++)
             {
-                arrayBuilder[i].ItemId = (short)(so.startId + i);
-                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
-                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
-                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
+                int targetIdx = i * 2;
+                
+                // 1. 실제 꽃 아이템 정보
+                arrayBuilder[targetIdx].ItemId = (short)(so.startId + targetIdx);
+                arrayBuilder[targetIdx].ItemName = so.itemName[i];
+                arrayBuilder[targetIdx].Description = (i < so.description.Count) ? so.description[i] : default;
+                arrayBuilder[targetIdx].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
+                arrayBuilder[targetIdx].Price = (i < so.price.Count) ? so.price[i] : (short)0;
 
-                arrayBuilder[i].speciesIndex = (i < so.speciesIndex.Count) ? so.speciesIndex[i] : (byte)0;
-                arrayBuilder[i].colorIndex = (i < so.colorIndex.Count) ? so.colorIndex[i] : (byte)0;
-                arrayBuilder[i].floroIndex = (i < so.floroIndex.Count) ? so.floroIndex[i] : (byte)0;
-                arrayBuilder[i].floroIndex2 = (i < so.floroIndex2.Count) ? so.floroIndex2[i] : (sbyte)0;
-                arrayBuilder[i].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
-                arrayBuilder[i].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
+                arrayBuilder[targetIdx].speciesIndex = (i < so.speciesIndex.Count) ? so.speciesIndex[i] : (byte)0;
+                arrayBuilder[targetIdx].colorIndex = (i < so.colorIndex.Count) ? so.colorIndex[i] : (byte)0;
+                arrayBuilder[targetIdx].floroIndex = (i < so.floroIndex.Count) ? so.floroIndex[i] : (byte)0;
+                arrayBuilder[targetIdx].floroIndex2 = (i < so.floroIndex2.Count) ? so.floroIndex2[i] : (sbyte)0;
+                arrayBuilder[targetIdx].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
+                arrayBuilder[targetIdx].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
 
-                arrayBuilder[i+1] = arrayBuilder[i];
-                arrayBuilder[i+1].ItemId = (short)(arrayBuilder[i].ItemId + 1);
-                arrayBuilder[i+1].ItemName = arrayBuilder[i].ItemName + "씨앗";
+                // 2. 씨앗 아이템 정보 (기본 정보 복사 후 수정)
+                arrayBuilder[targetIdx + 1] = arrayBuilder[targetIdx];
+                arrayBuilder[targetIdx + 1].ItemId = (short)(so.startId + targetIdx + 1);
+                
+                // FixedString64Bytes는 직접 문자열 더하기가 안되므로 ToString 후 다시 할당
+                arrayBuilder[targetIdx + 1].ItemName = (FixedString64Bytes)(so.itemName[i].ToString() + " 씨앗");
             }
             SaveToBlob<FlowerItemBlobDatas>(builder, so.name);
         }
@@ -145,15 +152,14 @@ public class ItemBlobMaker : EditorWindow
         try
         {
             ref var root = ref builder.ConstructRoot<FlowerDetailBlobDatas>();
-            int count = so.speciesList.Count; // 세 리스트의 크기가 동일하다고 가정
+            int count = so.floroList.Count; // 세 리스트의 크기가 동일하다고 가정
             var arrayBuilder = builder.Allocate(ref root.flowerDetails, count);
 
             for (int i = 0; i < count; i++)
             {
-                arrayBuilder[i].species = so.speciesList[i];
+                arrayBuilder[i].species = (i < so.speciesList.Count) ? so.speciesList[i] : default;
                 arrayBuilder[i].color = (i < so.colorList.Count) ? so.colorList[i] : default;
                 arrayBuilder[i].floro = (i < so.floroList.Count) ? so.floroList[i] : default;
-                arrayBuilder[i].floro2 = (i < so.floro2List.Count) ? so.floro2List[i] : default;
             }
 
             SaveToBlob<FlowerDetailBlobDatas>(builder, so.name);

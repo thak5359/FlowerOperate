@@ -19,7 +19,7 @@ public class UsableIdData : ItemIdData
     public byte PowerIndex(byte idx) => powerIndex[idx];
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct UsableItemBlobData
 {
     public short ItemId;
@@ -33,7 +33,7 @@ public struct UsableItemBlobData
     public byte chargeIndex;
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct UsableItemBlobDatas
 {
     public BlobArray<UsableItemBlobData> Items;

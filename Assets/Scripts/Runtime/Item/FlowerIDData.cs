@@ -27,7 +27,7 @@ public class FlowerIdData : ItemIdData
     public byte HarvestAmount(byte i) => harvestAmount[i];
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct FlowerItemBlobData
 {
     public short ItemId;
@@ -44,7 +44,7 @@ public struct FlowerItemBlobData
     public byte harvestAmount;
 }
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct FlowerItemBlobDatas
 {
     public BlobArray<FlowerItemBlobData> Items;
