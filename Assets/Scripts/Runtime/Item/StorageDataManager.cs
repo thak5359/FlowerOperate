@@ -162,7 +162,8 @@ public class StorageDataManager : MonoBehaviour
 
         int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice((short)item.GetItemID) * item.GetAmount);
         _Data.SetItemList(ContainerType.SELLING, new List<ItemObjectData>(new ItemObjectData[50]));
-        _Data.SetItemList(ContainerType.INVENTORY, _Data.GetItemList(ContainerType.INVENTORY).ToList()); // 인벤토리 갱신 트리거
+        _Data.AddMoney(totalMoney);
+
         GlobalEventManager.InvokeDataChanged();
         Debug.Log($"하루가 지나 판매 완료. 총 수익: {totalMoney}골드");
     } 
@@ -176,7 +177,6 @@ public struct ItemInstantData
     [SerializeField] private int reputation;
     [SerializeField] private List<ItemObjectData> invenList;
     [SerializeField] private List<StorageBox> storageBoxList;
-    [SerializeField] private int slotsCount;
 
     [NonSerialized] private List<ItemObjectData> sellingBox;
 
@@ -189,6 +189,9 @@ public struct ItemInstantData
         return null;
     }
 
+    public int GetMoney => this.money;
+    public int GetReputation => this.reputation;
+
     // // 하위 호환성을 위한 메서드 (기본 박스 혹은 인벤토리 리스트 반환)
     // public List<ItemObjectData> GetInvenList(ContainerType type)
     // {
@@ -198,13 +201,14 @@ public struct ItemInstantData
     // }
 
     public List<StorageBox> GetStorageBoxes => storageBoxList;
-    public int GetSlotsCount => slotsCount;
 
     public void SetItemList(ContainerType type, List<ItemObjectData> itemList)
     {
         if (type == ContainerType.INVENTORY) invenList = itemList;
         else if (storageBoxList != null && storageBoxList.Count > 0) storageBoxList[0].SetBoxSlots(itemList.ToArray());
     }
+
+    public void AddMoney(int money) => this.money += money;
 
     public void SwapItem(ContainerType startPoint, ContainerType endPoint, int startIdx, int endIdx, int startBoxNum = 0, int endBoxNum = 0)
     {
