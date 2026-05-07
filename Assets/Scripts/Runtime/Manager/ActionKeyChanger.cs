@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
+using MemoryPack;
 
 public interface IActionKeyChanger
 {
@@ -64,3 +63,4 @@ public class ActionKeyChanger : IActionKeyChanger
         rebindingOperation.Start();
     }
 }
+
