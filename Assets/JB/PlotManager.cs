@@ -14,7 +14,7 @@ public class PlotManager : MonoBehaviour
 
     [SerializeField]
     private GameObject plotPrefab;
-    public SerializedDictionary<int, PlotData> getPlotDataDict => this.plotDataDict;
+    public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
     public static PlotManager Instance { get; private set; }
 

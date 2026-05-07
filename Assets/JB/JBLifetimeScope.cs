@@ -8,14 +8,14 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<SaveLoadManager>()
             .AsImplementedInterfaces()
             .AsSelf();
-        builder.RegisterComponentInHierarchy<StorageDataManager>()
+        builder.RegisterComponentInHierarchy<PlayerItemDataManager>()
             .AsImplementedInterfaces()
             .AsSelf();
         builder.RegisterComponentInHierarchy<StorageManager>()
-            .As<StorageDataManager>()
+            .As<PlayerItemDataManager>()
             .AsSelf();
         builder.RegisterComponentInHierarchy<PlotManager>()
-            .As<StorageDataManager>()
+            .As<PlayerItemDataManager>()
             .AsSelf();
         builder.RegisterComponentInHierarchy<ProgressManager>()
             .AsSelf();

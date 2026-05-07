@@ -8,7 +8,7 @@ public class StorageTestTool : EditorWindow
     private ushort itemID;
     private byte grade;
     private short amount;
-    public static StorageDataManager targetStorage;
+    public static PlayerItemDataManager targetStorage;
     private ContainerType storageType;
 
     [MenuItem("Tools/Storage Test Tool")]
@@ -20,13 +20,13 @@ public class StorageTestTool : EditorWindow
         EditorGUILayout.Space(10);
 
         // 대상 스토리지 선택 (직접 지정하거나 씬에서 찾기)
-        targetStorage = (StorageDataManager)EditorGUILayout.ObjectField("Target Storage", targetStorage, typeof(StorageDataManager), true);
+        targetStorage = (PlayerItemDataManager)EditorGUILayout.ObjectField("Target Storage", targetStorage, typeof(PlayerItemDataManager), true);
 
         if (targetStorage == null)
         {
             if (GUILayout.Button("Find Storage in Scene"))
             {
-                targetStorage = GameObject.FindFirstObjectByType<StorageDataManager>();
+                targetStorage = GameObject.FindFirstObjectByType<PlayerItemDataManager>();
             }
             EditorGUILayout.HelpBox("씬에 ItemStorageParent가 있어야 아이템을 추가할 수 있습니다.", MessageType.Warning);
         }

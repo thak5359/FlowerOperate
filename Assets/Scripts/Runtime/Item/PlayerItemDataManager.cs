@@ -16,7 +16,7 @@ public enum ContainerType
 }
 
 [Serializable]
-public class StorageDataManager : MonoBehaviour
+public class PlayerItemDataManager : MonoBehaviour
 {
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
@@ -276,10 +276,10 @@ public struct ItemInstantData
 
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]
-public class StorageBox
+public struct StorageBox
 {
     [SerializeField] private string boxName;
-    [SerializeField] private ItemObjectData[] boxSlots = new ItemObjectData[50];
+    [SerializeField] private ItemObjectData[] boxSlots;
 
     public ItemObjectData[] BoxSlots => boxSlots;
     public string BoxName => boxName;

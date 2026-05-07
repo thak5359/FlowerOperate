@@ -8,7 +8,7 @@ using VContainer;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private StorageDataManager _storageParent;
+    private PlayerItemDataManager _storageManager;
     private PlotManager _plotManager;
     private ProgressManager _progressManager;
 
@@ -16,10 +16,10 @@ public class SaveLoadManager : MonoBehaviour
     public SaveDatas saveData;
 
     [Inject]
-    public void Construct(StorageDataManager storageParent, PlotManager plot, 
+    public void Construct(PlayerItemDataManager storageParent, PlotManager plot, 
         ProgressManager progress)
     {
-        _storageParent = storageParent;
+        _storageManager = storageParent;
         _plotManager = plot;
         _progressManager = progress;
 
@@ -28,15 +28,15 @@ public class SaveLoadManager : MonoBehaviour
 
     private void SyncSaveData()
     {
-        if (_storageParent == null || _plotManager == null) return;
+        if (_storageManager == null || _plotManager == null) return;
 
         int day = (_progressManager != null) ? _progressManager.getDay() : 0;
 
         // ItemStorageParent가 관리하는 ItemInstantData(인벤토리+창고 포함)를 통째로 저장
         saveData = new SaveDatas(
             day,
-            _storageParent.GetData,
-            _plotManager.getPlotDataDict
+            _storageManager.GetData,
+            _plotManager.GetPlotDataDict
         );
     }
 
@@ -65,7 +65,7 @@ public class SaveLoadManager : MonoBehaviour
             saveData = loadedData;
             
             // 통합된 데이터를 매니저들에게 분배
-            if (_storageParent != null) _storageParent.Load(saveData);
+            if (_storageManager != null) _storageManager.Load(saveData);
             if (_plotManager != null) _plotManager.Load(saveData);
             
             Debug.Log("데이터 로드 및 통합 매니저 분배 완료");
