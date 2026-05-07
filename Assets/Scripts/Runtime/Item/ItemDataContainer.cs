@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using Fungus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ public class ItemDataContainer : MonoBehaviour
 {
     [SerializeField]
     ItemObjectData data;
+    [SerializeField]
+    int waitMilliSeconds = 1000;
 
     public ItemObjectData GetData => this.data;
     public ushort GetItemID => data.GetItemID;
@@ -24,15 +28,16 @@ public class ItemDataContainer : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            GlobalEventManager.InvokeItemPickedUp(data);
-            DestroyItem();
+            Destroy(this.gameObject);
         }
+        DoOnTrigger().Forget();
     }
 
-    public void DestroyItem()
+    private async UniTaskVoid DoOnTrigger()
     {
-        //오브젝트 풀에 리턴시킬 메소드 입력
-        // ObjectPool.ReturnObject(gameObject);
+        await UniTask.Delay(waitMilliSeconds);
+        Debug.Log("딜레이 끝!");
+        GlobalEventManager.InvokeItemPickedUp(data);
     }
 }
 

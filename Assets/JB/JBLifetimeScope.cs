@@ -11,9 +11,6 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<PlayerItemDataManager>()
             .AsImplementedInterfaces()
             .AsSelf();
-        builder.RegisterComponentInHierarchy<StorageManager>()
-            .As<PlayerItemDataManager>()
-            .AsSelf();
         builder.RegisterComponentInHierarchy<PlotManager>()
             .As<PlayerItemDataManager>()
             .AsSelf();
