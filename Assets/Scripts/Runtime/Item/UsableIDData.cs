@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -18,18 +19,21 @@ public class UsableIdData : ItemIdData
     public byte PowerIndex(byte idx) => powerIndex[idx];
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct UsableItemBlobData
 {
     public short ItemId;
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString64Bytes SpriteAddress;
+    public short Price;
 
     public byte durationIndex;
     public byte powerIndex;
     public byte chargeIndex;
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct UsableItemBlobDatas
 {
     public BlobArray<UsableItemBlobData> Items;

@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
                 if (hits[0].CompareTag(TAG_BED))
                 {
-
+                    GlobalEventManager.InvokeNextDay();
                 }
 
 

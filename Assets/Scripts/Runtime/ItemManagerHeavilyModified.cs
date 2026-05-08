@@ -125,6 +125,19 @@ public static class GlobalItemDB //: IJobParallelFor
         GetAddress(id, out var addr);
         return addr.IsEmpty ? null : addr.ToString();
     }
+
+    public static int GetPrice(short id)
+    {
+        if (!IsInitialized) return -1;
+
+        ref var db = ref Instance.Data;
+        if (id >= 0 && id < Constant.COMMON_END_ID)
+            return db.UsableDB.Value.Items[id - Constant.USABLE_START_ID].Price;
+        else if (id >= Constant.COMMON_END_ID && id < Constant.FLOWER_END_ID)
+            return db.ItemDB.Value.Items[id - Constant.COMMON_START_ID].Price;
+        else
+            return db.FlowerDB.Value.Items[id - Constant.FLOWER_START_ID].Price;
+    }
     #endregion
 
     #region 장비(Usable) 아이템 데이터 접근

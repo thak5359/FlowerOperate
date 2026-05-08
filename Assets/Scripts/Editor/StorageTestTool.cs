@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class AllStorageTestTool : EditorWindow
+public class StorageTestTool : EditorWindow
 {
     private ushort itemID;
     private byte grade;
     private short amount;
-    public static ItemStorageParent targetStorage;
+    public static PlayerItemDataManager targetStorage;
     private ContainerType storageType;
 
-    [MenuItem("Tools/All Storage Test Tool")]
-    public static void ShowWindow() => GetWindow<AllStorageTestTool>("Storage Tool");
+    [MenuItem("Tools/Storage Test Tool")]
+    public static void ShowWindow() => GetWindow<StorageTestTool>("Storage Tool");
 
     private void OnGUI()
     {
@@ -20,13 +20,13 @@ public class AllStorageTestTool : EditorWindow
         EditorGUILayout.Space(10);
 
         // 대상 스토리지 선택 (직접 지정하거나 씬에서 찾기)
-        targetStorage = (ItemStorageParent)EditorGUILayout.ObjectField("Target Storage", targetStorage, typeof(ItemStorageParent), true);
+        targetStorage = (PlayerItemDataManager)EditorGUILayout.ObjectField("Target Storage", targetStorage, typeof(PlayerItemDataManager), true);
 
         if (targetStorage == null)
         {
             if (GUILayout.Button("Find Storage in Scene"))
             {
-                targetStorage = GameObject.FindFirstObjectByType<ItemStorageParent>();
+                targetStorage = GameObject.FindFirstObjectByType<PlayerItemDataManager>();
             }
             EditorGUILayout.HelpBox("씬에 ItemStorageParent가 있어야 아이템을 추가할 수 있습니다.", MessageType.Warning);
         }
@@ -100,9 +100,9 @@ public class AllStorageTestTool : EditorWindow
         // Undo 등록 (에디터에서 수행 시 되돌리기 가능하도록)
         Undo.RecordObject(targetStorage, "Add Item via Tool");
 
-        // 인벤토리에 추가
-        List<ItemObjectData> inven = targetStorage.GetComponent<ItemStorageParent>().GetData.GetList(storageType);
-        inven.Add(newItem);
+        // 인벤토리 또는 창고에 추가 (현재 선택된 타입에 맞게)
+        targetStorage.AddItem(storageType, newItem);
+
         // 변경사항 저장 및 UI 갱신 (에디터 환경 대응)
         EditorUtility.SetDirty(targetStorage);
 
@@ -117,6 +117,8 @@ public class SwapWindow : EditorWindow
     private ContainerType endStorage;
     private int startIndex;
     private int endIndex;
+    private int startBoxIndex = 0;
+    private int endBoxIndex = 0;
 
     public static void ShowWindow() => GetWindow<SwapWindow>("Swap Option");
     private void OnGUI()
@@ -135,7 +137,12 @@ public class SwapWindow : EditorWindow
         startStorage = (ContainerType)EditorGUILayout.EnumPopup("시작지", startStorage);
 
         //인덱스 설정 텍스트박스
-        GUILayout.Label("[인덱스 설정]", EditorStyles.boldLabel);
+        if (startStorage == ContainerType.STORAGE)
+        {
+            GUILayout.Label("[대상 박스의 순번 입력]", EditorStyles.boldLabel);
+            startBoxIndex = EditorGUILayout.IntField(startBoxIndex);
+        }
+        GUILayout.Label("[대상 인덱스 입력]", EditorStyles.boldLabel);
         startIndex = (int)EditorGUILayout.IntField(startIndex);
 
         GUILayout.EndVertical();
@@ -147,9 +154,13 @@ public class SwapWindow : EditorWindow
         endStorage = (ContainerType)EditorGUILayout.EnumPopup("목적지", endStorage);
 
         //인덱스 설정 텍스트박스
-        GUILayout.Label("[인덱스 설정]", EditorStyles.boldLabel);
+        if(endStorage == ContainerType.STORAGE)
+        {
+            GUILayout.Label("[대상 박스의 순번 입력]", EditorStyles.boldLabel);
+            endBoxIndex = EditorGUILayout.IntField(endBoxIndex);
+        }
+        GUILayout.Label("[대상 인덱스 입력]", EditorStyles.boldLabel);
         endIndex = (int)EditorGUILayout.IntField(endIndex);
-
         GUILayout.EndVertical();
 
         #endregion
@@ -158,7 +169,7 @@ public class SwapWindow : EditorWindow
 
         if(GUILayout.Button("Start", GUILayout.Height(30)))
         {
-            AllStorageTestTool.targetStorage.Swap(startStorage, endStorage, startIndex, endIndex);
+            StorageTestTool.targetStorage.Swap(startStorage, endStorage, startIndex, endIndex, startBoxIndex, endBoxIndex);
         }
 
         EditorGUIUtility.labelWidth = originalLabelWidth;

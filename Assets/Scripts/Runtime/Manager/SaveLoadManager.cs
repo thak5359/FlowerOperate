@@ -2,12 +2,13 @@ using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using VContainer;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private ItemStorageParent _storageParent;
+    private PlayerItemDataManager _storageManager;
     private PlotManager _plotManager;
     private ProgressManager _progressManager;
 
@@ -15,10 +16,10 @@ public class SaveLoadManager : MonoBehaviour
     public SaveDatas saveData;
 
     [Inject]
-    public void Construct(ItemStorageParent storageParent, PlotManager plot, 
+    public void Construct(PlayerItemDataManager storageParent, PlotManager plot, 
         ProgressManager progress)
     {
-        _storageParent = storageParent;
+        _storageManager = storageParent;
         _plotManager = plot;
         _progressManager = progress;
 
@@ -27,15 +28,15 @@ public class SaveLoadManager : MonoBehaviour
 
     private void SyncSaveData()
     {
-        if (_storageParent == null || _plotManager == null) return;
+        if (_storageManager == null || _plotManager == null) return;
 
         int day = (_progressManager != null) ? _progressManager.getDay() : 0;
 
         // ItemStorageParent가 관리하는 ItemInstantData(인벤토리+창고 포함)를 통째로 저장
         saveData = new SaveDatas(
             day,
-            _storageParent.GetData,
-            _plotManager.getPlotDataDict
+            _storageManager.GetData,
+            _plotManager.GetPlotDataDict
         );
     }
 
@@ -64,7 +65,7 @@ public class SaveLoadManager : MonoBehaviour
             saveData = loadedData;
             
             // 통합된 데이터를 매니저들에게 분배
-            if (_storageParent != null) _storageParent.Load(saveData);
+            if (_storageManager != null) _storageManager.Load(saveData);
             if (_plotManager != null) _plotManager.Load(saveData);
             
             Debug.Log("데이터 로드 및 통합 매니저 분배 완료");
@@ -74,10 +75,13 @@ public class SaveLoadManager : MonoBehaviour
 }
 
 [Serializable]
+[StructLayout(LayoutKind.Sequential)]
 public class SaveDatas
 {
     [SerializeField] private string saveTime;
     [SerializeField] private int playDay;
+    [SerializeField] private int money;
+    [SerializeField] private int reputation;
     [SerializeField] private ItemInstantData itemData; // 인벤토리와 창고 리스트가 포함된 통합 구조체
     [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
 
@@ -88,11 +92,13 @@ public class SaveDatas
     
     public SaveDatas() { }
 
-    public SaveDatas(int day, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotData)
+    public SaveDatas(int day, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotData, int money = 0, int reputation = 0)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
         this.playDay = day;
         this.itemData = itemData;
         this.plotDataDict = plotData;
+        this.money = money;
+        this.reputation = reputation;
     }
 }

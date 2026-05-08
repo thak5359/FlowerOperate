@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -26,12 +27,14 @@ public class FlowerIdData : ItemIdData
     public byte HarvestAmount(byte i) => harvestAmount[i];
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct FlowerItemBlobData
 {
     public short ItemId;
     public FixedString64Bytes ItemName;
     public FixedString128Bytes Description;
     public FixedString128Bytes SpriteAddress;
+    public short Price;
 
     public byte speciesIndex;
     public byte colorIndex;
@@ -41,6 +44,7 @@ public struct FlowerItemBlobData
     public byte harvestAmount;
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct FlowerItemBlobDatas
 {
     public BlobArray<FlowerItemBlobData> Items;

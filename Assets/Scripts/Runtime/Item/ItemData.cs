@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Entities;
+using System.Runtime.InteropServices;
 
 [CreateAssetMenu(fileName = "IdData", menuName = "ItemData/IdData")]
 public class ItemIdData : ScriptableObject
@@ -22,7 +23,7 @@ public class ItemIdData : ScriptableObject
     public short Price(byte i) => price[i];
 }
 
-
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ItemBlobData
 {
     public short ItemId;
@@ -32,16 +33,19 @@ public struct ItemBlobData
     public short Price;
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ItemBlobDatas
 {
     public BlobArray<ItemBlobData> Items;
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public class ItemDetailData : ScriptableObject
 {
 }
 
 [System.Serializable]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ChargeInfo
 {
     public float ChargeTime;
