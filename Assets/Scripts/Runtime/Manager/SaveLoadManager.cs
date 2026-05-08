@@ -85,6 +85,8 @@ public class SaveDatas
     [SerializeField] private ItemInstantData itemData; // 인벤토리와 창고 리스트가 포함된 통합 구조체
     [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
 
+
+
     public string GetSaveTime => saveTime;
     public int GetPlayDay => playDay;
     public ItemInstantData GetItemData => itemData;

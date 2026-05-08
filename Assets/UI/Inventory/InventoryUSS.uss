@@ -1,4 +1,3 @@
-/* 인벤토리 전체 배경판 */
 .inventory-root {
     width: 870px;
     height: 460px;
@@ -13,7 +12,6 @@
     align-items: flex-start;
 }
 
-/* 인벤토리 한 줄 (Row) */
 .inventory-row {
     flex-grow: 0;
     height: 80px;
@@ -21,24 +19,58 @@
     flex-direction: row;
 }
 
-/* 왼쪽 포인터/인덱스 영역 */
 .slot-spacer {
     width: 40px;
     padding-right: 10px;
 }
 
-/* 버튼들을 감싸는 컨테이너 */
 .slot-container {
     flex-grow: 1;
     flex-direction: row;
     width: 800px;
 }
 
-/* 개별 슬롯 버튼 */
 .inventory-slot {
     width: 10%;
     height: 100%;
     margin: 0;
     padding: 0;
-    border-width: 1px; /* 슬롯 구분선   */
+    border-width: 1px;
+}
+
+.closeButton {
+    position: absolute;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: -50px;
+    background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=-1981906178&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_25");
+}
+
+.closeButton:active {
+    background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=1511921531&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_26");
+}
+
+.hotSlotPointer {
+    flex-grow: 1;
+    width: 30px;
+    background-image: none;
+    height: 30px;
+    align-self: center;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.hotSlotPointer--Active {
+    background-image: url("project://database/Assets/3rdParty/Sprout%20Lands%20-%20UI%20Pack%20-%20Basic%20pack/Sprite%20sheets/Sprite%20sheet%20for%20Basic%20Pack.png?fileID=57820642&guid=fcd7fe7527fd76b4dae4dde781f87150&type=3#Sprite sheet for Basic Pack_5");
 }
