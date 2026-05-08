@@ -240,6 +240,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1374428660}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &33247655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 33247657}
+  - component: {fileID: 33247656}
+  m_Layer: 0
+  m_Name: StorageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &33247656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33247655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4700f90550785574c90668d4ab3acac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Data:
+    money: 0
+    reputation: 0
+    invenList: []
+    storageBoxList: []
+  _currentBoxIndex: 0
+--- !u!4 &33247657
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33247655}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.410036, y: 7.824898, z: -8.452997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &34048739
 GameObject:
   m_ObjectHideFlags: 0
@@ -301647,11 +301697,9 @@ GameObject:
   - component: {fileID: 1618246215}
   - component: {fileID: 1618246222}
   - component: {fileID: 1618246221}
-  - component: {fileID: 1618246220}
   - component: {fileID: 1618246219}
   - component: {fileID: 1618246218}
   - component: {fileID: 1618246217}
-  - component: {fileID: 1618246216}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -301844,20 +301892,6 @@ MonoBehaviour:
   move: 0
   shiftIntoPlace: 0
   waitUntilFinished: 0
---- !u!114 &1618246216
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd293ffe885b594c8d3c1f526fd7f77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 22
-  indentLevel: 0
 --- !u!114 &1618246217
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -301946,20 +301980,6 @@ MonoBehaviour:
   move: 0
   shiftIntoPlace: 0
   waitUntilFinished: 0
---- !u!114 &1618246220
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b55f017339c8324fac1e13ad6ef191a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 18
-  indentLevel: 0
 --- !u!114 &1618246221
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -302000,11 +302020,11 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1618246221}
   commandList:
-  - {fileID: 1618246220}
+  - {fileID: 0}
   - {fileID: 1618246219}
   - {fileID: 1618246218}
   - {fileID: 1618246217}
-  - {fileID: 1618246216}
+  - {fileID: 0}
   suppressAllAutoSelections: 0
 --- !u!1 &1624771221
 GameObject:
@@ -305900,10 +305920,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c32e8eed07e0344abb52f536d4a5830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Data:
-    storageList: []
-    invenList: []
-    slotsCount: 0
 --- !u!1 &1881676963
 GameObject:
   m_ObjectHideFlags: 0
@@ -311998,6 +312014,11 @@ PrefabInstance:
       objectReference: {fileID: 1870970180}
     - target: {fileID: 4114507864807019150, guid: 70eafd9572759294287042bfd95001dd,
         type: 3}
+      propertyPath: playerItemDataManager
+      value: 
+      objectReference: {fileID: 33247656}
+    - target: {fileID: 4114507864807019150, guid: 70eafd9572759294287042bfd95001dd,
+        type: 3}
       propertyPath: parentReference.TypeName
       value: 
       objectReference: {fileID: 0}
@@ -312237,6 +312258,7 @@ SceneRoots:
   - {fileID: 7752750853562300823}
   - {fileID: 1972509094}
   - {fileID: 332692172}
+  - {fileID: 33247657}
   - {fileID: 1374428660}
   - {fileID: 1658353708}
   - {fileID: 1608943495}

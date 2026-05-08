@@ -19,7 +19,7 @@ public class InventoryUIController : MonoBehaviour
     private Button closeButton;
 
     private IMapChangable _mapChanger;
-    private ItemStorageParent _inventoryManager;
+    private PlayerItemDataManager _inventoryManager;
 
 
 
@@ -30,7 +30,7 @@ public class InventoryUIController : MonoBehaviour
 
 
     [Inject]
-    private void Construct(IMapChangable input_mapChanger, ItemStorageParent input_inventoryManager)
+    private void Construct(IMapChangable input_mapChanger, PlayerItemDataManager input_inventoryManager)
     {
         _mapChanger = input_mapChanger;
         _inventoryManager = input_inventoryManager;
