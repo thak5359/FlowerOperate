@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using VContainer;
 using static Constant;
 
-[Serializable]
+[MemoryPackable]
 public partial struct PlotData // 저장용 데이터 바구니
 {
     public Vector3 position { get; private set; }

@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using MemoryPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,16 +75,16 @@ public class SaveLoadManager : MonoBehaviour
     public SaveDatas GetSaveDatas => this.saveData;
 }
 
-[Serializable]
+[MemoryPackable]
 [StructLayout(LayoutKind.Sequential)]
-public class SaveDatas
+public partial class SaveDatas
 {
-    [SerializeField] private string saveTime;
-    [SerializeField] private int playDay;
-    [SerializeField] private int money;
-    [SerializeField] private int reputation;
-    [SerializeField] private ItemInstantData itemData; // 인벤토리와 창고 리스트가 포함된 통합 구조체
-    [SerializeField] private SerializedDictionary<int, PlotData> plotDataDict;
+    [MemoryPackInclude] private string saveTime;
+    [MemoryPackInclude] private int playDay;
+    [MemoryPackInclude] private int money;
+    [MemoryPackInclude] private int reputation;
+    [MemoryPackInclude] private ItemInstantData itemData; // 인벤토리와 창고 리스트가 포함된 통합 구조체
+    [MemoryPackInclude] private SerializedDictionary<int, PlotData> plotDataDict;
 
 
 
@@ -91,15 +92,15 @@ public class SaveDatas
     public int GetPlayDay => playDay;
     public ItemInstantData GetItemData => itemData;
     public SerializedDictionary<int, PlotData> GetPlotData => plotDataDict;
-    
-    public SaveDatas() { }
+    public ref SerializedDictionary<int, PlotData> GetRefPlotData => ref plotDataDict;
 
-    public SaveDatas(int day, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotData, int money = 0, int reputation = 0)
+    [MemoryPackConstructor]
+    public SaveDatas(int playDay, ItemInstantData itemData, SerializedDictionary<int, PlotData> plotDataDict, int money = 0, int reputation = 0)
     {
         this.saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
-        this.playDay = day;
+        this.playDay = playDay;
         this.itemData = itemData;
-        this.plotDataDict = plotData;
+        this.plotDataDict = plotDataDict;
         this.money = money;
         this.reputation = reputation;
     }
