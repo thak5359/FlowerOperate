@@ -39,7 +39,7 @@ public class PlotManager : MonoBehaviour
     {
         foreach (var plot in this.GetComponentsInChildren<Plot>())
         {
-            plotDataDict.Add(plot.plotId, plot.GetSaveData());
+            plotDataDict.Add(plot.Id, plot.GetSaveData());
         }
     }
 

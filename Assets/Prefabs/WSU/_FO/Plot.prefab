@@ -236,14 +236,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da8567a338669f84a9f0f629f53b697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    plotId: 0
-    Position: {x: 0, y: 0, z: 0}
-    isWatered: 0
-    flowerId: 0
-    growth: 0
-    isDried: 0
-  plotRenderer: {fileID: 963622037534828117}
+  spriteRenderer: {fileID: 963622037534828117}
   flowerRenderer: {fileID: 911332243200406309}
-  flowerId: 0
-  plotId: 0

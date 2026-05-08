@@ -1,54 +1,76 @@
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
+using MemoryPack;
 using System;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 using VContainer;
 using static Constant;
 
-[System.Serializable]
-public struct PlotData // 저장용 데이터 바구니
+[Serializable]
+[MemoryPackable]
+public partial struct PlotData // 저장용 데이터 바구니
 {
-    public int plotId;
+    public Vector3 position { get; private set; }
+    public int flowerId { get; set; }
+    public FlowerGrowth Growth { get; set; }
+    public FlowerState State { get; set; }
+    public int grade { get; set; }
 
-    public Vector3 Position;
-    public bool isWatered;
-    public int flowerId; // 0 == null
-    public int growth;
-    public bool isDried;
+    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state)
+    {
+        position = input_pos;
+        flowerId = input_flowerId;
+        grade = input_grade;
+
+        Growth = input_growth;
+        State = input_state;
+    }
+
+    public PlotData(Vector3 input_pos)
+    {
+        position = input_pos;
+        flowerId = 0;
+        grade = 0;
+        Growth = FlowerGrowth.Unknown;
+        State = FlowerState.Unknown;
+    }
+
+    public PlotData(int input_flowerId)
+    {
+        position = default;
+        flowerId = input_flowerId;
+        grade = 0;
+
+
+        Growth = FlowerGrowth.Unknown;
+        State = FlowerState.Unknown;
+    }
+
+
 }
 
 [Serializable]
-public class Plot : MonoBehaviour
+public class Plot : Prop
 {
+    private PlotData _plotData = new(0);
+    public ref PlotData plotData => ref _plotData;
 
+    [SerializeField] public SpriteRenderer flowerRenderer;
 
-    public PlotData data = new PlotData();
-    [Header("땅의 SpriteRender와 꽃의 SpriteRenderer를 드래그 해주세요! GetComponentInChildren으로는 좀 힘듦!")]
-    public SpriteRenderer plotRenderer;
-    public SpriteRenderer flowerRenderer;
-    public int flowerId = 0;
-
-    private Sprite plotSprite;
     private Sprite flowerSprite;
 
-    int cachedInt; //캐싱용
-
-    public int plotId; // 토지 고유 번호 plot Unique ID
-    private int growth; // 꽃의 성장 단계 == item.level
-    private int grade;
     int bonusAmount = 0; // 보너스 양   
 
     private bool isWatered = false;
     private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
 
-    private void Awake()
-    {
-        plotId = Guid.NewGuid().GetHashCode(); // 고유한 ID 생성
-    }
 
-    private void OnDisable()
+
+    public override void OnDisable()
     {
-        if (plotSprite != null) AddressableManager.ReleaseAsset(plotSprite);
+        base.OnDisable();
         if (flowerSprite != null) AddressableManager.ReleaseAsset(flowerSprite);
     }
 
@@ -57,13 +79,12 @@ public class Plot : MonoBehaviour
     {
         try
         {
-            if (flowerId > 0)
+            if (plotData.flowerId > 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
-            else if (flowerId == 0)
+            else if (plotData.flowerId == 0)
             {
-                flowerId = seedID;
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
             else
@@ -107,7 +128,7 @@ public class Plot : MonoBehaviour
     {
         try
         {
-            if (isWatered == true && growth == MAX_GROWTH)
+            if (isWatered == true && plotData.Growth == FlowerGrowth.Bloom)
             {
                 //TODO:: 인스턴스 만들고 자멸하는 함수 넣기
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
@@ -128,7 +149,7 @@ public class Plot : MonoBehaviour
         try
         {
             Debug.Log("Runing has been called");
-            if (flowerId == 0)
+            if (plotData.flowerId == 0)
             {
                 Destroy(this.gameObject);
             }
@@ -136,8 +157,8 @@ public class Plot : MonoBehaviour
             {
                 AddressableManager.ReleaseAsset(flowerSprite);
                 flowerSprite = default;
-                flowerId = 0;
-                growth = 0;
+                plotData.flowerId = default;
+                plotData.State = FlowerState.Unknown;
             }
             return new FarmActionResult(FarmActionResult.ResultType.Success);
         }
@@ -152,9 +173,9 @@ public class Plot : MonoBehaviour
     {
         try
         {
-            if (grade < 10)
+            if (plotData.grade < 10)
             {
-                grade++;
+                plotData.grade++;
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
             else
@@ -198,7 +219,7 @@ public class Plot : MonoBehaviour
                 isWatered = false;
                 isDried = false;
 
-                if (growth < MAX_GROWTH && flowerId != 0) growth++;
+                if (plotData.Growth < FlowerGrowth.Bloom && plotData.flowerId != 0) plotData.Growth++;
             }
             else
             {
@@ -223,30 +244,31 @@ public class Plot : MonoBehaviour
 
     private async UniTask changePlotSpr()
     {
-        if (plotSprite != null)
-            AddressableManager.ReleaseAsset(plotSprite);
+        // ?
+        if (flowerSprite != null)
+            AddressableManager.ReleaseAsset(flowerSprite);
 
-        if (isWatered == false)
-            plotSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
+        if (_plotData.State == FlowerState.Moist) 
+            base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
         else
-            plotSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
+            base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
 
-        plotRenderer.sprite = plotSprite;
+        base.spriteRenderer.sprite = base.sprite;
     }
 
     private async UniTask changeFlowerSpr()
     {
-               if (flowerSprite != null)
+        if (flowerSprite != null)
             AddressableManager.ReleaseAsset(flowerSprite);
 
-        if( flowerId != 0 && growth == 0)
+        if (_plotData.flowerId != 0 && _plotData.Growth == FlowerGrowth.Unknown)
         {
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_FLOWER_SEED);
             flowerRenderer.sprite = flowerSprite;
         }
-        else if (flowerId != 0)
+        else if (_plotData.flowerId != 0)
         {
-            FixedString128Bytes address =   GlobalItemDB.GetAddressString((short)flowerId);
+            FixedString128Bytes address = GlobalItemDB.GetAddressString((short)_plotData.flowerId);
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
             flowerRenderer.sprite = flowerSprite;
         }
@@ -257,25 +279,15 @@ public class Plot : MonoBehaviour
     }
 
 
-
     public PlotData GetSaveData()
     {
-        data.plotId = this.plotId;
-        data.Position = this.transform.position;
-        data.isWatered = this.isWatered;
-        data.flowerId = this.flowerId; // null이면 0으로 저장
-        data.growth = this.growth;
-        data.isDried = this.isDried;
 
-        return data;
+        return _plotData;
     }
     public void LoadFromData(PlotData data)
     {
-        this.plotId = data.plotId;
-        this.transform.position = data.Position;
-        this.isWatered = data.isWatered;
-        this.flowerId = data.flowerId;
-        this.growth = data.growth;
-        this.isDried = data.isDried;
+        this.transform.position = data.position;
+
+        _plotData = data;
     }
 }

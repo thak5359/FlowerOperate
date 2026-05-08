@@ -57,7 +57,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
 
         while (_playerInput.actions == null)
         {
-            await UniTask.Yield(PlayerLoopTiming.Update, cancellation);
+            await UniTask.Yield();
         }
 
 
