@@ -1,4 +1,5 @@
 using Fungus;
+using MemoryPack;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -169,16 +170,17 @@ public class PlayerItemDataManager : MonoBehaviour
     } 
 }
 
+[MemoryPackable]
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]
-public struct ItemInstantData
+public partial struct ItemInstantData
 {
-    [SerializeField] private int money;
-    [SerializeField] private int reputation;
-    [SerializeField] private List<ItemObjectData> invenList;
-    [SerializeField] private List<StorageBox> storageBoxList;
+    [MemoryPackInclude, SerializeField] private int money;
+    [MemoryPackInclude, SerializeField] private int reputation;
+    [MemoryPackInclude, SerializeField] private List<ItemObjectData> invenList;
+    [MemoryPackInclude, SerializeField] private List<StorageBox> storageBoxList;
 
-    [NonSerialized] private List<ItemObjectData> sellingBox;
+    [MemoryPackIgnore] private List<ItemObjectData> sellingBox;
 
     // 인벤토리나 특정 창고 박스를 IList 형태로 반환 (배열과 리스트 공통 처리)
     public IList<ItemObjectData> GetItemList(ContainerType type, int boxNum = 0)
@@ -191,16 +193,9 @@ public struct ItemInstantData
 
     public int GetMoney => this.money;
     public int GetReputation => this.reputation;
-
-    // // 하위 호환성을 위한 메서드 (기본 박스 혹은 인벤토리 리스트 반환)
-    // public List<ItemObjectData> GetInvenList(ContainerType type)
-    // {
-    //     if (type == ContainerType.INVENTORY) return invenList;
-    //     if (storageBoxList != null && storageBoxList.Count > 0) return storageBoxList[0].BoxSlots.ToList();
-    //     return new List<ItemObjectData>();
-    // }
-
     public List<StorageBox> GetStorageBoxes => storageBoxList;
+
+    
 
     public void SetItemList(ContainerType type, List<ItemObjectData> itemList)
     {
@@ -239,6 +234,12 @@ public struct ItemInstantData
             {
                 curItem.AddAmount(item.GetAmount);
                 targetList[i] = curItem;
+                if(curItem.GetAmount + item.GetAmount > Constant.MAX_COUNT_INVENTORY)
+                {
+                    var remainder = item;
+                    remainder.SetAmount((short)(curItem.GetAmount + item.GetAmount - Constant.MAX_COUNT_INVENTORY));
+                    AddItem(type, remainder, boxNum);
+                }
                 return;
             }
         }
@@ -251,6 +252,12 @@ public struct ItemInstantData
                 targetList[i] = item;
                 return;
             }
+        }
+
+        if(type == ContainerType.INVENTORY)
+        {
+            targetList.Add(item);
+            return;
         }
 
         Debug.Log($"[{type} Box:{boxNum}] 슬롯 가득 참");
@@ -274,12 +281,12 @@ public struct ItemInstantData
     }
 }
 
-[Serializable]
+[MemoryPackable]
 [StructLayout(LayoutKind.Sequential)]
-public struct StorageBox
+public partial struct StorageBox
 {
-    [SerializeField] private string boxName;
-    [SerializeField] private ItemObjectData[] boxSlots;
+    [MemoryPackInclude] private string boxName;
+    [MemoryPackInclude] private ItemObjectData[] boxSlots;
 
     public ItemObjectData[] BoxSlots => boxSlots;
     public string BoxName => boxName;

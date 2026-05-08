@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Fungus;
+using MemoryPack;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,14 +42,15 @@ public class ItemDataContainer : MonoBehaviour
     }
 }
 
+[MemoryPackable]
 [System.Serializable]
 [StructLayout(LayoutKind.Sequential)]
-public struct ItemObjectData /// ItemInstantData
+public partial struct ItemObjectData /// ItemInstantData
 {
-    [SerializeField] ushort itemID;
-    [SerializeField] short Duration;
-    [SerializeField] short amount;
-    [SerializeField] byte grade;
+    [MemoryPackInclude, SerializeField] ushort itemID;
+    [MemoryPackInclude, SerializeField] short Duration;
+    [MemoryPackInclude, SerializeField] short amount;
+    [MemoryPackInclude, SerializeField] byte grade;
 
     //게터
     public ushort GetItemID => itemID;
@@ -62,11 +64,19 @@ public struct ItemObjectData /// ItemInstantData
     public void SetDuration(short Dur) => this.Duration = Dur;
     public void SetGrade(byte grade) => this.grade = grade;
 
-    public void AddAmount(short amount) => this.amount += amount;
+    public void AddAmount(short amount)
+    {
+        if(this.amount + amount > Constant.MAX_COUNT_INVENTORY)
+        {
+            this.amount = (short)Constant.MAX_COUNT_INVENTORY;
+            return;
+        }
+        this.amount += amount;
+    }
     public bool CheckFull()
     {
         // 스택이 Full인지 Zero인지 판단하는 함수
-        if(amount >= 100)
+        if(amount == Constant.MAX_COUNT_INVENTORY)
             return true;
         return false;
     }
