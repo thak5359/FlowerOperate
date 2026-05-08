@@ -22,5 +22,4 @@ public class Prop : MonoBehaviour
     {
         if (sprite != null) AddressableManager.ReleaseAsset(sprite);
     }
-
 }

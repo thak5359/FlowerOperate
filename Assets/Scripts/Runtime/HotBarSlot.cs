@@ -13,27 +13,5 @@ public class HotBarSlot : MonoBehaviour
     public Toggle toggle;
     public Image slotFrame;
     public Image bg_img;
-    public Item item;
-    private void OnDisable()
-    {
-        item?.Cleanup();
-    }
-    public async Task ChangeItem(Item newItem)
-    {
-        item?.Cleanup();
-
-        item = newItem;
-
-        if (item != null)
-        {
-            ItemIcon.sprite = await item.RefreshSprite();
-            tmp.text = item.Amount.ToString();
-        }
-        else
-        {
-            ItemIcon.sprite = null;
-            tmp.text = "0";
-        }
-    }
 
 }

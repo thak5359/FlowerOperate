@@ -18,8 +18,10 @@ public partial struct PlotData // 저장용 데이터 바구니
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public int grade { get; set; }
+    public int bonusAmount { get; set; }
 
-    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state)
+
+    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, int input_bonusAmount, FlowerGrowth input_growth, FlowerState input_state)
     {
         position = input_pos;
         flowerId = input_flowerId;
@@ -27,6 +29,7 @@ public partial struct PlotData // 저장용 데이터 바구니
 
         Growth = input_growth;
         State = input_state;
+        bonusAmount = input_bonusAmount;
     }
 
     public PlotData(Vector3 input_pos)
@@ -36,6 +39,7 @@ public partial struct PlotData // 저장용 데이터 바구니
         grade = 0;
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
+        bonusAmount = 0;
     }
 
     public PlotData(int input_flowerId)
@@ -47,8 +51,10 @@ public partial struct PlotData // 저장용 데이터 바구니
 
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
+        bonusAmount = 0;
     }
 
+    public void SetPosition(Vector3 input_position) => position = input_position;
 
 }
 
@@ -68,6 +74,10 @@ public class Plot : Prop
     private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
 
 
+    public void OnEnable()
+    {
+        plotData.SetPosition(this.transform.position);
+    }
 
     public override void OnDisable()
     {
@@ -77,7 +87,7 @@ public class Plot : Prop
 
     private async void OnNextDay()
     {
-        if(GrowUp().Result() == FarmActionResult.ResultType.Success)
+        if (GrowUp().Result() == FarmActionResult.ResultType.Success)
         {
             await changeFlowerSpr();
         }
@@ -256,7 +266,7 @@ public class Plot : Prop
         if (flowerSprite != null)
             AddressableManager.ReleaseAsset(flowerSprite);
 
-        if (_plotData.State == FlowerState.Moist) 
+        if (_plotData.State == FlowerState.Moist)
             base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
         else
             base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
@@ -285,7 +295,6 @@ public class Plot : Prop
             flowerRenderer.sprite = null;
         }
     }
-
 
     public PlotData GetSaveData()
     {
