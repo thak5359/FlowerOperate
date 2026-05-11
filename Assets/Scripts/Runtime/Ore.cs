@@ -35,7 +35,8 @@ public partial struct OreData
 public class Ore : Prop
 {
     // 어떤 광물 종류, 광물 아이템... 파편.. 인벤토리에는 들어가지 않는 아이템 타입이고, 어떤 금속이고, 어떤 아이템을 가지고..
-    private OreData _oreData;
+    private OreData _oreData = new(0);
+
     public ref OreData oreData => ref _oreData;
 
     public void OnEnable()
@@ -45,15 +46,15 @@ public class Ore : Prop
     }
 
     // 2. 데미지 계산
-
     public FarmActionResult Damaged(int Damage)
     {
         try
         {
-            Debug.Log("Damaged has been called");
-
+            
+            Debug.Log($"Damaged has been called. Current Duration : {oreData.Duration}");
             oreData.Duration -= Damage;
 
+            Debug.Log($"Current Duration : { oreData.Duration}");
             if (oreData.Duration < 0)
             { 
                 return Ruining();
