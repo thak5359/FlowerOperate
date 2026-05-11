@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +17,7 @@ public class ItemDataContainer : MonoBehaviour
     int waitMilliSeconds = 1000;
 
     public ItemObjectData GetData => this.data;
+    public ref ItemObjectData GetDataRef => ref this.data;
     public ushort GetItemID => data.GetItemID;
     public short GetAmount => data.GetAmount;
     public short GetDuration => data.GetDuration;
@@ -24,6 +26,7 @@ public class ItemDataContainer : MonoBehaviour
     public void SetData(ItemObjectData data) => this.data = data;
 
     public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
+    public void Upgrade(Fertilizer fertilizer) => GetData.RandomUpgrade(ref GetDataRef, fertilizer);
 
     void OnTriggerEnter(Collider other)
     {
@@ -86,6 +89,14 @@ public partial struct ItemObjectData /// ItemInstantData
         if(amount <= 0) 
             return true;
         return false;
+    }
+
+    public void RandomUpgrade(ref ItemObjectData item, Fertilizer fertilizer)
+    {
+        if(UnityEngine.Random.Range(0, 5) < (int)fertilizer)
+        {
+            item.grade++;
+        }
     }
 
     public ItemObjectData(ushort itemID = 0, short amount = 0, short duration = 0, byte grade = 0)

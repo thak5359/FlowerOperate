@@ -48,8 +48,6 @@ public partial struct PlotData // 저장용 데이터 바구니
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
     }
-
-
 }
 
 [Serializable]

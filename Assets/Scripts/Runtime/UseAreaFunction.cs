@@ -207,6 +207,23 @@ public class UseAreaFunction : MonoBehaviour,
     }
     FarmActionResult IUseAreaSickleFunc.DoSickleFunc()
     {
+        try
+        {
+            Collider[] hits = GetHits(_sickleMask);
+            if(hits.Length >= 1)
+            {
+                foreach(Collider hit in hits)
+                {
+                    Plot targetPlot = hit.gameObject.GetComponent<Plot>();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"DoSickleFunc Error : {e.Message}");
+            return new FarmActionResult(FarmActionResult.ResultType.Error, "SICKLE_FUNC_EXCEPTION");
+        }
+
         return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
     }
     FarmActionResult IUseAreaHammerFunc.DoHammerFunc()
