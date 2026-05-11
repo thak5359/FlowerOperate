@@ -6,7 +6,6 @@ using System.Linq;
 
 public class PlotManager : MonoBehaviour
 {
-
     // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
     [SerializeField] 
@@ -60,4 +59,5 @@ public class PlotManager : MonoBehaviour
         plotDataDict.Clear();
         RefreshPlotCache();
     }
+
 }

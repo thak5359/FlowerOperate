@@ -1,9 +1,6 @@
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using MemoryPack;
 using System;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,8 +15,10 @@ public partial struct PlotData // 저장용 데이터 바구니
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public int grade { get; set; }
+    public int bonusAmount { get; set; }
 
-    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state)
+
+    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, int input_bonusAmount, FlowerGrowth input_growth, FlowerState input_state)
     {
         position = input_pos;
         flowerId = input_flowerId;
@@ -27,6 +26,7 @@ public partial struct PlotData // 저장용 데이터 바구니
 
         Growth = input_growth;
         State = input_state;
+        bonusAmount = input_bonusAmount;
     }
 
     public PlotData(Vector3 input_pos)
@@ -36,36 +36,41 @@ public partial struct PlotData // 저장용 데이터 바구니
         grade = 0;
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
+        bonusAmount = 0;
     }
-
     public PlotData(int input_flowerId)
     {
         position = default;
         flowerId = input_flowerId;
         grade = 0;
 
-
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
+        bonusAmount = 0;
     }
+    public void SetPosition(Vector3 input_position) => position = input_position;
 }
 
 [Serializable]
-public class Plot : Prop
+public class Plot : Prop, IGameResource
 {
     private PlotData _plotData = new(0);
     public ref PlotData plotData => ref _plotData;
 
-    [SerializeField] public SpriteRenderer flowerRenderer;
+    [SerializeField] public SpriteRenderer FlowerSpriteRenderer;
 
-    private Sprite flowerSprite;
+    [field: SerializeField] public Sprite flowerSprite { get; private set; }
 
     int bonusAmount = 0; // 보너스 양   
 
     private bool isWatered = false;
     private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
 
-
+    public void OnEnable()
+    {
+        plotData.SetPosition(this.transform.position);
+        plotData.State = FlowerState.Vivid;
+    }
 
     public override void OnDisable()
     {
@@ -75,7 +80,7 @@ public class Plot : Prop
 
     private async void OnNextDay()
     {
-        if(GrowUp().Result() == FarmActionResult.ResultType.Success)
+        if (GrowUp().Result() == FarmActionResult.ResultType.Success)
         {
             await changeFlowerSpr();
         }
@@ -127,9 +132,7 @@ public class Plot : Prop
             Debug.Log($"Watering Error : {e.Message}");
             return new FarmActionResult(FarmActionResult.ResultType.Error, "WATERING_EXCEPTION");
         }
-
     }
-
     public FarmActionResult Reaping() // 수확
     {
         try
@@ -149,7 +152,6 @@ public class Plot : Prop
         }
 
     }
-
     public FarmActionResult Ruining() // 파멸의 일격!!
     {
         try
@@ -174,7 +176,6 @@ public class Plot : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "Ruining_EXCEPTION");
         }
     }
-
     public FarmActionResult QualityUp() // 등급 업
     {
         try
@@ -193,7 +194,6 @@ public class Plot : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "QUALITYUP_EXCEPTION");
         }
     }
-
     public FarmActionResult BountyUP(int increaseAmount) // 수확 개수를 증가
     {
         try
@@ -213,8 +213,6 @@ public class Plot : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "BOUNTYUP_EXCEPTION");
         }
     }
-
-
     private FarmActionResult GrowUp()
     {
         try
@@ -244,24 +242,20 @@ public class Plot : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "GROWUP_EXCEPTION");
         }
     }
-
     #endregion
-
-
     private async UniTask changePlotSpr()
     {
-        // ?
-        if (flowerSprite != null)
-            AddressableManager.ReleaseAsset(flowerSprite);
+        Debug.Log("changePlotSpr has been called");
+        if (base.PropSprite != null)
+            AddressableManager.ReleaseAsset(base.PropSprite);
 
-        if (_plotData.State == FlowerState.Moist) 
-            base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
+        if (isWatered == true)
+            base.PropSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
         else
-            base.sprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
+            base.PropSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
 
-        base.spriteRenderer.sprite = base.sprite;
+        base.SpriteRenderer.sprite = base.PropSprite;
     }
-
     private async UniTask changeFlowerSpr()
     {
         if (flowerSprite != null)
@@ -270,30 +264,26 @@ public class Plot : Prop
         if (_plotData.flowerId != 0 && _plotData.Growth == FlowerGrowth.Unknown)
         {
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_FLOWER_SEED);
-            flowerRenderer.sprite = flowerSprite;
+            FlowerSpriteRenderer.sprite = flowerSprite;
         }
         else if (_plotData.flowerId != 0)
         {
             FixedString128Bytes address = GlobalItemDB.GetAddressString((short)_plotData.flowerId);
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
-            flowerRenderer.sprite = flowerSprite;
+            FlowerSpriteRenderer.sprite = flowerSprite;
         }
         else
         {
-            flowerRenderer.sprite = null;
+            FlowerSpriteRenderer.sprite = null;
         }
     }
-
-
     public PlotData GetSaveData()
     {
-
         return _plotData;
     }
     public void LoadFromData(PlotData data)
     {
         this.transform.position = data.position;
-
         _plotData = data;
     }
 }

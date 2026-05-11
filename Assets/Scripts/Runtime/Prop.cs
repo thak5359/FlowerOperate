@@ -4,23 +4,32 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
+using MemoryPack;
 
-public class Prop : MonoBehaviour
+public partial class Prop : MonoBehaviour, IGameResource
 {
-    public int Id { get; protected set; }
+    // 1. 인터페이스의 Id 구현
+    [field: SerializeField] public int Id { get; protected set; }
 
-    [SerializeField] public SpriteRenderer spriteRenderer;
+    [field: SerializeField] public Sprite PropSprite { get; protected set;  }
 
-    protected Sprite sprite;
+    [field : SerializeField] public SpriteRenderer SpriteRenderer { get; protected set; }
 
     public virtual void Awake()
     {
-        Id = Guid.NewGuid().GetHashCode(); // 고유한 ID 생성
+        //creatre Unique ID
+        Id = Guid.NewGuid().GetHashCode();
     }
+
 
     public virtual void OnDisable()
     {
-        if (sprite != null) AddressableManager.ReleaseAsset(sprite);
+        if (PropSprite != null) AddressableManager.ReleaseAsset(PropSprite);
     }
 
+    public void OnLoad()
+    {
+        ((IGameResource)this).OnLoad();
+
+    }
 }

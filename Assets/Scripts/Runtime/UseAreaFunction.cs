@@ -98,7 +98,7 @@ public class UseAreaFunction : MonoBehaviour,
 
     private void Awake()
     {
-        _hoeMask = LayerMask.GetMask(LAYER_PLOT, LAYER_OBSTACLE, LAYER_TREE, LAYER_INTERACTABLE);
+        _hoeMask = LayerMask.GetMask(LAYER_PLOT, LAYER_OBSTACLE, LAYER_TREE, LAYER_INTERACTABLE, LAYER_ORE);
         _treatMask = LayerMask.GetMask(LAYER_PLOT);
         _axeMask = LayerMask.GetMask(LAYER_TREE);
         _sickleMask = LayerMask.GetMask(LAYER_PLOT, LAYER_GRASS);
@@ -238,9 +238,16 @@ public class UseAreaFunction : MonoBehaviour,
                 // TODO: Ore 게임오브젝트 찾아서 박살내기
 
                 Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                Ore targetOre = hits[0].gameObject.GetComponent<Ore>();
+                
+
                 if (targetPlot != null)
                 {
                     return targetPlot.Ruining();
+                }
+                else if ( targetOre != null)
+                {
+                    return targetOre.Damaged(100);
                 }
                 else
                 {
