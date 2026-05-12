@@ -9,10 +9,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemDataContainer : MonoBehaviour
+public class DropItemData : MonoBehaviour
 {
     [SerializeField]
     ItemObjectData data;
+    [SerializeField]
+    GameItem _data;
     [SerializeField]
     int waitMilliSeconds = 1000;
 
@@ -24,7 +26,6 @@ public class ItemDataContainer : MonoBehaviour
     public byte GetGrade => data.GetGrade;
 
     public void SetData(ItemObjectData data) => this.data = data;
-
     public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
     public void Upgrade(Fertilizer fertilizer) => GetData.RandomUpgrade(ref GetDataRef, fertilizer);
 

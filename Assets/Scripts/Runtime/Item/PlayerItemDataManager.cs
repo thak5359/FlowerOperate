@@ -32,13 +32,13 @@ public class PlayerItemDataManager : MonoBehaviour
     void OnEnable()
     {
         GlobalEventManager.OnItemPickedUp += AddItem;
-        GlobalEventManager.NextDay += CalculateMoney;
+        GlobalEventManager.NextDay += CalculateMoneyInSellingBox;
     }
 
     void OnDisable()
     {
         GlobalEventManager.OnItemPickedUp -= AddItem;
-        GlobalEventManager.NextDay -= CalculateMoney;
+        GlobalEventManager.NextDay -= CalculateMoneyInSellingBox;
     }
 
     protected virtual ContainerType currentType => ContainerType.INVENTORY;
@@ -156,7 +156,7 @@ public class PlayerItemDataManager : MonoBehaviour
         return totalAmount >= count;
     }
 
-    public void CalculateMoney()
+    public void CalculateMoneyInSellingBox()
     {
         var sellingBox = _Data.GetItemList(ContainerType.SELLING);
         if (sellingBox == null) return;

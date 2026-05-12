@@ -24,10 +24,10 @@ public enum MonthName
 
 public partial class ProgressManager
 {
-    public void GoNextDay()
+    public static void GoNextDay()
     {
         GlobalEventManager.InvokeNextDay();
+        SceneManager.LoadScene(FARM_SCENE_NAME.ToString());
         nextDay();
-        SceneManager.LoadScene(TITLE_SCENE_NAME.ToString());
     }
 }

@@ -14,19 +14,16 @@ public enum Anniversary
 public class EventManager : MonoBehaviour
 {
     [SerializeField]
-    ProgressManager _progressManager;
-    [SerializeField]
     List<Tuple<int, int>> dayList = new List<Tuple<int, int>>();
     
     private Tuple<int, int> today;
 
-    [Inject] void Construct(ProgressManager progress) => _progressManager = progress;
 
     private void Start()
     {
         if(today == null)
         {
-            today = Tuple.Create((_progressManager.getDay() - 1) / 28 + 1, (_progressManager.getDay() - 1) % 28 + 1);
+            today = Tuple.Create((ProgressManager.getPlayDay() - 1) / 28 + 1, (ProgressManager.getPlayDay() - 1) % 28 + 1);
         }
 
         Debug.Log(today.Item1 + ", " +  today.Item2);

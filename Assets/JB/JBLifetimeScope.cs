@@ -14,8 +14,6 @@ public class JBLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<PlotManager>()
             .As<PlayerItemDataManager>()
             .AsSelf();
-        builder.RegisterComponentInHierarchy<ProgressManager>()
-            .AsSelf();
         builder.RegisterComponentInHierarchy<HotbarManager>().AsSelf();
     }
 }

@@ -10,7 +10,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private IngameSettingMenuController pauseMenu;
     [SerializeField] private InventoryUIController inventoryUI;
     [SerializeField] private PlayerItemDataManager playerItemDataManager;
-    // [SerializeField] private //TODO 인벤토리 매니저 추가하기
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -22,7 +21,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
-        builder.Register<ProgressManager>(Lifetime.Singleton).AsSelf();  
 
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);

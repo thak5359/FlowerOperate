@@ -11,18 +11,15 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerItemDataManager _storageManager;
     private PlotManager _plotManager;
-    private ProgressManager _progressManager;
 
     private string SAVE_FILE_NAME = "SaveData.json";
     public SaveDatas saveData;
 
     [Inject]
-    public void Construct(PlayerItemDataManager storageParent, PlotManager plot, 
-        ProgressManager progress)
+    public void Construct(PlayerItemDataManager storageParent, PlotManager plot)
     {
         _storageManager = storageParent;
         _plotManager = plot;
-        _progressManager = progress;
 
         Debug.Log("SaveLoadManager 의존성 주입 완료 (ItemStorageParent 통합)");
     }
@@ -31,7 +28,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (_storageManager == null || _plotManager == null) return;
 
-        int day = (_progressManager != null) ? _progressManager.getDay() : 0;
+        int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayDay() : 0;
 
         // ItemStorageParent가 관리하는 ItemInstantData(인벤토리+창고 포함)를 통째로 저장
         saveData = new SaveDatas(

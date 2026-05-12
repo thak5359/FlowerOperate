@@ -11,32 +11,33 @@ public enum Season
 }
 
 
-public partial class ProgressManager
+public static partial class ProgressManager
 {
-    List<int> list;
-
     //13개월, 월 28일
-    private int Day = 1; // 몇일차
-    private int totalDay = 364;
+    private static int Day = 1; // 몇일차
+    private static int totalDay = 364;
     // 일정 관리하는 SO 데이터
     // 날짜 관리하는 알고리즘
 
-    public string getDate() //날짜 반환
+    public static int getYear()
     {
-        return $"{(Day / totalDay)+ 1}년차, {(Day - 1) / 28 + 1}월 {(Day - 1) % 28 + 1}일";
+        return (Day / totalDay) + 3026;
     }
 
-    public int getDay()
+    public static int getMonth() => ((Day - 1 / 28 + 1));
+    public static int getDay() => (Day - 1) % 28 + 1;
+
+    public static int getPlayDay()
     {
         return Day;
     }
 
-    public void nextDay()
+    public static void nextDay()
     {
         Day = Day + 1;
     }
 
-    public Season getSeason(int day)  //날씨 enum 반환
+    public static Season getSeason(int day)  //날씨 enum 반환
     {
         float dayRatio = (day%totalDay)/totalDay;
 
@@ -57,7 +58,7 @@ public partial class ProgressManager
         public int Day => day;
     }
 
-    public void LoadData(ProgressData saveData) // 세이브/로드 관리하는 쪽에서 진행 상황 불러오기
+    public static void LoadData(ProgressData saveData) // 세이브/로드 관리하는 쪽에서 진행 상황 불러오기
     {
         Day = saveData.Day;
     }

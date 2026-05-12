@@ -68,6 +68,8 @@ public class Plot : Prop, IGameResource
 
     public void OnEnable()
     {
+        GlobalEventManager.NextDay += OnNextDay;
+
         plotData.SetPosition(this.transform.position);
         plotData.State = FlowerState.Vivid;
     }
@@ -75,6 +77,8 @@ public class Plot : Prop, IGameResource
     public override void OnDisable()
     {
         base.OnDisable();
+        GlobalEventManager.NextDay -= OnNextDay;
+
         if (flowerSprite != null) AddressableManager.ReleaseAsset(flowerSprite);
     }
 
