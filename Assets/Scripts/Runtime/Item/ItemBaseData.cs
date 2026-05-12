@@ -25,6 +25,7 @@ public struct ItemBaseAuthoringData
 {
     [Header("식별자")]
     public int itemId;
+    public int refundPrice;
 
     [Header("분류")]
     public ItemMainType mainType;

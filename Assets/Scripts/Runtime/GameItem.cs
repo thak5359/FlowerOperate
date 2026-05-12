@@ -12,6 +12,7 @@ public partial class GameItem : IGameResource
 {
     [field: SerializeField]
     public int Id { get; protected set; }
+    public int refundPrice { get; protected set;  }
 
     public int Count { get; set; }
 
