@@ -4,7 +4,7 @@ using VContainer;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private PlayerItemDataManager _storageManager;
+    private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
     private ItemManager _itemManager;
 
@@ -13,7 +13,7 @@ public class SaveLoadManager : MonoBehaviour
 
     [Inject]
     public void Construct(
-        PlayerItemDataManager storageParent,
+        PlayerOwnItemDataManager storageParent,
         PlotManager plot,
         ItemManager itemManager
     )

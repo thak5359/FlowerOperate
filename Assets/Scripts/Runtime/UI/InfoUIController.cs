@@ -25,7 +25,7 @@ public class InfoUIController : MonoBehaviour
 
         // 2. rootVisualElement 가져오기 (모든 UI 요소의 최상위 부모)
         var root = _uiDocument.rootVisualElement;
-            
+
         // 3. Q<T>("이름") 메서드로 UXML에 정의된 요소 찾기
         _yearLabel = root.Q<Label>("YearLabel");
         _dateLabel = root.Q<Label>("DateLabelDay");
@@ -48,12 +48,12 @@ public class InfoUIController : MonoBehaviour
         _yearLabel.text = $"{ProgressManager.getYear()}년";
         _dateLabel.text = $"{ProgressManager.getMonth():D2}월 {ProgressManager.getDay():D2}일";
 
-        // 요일과 시간 정보도 추가로 업데이트 가능합니다.
-       // if (_dayOfWeekLabel != null)
-       //     _dayOfWeekLabel.text = GetKoreanDayOfWeek(now.DayOfWeek);
-       //
-       // if (_timeLabel != null)
-       //     _timeLabel.text = now.ToString("HH:mm");
+        //요일과 시간 정보도 추가로 업데이트 가능합니다.
+        if (_dayOfWeekLabel != null)
+            _dayOfWeekLabel.text = GetKoreanDayOfWeek(ProgressManager.getDay() % 7);
+
+        //if (_timeLabel != null)
+        //    _timeLabel.text = now.ToString("HH:mm");
     }
 
 
@@ -62,17 +62,17 @@ public class InfoUIController : MonoBehaviour
 
     }
 
-    private string GetKoreanDayOfWeek(DayOfWeek day)
+    private string GetKoreanDayOfWeek(int day)
     {
         return day switch
         {
-            DayOfWeek.Sunday => "일요일",
-            DayOfWeek.Monday => "월요일",
-            DayOfWeek.Tuesday => "화요일",
-            DayOfWeek.Wednesday => "수요일",
-            DayOfWeek.Thursday => "목요일",
-            DayOfWeek.Friday => "금요일",
-            DayOfWeek.Saturday => "토요일",
+            0 => "일요일",
+            1 => "월요일",
+            2 => "화요일",
+            3 => "수요일",
+            4 => "목요일",
+            5 => "금요일",
+            6 => "토요일",
             _ => ""
         };
     }

@@ -17,7 +17,7 @@ public enum ContainerType
 }
 
 [Serializable]
-public class PlayerItemDataManager : MonoBehaviour
+public class PlayerOwnItemDataManager : MonoBehaviour
 {
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();

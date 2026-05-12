@@ -266,7 +266,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 33247655}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4700f90550785574c90668d4ab3acac6, type: 3}
+  m_Script: {fileID: 11500000, guid: d4d960ce036ba16448f69b55374b1419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _Data:
@@ -30556,8 +30556,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 200, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2101484267}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1665449476
@@ -30657,12 +30656,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1665449478}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+        m_TargetAssemblyTypeName: PassTimeTest, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -37414,7 +37413,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1665449477}
-  m_Father: {fileID: 1658353708}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -40493,6 +40492,7 @@ SceneRoots:
   - {fileID: 33247657}
   - {fileID: 1374428660}
   - {fileID: 1658353708}
+  - {fileID: 2101484267}
   - {fileID: 1608943495}
   - {fileID: 1367745915}
   - {fileID: 1005087000}
