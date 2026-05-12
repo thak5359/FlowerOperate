@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public enum ItemSubType
 {
     Unknown = 0,
-
-    // 인벤토리에는 표기되지 않는 데이터
-    Virtual = 101,
+    Virtual = 101, 
     GamePlayCounter = 102,
     Equipment = 201,
     Fertilizer = 301,
@@ -17,7 +12,7 @@ public enum ItemSubType
     Jewelry = 404,
     MetalMaterial = 405,
     Metal = 406,
-    Sappling = 407,
+    Sapling = 407,
     Timber = 408
     // PaPas Item
 }

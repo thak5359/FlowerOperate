@@ -32,7 +32,7 @@ public partial struct OreData
 
 
 [Serializable]
-public class Ore : Prop
+public class OreProp : Prop
 {
     // 어떤 광물 종류, 광물 아이템... 파편.. 인벤토리에는 들어가지 않는 아이템 타입이고, 어떤 금속이고, 어떤 아이템을 가지고..
     private OreData _oreData = new(0);
@@ -55,7 +55,7 @@ public class Ore : Prop
             oreData.Duration -= Damage;
 
             Debug.Log($"Current Duration : { oreData.Duration}");
-            if (oreData.Duration < 0)
+            if (oreData.Duration <= 0)
             { 
                 return Ruining();
             }
@@ -80,6 +80,9 @@ public class Ore : Prop
         try
         {
             Debug.Log("Runing has been called");
+
+
+
 
             Destroy(this.gameObject);
 

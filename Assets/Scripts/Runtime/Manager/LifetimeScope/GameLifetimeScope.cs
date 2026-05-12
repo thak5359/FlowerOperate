@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
@@ -18,7 +19,10 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
-        builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
+        builder.Register<ItemManager>(Lifetime.Singleton)
+           .AsSelf()
+           .As<IAsyncStartable>()
+           .As<IDisposable>();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
     }

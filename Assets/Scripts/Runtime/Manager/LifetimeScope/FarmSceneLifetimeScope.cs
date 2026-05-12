@@ -18,7 +18,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
 
         //밑에 두 코드는 테스트용, 나중에 상점 씬 생기면 삭제해야함.
-        builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
+        //builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
 

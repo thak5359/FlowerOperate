@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.IO;
 using Unity.Collections;
@@ -6,199 +7,335 @@ using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
 
-public class ItemBlobMaker : EditorWindow
+public class ItemBlobBaker : EditorWindow
 {
-    // ItemIdData와 ItemDetailData가 서로 상속관계가 아니므로 ScriptableObject로 관리합니다.
-    [SerializeField] private List<ScriptableObject> targetSOList = new List<ScriptableObject>();
+    [SerializeField] private List<ScriptableObject> targetSOList = new();
+
     private string savePath = "Assets/StreamingAssets/Blobs";
 
-    [MenuItem("Tools/Bake Item Data to Blob")]
-    public static void ShowWindow() => GetWindow<ItemBlobMaker>("Blobmaker");
+    [MenuItem("Tools/Item/Bake Item Data To Blob")]
+    public static void ShowWindow()
+    {
+        GetWindow<ItemBlobBaker>("Item Blob Baker");
+    }
 
     private void OnGUI()
     {
-        GUILayout.Label("HPC# 데이터 베이킹 도구 (ID/Flower/Usable 지원)", EditorStyles.boldLabel);
-        EditorGUILayout.Space(10);
+        GUILayout.Label("Item Blob Baker", EditorStyles.boldLabel);
+        EditorGUILayout.Space(8);
 
-        ScriptableObject target = this;
-        SerializedObject so = new SerializedObject(target);
-        SerializedProperty listProp = so.FindProperty("targetSOList");
-        EditorGUILayout.PropertyField(listProp, new GUIContent("대상 SO 리스트"), true);
-        so.ApplyModifiedProperties();
+        SerializedObject serializedObject = new SerializedObject(this);
+        SerializedProperty listProperty = serializedObject.FindProperty(nameof(targetSOList));
 
-        savePath = EditorGUILayout.TextField("파일 저장 경로", savePath);
+        EditorGUILayout.PropertyField(listProperty, new GUIContent("대상 SO 리스트"), true);
+        serializedObject.ApplyModifiedProperties();
 
-        EditorGUILayout.Space(20);
+        EditorGUILayout.Space(8);
+        savePath = EditorGUILayout.TextField("저장 경로", savePath);
 
-        if (GUILayout.Button("리스트의 모든 SO를 각각의 BLOB으로 굽기", GUILayout.Height(40)))
+        EditorGUILayout.Space(16);
+
+        if (GUILayout.Button("선택한 SO들을 Blob으로 굽기", GUILayout.Height(36)))
         {
-            if (targetSOList == null || targetSOList.Count == 0)
-            {
-                EditorUtility.DisplayDialog("경고", "리스트에 SO 데이터를 넣어주세요!", "확인");
-                return;
-            }
-
-            foreach (var itemSO in targetSOList)
-            {
-                if (itemSO == null) continue;
-
-                // 상속 구조에 따른 타입 체크 및 베이킹 분기
-                if (itemSO is FlowerIdData flowerId) Bake(flowerId);
-                else if (itemSO is UsableIdData usableId) Bake(usableId);
-                else if (itemSO is FlowerDetailData flowerDetail) BakeDetail(flowerDetail);
-                else if (itemSO is UsableDetailData usableDetail) BakeDetail(usableDetail);
-                else if (itemSO is ItemIdData itemId) Bake(itemId);
-                else Debug.LogWarning($"[Bake] 지원하지 않는 SO 타입입니다: {itemSO.name} ({itemSO.GetType()})");
-            }
-
-            AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("완료", "모든 데이터가 바이너리로 저장되었습니다!", "확인");
+            BakeAll();
         }
     }
 
-    #region Base Item ID Baking (ItemIdData / FlowerIdData / UsableIdData)
-    public void Bake(FlowerIdData so)
+    private void BakeAll()
     {
+        if (targetSOList == null || targetSOList.Count == 0)
+        {
+            EditorUtility.DisplayDialog("경고", "대상 SO 리스트가 비어 있습니다.", "확인");
+            return;
+        }
+
+        EnsureDirectory();
+
+        int successCount = 0;
+
+        foreach (ScriptableObject target in targetSOList)
+        {
+            if (target == null)
+                continue;
+
+            bool success = target switch
+            {
+                ItemBaseData itemBaseData => BakeItemBaseData(itemBaseData),
+                FlowerItemData flowerItemData => BakeFlowerItemData(flowerItemData),
+                GearItemData gearItemData => BakeGearItemData(gearItemData),
+                _ => Unsupported(target)
+            };
+
+            if (success)
+                successCount++;
+        }
+
+        AssetDatabase.Refresh();
+
+        EditorUtility.DisplayDialog(
+            "완료",
+            $"Blob 베이킹 완료\n성공: {successCount} / 대상: {targetSOList.Count}",
+            "확인"
+        );
+    }
+
+    private bool Unsupported(ScriptableObject target)
+    {
+        Debug.LogWarning($"[ItemBlobBaker] 지원하지 않는 SO 타입입니다. name: {target.name}, type: {target.GetType()}");
+        return false;
+    }
+
+    private bool BakeItemBaseData(ItemBaseData so)
+    {
+        if (so == null)
+            return false;
+
+        ValidateItemBaseData(so);
+
         var builder = new BlobBuilder(Allocator.Temp);
+
         try
         {
-            ref var root = ref builder.ConstructRoot<FlowerItemBlobDatas>();
-            // 품종마다 아이템 + 씨앗 2개씩 생성하므로 크기는 itemName.Count * 2
-            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count * 2);
+            ref ItemBaseBlobDatas root = ref builder.ConstructRoot<ItemBaseBlobDatas>();
+            BlobBuilderArray<ItemBaseBlobData> arrayBuilder = builder.Allocate(ref root.Items, so.Count);
 
-            for (int i = 0; i < so.itemName.Count; i++)
+            for (int i = 0; i < so.Count; i++)
             {
-                int targetIdx = i * 2;
-                
-                // 1. 실제 꽃 아이템 정보
-                arrayBuilder[targetIdx].ItemId = (short)(so.startId + targetIdx);
-                arrayBuilder[targetIdx].ItemName = so.itemName[i];
-                arrayBuilder[targetIdx].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[targetIdx].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
-                arrayBuilder[targetIdx].Price = (i < so.price.Count) ? so.price[i] : (short)0;
+                ItemBaseAuthoringData source = so.Get(i);
 
-                arrayBuilder[targetIdx].speciesIndex = (i < so.speciesIndex.Count) ? so.speciesIndex[i] : (byte)0;
-                arrayBuilder[targetIdx].colorIndex = (i < so.colorIndex.Count) ? so.colorIndex[i] : (byte)0;
-                arrayBuilder[targetIdx].floroIndex = (i < so.floroIndex.Count) ? so.floroIndex[i] : (byte)0;
-                arrayBuilder[targetIdx].floroIndex2 = (i < so.floroIndex2.Count) ? so.floroIndex2[i] : (sbyte)0;
-                arrayBuilder[targetIdx].growthDuration = (i < so.growthDuration.Count) ? so.growthDuration[i] : (byte)0;
-                arrayBuilder[targetIdx].harvestAmount = (i < so.harvestAmount.Count) ? so.harvestAmount[i] : (byte)0;
-
-                // 2. 씨앗 아이템 정보 (기본 정보 복사 후 수정)
-                arrayBuilder[targetIdx + 1] = arrayBuilder[targetIdx];
-                arrayBuilder[targetIdx + 1].ItemId = (short)(so.startId + targetIdx + 1);
-                
-                // FixedString64Bytes는 직접 문자열 더하기가 안되므로 ToString 후 다시 할당
-                arrayBuilder[targetIdx + 1].ItemName = (FixedString64Bytes)(so.itemName[i].ToString() + " 씨앗");
+                arrayBuilder[i] = new ItemBaseBlobData
+                {
+                    ItemId = source.itemId,
+                    MainType = source.mainType,
+                    SubType = source.subType,
+                    StackLimit = source.stackLimit,
+                    ItemName = ToFixedString64(source.itemName),
+                    Description = ToFixedString128(source.description),
+                    SpriteAddress = ToFixedString128(source.spriteAddress),
+                    Price = source.price
+                };
             }
+
+            SaveToBlob<ItemBaseBlobDatas>(builder, so.name);
+            Debug.Log($"<color=green>[ItemBlobBaker]</color> ItemBaseData 베이킹 완료: {so.name}");
+            return true;
+        }
+        finally
+        {
+            builder.Dispose();
+        }
+    }
+
+    private bool BakeFlowerItemData(FlowerItemData so)
+    {
+        if (so == null)
+            return false;
+
+        ValidateFlowerItemData(so);
+
+        var builder = new BlobBuilder(Allocator.Temp);
+
+        try
+        {
+            ref FlowerItemBlobDatas root = ref builder.ConstructRoot<FlowerItemBlobDatas>();
+            BlobBuilderArray<FlowerItemBlobData> arrayBuilder = builder.Allocate(ref root.Items, so.Count);
+
+            for (int i = 0; i < so.Count; i++)
+            {
+                FlowerItemAuthoringData source = so.Get(i);
+
+                arrayBuilder[i] = new FlowerItemBlobData
+                {
+                    ItemId = source.itemId,
+                    Species = source.species,
+                    Color = source.color,
+                    Florio1 = source.florio1,
+                    Florio2 = source.florio2,
+                    GrowthDuration = source.growthDuration,
+                    HarvestAmount = source.harvestAmount
+                };
+            }
+
             SaveToBlob<FlowerItemBlobDatas>(builder, so.name);
+            Debug.Log($"<color=green>[ItemBlobBaker]</color> FlowerItemData 베이킹 완료: {so.name}");
+            return true;
         }
-        finally { builder.Dispose(); }
+        finally
+        {
+            builder.Dispose();
+        }
     }
 
-    public void Bake(UsableIdData so)
+    private bool BakeGearItemData(GearItemData so)
     {
+        if (so == null)
+            return false;
+
+        ValidateGearItemData(so);
+
         var builder = new BlobBuilder(Allocator.Temp);
+
         try
         {
-            ref var root = ref builder.ConstructRoot<UsableItemBlobDatas>();
-            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
+            ref GearItemBlobDatas root = ref builder.ConstructRoot<GearItemBlobDatas>();
+            BlobBuilderArray<GearItemBlobData> arrayBuilder = builder.Allocate(ref root.Items, so.Count);
 
-            for (short i = 0; i < so.itemName.Count; i++)
+            for (int i = 0; i < so.Count; i++)
             {
-                arrayBuilder[i].ItemId = (short)(so.startId + i);
-                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
-                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
-                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
+                GearItemAuthoringData source = so.Get(i);
 
-                arrayBuilder[i].durationIndex = (i < so.durationIndex.Count) ? so.durationIndex[i] : (byte)0;
-                arrayBuilder[i].powerIndex = (i < so.powerIndex.Count) ? so.powerIndex[i] : (byte)0;
-                arrayBuilder[i].chargeIndex = (i < so.chargeIndex.Count) ? so.chargeIndex[i] : (byte)0;
+                arrayBuilder[i] = new GearItemBlobData
+                {
+                    ItemId = source.itemId,
+                    GearType = source.gearType,
+                    MaxDuration = source.maxDurability,
+                    Efficiency = source.efficiency,
+                    ChargeTime = source.chargeTime,
+                    MaxCharge = source.maxCharge
+                };
             }
 
-            SaveToBlob<UsableItemBlobDatas>(builder, so.name);
+            SaveToBlob<GearItemBlobDatas>(builder, so.name);
+            Debug.Log($"<color=green>[ItemBlobBaker]</color> GearItemData 베이킹 완료: {so.name}");
+            return true;
         }
-        finally { builder.Dispose(); }
-    }
-
-    public void Bake(ItemIdData so)
-    {
-        var builder = new BlobBuilder(Allocator.Temp);
-        try
+        finally
         {
-            ref var root = ref builder.ConstructRoot<ItemBlobDatas>();
-            var arrayBuilder = builder.Allocate(ref root.Items, so.itemName.Count);
-
-            for (short i = 0; i < so.itemName.Count; i++)
-            {
-                arrayBuilder[i].ItemId = (short)(so.startId + i);
-                arrayBuilder[i].ItemName = (i < so.itemName.Count) ? so.itemName[i] : default;
-                arrayBuilder[i].Description = (i < so.description.Count) ? so.description[i] : default;
-                arrayBuilder[i].SpriteAddress = (i < so.spriteAddress.Count) ? so.spriteAddress[i] : default;
-                arrayBuilder[i].Price = (i < so.price.Count) ? so.price[i] : (short)0;
-            }
-
-            SaveToBlob<ItemBlobDatas>(builder, so.name);
+            builder.Dispose();
         }
-        finally { builder.Dispose(); }
     }
-    #endregion
-
-    #region Flower Detail Baking
-    public void BakeDetail(FlowerDetailData so)
-    {
-        var builder = new BlobBuilder(Allocator.Temp);
-        try
-        {
-            ref var root = ref builder.ConstructRoot<FlowerDetailBlobDatas>();
-            int count = so.floroList.Count; // 세 리스트의 크기가 동일하다고 가정
-            var arrayBuilder = builder.Allocate(ref root.flowerDetails, count);
-
-            for (int i = 0; i < count; i++)
-            {
-                arrayBuilder[i].species = (i < so.speciesList.Count) ? so.speciesList[i] : default;
-                arrayBuilder[i].color = (i < so.colorList.Count) ? so.colorList[i] : default;
-                arrayBuilder[i].floro = (i < so.floroList.Count) ? so.floroList[i] : default;
-            }
-
-            SaveToBlob<FlowerDetailBlobDatas>(builder, so.name);
-        }
-        finally { builder.Dispose(); }
-    }
-    #endregion
-
-    #region Usable Detail Baking
-    public void BakeDetail(UsableDetailData so)
-    {
-        var builder = new BlobBuilder(Allocator.Temp);
-        try
-        {
-            ref var root = ref builder.ConstructRoot<UsableDetailBlobDatas>();
-            int count = so.durationList.Count;
-            var arrayBuilder = builder.Allocate(ref root.usableDetails, count);
-
-            for (int i = 0; i < count; i++)
-            {
-                arrayBuilder[i].index = (byte)i;
-                arrayBuilder[i].duration = so.durationList[i];
-                arrayBuilder[i].power = (i < so.powerList.Count) ? so.powerList[i] : (short)0;
-                arrayBuilder[i].chargeInfo = (i < so.chargeInfoList.Count) ? so.chargeInfoList[i] : default;
-            }
-
-            SaveToBlob<UsableDetailBlobDatas>(builder, so.name);
-        }
-        finally { builder.Dispose(); }
-    }
-    #endregion
 
     private void SaveToBlob<T>(BlobBuilder builder, string fileName) where T : unmanaged
     {
-        if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
-        string fullPath = Path.Combine(savePath, $"{fileName}.blob");
+        EnsureDirectory();
 
+        string fullPath = Path.Combine(savePath, $"{fileName}.blob");
         BlobAssetReference<T>.Write(builder, fullPath, 1);
-        Debug.Log($"<color=green>[Bake 완료]</color> {fileName} -> {fullPath}");
+
+        Debug.Log($"<color=green>[Blob 저장]</color> {typeof(T).Name} -> {fullPath}");
+    }
+
+    private void EnsureDirectory()
+    {
+        if (!Directory.Exists(savePath))
+            Directory.CreateDirectory(savePath);
+    }
+
+    private static FixedString64Bytes ToFixedString64(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return default;
+
+        return new FixedString64Bytes(value);
+    }
+
+    private static FixedString128Bytes ToFixedString128(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return default;
+
+        return new FixedString128Bytes(value);
+    }
+
+    private static void ValidateItemBaseData(ItemBaseData so)
+    {
+        HashSet<int> ids = new();
+
+        for (int i = 0; i < so.Count; i++)
+        {
+            ItemBaseAuthoringData item = so.Get(i);
+
+            if (item.itemId <= 0)
+            {
+                Debug.LogWarning($"[ItemBaseData] 유효하지 않은 ItemId. SO: {so.name}, Index: {i}, ItemId: {item.itemId}");
+            }
+
+            if (!ids.Add(item.itemId))
+            {
+                Debug.LogError($"[ItemBaseData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.mainType == ItemMainType.Unknown)
+            {
+                Debug.LogWarning($"[ItemBaseData] MainType이 Unknown입니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.subType == ItemSubType.Unknown)
+            {
+                Debug.LogWarning($"[ItemBaseData] SubType이 Unknown입니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.stackLimit <= 0)
+            {
+                Debug.LogWarning($"[ItemBaseData] StackLimit이 0 이하입니다. SO: {so.name}, ItemId: {item.itemId}, StackLimit: {item.stackLimit}");
+            }
+
+            if (string.IsNullOrWhiteSpace(item.itemName))
+            {
+                Debug.LogWarning($"[ItemBaseData] ItemName이 비어 있습니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (string.IsNullOrWhiteSpace(item.spriteAddress))
+            {
+                Debug.LogWarning($"[ItemBaseData] SpriteAddress가 비어 있습니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+        }
+    }
+
+    private static void ValidateFlowerItemData(FlowerItemData so)
+    {
+        HashSet<int> ids = new();
+
+        for (int i = 0; i < so.Count; i++)
+        {
+            FlowerItemAuthoringData item = so.Get(i);
+
+            if (item.itemId <= 0)
+            {
+                Debug.LogWarning($"[FlowerItemData] 유효하지 않은 ItemId. SO: {so.name}, Index: {i}, ItemId: {item.itemId}");
+            }
+
+            if (!ids.Add(item.itemId))
+            {
+                Debug.LogError($"[FlowerItemData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.growthDuration < 0)
+            {
+                Debug.LogWarning($"[FlowerItemData] GrowthDuration이 음수입니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.harvestAmount < 0)
+            {
+                Debug.LogWarning($"[FlowerItemData] HarvestAmount가 음수입니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+        }
+    }
+
+    private static void ValidateGearItemData(GearItemData so)
+    {
+        HashSet<int> ids = new();
+
+        for (int i = 0; i < so.Count; i++)
+        {
+            GearItemAuthoringData item = so.Get(i);
+
+            if (item.itemId <= 0)
+            {
+                Debug.LogWarning($"[GearItemData] 유효하지 않은 ItemId. SO: {so.name}, Index: {i}, ItemId: {item.itemId}");
+            }
+
+            if (!ids.Add(item.itemId))
+            {
+                Debug.LogError($"[GearItemData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (item.maxDurability <= 0)
+            {
+                Debug.LogWarning($"[GearItemData] MaxDurability가 0 이하입니다. SO: {so.name}, ItemId: {item.itemId}, MaxDurability: {item.maxDurability}");
+            }
+        }
     }
 }
+
 #endif

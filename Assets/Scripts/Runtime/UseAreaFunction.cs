@@ -1,12 +1,15 @@
 using Cysharp.Threading.Tasks;
+using Fungus;
 using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Unity.Collections;
+using Unity.Mathematics;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using VContainer;
 using static Constant;
-using Unity.Mathematics;
-using System.Runtime.CompilerServices;
-using System.Collections;
 public interface IUseAreaHoeFunc
 {
     FarmActionResult DoHoeFunc(GameObject plot);
@@ -176,7 +179,7 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 if (targetPlot != null)
                 {
                     return targetPlot.Watering();
@@ -237,8 +240,8 @@ public class UseAreaFunction : MonoBehaviour,
             {
                 // TODO: Ore 게임오브젝트 찾아서 박살내기
 
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
-                Ore targetOre = hits[0].gameObject.GetComponent<Ore>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
+                OreProp targetOre = hits[0].gameObject.GetComponent<OreProp>();
                 
 
                 if (targetPlot != null)
@@ -287,7 +290,7 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 if (targetPlot != null)
                 {
                     return targetPlot.Sowing(itemID);
@@ -316,90 +319,71 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
         }
     }
+    public FarmActionResult FireFunc(int itemId, GameObject plot = null)
+    {
+        if (!GlobalItemDB.TryGetBase(itemId, out ItemBaseBlobData baseData))
+        {
+            FixedString128Bytes errorCode = $"FireFunc error. Unknown itemId : {itemId}";
+            Debug.Log(errorCode);
+            return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+        }
+
+        switch (baseData.SubType)
+        {
+            case ItemSubType.Equipment:
+                return FireGearFunc(itemId, plot);
+
+            case ItemSubType.Fertilizer:
+                return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
+
+            case ItemSubType.Seed:
+                return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
+
+            default:
+                {
+                    FixedString128Bytes errorCode =
+                        $"FireFunc error. Unsupported SubType : {baseData.SubType}, itemId : {itemId}";
+                    Debug.Log(errorCode);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+                }
+        }
+    }
+
     FarmActionResult IUseAreaConsumableFuncTest.DoFertilizerFunc(int itemID)
     {
         try
         {
-            Debug.Log("DoSeedFunc has been Executed");
+            Debug.Log("DoFertilizerFunc has been Executed");
+
+            if (!GlobalItemDB.TryGetBase(itemID, out ItemBaseBlobData baseData))
+            {
+                FixedString128Bytes errorCode = $"DoFertilizerFunc error. Unknown itemId : {itemID}";
+                Debug.Log(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+            }
+
+            if (baseData.SubType != ItemSubType.Fertilizer)
+            {
+                FixedString128Bytes errorCode =
+                    $"DoFertilizerFunc error. Item is not Fertilizer. itemId : {itemID}, SubType : {baseData.SubType}";
+                Debug.Log(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+            }
+
             Collider[] hits = GetHits(_treatMask);
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
-                if (targetPlot != null)
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
+
+                if (targetPlot == null)
                 {
-                    if (QUALITY_FERTILIZER_START_ID <= itemID && itemID < BOUNTIFUL_FERTILIZER_START_ID)
-                    {
-                        if (mathRand.NextInt(1, 10) <= (itemID - QUALITY_FERTILIZER_START_ID + 1) * 2)
-                        {
-                            return targetPlot.QualityUp();
-                        }
-                        else
-                        {
-                            return new FarmActionResult(FarmActionResult.ResultType.Failed);
-                        }
-                    }
-                    else if (BOUNTIFUL_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_START_ID)
-                    {
-                        cachedItemLevel = itemID - BOUNTIFUL_FERTILIZER_START_ID + 1;
-
-                        if (cachedItemLevel % 2 == 0)
-                        {
-                            cachedBountyAmount = cachedItemLevel / 2;
-                            if (mathRand.NextFloat(0, 1) <= 0.5f)
-                                cachedBountyAmount++;
-                            return targetPlot.BountyUP(cachedBountyAmount);
-                        }
-                        else
-                        {
-                            cachedBountyAmount = (cachedItemLevel + 1) / 2;
-                            return targetPlot.BountyUP(cachedBountyAmount);
-                        }
-
-
-                    }
-                    else if (ALLINONE_FERTILIZER_START_ID <= itemID && itemID < ALLINONE_FERTILIZER_END_ID)
-                    {
-                        cachedItemLevel = itemID - ALLINONE_FERTILIZER_START_ID + 1;
-
-                        FarmActionResult resultA;
-
-                        if (mathRand.NextInt(1, 10) <= (cachedItemLevel * 2))
-                        {
-                            resultA = targetPlot.QualityUp();
-                        }
-                        else
-                        {
-                            resultA = new FarmActionResult(FarmActionResult.ResultType.Failed);
-                        }
-
-                        if (cachedItemLevel % 2 == 0)
-                        {
-                            cachedBountyAmount = cachedItemLevel / 2;
-                            if (mathRand.NextFloat(0, 1) <= 0.5f)
-                                cachedBountyAmount++;
-                            resultA.Combine(targetPlot.BountyUP(cachedBountyAmount));
-                        }
-                        else
-                        {
-                            cachedBountyAmount = (cachedItemLevel + 1) / 2;
-                            resultA.Combine(targetPlot.BountyUP(cachedBountyAmount));
-                        }
-                        return resultA;
-                    }
-                    else
-                    {
-                        FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected ItemID : {itemID} ";
-                        Debug.Log(errorCode);
-                        return new FarmActionResult(FarmActionResult.ResultType.Error);
-                    }
-                }
-                else
-                {
-                    FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected Error : {hits.Length} ";
+                    FixedString128Bytes errorCode = $"DoFertilizerFunc error. Plot component not found.";
                     Debug.Log(errorCode);
-                    return new FarmActionResult(FarmActionResult.ResultType.Error);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
                 }
+                //TODO :: Fertilizer 코드 완성하기!
+                return new FarmActionResult(FarmActionResult.ResultType.Error, "DoFertilizerFunc error.Plot component not found");
             }
             else if (hits.Length == 0)
             {
@@ -407,46 +391,51 @@ public class UseAreaFunction : MonoBehaviour,
             }
             else
             {
-                FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected amount of target : {hits.Length} ";
+                FixedString128Bytes errorCode =
+                    $"DoFertilizerFunc error. Unexpected amount of target : {hits.Length}";
                 Debug.Log(errorCode);
-                return new FarmActionResult(FarmActionResult.ResultType.Error);
+                return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
         }
         catch (Exception e)
         {
-            Debug.Log($"DoSeedFunc Error : {e.Message}");
-            return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
+            Debug.Log($"DoFertilizerFunc Error : {e.Message}");
+            return new FarmActionResult(FarmActionResult.ResultType.Error, "FERTILIZER_FUNC_EXCEPTION");
         }
     }
 
-    public FarmActionResult FireFunc(int itemId, GameObject plot = null)
+
+
+    private FarmActionResult FireGearFunc(int itemId, GameObject plot = null)
     {
-        // TODO : 이전에 FireFuncTest로 실행된 부분을 FIreFunc로 바꾸기.
-        if (itemId > MIN_HOE_ID && itemId < MAX_HOE_ID)
-            return ((IUseAreaHoeFunc)this).DoHoeFunc(plot);
-        else if (itemId > MIN_WATERINGCAN_ID && itemId < MAX_WATERINGCAN_ID)
-            return ((IUseAreaWateringCanFunc)this).DoWateringCanFunc();
-
-        else if (itemId > MIN_HAMMER_ID && itemId < MAX_HAMMER_ID)
-            return ((IUseAreaHammerFunc)this).DoHammerFunc();
-
-        else if (itemId > MIN_SICKLE_ID && itemId < MAX_SICKLE_ID)
-            return ((IUseAreaSickleFunc)this).DoSickleFunc();
-
-        else if (itemId > MIN_AXE_ID && itemId < MAX_AXE_ID)
-            return ((IUseAreaAxeFunc)this).DoAxeFunc();
-
-        else if (itemId >= QUALITY_FERTILIZER_START_ID && itemId <= ALLINONE_FERTILIZER_END_ID && itemId%2 == 0)
-            return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
-
-        else
+        if (!GlobalItemDB.TryGetGear(itemId, out GearItemBlobData gearData))
         {
-            FixedString128Bytes errorCode = ("Fire Function error. Wrong itemId : " + itemId);
+            FixedString128Bytes errorCode = $"FireGearFunc error. GearDB not found. itemId : {itemId}";
             Debug.Log(errorCode);
             return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
         }
-    }
 
+        return gearData.GearType switch
+        {
+            GearType.Hoe =>
+                ((IUseAreaHoeFunc)this).DoHoeFunc(plot),
+
+            GearType.WateringCan =>
+                ((IUseAreaWateringCanFunc)this).DoWateringCanFunc(),
+
+            GearType.Hammer =>
+                ((IUseAreaHammerFunc)this).DoHammerFunc(),
+
+            GearType.Sickle =>
+                ((IUseAreaSickleFunc)this).DoSickleFunc(),
+
+
+            _ => new FarmActionResult(
+                FarmActionResult.ResultType.Error,
+                $"FireGearFunc error. Unsupported GearType : {gearData.GearType}, itemId : {itemId}"
+            )
+        };
+    }
     /// <summary>
     /// 테스트용 함수! 나중에는 FireFunc()를 사용하라구!
     /// </summary>
