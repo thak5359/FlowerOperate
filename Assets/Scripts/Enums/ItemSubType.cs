@@ -1,9 +1,8 @@
+
 public enum ItemSubType
 {
     Unknown = 0,
-
-    // 인벤토리에는 표기되지 않는 데이터
-    Virtual = 101,
+    Virtual = 101, 
     GamePlayCounter = 102,
     Equipment = 201,
     Fertilizer = 301,

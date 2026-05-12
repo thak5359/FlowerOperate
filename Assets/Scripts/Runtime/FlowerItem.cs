@@ -5,7 +5,7 @@ using UnityEngine;
 [MemoryPackable]
 public partial class FlowerItem : GameItem
 {
-    [MemoryPackIgnore] public FlowerSpecie Species { get; private set; }
+    [MemoryPackIgnore] public FlowerSpecies Species { get; private set; }
     [MemoryPackIgnore] public FlowerColor Color { get; private set; }
     [MemoryPackIgnore] public FlowerFlorio Florio1 { get; private set; }
     [MemoryPackIgnore] public FlowerFlorio Florio2 { get; private set; }
@@ -20,6 +20,7 @@ public partial class FlowerItem : GameItem
 
     public FlowerItem(int id, int count) : base(id, count)
     {
+        OnLoadAsync().Forget();
     }
     public override async UniTask OnLoadAsync()
     {

@@ -10,7 +10,7 @@ public partial class GearItem : GameItem
 
     [MemoryPackIgnore] public GearType GearType { get; private set; }
     [MemoryPackIgnore] public int MaxDurability { get; private set; }
-    [MemoryPackIgnore] public int Power { get; private set; }
+    [MemoryPackIgnore] public int Efficiency { get; private set; }
     [MemoryPackIgnore] public ChargeInfo ChargeInfo { get; private set; }
 
     [MemoryPackConstructor]
@@ -21,6 +21,7 @@ public partial class GearItem : GameItem
     public GearItem(int id, int count) : base(id, count)
     {
     }
+
     public override async UniTask OnLoadAsync()
     {
         await base.OnLoadAsync();
@@ -32,15 +33,14 @@ public partial class GearItem : GameItem
         }
 
         GearType = gearData.GearType;
-        MaxDurability = gearData.MaxDurability;
-        Power = (int)gearData.Efficiency;
+        MaxDurability = (int)gearData.MaxDuration;
+        Efficiency = (int)gearData.Efficiency;
 
         ChargeInfo = new ChargeInfo(
             GearValueConverter.ToSeconds(gearData.ChargeTime),
-            (sbyte)gearData.MaxCharge
+            ((int)gearData.MaxCharge)
         );
 
-        if (CurrentDurability <= 0)
             CurrentDurability = MaxDurability;
     }
 }

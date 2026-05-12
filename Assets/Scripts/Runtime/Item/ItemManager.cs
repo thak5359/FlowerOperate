@@ -14,10 +14,13 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
     private const string ItemBaseBlobFile = "ItemBaseData.blob";
     private const string FlowerItemBlobFile = "FlowerItemData.blob";
     private const string GearItemBlobFile = "GearItemData.blob";
+    private const string FertilizerItemBlobFile = "FertilizerItemData.blob";
+
 
     private BlobAssetReference<ItemBaseBlobDatas> _itemBaseDB;
     private BlobAssetReference<FlowerItemBlobDatas> _flowerDB;
     private BlobAssetReference<GearItemBlobDatas> _gearDB;
+    private BlobAssetReference<FertilizerItemBlobDatas> _fertilizerDB;
 
     public bool IsInitialized =>
         //_gearDB.IsCreated &&
@@ -37,6 +40,11 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
 
         _gearDB = await LoadBlobAsync<GearItemBlobDatas>(
             GearItemBlobFile,
+            cancellationToken
+        );
+
+        _fertilizerDB = await LoadBlobAsync<FertilizerItemBlobDatas>(
+            FertilizerItemBlobFile,
             cancellationToken
         );
 
@@ -85,6 +93,7 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         {
             ItemSubType.Flower => new FlowerItem(itemId, count),
             ItemSubType.Equipment => new GearItem(itemId, count),
+            ItemSubType.Fertilizer => new FertilizerItem(itemId, count),
             _ => new GameItem(itemId, count)
         };
     }
@@ -112,6 +121,9 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
 
         if (_gearDB.IsCreated)
             _gearDB.Dispose();
+
+        if( _fertilizerDB.IsCreated)
+            _fertilizerDB.Dispose();
 
         Debug.Log("[ItemManager] Item Blob DB 해제 완료");
     }

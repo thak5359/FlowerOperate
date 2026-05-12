@@ -27,7 +27,7 @@ public struct FlowerItemAuthoringData
     public int itemId;
 
     [Header("꽃 구성")]
-    public FlowerSpecie species;
+    public FlowerSpecies species;
     public FlowerColor color;
     public FlowerFlorio florio1;
     public FlowerFlorio florio2;
@@ -42,7 +42,7 @@ public struct FlowerItemBlobData
 {
     public int ItemId;
 
-    public FlowerSpecie Species;
+    public FlowerSpecies Species;
     public FlowerColor Color;
     public FlowerFlorio Florio1;
     public FlowerFlorio Florio2;

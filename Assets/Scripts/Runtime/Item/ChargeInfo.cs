@@ -7,9 +7,9 @@ using UnityEngine;
 public struct ChargeInfo
 {
     public float ChargeTime;
-    public sbyte MaxChargeCount;
+    public int MaxChargeCount;
 
-    public ChargeInfo(float chargeTime, sbyte maxChargeCount)
+    public ChargeInfo(float chargeTime, int maxChargeCount)
     {
         ChargeTime = chargeTime;
         MaxChargeCount = maxChargeCount;

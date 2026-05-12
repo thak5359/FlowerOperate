@@ -29,7 +29,7 @@ public struct GearItemAuthoringData
     public GearType gearType;
 
     [Header("장비 성능")]
-    public int maxDurability;
+    public GearMaxDuration maxDurability;
     public GearEfficiency efficiency;
     public GearChargeTime chargeTime;
     public GearMaxCharge maxCharge;
@@ -42,7 +42,7 @@ public struct GearItemBlobData
 
     public GearType GearType;
 
-    public int MaxDurability;
+    public GearMaxDuration MaxDuration;
     public GearEfficiency Efficiency;
     public GearChargeTime ChargeTime;
     public GearMaxCharge MaxCharge;

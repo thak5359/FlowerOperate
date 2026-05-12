@@ -188,7 +188,7 @@ public class ItemBlobBaker : EditorWindow
                 {
                     ItemId = source.itemId,
                     GearType = source.gearType,
-                    MaxDurability = source.maxDurability,
+                    MaxDuration = source.maxDurability,
                     Efficiency = source.efficiency,
                     ChargeTime = source.chargeTime,
                     MaxCharge = source.maxCharge

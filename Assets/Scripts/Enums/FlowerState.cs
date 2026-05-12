@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/// <summary>
+/// Enum for Check plant's state in Plot
+/// </summary>
 public enum FlowerState
 {
     Unknown = 0,

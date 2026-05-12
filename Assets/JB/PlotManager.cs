@@ -36,7 +36,7 @@ public class PlotManager : MonoBehaviour
     /// </summary>
     private void RefreshPlotCache()
     {
-        foreach (var plot in this.GetComponentsInChildren<Plot>())
+        foreach (var plot in this.GetComponentsInChildren<PlotProp>())
         {
             plotDataDict.Add(plot.Id, plot.GetSaveData());
         }
@@ -53,7 +53,7 @@ public class PlotManager : MonoBehaviour
         for (int i = 0; i < loadedPlots.Count; i++)
         {
             var plot = Instantiate(plotPrefab, this.transform);
-            plot.GetComponent<Plot>().LoadFromData(loadedPlots[id[i]]);
+            plot.GetComponent<PlotProp>().LoadFromData(loadedPlots[id[i]]);
         }
     }
 

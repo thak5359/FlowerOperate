@@ -10,6 +10,8 @@ public static class GlobalItemDB
     private static readonly Dictionary<int, int> _baseIndexById = new();
     private static readonly Dictionary<int, int> _flowerIndexById = new();
     private static readonly Dictionary<int, int> _gearIndexById = new();
+    private static readonly Dictionary<int, int> _fertilizerIndexById = new();
+
 
     public static bool IsInitialized => _accessor.IsInitialized;
 
@@ -27,6 +29,7 @@ public static class GlobalItemDB
         _baseIndexById.Clear();
         _flowerIndexById.Clear();
         _gearIndexById.Clear();
+        _fertilizerIndexById.Clear();
 
         _accessor = default;
 
@@ -38,10 +41,13 @@ public static class GlobalItemDB
         _baseIndexById.Clear();
         _flowerIndexById.Clear();
         _gearIndexById.Clear();
+        _fertilizerIndexById.Clear();
 
         BuildBaseIndexMap();
         BuildFlowerIndexMap();
         BuildGearIndexMap();
+        BuildFertilizerIndexMap();
+
     }
 
     private static void BuildBaseIndexMap()
@@ -107,6 +113,27 @@ public static class GlobalItemDB
         }
     }
 
+    private static void BuildFertilizerIndexMap()
+    {
+        if (!_accessor.FertilizerDB.IsCreated)
+        {
+            Debug.LogWarning("[GlobalItemDB] FertilizerDB가 생성되지 않았습니다.");
+            return;
+        }
+
+        ref BlobArray<FertilizerItemBlobData> items = ref _accessor.FertilizerDB.Value.Items;
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            int itemId = items[i].ItemId;
+
+            if (!_fertilizerIndexById.TryAdd(itemId, i))
+            {
+                Debug.LogError($"[GlobalItemDB] FertilizerDB 중복 ItemId 발견: {itemId}");
+            }
+        }
+    }
+
     public static bool TryGetBase(int itemId, out ItemBaseBlobData data)
     {
         data = default;
@@ -163,6 +190,26 @@ public static class GlobalItemDB
         data = _accessor.GearDB.Value.Items[index];
         return true;
     }
+
+    public static bool TryGetFertilizer(int itemId, out FertilizerItemBlobData data)
+    {
+        data = default;
+
+        if (!_accessor.FertilizerDB.IsCreated)
+        {
+            Debug.LogError("[GlobalItemDB] GearDB가 초기화되지 않았습니다.");
+            return false;
+        }
+
+        if (!_fertilizerIndexById.TryGetValue(itemId, out int index))
+        {
+            return false;
+        }
+
+        data = _accessor.FertilizerDB.Value.Items[index];
+        return true;
+    }
+
 
     public static bool Exists(int itemId)
     {

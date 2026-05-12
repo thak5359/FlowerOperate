@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum FlowerSpecie
+public enum FlowerSpecies
 {
     Unknown = 0,
     Gerbera = 1,

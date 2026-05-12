@@ -179,7 +179,7 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 if (targetPlot != null)
                 {
                     return targetPlot.Watering();
@@ -223,8 +223,8 @@ public class UseAreaFunction : MonoBehaviour,
             {
                 // TODO: Ore 게임오브젝트 찾아서 박살내기
 
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
-                Ore targetOre = hits[0].gameObject.GetComponent<Ore>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
+                OreProp targetOre = hits[0].gameObject.GetComponent<OreProp>();
                 
 
                 if (targetPlot != null)
@@ -273,7 +273,7 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 if (targetPlot != null)
                 {
                     return targetPlot.Sowing(itemID);
@@ -357,7 +357,7 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length == 1)
             {
-                Plot targetPlot = hits[0].gameObject.GetComponent<Plot>();
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
 
                 if (targetPlot == null)
                 {

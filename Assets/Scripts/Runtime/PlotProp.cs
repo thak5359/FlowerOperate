@@ -51,7 +51,7 @@ public partial struct PlotData // 저장용 데이터 바구니
 }
 
 [Serializable]
-public class Plot : Prop, IGameResource
+public class PlotProp : Prop, IGameResource
 {
     private PlotData _plotData = new(0);
     public ref PlotData plotData => ref _plotData;
