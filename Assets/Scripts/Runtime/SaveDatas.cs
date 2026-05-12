@@ -29,6 +29,18 @@ public partial class SaveDatas
     public int GetReputation => reputation;
 
     [MemoryPackIgnore]
+    public ref SerializedDictionary<int, PlotData> GetRefPlotData
+    {
+        get
+        {
+            if (plotDataList == null)
+                plotDataDictCache = ToSerializedDictionary(plotDataList);
+
+            return ref plotDataDictCache;
+        }
+    }
+
+    [MemoryPackIgnore]
     public SerializedDictionary<int, PlotData> GetPlotData
     {
         get

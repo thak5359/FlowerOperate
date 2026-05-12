@@ -217,7 +217,7 @@ public class UseAreaFunction : MonoBehaviour,
             {
                 foreach(Collider hit in hits)
                 {
-                    Plot targetPlot = hit.gameObject.GetComponent<Plot>();
+                    PlotProp targetPlot = hit.gameObject.GetComponent<PlotProp>();
                 }
             }
         }

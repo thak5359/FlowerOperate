@@ -50,7 +50,7 @@ public class PlotManager : MonoBehaviour
         foreach(var data in loadedPlots)
         {
             var plot = Instantiate(plotPrefab, this.transform);
-            plot.GetComponent<PlotProp>().LoadFromData(loadedPlots[id[i]]);
+            plot.GetComponent<PlotProp>().LoadFromData(data.Value);
         }
     }
 

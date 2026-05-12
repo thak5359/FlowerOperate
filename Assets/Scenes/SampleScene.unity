@@ -29695,8 +29695,6 @@ GameObject:
   - component: {fileID: 1618246215}
   - component: {fileID: 1618246223}
   - component: {fileID: 1618246229}
-  - component: {fileID: 1618246224}
-  - component: {fileID: 1618246225}
   - component: {fileID: 1618246228}
   - component: {fileID: 1618246227}
   - component: {fileID: 1618246226}
@@ -29918,40 +29916,12 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1618246229}
   commandList:
-  - {fileID: 1618246224}
+  - {fileID: 0}
   - {fileID: 1618246228}
   - {fileID: 1618246227}
   - {fileID: 1618246226}
-  - {fileID: 1618246225}
+  - {fileID: 0}
   suppressAllAutoSelections: 0
---- !u!114 &1618246224
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b55f017339c8324fac1e13ad6ef191a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 23
-  indentLevel: 0
---- !u!114 &1618246225
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd293ffe885b594c8d3c1f526fd7f77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 24
-  indentLevel: 0
 --- !u!114 &1618246226
 MonoBehaviour:
   m_ObjectHideFlags: 2
