@@ -11,7 +11,7 @@ public partial class Prop : MonoBehaviour, IGameResource
     // 1. 인터페이스의 Id 구현
     [field: SerializeField] public int Id { get; protected set; }
 
-    [field: SerializeField] public Sprite PropSprite { get; protected set;  }
+    [field: SerializeField] public Sprite DisplaySprite { get; protected set;  }
 
     [field : SerializeField] public SpriteRenderer SpriteRenderer { get; protected set; }
 
@@ -24,12 +24,11 @@ public partial class Prop : MonoBehaviour, IGameResource
 
     public virtual void OnDisable()
     {
-        if (PropSprite != null) AddressableManager.ReleaseAsset(PropSprite);
+        if (DisplaySprite != null) AddressableManager.ReleaseAsset(DisplaySprite);
     }
 
-    public void OnLoad()
+    public virtual async UniTask OnLoadAsync()
     {
-        ((IGameResource)this).OnLoad();
-
+       
     }
 }

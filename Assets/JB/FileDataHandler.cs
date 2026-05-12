@@ -1,3 +1,4 @@
+using MemoryPack;
 using System.IO;
 using UnityEngine;
 
@@ -38,5 +39,33 @@ public static class FileDataHandler
             Debug.LogError($"[로드 실패] {e.Message}");
             return default;
         }
+    }
+
+    public static void SaveBinary<T>(T data, string fileName)
+    {
+        string path = Path.Combine(Application.persistentDataPath, fileName);
+        string directory = Path.GetDirectoryName(path);
+
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
+        byte[] bytes = MemoryPackSerializer.Serialize(data);
+        File.WriteAllBytes(path, bytes);
+
+        Debug.Log($"[FileDataHandler] Binary 저장 완료: {path}");
+    }
+
+    public static T LoadBinary<T>(string fileName)
+    {
+        string path = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning($"[FileDataHandler] Binary 저장 파일 없음: {path}");
+            return default;
+        }
+
+        byte[] bytes = File.ReadAllBytes(path);
+        return MemoryPackSerializer.Deserialize<T>(bytes);
     }
 }

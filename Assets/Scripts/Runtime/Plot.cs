@@ -245,15 +245,15 @@ public class Plot : Prop, IGameResource
     private async UniTask changePlotSpr()
     {
         Debug.Log("changePlotSpr has been called");
-        if (base.PropSprite != null)
-            AddressableManager.ReleaseAsset(base.PropSprite);
+        if (base.DisplaySprite != null)
+            AddressableManager.ReleaseAsset(base.DisplaySprite);
 
         if (isWatered == true)
-            base.PropSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
+            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
         else
-            base.PropSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
+            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
 
-        base.SpriteRenderer.sprite = base.PropSprite;
+        base.SpriteRenderer.sprite = base.DisplaySprite;
     }
     private async UniTask changeFlowerSpr()
     {
@@ -267,7 +267,7 @@ public class Plot : Prop, IGameResource
         }
         else if (_plotData.flowerId != 0)
         {
-            FixedString128Bytes address = GlobalItemDB.GetAddressString((short)_plotData.flowerId);
+            FixedString128Bytes address = GlobalItemDB.GetSpriteAddress(_plotData.flowerId);
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
             FlowerSpriteRenderer.sprite = flowerSprite;
         }

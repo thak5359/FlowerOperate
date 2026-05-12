@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum ItemSubType
 {
     Unknown = 0,
@@ -17,7 +13,7 @@ public enum ItemSubType
     Jewelry = 404,
     MetalMaterial = 405,
     Metal = 406,
-    Sappling = 407,
+    Sapling = 407,
     Timber = 408
     // PaPas Item
 }

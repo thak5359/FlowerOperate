@@ -165,7 +165,7 @@ public class ItemIdContainerGenTool : EditorWindow
 
     private void CreateEtcSO(string[] lines)
     {
-        ItemIdData so = ScriptableObject.CreateInstance<ItemIdData>();
+        ItemBaseData so = ScriptableObject.CreateInstance<ItemBaseData>();
         InitializeBaseInfo(so);
 
         for (int i = 0; i < lines.Length; i++)
@@ -184,7 +184,7 @@ public class ItemIdContainerGenTool : EditorWindow
         SaveAsset(so, "Assets/ScriptableObjects/Ore/EtcIdData.asset");
     }
 
-    private void InitializeBaseInfo(ItemIdData so)
+    private void InitializeBaseInfo(ItemBaseData so)
     {
         so.startId = this.startId;
         so.itemName = new List<FixedString64Bytes>();
