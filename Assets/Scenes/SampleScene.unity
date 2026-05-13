@@ -29718,21 +29718,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 1063.0137, y: 722.3737}
+  scrollPos: {x: 760.79614, y: 989.8772}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 570
-  zoom: 0.97
+  zoom: 0.68333334
   scrollViewRect:
     serializedVersion: 2
     x: -343
     y: -340
     width: 1114
     height: 859
-  selectedBlocks:
-  - {fileID: 1618246223}
-  selectedCommands:
-  - {fileID: 1618246227}
+  selectedBlocks: []
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -29790,7 +29788,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 15.917988
     y: -601.97955
-    width: 138.65979
+    width: 137.80487
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -29907,7 +29905,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -187.75584
     y: -583.19824
-    width: 184.02061
+    width: 184.63414
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -29916,11 +29914,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1618246229}
   commandList:
-  - {fileID: 0}
   - {fileID: 1618246228}
   - {fileID: 1618246227}
   - {fileID: 1618246226}
-  - {fileID: 0}
   suppressAllAutoSelections: 0
 --- !u!114 &1618246226
 MonoBehaviour:
@@ -33070,6 +33066,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1374428660}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &1823121324 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1418994448040799425, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
+    type: 3}
+  m_PrefabInstance: {fileID: 2119803557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1823121326
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823121324}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 288451eb873da08468e9d8aca43d3a39, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1829349692
 GameObject:
   m_ObjectHideFlags: 0
@@ -37779,6 +37802,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1315103415}
+    - targetCorrespondingSourceObject: {fileID: 1418994448040799425, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1823121326}
   m_SourcePrefab: {fileID: 100100000, guid: 37e5a3cec22ee2e46bc300026cb8d5ab, type: 3}
 --- !u!1 &2121643565
 GameObject:
