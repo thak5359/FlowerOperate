@@ -15,33 +15,36 @@ public interface IInteractable
 // 플레이어의 입력 ( WASD, 상호작용, 아이템 사용)을 처리.
 public class PlayerController : MonoBehaviour, IInteractable
 {
-
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float decelereationRate = 0.5f;
 
-    bool isCharging = false;
-
-    //public bool isInteracting = false;
-
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
-
 
     // 차징 관리용
     [Header("차지 타임을 조절 하는 기능. 아이템 데이터가 만들어지기 전까지 실험용임.")]
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
-
+    bool isCharging = false;
 
     [Header("캐릭터 이미지 칸 [앞] [옆] [뒤]")]
     [SerializeField] public List<Sprite> CharacterSprite = new(3);
 
 
+
+    //이동 로직 처리 중 사용할 속도/캐싱용 Vec3
+    private Vector3 targetVelocity;
+
+    [SerializeField] private Animator anim;
+    private static readonly int MoveXHash = Animator.StringToHash(ANIM_X);
+    private static readonly int MoveYHash = Animator.StringToHash(ANIM_Y);
+    private static readonly int isMovingHash = Animator.StringToHash(ANIM_MOVING);
+
     private UseAreaManager _useAreaManager;
 
     private Vector2 moveInput;
-    private Rigidbody rb;
+    private Rigidbody rigidBody;
     private SpriteRenderer sprRenderer;
 
     // 상호작용 연속 방지용 
@@ -53,16 +56,18 @@ public class PlayerController : MonoBehaviour, IInteractable
     Vector3 cachedPosition = new Vector3(0.0f, 0.0f, -1.0f);
     Quaternion cachedRotation = Quaternion.identity;
 
-    private  Vector3 interactableBoxScale;
+    private Vector3 interactableBoxScale;
 
     private static int _mask;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
         sprRenderer = GetComponentInChildren<SpriteRenderer>();
         _mask = LayerMask.GetMask(LAYER_INTERACTABLE);
         interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
+        if (anim == null)
+            anim = GetComponentInChildren<Animator>();
     }
 
     [Inject]
@@ -84,36 +89,67 @@ public class PlayerController : MonoBehaviour, IInteractable
     void FixedUpdate()
     {
         Move();
+
         interactableArea.localPosition = cachedPosition;
         interactableArea.localRotation = cachedRotation;
+
     }
 
     void Move()
     {
-        Vector3 targetVelocity;
-        if (isCharging == true)
-        { targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed * decelereationRate; }
-        else
-            targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
-
-
-        //Debug.Log($"MoveInput: {moveInput.x}, {moveInput.y}");
-        rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
-        if (moveInput != Vector2.zero && isCharging == false)
+        // 입력이 없는 경우, 이동 애니메이션 끄고 속도 0으로 만들어서 멈추게 하기
+        if (moveInput == Vector2.zero)
         {
+            anim.SetBool(isMovingHash, false);
+            rigidBody.velocity = new Vector3(0f, rigidBody.velocity.y, 0f);
+            return;
+        }
+
+        anim.SetBool(isMovingHash, true);
+
+
+        // 차징 중에 행동 불가능하게 만
+        if (isCharging == true)
+        {
+            anim.SetBool(isMovingHash, false);
+
+            targetVelocity.Set(0f, rigidBody.velocity.y, 0f);
+            rigidBody.velocity = targetVelocity;
+
+            return;
+        }
+
+
+
+        targetVelocity.Set(moveInput.x * moveSpeed, rigidBody.velocity.y, moveInput.y * moveSpeed);
+
+        rigidBody.velocity = targetVelocity;
+        if (moveInput != Vector2.zero)
+        {
+
             if (moveInput.x != 0)
             {
 
                 switchSpr(1);
 
+
                 sprRenderer.flipX = (moveInput.x > 0) ? true : false;
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
+
+                anim.SetFloat(MoveXHash, heading.x);
+                anim.SetFloat(MoveYHash, .0f);
 
             }
             else
             {
                 _ = (moveInput.y > 0) ? switchSpr(2) : switchSpr(0);
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
+
+                bool isHeadingFront = (moveInput.y > 0) ? true : false;
+
+                anim.SetFloat(MoveYHash, heading.y);
+                anim.SetFloat(MoveXHash, .0f);
+
 
             }
             locateInteractable();
@@ -123,7 +159,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        
+
         //Debug.Log("OnInteracted has been detected 1 ");
         if (isCharging == false && context.canceled)
         {
@@ -140,7 +176,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
                 if (hits[0].CompareTag(TAG_STORAGE))
                 {
-                // TODO:: 창고 여는 스크립트 여기에 작성하기
+                    // TODO:: 창고 여는 스크립트 여기에 작성하기
                 }
 
                 if (hits[0].CompareTag(TAG_BED))
@@ -151,7 +187,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
                 ((IInteractable)this).Interact(hits[0].gameObject.tag);
             }
-            else if( hits.Length > 1)
+            else if (hits.Length > 1)
             {
                 Debug.Log($"한번에 여러 상호작용 대상이 들어왔습니다 \n. {hits.ToString()}");
             }

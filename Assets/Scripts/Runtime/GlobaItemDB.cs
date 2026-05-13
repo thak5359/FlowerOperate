@@ -3,6 +3,8 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
+using static GlobalItemDB;
+
 public static class GlobalItemDB
 {
     private static ItemDatabaseAccessor _accessor;
@@ -240,7 +242,7 @@ public static class GlobalItemDB
     public static int GetPrice(int itemId)
     {
         return TryGetBase(itemId, out var data)
-            ? data.Price
+            ? data.RefundPrice
             : 0;
     }
 

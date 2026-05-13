@@ -29,6 +29,5 @@ public partial class Prop : MonoBehaviour, IGameResource
 
     public virtual async UniTask OnLoadAsync()
     {
-       
     }
 }

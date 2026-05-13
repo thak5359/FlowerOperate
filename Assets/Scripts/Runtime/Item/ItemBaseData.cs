@@ -55,7 +55,7 @@ public struct ItemBaseBlobData
     public FixedString128Bytes Description;
     public FixedString128Bytes SpriteAddress;
 
-    public int Price;
+    public int RefundPrice;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

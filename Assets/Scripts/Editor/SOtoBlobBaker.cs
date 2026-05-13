@@ -112,7 +112,7 @@ public class ItemBlobBaker : EditorWindow
                     ItemName = ToFixedString64(source.itemName),
                     Description = ToFixedString128(source.description),
                     SpriteAddress = ToFixedString128(source.spriteAddress),
-                    Price = source.price
+                    RefundPrice = source.price
                 };
             }
 

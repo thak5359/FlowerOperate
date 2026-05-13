@@ -127,7 +127,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9bbf0e824db4c5a429a6a43e35a8f04f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 56fb2b799831596429925519702de7c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9bbf0e824db4c5a429a6a43e35a8f04f, type: 3}
   - {fileID: 21300000, guid: 56fb2b799831596429925519702de7c7, type: 3}
   - {fileID: 21300000, guid: 87e5d11ddfc9f894fb90ab031c89ce32, type: 3}
+  anim: {fileID: 3699473441499013052}
   heading: {x: 0, y: 0}
 --- !u!81 &6061688993987198312
 AudioListener:

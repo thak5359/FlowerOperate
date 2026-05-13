@@ -52,7 +52,8 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         {
             ItemBaseDB = _itemBaseDB,
             FlowerDB = _flowerDB,
-            GearDB = _gearDB
+            GearDB = _gearDB,
+            FertilizerDB = _fertilizerDB
         };
 
         GlobalItemDB.Initialize(accessor);

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using MemoryPack;
 using System;
@@ -8,17 +9,23 @@ using VContainer;
 using static Constant;
 
 [MemoryPackable]
+[Serializable]
 public partial struct PlotData // 저장용 데이터 바구니
 {
-    public Vector3 position { get; private set; }
-    public int flowerId { get; set; }
-    public FlowerGrowth Growth { get; set; }
-    public FlowerState State { get; set; }
-    public int grade { get; set; }
-    public int bonusAmount { get; set; }
+     
+    [field:SerializeField]  public Vector3 position { get; private set; }
+    [field: SerializeField]  public int flowerId { get; set; }
+    [field: SerializeField]  public FlowerGrowth Growth { get; set; }
+    [field: SerializeField] public FlowerState State { get; set; }
+    [field: SerializeField]  public int grade { get; set; }
 
+    [field: SerializeField] public FertilizerGrade fertilizerGrade { get; set; }
 
-    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, int input_bonusAmount, FlowerGrowth input_growth, FlowerState input_state)
+    [field: SerializeField] public FertilizerType fertilizerType { get; set; }
+
+   
+
+    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state, FertilizerType input_fertilizerType, FertilizerGrade input_fertilizerGrade)
     {
         position = input_pos;
         flowerId = input_flowerId;
@@ -26,18 +33,11 @@ public partial struct PlotData // 저장용 데이터 바구니
 
         Growth = input_growth;
         State = input_state;
-        bonusAmount = input_bonusAmount;
+
+        fertilizerGrade = input_fertilizerGrade;
+        fertilizerType = input_fertilizerType;
     }
 
-    public PlotData(Vector3 input_pos)
-    {
-        position = input_pos;
-        flowerId = 0;
-        grade = 0;
-        Growth = FlowerGrowth.Unknown;
-        State = FlowerState.Unknown;
-        bonusAmount = 0;
-    }
     public PlotData(int input_flowerId)
     {
         position = default;
@@ -46,7 +46,10 @@ public partial struct PlotData // 저장용 데이터 바구니
 
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
-        bonusAmount = 0;
+
+
+        fertilizerType = FertilizerType.Unknown;
+        fertilizerGrade = FertilizerGrade.Unknown;
     }
     public void SetPosition(Vector3 input_position) => position = input_position;
 }
@@ -54,11 +57,13 @@ public partial struct PlotData // 저장용 데이터 바구니
 [Serializable]
 public class PlotProp : Prop, IGameResource
 {
-    private PlotData _plotData = new(0);
-    public ref PlotData plotData => ref _plotData;
+     [SerializeField]
+    public PlotData _plotData = new(0);
+     public ref PlotData plotData => ref _plotData; //ref For access _plotData directly
+
+
 
     [SerializeField] public SpriteRenderer FlowerSpriteRenderer;
-
     [field: SerializeField] public Sprite flowerSprite { get; private set; }
 
     int bonusAmount = 0; // 보너스 양   
@@ -89,8 +94,14 @@ public class PlotProp : Prop, IGameResource
             await changeFlowerSpr();
         }
     }
+
     #region Method for Farming
-    public FarmActionResult Sowing(int seedID) // 씨뿌리기
+    /// <summary>
+    /// call When sow Seed
+    /// </summary>
+    /// <param name="seedID"></param>
+    /// <returns></returns>
+    public FarmActionResult Sowing(int seedID) 
     {
         try
         {
@@ -171,6 +182,8 @@ public class PlotProp : Prop, IGameResource
                 flowerSprite = default;
                 plotData.flowerId = default;
                 plotData.State = FlowerState.Unknown;
+                FlowerSpriteRenderer.sprite = null;
+
             }
             return new FarmActionResult(FarmActionResult.ResultType.Success);
         }

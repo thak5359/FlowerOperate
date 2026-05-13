@@ -12,9 +12,10 @@ public partial class GameItem : IGameResource
 {
     [field: SerializeField]
     public int Id { get; protected set; }
-    public int refundPrice { get; protected set;  }
-
+    
     public int Count { get; set; }
+    [MemoryPackIgnore]
+    public int RefundPrice { get; protected set;  } // 되팔기 기준 금액 ( 상점가의 50%)
 
     [MemoryPackIgnore]
     [field: SerializeField]
