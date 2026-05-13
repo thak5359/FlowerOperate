@@ -10,7 +10,7 @@ public class GearItemData : ScriptableObject
     [SerializeField] private List<GearItemAuthoringData> gears = new();
 
     public IReadOnlyList<GearItemAuthoringData> Gears => gears;
-
+    public void setGears(List<GearItemAuthoringData> gears) => this.gears = gears;
     public int Count => gears?.Count ?? 0;
 
     public GearItemAuthoringData Get(int index)

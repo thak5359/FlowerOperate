@@ -1,0 +1,722 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828af6ab65946f8498f7f0e03dcfb4a0, type: 3}
+  m_Name: BaseFlowerData
+  m_EditorClassIdentifier: 
+  flowers:
+  - itemId: 402001
+    species: 1
+    color: 1
+    florio1: 13
+    florio2: 14
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402002
+    species: 1
+    color: 2
+    florio1: 11
+    florio2: 13
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402003
+    species: 1
+    color: 3
+    florio1: 6
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402004
+    species: 1
+    color: 7
+    florio1: 2
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402005
+    species: 1
+    color: 9
+    florio1: 3
+    florio2: 12
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402006
+    species: 2
+    color: 1
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402007
+    species: 2
+    color: 3
+    florio1: 9
+    florio2: 19
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402008
+    species: 2
+    color: 4
+    florio1: 19
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402009
+    species: 2
+    color: 6
+    florio1: 17
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402010
+    species: 2
+    color: 7
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402011
+    species: 2
+    color: 9
+    florio1: 11
+    florio2: 18
+    growthDuration: 3
+    harvestAmount: 7
+  - itemId: 402012
+    species: 3
+    color: 5
+    florio1: 13
+    florio2: 20
+    growthDuration: 5
+    harvestAmount: 5
+  - itemId: 402013
+    species: 3
+    color: 6
+    florio1: 3
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 5
+  - itemId: 402014
+    species: 3
+    color: 7
+    florio1: 9
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 5
+  - itemId: 402015
+    species: 3
+    color: 9
+    florio1: 3
+    florio2: 20
+    growthDuration: 5
+    harvestAmount: 5
+  - itemId: 402016
+    species: 4
+    color: 1
+    florio1: 6
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402017
+    species: 4
+    color: 2
+    florio1: 13
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402018
+    species: 4
+    color: 3
+    florio1: 6
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402019
+    species: 4
+    color: 4
+    florio1: 13
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402020
+    species: 4
+    color: 6
+    florio1: 9
+    florio2: 20
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402021
+    species: 4
+    color: 7
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402022
+    species: 4
+    color: 9
+    florio1: 3
+    florio2: 10
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402023
+    species: 5
+    color: 3
+    florio1: 1
+    florio2: 20
+    growthDuration: 5
+    harvestAmount: 9
+  - itemId: 402024
+    species: 5
+    color: 4
+    florio1: 9
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 9
+  - itemId: 402025
+    species: 5
+    color: 6
+    florio1: 6
+    florio2: 9
+    growthDuration: 5
+    harvestAmount: 9
+  - itemId: 402026
+    species: 5
+    color: 7
+    florio1: 9
+    florio2: 17
+    growthDuration: 5
+    harvestAmount: 9
+  - itemId: 402027
+    species: 5
+    color: 9
+    florio1: 9
+    florio2: 15
+    growthDuration: 5
+    harvestAmount: 9
+  - itemId: 402028
+    species: 6
+    color: 1
+    florio1: 9
+    florio2: 14
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402029
+    species: 6
+    color: 2
+    florio1: 14
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402030
+    species: 6
+    color: 3
+    florio1: 1
+    florio2: 20
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402031
+    species: 6
+    color: 7
+    florio1: 19
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402032
+    species: 6
+    color: 8
+    florio1: 7
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402033
+    species: 6
+    color: 9
+    florio1: 3
+    florio2: 9
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402034
+    species: 7
+    color: 1
+    florio1: 22
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402035
+    species: 7
+    color: 4
+    florio1: 17
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402036
+    species: 7
+    color: 5
+    florio1: 5
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402037
+    species: 7
+    color: 6
+    florio1: 1
+    florio2: 17
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402038
+    species: 7
+    color: 7
+    florio1: 22
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402039
+    species: 7
+    color: 9
+    florio1: 1
+    florio2: 0
+    growthDuration: 5
+    harvestAmount: 3
+  - itemId: 402040
+    species: 8
+    color: 1
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402041
+    species: 8
+    color: 2
+    florio1: 11
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402042
+    species: 8
+    color: 5
+    florio1: 11
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402043
+    species: 8
+    color: 6
+    florio1: 17
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402044
+    species: 8
+    color: 7
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402045
+    species: 8
+    color: 9
+    florio1: 11
+    florio2: 22
+    growthDuration: 3
+    harvestAmount: 6
+  - itemId: 402046
+    species: 9
+    color: 1
+    florio1: 11
+    florio2: 14
+    growthDuration: 6
+    harvestAmount: 4
+  - itemId: 402047
+    species: 9
+    color: 3
+    florio1: 10
+    florio2: 19
+    growthDuration: 6
+    harvestAmount: 4
+  - itemId: 402048
+    species: 9
+    color: 7
+    florio1: 19
+    florio2: 0
+    growthDuration: 6
+    harvestAmount: 4
+  - itemId: 402049
+    species: 9
+    color: 9
+    florio1: 10
+    florio2: 20
+    growthDuration: 6
+    harvestAmount: 4
+  - itemId: 402050
+    species: 10
+    color: 1
+    florio1: 9
+    florio2: 14
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402051
+    species: 10
+    color: 2
+    florio1: 13
+    florio2: 14
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402052
+    species: 10
+    color: 3
+    florio1: 15
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402053
+    species: 10
+    color: 4
+    florio1: 9
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402054
+    species: 10
+    color: 5
+    florio1: 21
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402055
+    species: 10
+    color: 6
+    florio1: 9
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402056
+    species: 10
+    color: 7
+    florio1: 2
+    florio2: 11
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402057
+    species: 10
+    color: 8
+    florio1: 1
+    florio2: 16
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402058
+    species: 10
+    color: 9
+    florio1: 3
+    florio2: 12
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402059
+    species: 10
+    color: 10
+    florio1: 20
+    florio2: 0
+    growthDuration: 4
+    harvestAmount: 5
+  - itemId: 402060
+    species: 11
+    color: 1
+    florio1: 9
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402061
+    species: 11
+    color: 2
+    florio1: 4
+    florio2: 12
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402062
+    species: 11
+    color: 3
+    florio1: 5
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402063
+    species: 11
+    color: 4
+    florio1: 18
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402064
+    species: 11
+    color: 6
+    florio1: 19
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402065
+    species: 11
+    color: 7
+    florio1: 1
+    florio2: 5
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402066
+    species: 11
+    color: 9
+    florio1: 9
+    florio2: 14
+    growthDuration: 2
+    harvestAmount: 7
+  - itemId: 402067
+    species: 12
+    color: 1
+    florio1: 9
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402068
+    species: 12
+    color: 2
+    florio1: 6
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402069
+    species: 12
+    color: 3
+    florio1: 4
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402070
+    species: 12
+    color: 7
+    florio1: 17
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402071
+    species: 12
+    color: 8
+    florio1: 18
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402072
+    species: 12
+    color: 9
+    florio1: 3
+    florio2: 0
+    growthDuration: 1
+    harvestAmount: 8
+  - itemId: 402073
+    species: 13
+    color: 1
+    florio1: 4
+    florio2: 9
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402074
+    species: 13
+    color: 2
+    florio1: 13
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402075
+    species: 13
+    color: 3
+    florio1: 9
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402076
+    species: 13
+    color: 6
+    florio1: 9
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402077
+    species: 13
+    color: 7
+    florio1: 2
+    florio2: 4
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402078
+    species: 13
+    color: 8
+    florio1: 6
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402079
+    species: 13
+    color: 9
+    florio1: 8
+    florio2: 16
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402080
+    species: 14
+    color: 1
+    florio1: 9
+    florio2: 14
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402081
+    species: 14
+    color: 3
+    florio1: 22
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402082
+    species: 14
+    color: 6
+    florio1: 6
+    florio2: 9
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402083
+    species: 14
+    color: 7
+    florio1: 4
+    florio2: 9
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402084
+    species: 14
+    color: 9
+    florio1: 3
+    florio2: 0
+    growthDuration: 2
+    harvestAmount: 8
+  - itemId: 402085
+    species: 15
+    color: 1
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402086
+    species: 15
+    color: 2
+    florio1: 8
+    florio2: 20
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402087
+    species: 15
+    color: 3
+    florio1: 22
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402088
+    species: 15
+    color: 5
+    florio1: 9
+    florio2: 0
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402089
+    species: 15
+    color: 6
+    florio1: 8
+    florio2: 9
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402090
+    species: 15
+    color: 7
+    florio1: 4
+    florio2: 9
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402091
+    species: 15
+    color: 9
+    florio1: 9
+    florio2: 20
+    growthDuration: 3
+    harvestAmount: 5
+  - itemId: 402092
+    species: 16
+    color: 3
+    florio1: 9
+    florio2: 16
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402093
+    species: 16
+    color: 5
+    florio1: 11
+    florio2: 13
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402094
+    species: 16
+    color: 6
+    florio1: 9
+    florio2: 17
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402095
+    species: 16
+    color: 7
+    florio1: 4
+    florio2: 9
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402096
+    species: 16
+    color: 9
+    florio1: 12
+    florio2: 13
+    growthDuration: 4
+    harvestAmount: 4
+  - itemId: 402097
+    species: 17
+    color: 1
+    florio1: 9
+    florio2: 14
+    growthDuration: 1
+    harvestAmount: 7
+  - itemId: 402098
+    species: 17
+    color: 2
+    florio1: 10
+    florio2: 22
+    growthDuration: 1
+    harvestAmount: 7
+  - itemId: 402099
+    species: 17
+    color: 3
+    florio1: 9
+    florio2: 11
+    growthDuration: 1
+    harvestAmount: 7
+  - itemId: 402100
+    species: 17
+    color: 8
+    florio1: 3
+    florio2: 13
+    growthDuration: 1
+    harvestAmount: 7
+  - itemId: 402101
+    species: 17
+    color: 9
+    florio1: 3
+    florio2: 12
+    growthDuration: 1
+    harvestAmount: 7

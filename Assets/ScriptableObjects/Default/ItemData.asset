@@ -1,0 +1,1263 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56dec4bdd9ed114a90539e29a1151db, type: 3}
+  m_Name: ItemData
+  m_EditorClassIdentifier: 
+  items:
+  - itemId: 201001
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB0A1\uC740 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 0
+  - itemId: 201002
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB3D9 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201003
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uCCA0 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201004
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC740 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201005
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uAE08 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201006
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uD50C\uB798\uD2F0\uB118 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201007
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201008
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC624\uB9AC\uD560\uCF58 \uAD2D\uC774"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201009
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB0A1\uC740 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 0
+  - itemId: 201010
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB3D9 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201011
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uCCA0 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201012
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC740 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201013
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uAE08 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201014
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uD50C\uB798\uD2F0\uB118 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201015
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201016
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC624\uB9AC\uD560\uCF58 \uBB3C\uBFCC\uB9AC\uAC1C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201017
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB0A1\uC740 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 0
+  - itemId: 201018
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB3D9 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201019
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uCCA0 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201020
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC740 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201021
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uAE08 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201022
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uD50C\uB798\uD2F0\uB118 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201023
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201024
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC624\uB9AC\uD560\uCF58 \uB9DD\uCE58"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201025
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB0A1\uC740 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 0
+  - itemId: 201026
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB3D9 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201027
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uCCA0 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201028
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC740 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201029
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uAE08 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201030
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uD50C\uB798\uD2F0\uB118 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201031
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201032
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC624\uB9AC\uD560\uCF58 \uB0AB"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201033
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB0A1\uC740 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 0
+  - itemId: 201034
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uB3D9 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201035
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uCCA0 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 201036
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC740 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201037
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uAE08 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201038
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uD50C\uB798\uD2F0\uB118 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201039
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 2
+  - itemId: 201040
+    mainType: 2
+    subType: 201
+    stackLimit: 1
+    itemName: "\uC624\uB9AC\uD560\uCF58 \uB3C4\uB07C"
+    description: 
+    spriteAddress: 
+    price: 1
+  - itemId: 402001
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uAC70\uBCA0\uB77C"
+    description: 
+    spriteAddress: 
+    price: 80
+  - itemId: 402002
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uAC70\uBCA0\uB77C"
+    description: 
+    spriteAddress: 
+    price: 80
+  - itemId: 402003
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uAC70\uBCA0\uB77C"
+    description: 
+    spriteAddress: 
+    price: 80
+  - itemId: 402004
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uAC70\uBCA0\uB77C"
+    description: 
+    spriteAddress: 
+    price: 80
+  - itemId: 402005
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uAC70\uBCA0\uB77C"
+    description: 
+    spriteAddress: 
+    price: 80
+  - itemId: 402006
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402007
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402008
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402009
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402010
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402011
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uAD6D\uD654"
+    description: 
+    spriteAddress: 
+    price: 60
+  - itemId: 402012
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uB378\uD53C\uB284"
+    description: 
+    spriteAddress: 
+    price: 150
+  - itemId: 402013
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uB378\uD53C\uB284"
+    description: 
+    spriteAddress: 
+    price: 150
+  - itemId: 402014
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uB378\uD53C\uB284"
+    description: 
+    spriteAddress: 
+    price: 150
+  - itemId: 402015
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uB378\uD53C\uB284"
+    description: 
+    spriteAddress: 
+    price: 150
+  - itemId: 402016
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402017
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402018
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402019
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402020
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402021
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402022
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uB77C\uB10C\uD058\uB7EC\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402023
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uB9AC\uC2DC\uC548\uC154\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 110
+  - itemId: 402024
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uB9AC\uC2DC\uC548\uC154\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 110
+  - itemId: 402025
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uB9AC\uC2DC\uC548\uC154\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 110
+  - itemId: 402026
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uB9AC\uC2DC\uC548\uC154\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 110
+  - itemId: 402027
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uB9AC\uC2DC\uC548\uC154\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 110
+  - itemId: 402028
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402029
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402030
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402031
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402032
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uAC80\uC740 \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402033
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uBC31\uD569"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402034
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402035
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402036
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402037
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402038
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402039
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uC218\uAD6D"
+    description: 
+    spriteAddress: 
+    price: 170
+  - itemId: 402040
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402041
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402042
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402043
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402044
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402045
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uC544\uB124\uBAA8\uB124"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402046
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uC791\uC57D"
+    description: 
+    spriteAddress: 
+    price: 250
+  - itemId: 402047
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uC791\uC57D"
+    description: 
+    spriteAddress: 
+    price: 250
+  - itemId: 402048
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uC791\uC57D"
+    description: 
+    spriteAddress: 
+    price: 250
+  - itemId: 402049
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uC791\uC57D"
+    description: 
+    spriteAddress: 
+    price: 250
+  - itemId: 402050
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402051
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402052
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402053
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402054
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402055
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402056
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402057
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uAC80\uC740 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402058
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402059
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBB34\uC9C0\uAC1C \uC7A5\uBBF8"
+    description: 
+    spriteAddress: 
+    price: 90
+  - itemId: 402060
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402061
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402062
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402063
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uCD08\uB85D \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402064
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402065
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402066
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uCE74\uB124\uC774\uC158"
+    description: 
+    spriteAddress: 
+    price: 50
+  - itemId: 402067
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402068
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402069
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402070
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402071
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uAC80\uC740 \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402072
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uCF54\uC2A4\uBAA8\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 25
+  - itemId: 402073
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402074
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402075
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402076
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402077
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402078
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uAC80\uC740 \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402079
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uD2A4\uB9BD"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402080
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uD504\uB9AC\uC9C0\uC544"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402081
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uD504\uB9AC\uC9C0\uC544"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402082
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uD504\uB9AC\uC9C0\uC544"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402083
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uD504\uB9AC\uC9C0\uC544"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402084
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uD504\uB9AC\uC9C0\uC544"
+    description: 
+    spriteAddress: 
+    price: 45
+  - itemId: 402085
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402086
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402087
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402088
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402089
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402090
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402091
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uD788\uC544\uC2E0\uC2A4"
+    description: 
+    spriteAddress: 
+    price: 55
+  - itemId: 402092
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uC5F0\uAF43"
+    description: 
+    spriteAddress: 
+    price: 115
+  - itemId: 402093
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD30C\uB780 \uC5F0\uAF43"
+    description: 
+    spriteAddress: 
+    price: 115
+  - itemId: 402094
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBCF4\uB77C \uC5F0\uAF43"
+    description: 
+    spriteAddress: 
+    price: 115
+  - itemId: 402095
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBD84\uD64D \uC5F0\uAF43"
+    description: 
+    spriteAddress: 
+    price: 115
+  - itemId: 402096
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uC5F0\uAF43"
+    description: 
+    spriteAddress: 
+    price: 115
+  - itemId: 402097
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uBE68\uAC04 \uD574\uBC14\uB77C\uAE30"
+    description: 
+    spriteAddress: 
+    price: 30
+  - itemId: 402098
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uC8FC\uD669 \uD574\uBC14\uB77C\uAE30"
+    description: 
+    spriteAddress: 
+    price: 30
+  - itemId: 402099
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uB178\uB780 \uD574\uBC14\uB77C\uAE30"
+    description: 
+    spriteAddress: 
+    price: 30
+  - itemId: 402100
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uAC80\uC740 \uD574\uBC14\uB77C\uAE30"
+    description: 
+    spriteAddress: 
+    price: 30
+  - itemId: 402101
+    mainType: 4
+    subType: 402
+    stackLimit: 999
+    itemName: "\uD558\uC580 \uD574\uBC14\uB77C\uAE30"
+    description: 
+    spriteAddress: 
+    price: 30
+  - itemId: 301001
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 1
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301002
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 1
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301003
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 1
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301004
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 1
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301005
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 1
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301006
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 2
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301007
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 2
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301008
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 2
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301009
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 2
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301010
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 2
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301011
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 3
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301012
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 3
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301013
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 3
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301014
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 3
+    description: 
+    spriteAddress: 
+    price: 100
+  - itemId: 301015
+    mainType: 3
+    subType: 301
+    stackLimit: 999
+    itemName: 3
+    description: 
+    spriteAddress: 
+    price: 100

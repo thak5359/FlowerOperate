@@ -63,6 +63,7 @@ public class ItemBlobBaker : EditorWindow
                 ItemBaseData itemBaseData => BakeItemBaseData(itemBaseData),
                 FlowerItemData flowerItemData => BakeFlowerItemData(flowerItemData),
                 GearItemData gearItemData => BakeGearItemData(gearItemData),
+                FertilizerItemData fertilizerItemData => BakeFertilizerItemData(fertilizerItemData),
                 _ => Unsupported(target)
             };
 
@@ -205,6 +206,42 @@ public class ItemBlobBaker : EditorWindow
         }
     }
 
+    private bool BakeFertilizerItemData(FertilizerItemData so)
+    {
+        if (so == null)
+            return false;
+
+        ValidateFertilizerItemData(so);
+
+        var builder = new BlobBuilder(Allocator.Temp);
+
+        try
+        {
+            ref FertilizerItemBlobDatas root = ref builder.ConstructRoot<FertilizerItemBlobDatas>();
+            BlobBuilderArray<FertilizerItemBlobData> arrayBuilder = builder.Allocate(ref root.Items, so.Count);
+
+            for (int i = 0; i < so.Count; i++)
+            {
+                FertilizerItemAuthoringData source = so.Get(i);
+
+                arrayBuilder[i] = new FertilizerItemBlobData
+                {
+                    ItemId = source.itemId,
+                    FertilizerType = source.gearType,
+                    Level = source.level
+                };
+            }
+
+            SaveToBlob<FertilizerItemBlobDatas>(builder, so.name);
+            Debug.Log($"<color=green>[ItemBlobBaker]</color> FertilizerItemData 베이킹 완료: {so.name}");
+            return true;
+        }
+        finally
+        {
+            builder.Dispose();
+        }
+    }
+
     private void SaveToBlob<T>(BlobBuilder builder, string fileName) where T : unmanaged
     {
         EnsureDirectory();
@@ -333,6 +370,26 @@ public class ItemBlobBaker : EditorWindow
             if (item.maxDurability <= 0)
             {
                 Debug.LogWarning($"[GearItemData] MaxDurability가 0 이하입니다. SO: {so.name}, ItemId: {item.itemId}, MaxDurability: {item.maxDurability}");
+            }
+        }
+    }
+
+    private static void ValidateFertilizerItemData(FertilizerItemData so)
+    {
+        HashSet<int> ids = new();
+
+        for (int i = 0; i < so.Count; i++)
+        {
+            FertilizerItemAuthoringData item = so.Get(i);
+
+            if (item.itemId <= 0)
+            {
+                Debug.LogWarning($"[FertilizerItemData] 유효하지 않은 ItemId. SO: {so.name}, Index: {i}, ItemId: {item.itemId}");
+            }
+
+            if (!ids.Add(item.itemId))
+            {
+                Debug.LogError($"[FertilizerItemData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
             }
         }
     }

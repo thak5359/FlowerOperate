@@ -11,7 +11,7 @@ public class ItemBaseData : ScriptableObject
     [SerializeField] private List<ItemBaseAuthoringData> items = new();
 
     public IReadOnlyList<ItemBaseAuthoringData> Items => items;
-
+    public void setItems(List<ItemBaseAuthoringData> items) => this.items = items;
     public int Count => items?.Count ?? 0;
 
     public ItemBaseAuthoringData Get(int index)
