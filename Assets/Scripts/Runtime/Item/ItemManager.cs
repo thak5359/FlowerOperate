@@ -79,7 +79,21 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         }
 
         byte[] bytes = await File.ReadAllBytesAsync(path, cancellationToken);
-        return BlobAssetReference<T>.Create(bytes);
+        
+        // BlobAssetReference.Write로 저장된 파일은 36바이트의 헤더를 포함합니다.
+        // (32바이트 헤더 + 4바이트 패딩)
+        const int headerSize = 36;
+        if (bytes.Length <= headerSize)
+        {
+            Debug.LogError($"[ItemManager] Blob 파일이 유효하지 않거나 비어 있습니다: {path}");
+            return default;
+        }
+
+        // 헤더를 제외한 실제 데이터 영역만 추출하여 Blob 생성
+        byte[] data = new byte[bytes.Length - headerSize];
+        Array.Copy(bytes, headerSize, data, 0, data.Length);
+        
+        return BlobAssetReference<T>.Create(data);
     }
 
     public GameItem CreateItem(int itemId, int count)
