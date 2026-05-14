@@ -6,7 +6,6 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
-    private ItemManager _itemManager;
 
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
@@ -14,13 +13,11 @@ public class SaveLoadManager : MonoBehaviour
     [Inject]
     public void Construct(
         PlayerOwnItemDataManager storageParent,
-        PlotManager plot,
-        ItemManager itemManager
+        PlotManager plot
     )
     {
         _storageManager = storageParent;
         _plotManager = plot;
-        _itemManager = itemManager;
 
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }
