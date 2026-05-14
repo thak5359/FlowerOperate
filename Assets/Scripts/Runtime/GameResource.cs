@@ -12,8 +12,8 @@ public interface IGameResource
     /// <summary>
     /// Execute when SaveLoadManager Load Data. 
     /// </summary>
-    UniTask OnLoadAsync()
+    public async UniTask OnLoadAsync()
     {
-        return UniTask.CompletedTask;
+        
     }
 }

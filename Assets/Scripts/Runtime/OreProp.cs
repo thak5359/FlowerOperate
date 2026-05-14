@@ -8,11 +8,12 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 [MemoryPackable]
+[Serializable]
 public partial struct OreData
 {
     public Vector3 Position { get; private set; }
     public readonly int OreId { get; init; }
-    public int Duration { get; set; }
+    [field: SerializeField] public int Duration { get; set; }
 
     public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
@@ -35,7 +36,7 @@ public partial struct OreData
 public class OreProp : Prop
 {
     // 어떤 광물 종류, 광물 아이템... 파편.. 인벤토리에는 들어가지 않는 아이템 타입이고, 어떤 금속이고, 어떤 아이템을 가지고..
-    private OreData _oreData = new(0);
+    [SerializeField] private OreData _oreData = new(0);
 
     public ref OreData oreData => ref _oreData;
 

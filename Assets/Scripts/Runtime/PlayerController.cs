@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -27,10 +26,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Range(1, 2)]
     public float charTimePerPhase = 1.75f;
     bool isCharging = false;
-
-    [Header("캐릭터 이미지 칸 [앞] [옆] [뒤]")]
-    [SerializeField] public List<Sprite> CharacterSprite = new(3);
-
 
 
     //이동 로직 처리 중 사용할 속도/캐싱용 Vec3
@@ -76,11 +71,6 @@ public class PlayerController : MonoBehaviour, IInteractable
         _useAreaManager = input_UseAreaManager;
     }
 
-    void Start()
-    {
-        sprRenderer.sprite = CharacterSprite[0];
-    }
-
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -92,7 +82,6 @@ public class PlayerController : MonoBehaviour, IInteractable
 
         interactableArea.localPosition = cachedPosition;
         interactableArea.localRotation = cachedRotation;
-
     }
 
     void Move()
@@ -108,7 +97,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         anim.SetBool(isMovingHash, true);
 
 
-        // 차징 중에 행동 불가능하게 만
+        // Can't Move While Charging    
         if (isCharging == true)
         {
             anim.SetBool(isMovingHash, false);
@@ -120,37 +109,29 @@ public class PlayerController : MonoBehaviour, IInteractable
         }
 
 
-
+        // Caculate Velocity
         targetVelocity.Set(moveInput.x * moveSpeed, rigidBody.velocity.y, moveInput.y * moveSpeed);
 
+        // Move and set sprite according to Input
         rigidBody.velocity = targetVelocity;
         if (moveInput != Vector2.zero)
         {
-
             if (moveInput.x != 0)
             {
-
-                switchSpr(1);
-
-
                 sprRenderer.flipX = (moveInput.x > 0) ? true : false;
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
 
                 anim.SetFloat(MoveXHash, heading.x);
                 anim.SetFloat(MoveYHash, .0f);
-
             }
             else
             {
-                _ = (moveInput.y > 0) ? switchSpr(2) : switchSpr(0);
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
 
                 bool isHeadingFront = (moveInput.y > 0) ? true : false;
 
                 anim.SetFloat(MoveYHash, heading.y);
                 anim.SetFloat(MoveXHash, .0f);
-
-
             }
             locateInteractable();
         }
@@ -226,25 +207,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     }
 
 
-
-
-    /// <summary>
-    /// [Front: 0] [Side : 1] [Rear : 2]
-    /// </summary>
-    /// <param name="idx"></param>
-    int switchSpr(int idx)
-    {
-        if (CharacterSprite.Count < 3)
-        {
-            Debug.Log($"CharacerSprite.count is {CharacterSprite.Count}!");
-            return -1;
-        }
-
-        if (sprRenderer.sprite != CharacterSprite[idx])
-            sprRenderer.sprite = CharacterSprite[idx];
-        return 0;
-    }
-
     private void locateInteractable()
     {
         if (heading == Vector2.right)
@@ -270,5 +232,4 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
         _useAreaManager.CancelCharging();
     }
-
 }

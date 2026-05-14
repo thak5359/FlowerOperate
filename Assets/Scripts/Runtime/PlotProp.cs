@@ -303,4 +303,11 @@ public class PlotProp : Prop, IGameResource
         this.transform.position = data.position;
         _plotData = data;
     }
+
+
+    public async override UniTask OnLoadAsync()
+    {
+        GrowUp();
+    }
+
 }
