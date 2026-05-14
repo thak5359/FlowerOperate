@@ -23,7 +23,7 @@ public class GameLifetimeScope : LifetimeScope
            .AsSelf()
            .As<IAsyncStartable>()
            .As<IDisposable>();
-
+        builder.Register<SaveLoadManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterComponent<PlayerInput>(playerInput);
     }
 }

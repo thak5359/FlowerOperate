@@ -23,7 +23,7 @@ public class EventManager : MonoBehaviour
     {
         if(today == null)
         {
-            today = Tuple.Create((ProgressManager.getPlayDay() - 1) / 28 + 1, (ProgressManager.getPlayDay() - 1) % 28 + 1);
+            today = Tuple.Create((ProgressManager.getPlayedDayOnGameSystem() - 1) / 28 + 1, (ProgressManager.getPlayedDayOnGameSystem() - 1) % 28 + 1);
         }
 
         Debug.Log(today.Item1 + ", " +  today.Item2);
