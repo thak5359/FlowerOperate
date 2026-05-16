@@ -79,7 +79,7 @@ public class GlobalItemViewer : EditorWindow
             EditorGUILayout.LabelField("MainType", item.MainType.ToString());
             EditorGUILayout.LabelField("SubType", item.SubType.ToString());
             EditorGUILayout.LabelField("StackLimit", item.StackLimit.ToString());
-            EditorGUILayout.LabelField("Price", item.Price.ToString());
+            EditorGUILayout.LabelField("Price", item.RefundPrice.ToString());
             EditorGUILayout.LabelField("Sprite", item.SpriteAddress.ToString());
             EndItemBox();
         }

@@ -16,7 +16,6 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public int grade { get; set; }
-    public int bonusAmount { get; set; }
 
     [field: SerializeField] public FertilizerGrade fertilizerGrade { get; set; }
 
@@ -35,16 +34,6 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
 
         fertilizerGrade = input_fertilizerGrade;
         fertilizerType = input_fertilizerType;
-    }
-
-    public PlotData(Vector3 input_pos)
-    {
-        Position = input_pos;
-        Id = 0;
-        grade = 0;
-        Growth = FlowerGrowth.Unknown;
-        State = FlowerState.Unknown;
-        bonusAmount = 0;
     }
     public PlotData(int input_flowerId)
     {
