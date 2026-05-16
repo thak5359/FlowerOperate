@@ -27,8 +27,7 @@ public partial class Prop : MonoBehaviour, IGameResource
         if (DisplaySprite != null) AddressableManager.ReleaseAsset(DisplaySprite);
     }
 
-    public virtual async UniTask OnLoadAsync()
+    public virtual async UniTask OnLoadAsync(SaveDatas save)
     {
-       
     }
 }
