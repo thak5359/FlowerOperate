@@ -11,7 +11,7 @@ public class FlowerItemData : ScriptableObject
     [SerializeField] private List<FlowerItemAuthoringData> flowers = new();
 
     public IReadOnlyList<FlowerItemAuthoringData> Flowers => flowers;
-
+    public void setFlowers(List<FlowerItemAuthoringData> list) => flowers = list;
     public int Count => flowers?.Count ?? 0;
 
     public FlowerItemAuthoringData Get(int index)

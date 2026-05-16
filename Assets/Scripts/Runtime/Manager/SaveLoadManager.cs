@@ -4,23 +4,19 @@ using VContainer;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private PlayerItemDataManager _storageManager;
+    private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
-    private ItemManager _itemManager;
 
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
 
     [Inject]
     public void Construct(
-        PlayerItemDataManager storageParent,
-        PlotManager plot,
-        ItemManager itemManager
+        PlayerOwnItemDataManager storageParent
     )
     {
         _storageManager = storageParent;
-        _plotManager = plot;
-        _itemManager = itemManager;
+        _plotManager = PlotManager.Instance;
 
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }
@@ -30,7 +26,7 @@ public class SaveLoadManager : MonoBehaviour
         if (_storageManager == null || _plotManager == null)
             return;
 
-        int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayDay() : 0;
+        int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayedDayOnGameSystem() : 0;
 
         saveData = new SaveDatas(
             day,
@@ -55,19 +51,19 @@ public class SaveLoadManager : MonoBehaviour
         Debug.Log($"데이터 저장 완료: {SAVE_FILE_NAME}");
     }
 
-    public void Load(string file)
+    public void Load(string file = null)
     {
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
 
         SaveDatas loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
 
-        if (loadedData == null)
+        if (loadedData == null && saveData == null)
         {
             Debug.LogWarning($"로드할 데이터가 없습니다: {SAVE_FILE_NAME}");
             return;
         }
 
-        saveData = loadedData;
+        saveData = (loadedData != null) ? loadedData : saveData;
 
         if (_storageManager != null)
             _storageManager.Load(saveData);

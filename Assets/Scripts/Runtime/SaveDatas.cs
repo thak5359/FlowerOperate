@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+[MemoryPackable]
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]
 public partial class SaveDatas

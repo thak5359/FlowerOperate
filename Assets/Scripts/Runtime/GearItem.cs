@@ -22,9 +22,9 @@ public partial class GearItem : GameItem
     {
     }
 
-    public override async UniTask OnLoadAsync()
+    public override async UniTask OnLoadAsync(IPropData propData = default)
     {
-        await base.OnLoadAsync();
+        await base.OnLoadAsync(propData);
 
         if (!GlobalItemDB.TryGetGear(Id, out GearItemBlobData gearData))
         {

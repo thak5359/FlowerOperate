@@ -10,7 +10,7 @@ public class FertilizerItemData : ScriptableObject
     [SerializeField] private List<FertilizerItemAuthoringData> fertilizers = new();
 
     public IReadOnlyList<FertilizerItemAuthoringData> Fertilizers => fertilizers;
-
+    public void setFertilizers(List<FertilizerItemAuthoringData> fertilizers) => this.fertilizers = fertilizers;
     public int Count => fertilizers?.Count ?? 0;
 
     public FertilizerItemAuthoringData Get(int index)
@@ -31,6 +31,7 @@ public struct FertilizerItemAuthoringData
     [Header("비료 레벨")]
     public FertilizerGrade level;
 }
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct FertilizerItemBlobData
 {
     public int ItemId;

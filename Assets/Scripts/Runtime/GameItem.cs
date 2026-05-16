@@ -39,7 +39,7 @@ public partial class GameItem : IGameResource
         Id = id;
         Count = count;
     }
-    public virtual async UniTask OnLoadAsync()
+    public virtual async UniTask OnLoadAsync(IPropData propData = default)
     {
         if (!GlobalItemDB.IsInitialized)
         {

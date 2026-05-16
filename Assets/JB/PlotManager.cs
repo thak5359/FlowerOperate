@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
+using VContainer;
+using Cysharp.Threading.Tasks;
 
 public class PlotManager : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class PlotManager : MonoBehaviour
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
+    private SaveLoadManager _saveLoadManager;
     public static PlotManager Instance { get; private set; }
 
     private void Awake()
@@ -31,6 +34,12 @@ public class PlotManager : MonoBehaviour
         RefreshPlotCache();
     }
 
+    [Inject]
+    public void Construct(SaveLoadManager saveLoadManager)
+    {
+        _saveLoadManager = saveLoadManager;
+    }
+
     /// <summary>
     /// 하이러키의 플롯 오브젝트들을 수집하고 캐싱합니다.
     /// </summary>
@@ -38,7 +47,7 @@ public class PlotManager : MonoBehaviour
     {
         foreach (var plot in this.GetComponentsInChildren<PlotProp>())
         {
-            plotDataDict.Add(plot.Id, plot.GetSaveData());
+            plotDataDict.Add(plot.Id, plot.GetPlotData());
         }
     }
 
@@ -51,10 +60,8 @@ public class PlotManager : MonoBehaviour
         {
             var plot = Instantiate(plotPrefab, this.transform);
             var plotComponent = plot.GetComponent<PlotProp>();
-                plotComponent.LoadFromData(data.Value);
-            plotComponent.OnLoadAsync();
 
-            
+            plotComponent.OnLoadAsync(data.Value).Forget();
         }
     }
 
@@ -63,5 +70,4 @@ public class PlotManager : MonoBehaviour
         plotDataDict.Clear();
         RefreshPlotCache();
     }
-
 }
