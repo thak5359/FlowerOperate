@@ -1,7 +1,7 @@
-public enum GearGrade
+public enum OreType 
 {
     Unknown = 0,
-    Old = 1,          // 낡은
+    Stone = 1,          // 낡은
     Copper = 2,       // 동
     Iron = 3,         // 철
     Silver = 4,       // 은
