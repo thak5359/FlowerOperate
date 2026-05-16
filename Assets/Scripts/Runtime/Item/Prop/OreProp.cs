@@ -8,23 +8,23 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 [MemoryPackable]
-public partial struct OreData
+public partial struct OreData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int OreId { get; init; }
+    public readonly int Id { get; init; }
     public int Duration { get; set; }
 
     public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
-        OreId = input_OreId;
+        Id = input_OreId;
         Duration = input_Duration;
     }
 
     public OreData(int input_OreID)
     {
         Position = default;
-        OreId = input_OreID;
+        Id = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;

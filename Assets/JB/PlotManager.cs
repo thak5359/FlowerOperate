@@ -4,14 +4,9 @@ using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
 using VContainer;
+using Cysharp.Threading.Tasks;
 
-public interface IPlotManager
-{
-    SerializedDictionary<int, PlotData> GetPlotDataDict { get; }
-    void Load(SaveDatas saveDatas);
-}
-
-public class PlotManager : MonoBehaviour, IPlotManager
+public class PlotManager : MonoBehaviour
 {
     // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
@@ -66,7 +61,7 @@ public class PlotManager : MonoBehaviour, IPlotManager
             var plot = Instantiate(plotPrefab, this.transform);
             var plotComponent = plot.GetComponent<PlotProp>();
 
-            plotComponent.OnLoadAsync(saveDatas);
+            plotComponent.OnLoadAsync(data.Value).Forget();
         }
     }
 
@@ -75,5 +70,4 @@ public class PlotManager : MonoBehaviour, IPlotManager
         plotDataDict.Clear();
         RefreshPlotCache();
     }
-
 }
