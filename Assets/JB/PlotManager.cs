@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
+using VContainer;
 
-public class PlotManager : MonoBehaviour
+public interface IPlotManager
+{
+    SerializedDictionary<int, PlotData> GetPlotDataDict { get; }
+    void Load(SaveDatas saveDatas);
+}
+
+public class PlotManager : MonoBehaviour, IPlotManager
 {
     // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
@@ -15,6 +22,7 @@ public class PlotManager : MonoBehaviour
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
+    private SaveLoadManager _saveLoadManager;
     public static PlotManager Instance { get; private set; }
 
     private void Awake()
@@ -31,6 +39,12 @@ public class PlotManager : MonoBehaviour
         RefreshPlotCache();
     }
 
+    [Inject]
+    public void Construct(SaveLoadManager saveLoadManager)
+    {
+        _saveLoadManager = saveLoadManager;
+    }
+
     /// <summary>
     /// 하이러키의 플롯 오브젝트들을 수집하고 캐싱합니다.
     /// </summary>
@@ -38,7 +52,7 @@ public class PlotManager : MonoBehaviour
     {
         foreach (var plot in this.GetComponentsInChildren<PlotProp>())
         {
-            plotDataDict.Add(plot.Id, plot.GetSaveData());
+            plotDataDict.Add(plot.Id, plot.GetPlotData());
         }
     }
 
@@ -52,7 +66,7 @@ public class PlotManager : MonoBehaviour
             var plot = Instantiate(plotPrefab, this.transform);
             var plotComponent = plot.GetComponent<PlotProp>();
 
-            plotComponent.OnLoadAsync();
+            plotComponent.OnLoadAsync(saveDatas);
         }
     }
 

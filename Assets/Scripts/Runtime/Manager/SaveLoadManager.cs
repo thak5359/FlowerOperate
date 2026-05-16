@@ -12,12 +12,11 @@ public class SaveLoadManager : MonoBehaviour
 
     [Inject]
     public void Construct(
-        PlayerOwnItemDataManager storageParent,
-        PlotManager plot
+        PlayerOwnItemDataManager storageParent
     )
     {
         _storageManager = storageParent;
-        _plotManager = plot;
+        _plotManager = PlotManager.Instance;
 
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }

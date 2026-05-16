@@ -1,0 +1,72 @@
+<mxfile host="65bd71144e">
+    <diagram id="SaveLoadStructure" name="SaveLoadManager Structure">
+        <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                
+                <!-- SaveLoadManager -->
+                <mxCell id="2" value="&lt;b&gt;SaveLoadManager&lt;/b&gt;&lt;br/&gt;(MonoBehaviour)&lt;hr/&gt;- _storageManager: PlayerOwnItemDataManager&lt;br/&gt;- _plotManager: PlotManager&lt;br/&gt;+ saveData: SaveDatas&lt;hr/&gt;+ Construct(storage, plot) [Inject]&lt;br/&gt;+ Save(file: string)&lt;br/&gt;+ Load(file: string)&lt;br/&gt;- SyncSaveData()&lt;br/&gt;- NormalizeBinaryFileName(file)" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=110;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="280" y="240" width="280" height="190" as="geometry"/>
+                </mxCell>
+
+                <!-- SaveDatas -->
+                <mxCell id="3" value="&lt;b&gt;SaveDatas&lt;/b&gt;&lt;br/&gt;(Serializable/MemoryPackable)&lt;hr/&gt;- saveTime: string&lt;br/&gt;- playDay: int&lt;br/&gt;- itemData: ItemInstantData&lt;br/&gt;- plotDataList: List&amp;lt;PlotSaveEntry&amp;gt;&lt;hr/&gt;+ SaveDatas(day, itemData, plotData, ...)&lt;br/&gt;+ GetItemData: ItemInstantData&lt;br/&gt;+ GetPlotData: SerializedDictionary" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=90;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="520" width="260" height="150" as="geometry"/>
+                </mxCell>
+
+                <!-- PlayerOwnItemDataManager -->
+                <mxCell id="4" value="&lt;b&gt;PlayerOwnItemDataManager&lt;/b&gt;&lt;br/&gt;(MonoBehaviour)&lt;hr/&gt;+ GetData: ItemInstantData&lt;hr/&gt;+ Load(saveDatas: SaveDatas)&lt;br/&gt;+ AddItem(...)&lt;br/&gt;+ RemoveItem(...)" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=70;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="270" width="220" height="120" as="geometry"/>
+                </mxCell>
+
+                <!-- PlotManager -->
+                <mxCell id="5" value="&lt;b&gt;PlotManager&lt;/b&gt;&lt;br/&gt;(MonoBehaviour)&lt;hr/&gt;+ GetPlotDataDict: SerializedDictionary&lt;hr/&gt;+ Load(saveDatas: SaveDatas)&lt;br/&gt;+ SyncItemState()" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=70;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="270" width="220" height="120" as="geometry"/>
+                </mxCell>
+
+                <!-- FileDataHandler -->
+                <mxCell id="6" value="&lt;b&gt;FileDataHandler&lt;/b&gt;&lt;br/&gt;(Static Utility)&lt;hr/&gt;+ SaveBinary&amp;lt;T&amp;gt;(data, file)&lt;br/&gt;+ LoadBinary&amp;lt;T&amp;gt;(file)" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="60" width="200" height="90" as="geometry"/>
+                </mxCell>
+
+                <!-- ProgressManager -->
+                <mxCell id="7" value="&lt;b&gt;ProgressManager&lt;/b&gt;&lt;br/&gt;(Static Utility)&lt;hr/&gt;+ getDay()&lt;br/&gt;+ getPlayedDayOnGameSystem()" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="80" width="200" height="80" as="geometry"/>
+                </mxCell>
+
+                <!-- Connections -->
+                <mxCell id="8" value="Uses/Injected" style="endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Uses/Injected" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="5">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Manages" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="3">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="IO Operations" style="endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="6">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Get Day Info" style="endArrow=classic;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="7">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Distribute Data" style="endArrow=classic;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="3" target="4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="130" y="550" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="130" y="633"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="Distribute Data" style="endArrow=classic;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="3" target="5">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="710" y="633"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

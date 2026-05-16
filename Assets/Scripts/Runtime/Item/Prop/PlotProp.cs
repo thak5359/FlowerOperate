@@ -281,7 +281,7 @@ public class PlotProp : Prop, IGameResource
             FlowerSpriteRenderer.sprite = null;
         }
     }
-    public PlotData GetSaveData()
+    public PlotData GetPlotData()
     {
         return _plotData;
     }
@@ -289,5 +289,10 @@ public class PlotProp : Prop, IGameResource
     {
         this.transform.position = data.position;
         _plotData = data;
+    }
+
+    public override async UniTask OnLoadAsync(SaveDatas save)
+    {
+
     }
 }
