@@ -9,6 +9,7 @@ using VContainer;
 using static Constant;
 
 [MemoryPackable]
+[Serializable ]
 public partial struct PlotData : IPropData // 저장용 데이터 바구니
 {
     public Vector3 Position { get; private set; }
@@ -74,6 +75,7 @@ public class PlotProp : Prop
 
         plotData.SetPosition(this.transform.position);
         plotData.State = FlowerState.Vivid;
+        PlotManager.Instance.GetPlotDataDict.Add(this.Id, plotData);
     }
 
     public override void OnDisable()
