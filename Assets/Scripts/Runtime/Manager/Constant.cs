@@ -17,49 +17,9 @@ public class Constant
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_FLOWER_SEED;
     
 
-
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
     public const ushort MAX_SLOT_INVENTORY = 50;
-
-    //#region 아이템 ID 범위
-
-    //public const short USABLE_START_ID = 100;
-    //public const short COMMON_START_ID = 1;
-    //public const short FLOWER_START_ID = 700;
-
-    //public const short USABLE_END_ID = 40;
-    //public const short COMMON_END_ID = 300;
-    //public const short FLOWER_END_ID = 1000;
-
-    //public const short QUALITY_FERTILIZER_START_ID = 600;
-    //public const short BOUNTIFUL_FERTILIZER_START_ID = 605;
-    //public const short ALLINONE_FERTILIZER_START_ID = 610;
-
-    //public const short ALLINONE_FERTILIZER_END_ID = 614;
-
-
-    //#endregion
-
-    //#region  장비 아이템 ID 범위
-
-    //public const short MIN_HOE_ID = 0;
-    //public const short MAX_HOE_ID = 7;
-
-    //public const short MIN_WATERINGCAN_ID = 8;
-    //public const short MAX_WATERINGCAN_ID = 15;
-
-    //public const short MIN_HAMMER_ID = 16;
-    //public const short MAX_HAMMER_ID = 23;
-
-    //public const short MIN_SICKLE_ID = 24;
-    //public const short MAX_SICKLE_ID = 31;
-
-    //public const short MIN_AXE_ID = 32;
-    //public const short MAX_AXE_ID = 39;
-
-
-
     //#endregion
 
     #region 액션 맵, 스키마 이름
@@ -126,7 +86,16 @@ public class Constant
 
     #endregion
 
-    public const int MAX_GROWTH = 4;
+    #region 플레이어 Anim 상태 정의명
+
+    public const string ANIM_X = "MoveX";
+    public const string ANIM_Y = "MoveY"; 
+    public const string ANIM_MOVING = "IsMoving";
+
+    #endregion
+
+
+
 
 }
 

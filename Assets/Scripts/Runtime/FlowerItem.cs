@@ -22,9 +22,9 @@ public partial class FlowerItem : GameItem
     {
         OnLoadAsync().Forget();
     }
-    public override async UniTask OnLoadAsync()
+    public override async UniTask OnLoadAsync(IPropData propData = default)
     {
-        await base.OnLoadAsync();
+        await base.OnLoadAsync(propData);
 
         if (!GlobalItemDB.TryGetFlower(Id, out FlowerItemBlobData flowerData))
         {

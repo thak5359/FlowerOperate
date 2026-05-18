@@ -4,6 +4,7 @@ using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
 using VContainer;
+using Cysharp.Threading.Tasks;
 
 public interface IPlotManager
 {
@@ -66,7 +67,7 @@ public class PlotManager : MonoBehaviour, IPlotManager
             var plot = Instantiate(plotPrefab, this.transform);
             var plotComponent = plot.GetComponent<PlotProp>();
 
-            plotComponent.OnLoadAsync(saveDatas);
+            plotComponent.OnLoadAsync(data.Value).Forget();
         }
     }
 
@@ -75,5 +76,4 @@ public class PlotManager : MonoBehaviour, IPlotManager
         plotDataDict.Clear();
         RefreshPlotCache();
     }
-
 }

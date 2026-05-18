@@ -1,5 +1,5 @@
 /// <summary>
-/// ChargeTime Enum's value is quarter of Real Chargetime
+/// Real Chargetime is quarter of ChargeTime Enum's value  
 /// </summary>
 public enum GearChargeTime
 {

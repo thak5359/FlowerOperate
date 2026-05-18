@@ -69,7 +69,8 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         GlobalEventManager.InvokeDataChanged();
     }
 
-    public virtual void Swap(ContainerType startPoint, ContainerType endPoint, int startIdx, int endIdx, int startBoxNum = 0, int endBoxNum = 0)
+    public virtual void Swap(ContainerType startPoint, ContainerType endPoint, 
+    int startIdx, int endIdx, int startBoxNum = 0, int endBoxNum = 0)
     {
         _Data.SwapItem(startPoint, endPoint, startIdx, endIdx, startBoxNum, endBoxNum);
         GlobalEventManager.InvokeDataChanged();

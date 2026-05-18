@@ -5,5 +5,5 @@ public enum GearType
     WateringCan = 2,
     Hammer = 3,
     Sickle =4,
-    Axes = 5
+    Axe = 5
 }

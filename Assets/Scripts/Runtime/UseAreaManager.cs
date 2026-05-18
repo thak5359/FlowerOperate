@@ -20,6 +20,12 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
     #region 영역범위 벡터 리스트
 
+
+    static readonly List<Vector3> AreaOrigin = new List<Vector3>()
+{
+    new Vector3(1f, 0f, 0f),
+};
+
     #region 괭이, 물뿌리개, 망치, 소모품 영역범위
     static readonly List<Vector3> AreaA1 = new List<Vector3>()
 {
@@ -485,12 +491,14 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         if (_isCharging) return;
         if ( !IsReady)
         {
-            Debug.Log($"차징 시작 불가: 준비 상태 \n plot 프리펩 로드 = {isPlotPrefabLoaded} \n UseArea 프리펩 로드 = {isUseAreaPrefabLoaded} \n 오브젝트 풀 로드 = {isPoolInitialized}");
+            Debug.Log($"차징 시작 불가: 준비 상태 \n " +
+                $"plot 프리펩 로드 = {isPlotPrefabLoaded} \n " +
+                $"UseArea 프리펩 로드 = {isUseAreaPrefabLoaded} \n " +
+                $"오브젝트 풀 로드 = {isPoolInitialized}");
             return;
         }
 
         _isCharging = true;
-
         _originTransform = playerTransform; // 참조 저장
 
         if (heading == Vector2.zero) // 방향이 없는 경우 기본값으로 정면으로 설정
@@ -511,7 +519,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
         elapsed = Time.time - _chargeStartTime;
 
-        int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 5);
+        int level = Mathf.Min((int)(elapsed / charTimePerPhase) + 1, 6);
 
         List<Vector3> rawOffsets = GetAreaList(_hotbar.PointingSlot+1, level);
 
@@ -533,8 +541,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             // 4. 화면에 영역 표시
             UpdateVisualArea(worldPositions);
         }
-
-
     }
 
     private void UpdateVisualArea(List<Vector3> worldPositions)
@@ -588,7 +594,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     {
         _isCharging = false;
         ClearActiveArea();
-        Debug.Log("캐릭터가 메모리에서 해제됨. 강제로 차징이 취소되었습니다.");
+        Debug.Log("캐릭터가 메모리에서 해제됨. 강제로 차징을 해제합니다.");
     }
 
     // 3Vec을 회전시키는 용도의 함수
@@ -662,11 +668,12 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         {
             return level switch
             {
-                1 => AreaA1,
-                2 => AreaA2,
-                3 => AreaA3,
-                4 => AreaA4,
-                5 => AreaA5,
+                1 => AreaOrigin,
+                2 => AreaA1,
+                3 => AreaA2,
+                4 => AreaA3,
+                5 => AreaA4,
+                6 => AreaA5,
                 _ => null
             };
         }

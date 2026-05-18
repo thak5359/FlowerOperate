@@ -12,5 +12,5 @@ public interface IGameResource
     /// <summary>
     /// Execute when SaveLoadManager Load Data. 
     /// </summary>
-    UniTask OnLoadAsync(SaveDatas save);
+    UniTask OnLoadAsync(IPropData propData);
 }

@@ -1,7 +1,6 @@
 public enum GearGrade
 {
     Unknown = 0,
-
     Old = 1,          // 낡은
     Copper = 2,       // 동
     Iron = 3,         // 철

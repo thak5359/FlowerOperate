@@ -25,6 +25,7 @@ public struct ItemBaseAuthoringData
 {
     [Header("식별자")]
     public int itemId;
+    public int refundPrice;
 
     [Header("분류")]
     public ItemMainType mainType;
@@ -54,7 +55,7 @@ public struct ItemBaseBlobData
     public FixedString128Bytes Description;
     public FixedString128Bytes SpriteAddress;
 
-    public int Price;
+    public int RefundPrice;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

@@ -5,23 +5,23 @@ using TreeEditor;
 using UnityEngine;
 
 [MemoryPackable]
-public partial struct TreeData
+public partial struct TreeData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int TreeId { get; init; }
+    public readonly int Id { get; init; }
     public int Duration { get; set; }
 
     public TreeData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
-        TreeId = input_OreId;
+        Id = input_OreId;
         Duration = input_Duration;
     }
 
     public TreeData(int input_OreID)
     {
         Position = default;
-        TreeId = input_OreID;
+        Id = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Cysharp.Threading.Tasks;
 using MemoryPack;
 using System;
@@ -8,57 +9,59 @@ using VContainer;
 using static Constant;
 
 [MemoryPackable]
-public partial struct PlotData // 저장용 데이터 바구니
+[Serializable ]
+public partial struct PlotData : IPropData // 저장용 데이터 바구니
 {
-    public Vector3 position { get; private set; }
-    public int flowerId { get; set; }
+    public Vector3 Position { get; private set; }
+    public int Id { get; set; }
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public int grade { get; set; }
-    public int bonusAmount { get; set; }
 
+    [field: SerializeField] public FertilizerGrade fertilizerGrade { get; set; }
 
-    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, int input_bonusAmount, FlowerGrowth input_growth, FlowerState input_state)
+    [field: SerializeField] public FertilizerType fertilizerType { get; set; }
+
+   
+
+    public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state, FertilizerType input_fertilizerType, FertilizerGrade input_fertilizerGrade)
     {
-        position = input_pos;
-        flowerId = input_flowerId;
+        Position = input_pos;
+        Id = input_flowerId;
         grade = input_grade;
 
         Growth = input_growth;
         State = input_state;
-        bonusAmount = input_bonusAmount;
-    }
 
-    public PlotData(Vector3 input_pos)
-    {
-        position = input_pos;
-        flowerId = 0;
-        grade = 0;
-        Growth = FlowerGrowth.Unknown;
-        State = FlowerState.Unknown;
-        bonusAmount = 0;
+        fertilizerGrade = input_fertilizerGrade;
+        fertilizerType = input_fertilizerType;
     }
     public PlotData(int input_flowerId)
     {
-        position = default;
-        flowerId = input_flowerId;
+        Position = default;
+        Id = input_flowerId;
         grade = 0;
 
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Unknown;
-        bonusAmount = 0;
+
+
+        fertilizerType = FertilizerType.Unknown;
+        fertilizerGrade = FertilizerGrade.Unknown;
     }
-    public void SetPosition(Vector3 input_position) => position = input_position;
+    public void SetPosition(Vector3 input_position) => Position = input_position;
 }
 
 [Serializable]
-public class PlotProp : Prop, IGameResource
+public class PlotProp : Prop
 {
-    private PlotData _plotData = new(0);
-    public ref PlotData plotData => ref _plotData;
+     [SerializeField]
+    public PlotData _plotData = new(0);
+     public ref PlotData plotData => ref _plotData; //ref For access _plotData directly
+
+
 
     [SerializeField] public SpriteRenderer FlowerSpriteRenderer;
-
     [field: SerializeField] public Sprite flowerSprite { get; private set; }
 
     int bonusAmount = 0; // 보너스 양   
@@ -72,6 +75,7 @@ public class PlotProp : Prop, IGameResource
 
         plotData.SetPosition(this.transform.position);
         plotData.State = FlowerState.Vivid;
+        PlotManager.Instance.GetPlotDataDict.Add(this.Id, plotData);
     }
 
     public override void OnDisable()
@@ -89,16 +93,22 @@ public class PlotProp : Prop, IGameResource
             await changeFlowerSpr();
         }
     }
+
     #region Method for Farming
-    public FarmActionResult Sowing(int seedID) // 씨뿌리기
+    /// <summary>
+    /// call When sow Seed
+    /// </summary>
+    /// <param name="seedID"></param>
+    /// <returns></returns>
+    public FarmActionResult Sowing(int seedID) 
     {
         try
         {
-            if (plotData.flowerId > 0)
+            if (plotData.Id > 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
-            else if (plotData.flowerId == 0)
+            else if (plotData.Id == 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
@@ -161,7 +171,7 @@ public class PlotProp : Prop, IGameResource
         try
         {
             Debug.Log("Runing has been called");
-            if (plotData.flowerId == 0)
+            if (plotData.Id == 0)
             {
                 Destroy(this.gameObject);
             }
@@ -169,8 +179,10 @@ public class PlotProp : Prop, IGameResource
             {
                 AddressableManager.ReleaseAsset(flowerSprite);
                 flowerSprite = default;
-                plotData.flowerId = default;
+                plotData.Id = default;
                 plotData.State = FlowerState.Unknown;
+                FlowerSpriteRenderer.sprite = null;
+
             }
             return new FarmActionResult(FarmActionResult.ResultType.Success);
         }
@@ -227,7 +239,7 @@ public class PlotProp : Prop, IGameResource
                 isWatered = false;
                 isDried = false;
 
-                if (plotData.Growth < FlowerGrowth.Bloom && plotData.flowerId != 0) plotData.Growth++;
+                if (plotData.Growth < FlowerGrowth.Bloom && plotData.Id != 0) plotData.Growth++;
             }
             else
             {
@@ -265,14 +277,14 @@ public class PlotProp : Prop, IGameResource
         if (flowerSprite != null)
             AddressableManager.ReleaseAsset(flowerSprite);
 
-        if (_plotData.flowerId != 0 && _plotData.Growth == FlowerGrowth.Unknown)
+        if (_plotData.Id != 0 && _plotData.Growth == FlowerGrowth.Unknown)
         {
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_FLOWER_SEED);
             FlowerSpriteRenderer.sprite = flowerSprite;
         }
-        else if (_plotData.flowerId != 0)
+        else if (_plotData.Id != 0)
         {
-            FixedString128Bytes address = GlobalItemDB.GetSpriteAddress(_plotData.flowerId);
+            FixedString128Bytes address = GlobalItemDB.GetSpriteAddress(_plotData.Id);
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
             FlowerSpriteRenderer.sprite = flowerSprite;
         }
@@ -287,12 +299,14 @@ public class PlotProp : Prop, IGameResource
     }
     public void LoadFromData(PlotData data)
     {
-        this.transform.position = data.position;
+        this.transform.position = data.Position;
         _plotData = data;
     }
 
-    public override async UniTask OnLoadAsync(SaveDatas save)
+    public override async UniTask OnLoadAsync(IPropData propData)
     {
-
+        base.OnLoadAsync(propData).Forget();
+        this.plotData = (PlotData)propData;
+        this.transform.position = plotData.Position;
     }
 }
