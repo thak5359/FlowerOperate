@@ -12,7 +12,7 @@ public class JBLifetimeScope : LifetimeScope
             .AsImplementedInterfaces()
             .AsSelf();
         builder.RegisterComponentInHierarchy<PlotManager>()
-            .As<PlayerOwnItemDataManager>()
+            .AsImplementedInterfaces()
             .AsSelf();
         builder.RegisterComponentInHierarchy<HotbarManager>().AsSelf();
     }

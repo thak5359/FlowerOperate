@@ -12,11 +12,30 @@ public class SaveLoadManager : MonoBehaviour
 
     [Inject]
     public void Construct(
-        PlayerOwnItemDataManager storageParent
+        PlayerOwnItemDataManager storageParent,
+        IPlotManager plotManager
     )
     {
         _storageManager = storageParent;
-        _plotManager = PlotManager.Instance;
+        _plotManager = (PlotManager)plotManager;
+
+        if (_storageManager == null)
+        {
+            Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
+        }
+        else
+        {
+            Debug.Log($"SaveLoadManager: storageParent injected successfully. Type: {_storageManager.GetType().Name}");
+        }
+
+        if (_plotManager == null)
+        {
+            Debug.LogError("<color=red>SaveLoadManager: plotManager (IPlotManager) is NULL during Construct!</color>");
+        }
+        else
+        {
+            Debug.Log($"SaveLoadManager: plotManager injected successfully. Type: {_plotManager.GetType().Name}");
+        }
 
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }
@@ -24,7 +43,10 @@ public class SaveLoadManager : MonoBehaviour
     private void SyncSaveData()
     {
         if (_storageManager == null || _plotManager == null)
+        {
+            Debug.Log("SaveLoadManager : 매니저 둘 중에 하나 null임");
             return;
+        }
 
         int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayedDayOnGameSystem() : 0;
 

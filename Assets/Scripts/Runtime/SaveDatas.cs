@@ -10,14 +10,14 @@ using UnityEngine;
 [StructLayout(LayoutKind.Sequential)]
 public partial class SaveDatas
 {
-    [SerializeField] private string saveTime;
-    [SerializeField] private int playDay;
-    [SerializeField] private int money;
-    [SerializeField] private int reputation;
+    [MemoryPackInclude, SerializeField] private string saveTime;
+    [MemoryPackInclude, SerializeField] private int playDay;
+    [MemoryPackInclude, SerializeField] private int money;
+    [MemoryPackInclude, SerializeField] private int reputation;
 
-    [SerializeField] private ItemInstantData itemData;
+    [MemoryPackInclude, SerializeField] private ItemInstantData itemData;
 
-    [SerializeField] private List<PlotSaveEntry> plotDataList = new();
+    [MemoryPackInclude, SerializeField] private List<PlotSaveEntry> plotDataList = new();
 
     [MemoryPackIgnore]
     private SerializedDictionary<int, PlotData> plotDataDictCache;
@@ -34,7 +34,7 @@ public partial class SaveDatas
     {
         get
         {
-            if (plotDataList == null)
+            if (plotDataDictCache == null)
                 plotDataDictCache = ToSerializedDictionary(plotDataList);
 
             return ref plotDataDictCache;
