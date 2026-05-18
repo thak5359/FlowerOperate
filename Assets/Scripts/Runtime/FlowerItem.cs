@@ -17,7 +17,6 @@ public partial class FlowerItem : GameItem
     protected FlowerItem()
     {
     }
-
     public FlowerItem(int id, int count) : base(id, count)
     {
         OnLoadAsync().Forget();

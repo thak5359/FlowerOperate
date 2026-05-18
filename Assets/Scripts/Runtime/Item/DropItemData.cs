@@ -27,7 +27,7 @@ public class DropItemData : MonoBehaviour
 
     public void SetData(ItemObjectData data) => this.data = data;
     public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
-    public void Upgrade(FertilizerGrade fertilizer) => GetData.RandomUpgrade(ref GetDataRef, fertilizer);
+    
 
     void OnTriggerEnter(Collider other)
     {
@@ -92,13 +92,6 @@ public partial struct ItemObjectData /// ItemInstantData
         return false;
     }
 
-    public void RandomUpgrade(ref ItemObjectData item, FertilizerGrade fertilizer)
-    {
-        if(UnityEngine.Random.Range(0, 5) < (int)fertilizer)
-        {
-            item.grade++;
-        }
-    }
 
     public ItemObjectData(ushort itemID = 0, short amount = 0, short duration = 0, byte grade = 0)
     {

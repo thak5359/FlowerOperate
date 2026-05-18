@@ -1,9 +1,6 @@
-using Fungus;
 using MemoryPack;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -35,7 +32,7 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         GlobalEventManager.NextDay += CalculateMoneyInSellingBox;
     }
 
-    void OnDisable()
+    void OnDisable() // IDisposable로 전환
     {
         GlobalEventManager.OnItemPickedUp -= AddItem;
         GlobalEventManager.NextDay -= CalculateMoneyInSellingBox;
@@ -59,17 +56,20 @@ public class PlayerOwnItemDataManager : MonoBehaviour
     {
         if (type == ContainerType.INVENTORY)
         {
-            List<ItemObjectData> emptyList = new List<ItemObjectData>(new ItemObjectData[50]);
-            _Data.SetItemList(type, emptyList);
+            _Data.SetItemList(type, ItemInstantData.CreateEmptyItemList(50));
+        }
+        else if (type == ContainerType.SELLING)
+        {
+            _Data.SetItemList(type, ItemInstantData.CreateEmptyItemList(50));
         }
         else
         {
-            var boxes = _Data.GetStorageBoxes;
+            _Data.SetItemList(type, ItemInstantData.CreateEmptyItemList(50), boxNum);
         }
         GlobalEventManager.InvokeDataChanged();
     }
 
-    public virtual void Swap(ContainerType startPoint, ContainerType endPoint, 
+    public virtual void Swap(ContainerType startPoint, ContainerType endPoint,
     int startIdx, int endIdx, int startBoxNum = 0, int endBoxNum = 0)
     {
         _Data.SwapItem(startPoint, endPoint, startIdx, endIdx, startBoxNum, endBoxNum);
@@ -77,19 +77,15 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         Debug.Log($"{startPoint}[{startIdx}] <-> {endPoint}[{endIdx}] 아이템 스왑 (Box: {startBoxNum}/{endBoxNum})");
     }
 
-    public virtual void EngraftItem(ref ItemObjectData a, ref ItemObjectData b)
+    public virtual void EngraftItem(GameItem a, GameItem b)
     {
-        if (a.CheckFull() || b.CheckEmpty() || a.GetItemID != b.GetItemID || a.GetGrade != b.GetGrade)
+        if (!ItemInstantData.CanStack(a, b))
             return;
 
-        int space = 100 - a.GetAmount;
-        int amountToMove = Math.Min(space, (int)b.GetAmount);
+        int amountToMove = Mathf.Min(a.GetRemainStackSpace(), b.Count);
 
-        a.SetAmount((short)(a.GetAmount + amountToMove));
-        b.SetAmount((short)(b.GetAmount - amountToMove));
-
-        if (b.CheckEmpty())
-            b = default;
+        a.Count += amountToMove;
+        b.Count -= amountToMove;
 
         GlobalEventManager.InvokeDataChanged();
     }
@@ -101,29 +97,28 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         _Data.SortList(type, boxNum);
 
         var list = _Data.GetItemList(type, boxNum);
+        if (list == null) return;
+
         for (int i = 0; i < list.Count - 1; i++)
         {
-            ItemObjectData itemL = list[i];
-            ItemObjectData itemR = list[i + 1];
+            EngraftItem(list[i], list[i + 1]);
 
-            EngraftItem(ref itemL, ref itemR);
-
-            list[i] = itemL;
-            list[i + 1] = itemR;
+            if (ItemInstantData.IsEmpty(list[i + 1]))
+                list[i + 1] = null;
         }
         _Data.SortList(type, boxNum);
         GlobalEventManager.InvokeDataChanged();
     }
 
-    protected virtual void AddItem(ItemObjectData item) => AddItem(currentType, item, _currentBoxIndex);
+    protected virtual void AddItem(GameItem item) => AddItem(currentType, item, _currentBoxIndex);
 
-    public virtual void AddItem(ContainerType type, ItemObjectData item, int boxNum = 0)
+    public virtual void AddItem(ContainerType type, GameItem item, int boxNum = 0)
     {
         _Data.AddItem(type, item, boxNum);
         GlobalEventManager.InvokeDataChanged();
     }
 
-    public bool RemoveItem(ContainerType type, ushort id, byte grade, int count, int boxNum = 0)
+    public bool RemoveItem(ContainerType type, int id, byte grade, int count, int boxNum = 0)
     {
         if (!HasItem(type, id, grade, count, boxNum)) return false;
 
@@ -132,7 +127,7 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             var item = list[i];
-            if (item.GetItemID == id && item.GetGrade == grade)
+            if (item.Id == id && item.GetGrade == grade)
             {
                 int toTake = Mathf.Min(remainingToRemove, item.GetAmount);
                 item.SetAmount((short)(item.GetAmount - toTake));
@@ -162,13 +157,16 @@ public class PlayerOwnItemDataManager : MonoBehaviour
         var sellingBox = _Data.GetItemList(ContainerType.SELLING);
         if (sellingBox == null) return;
 
-        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice((short)item.GetItemID) * item.GetAmount);
-        _Data.SetItemList(ContainerType.SELLING, new List<ItemObjectData>(new ItemObjectData[50]));
+        int totalMoney = sellingBox
+            .Where(item => !ItemInstantData.IsEmpty(item))
+            .Sum(item => GlobalItemDB.GetPrice((short)item.Id) * item.Count);
+
+        _Data.SetItemList(ContainerType.SELLING, ItemInstantData.CreateEmptyItemList(50));
         _Data.AddMoney(totalMoney);
 
         GlobalEventManager.InvokeDataChanged();
         Debug.Log($"하루가 지나 판매 완료. 총 수익: {totalMoney}골드");
-    } 
+    }
 }
 
 [MemoryPackable]
@@ -178,17 +176,47 @@ public partial struct ItemInstantData
 {
     [MemoryPackInclude, SerializeField] private int money;
     [MemoryPackInclude, SerializeField] private int reputation;
-    [MemoryPackInclude, SerializeField] private List<ItemObjectData> invenList;
+    [MemoryPackInclude, SerializeField] private List<GameItem> invenList;
     [MemoryPackInclude, SerializeField] private List<StorageBox> storageBoxList;
 
-    [MemoryPackIgnore] private List<ItemObjectData> sellingBox;
+    [MemoryPackIgnore] private List<GameItem> sellingBox;
+
+
+    public static List<GameItem> CreateEmptyItemList(int size)
+    {
+        return Enumerable.Repeat<GameItem>(null, size).ToList();
+    }
+
+    public void EnsureSlotLists()
+    {
+        invenList ??= CreateEmptyItemList(50);
+        sellingBox ??= new List<GameItem>();
+        storageBoxList ??= new List<StorageBox>();
+    }
+
 
     // 인벤토리나 특정 창고 박스를 IList 형태로 반환 (배열과 리스트 공통 처리)
-    public IList<ItemObjectData> GetItemList(ContainerType type, int boxNum = 0)
+    public IList<GameItem> GetItemList(ContainerType type, int boxNum = 0)
     {
-        if (type == ContainerType.INVENTORY) return invenList;
-        if (type == ContainerType.STORAGE) return storageBoxList[boxNum].BoxSlots;
-        if (type == ContainerType.SELLING) return sellingBox;
+        EnsureSlotLists();
+
+        if (type == ContainerType.INVENTORY)
+            return invenList;
+
+        if (type == ContainerType.SELLING)
+            return sellingBox;
+
+        if (type == ContainerType.STORAGE)
+        {
+            if (boxNum < 0 || boxNum >= storageBoxList.Count)
+            {
+                Debug.LogError($"<b>[에러(GetItemList)]</b> StorageBox index out of range: {boxNum}");
+                return null;
+            }
+
+            return storageBoxList[boxNum].BoxSlots;
+        }
+
         return null;
     }
 
@@ -196,90 +224,132 @@ public partial struct ItemInstantData
     public int GetReputation => this.reputation;
     public List<StorageBox> GetStorageBoxes => storageBoxList;
 
-    
 
-    public void SetItemList(ContainerType type, List<ItemObjectData> itemList)
+
+    public void SetItemList(ContainerType type, List<GameItem> itemList, int boxNum = 0)
     {
-        if (type == ContainerType.INVENTORY) invenList = itemList;
-        else if (storageBoxList != null && storageBoxList.Count > 0) storageBoxList[0].SetBoxSlots(itemList.ToArray());
+        EnsureSlotLists();
+
+        if (type == ContainerType.INVENTORY)
+        {
+            invenList = itemList;
+            return;
+        }
+
+        if (type == ContainerType.SELLING)
+        {
+            sellingBox = itemList;
+            return;
+        }
+
+        if (type == ContainerType.STORAGE)
+        {
+            if (boxNum < 0 || boxNum >= storageBoxList.Count)
+            {
+                Debug.LogError($"<b>[에러(SetItemList)]</b> StorageBox index out of range: {boxNum}");
+                return;
+            }
+
+            StorageBox box = storageBoxList[boxNum];
+            box.SetBoxSlots(itemList);
+            storageBoxList[boxNum] = box;
+        }
     }
 
     public void AddMoney(int money) => this.money += money;
 
-    public void SwapItem(ContainerType startPoint, ContainerType endPoint, int startIdx, int endIdx, int startBoxNum = 0, int endBoxNum = 0)
+    public void SwapItem(
+         ContainerType startPoint,
+         ContainerType endPoint,
+         int startIdx,
+         int endIdx,
+         int startBoxNum = 0,
+         int endBoxNum = 0)
     {
-        IList<ItemObjectData> target1 = GetItemList(startPoint, startBoxNum);
-        IList<ItemObjectData> target2 = GetItemList(endPoint, endBoxNum);
+        IList<GameItem> target1 = GetItemList(startPoint, startBoxNum);
+        IList<GameItem> target2 = GetItemList(endPoint, endBoxNum);
 
-        if (target1 == null || target2 == null || target1.Count <= startIdx || target2.Count <= endIdx)
+        if (target1 == null || target2 == null ||
+            startIdx < 0 || endIdx < 0 ||
+            startIdx >= target1.Count || endIdx >= target2.Count)
         {
-            Debug.LogError("<b> [에러(Swap)] </b> 인덱스가 범위를 초과했거나 대상 리스트가 없음");
+            Debug.LogError("<b>[에러(Swap)]</b> 인덱스가 범위를 초과했거나 대상 리스트가 없음");
             return;
         }
 
-        ItemObjectData temp = target1[startIdx];
-        target1[startIdx] = target2[endIdx];
-        target2[endIdx] = temp;
+        (target1[startIdx], target2[endIdx]) = (target2[endIdx], target1[startIdx]);
     }
 
-    public void AddItem(ContainerType type, ItemObjectData item, int boxNum = 0)
+    public void AddItem(ContainerType type, GameItem item, int boxNum = 0)
     {
-        IList<ItemObjectData> targetList = GetItemList(type, boxNum);
-        if (targetList == null) return;
+        if (IsEmpty(item))
+            return;
 
-        // 1. 같은 아이템이 있고 겹칠 수 있는 슬롯 확인
+        IList<GameItem> targetList = GetItemList(type, boxNum);
+        if (targetList == null)
+            return;
+
+        // 1. 같은 아이템의 기존 스택에 먼저 합침.
         for (int i = 0; i < targetList.Count; i++)
         {
-            var curItem = targetList[i];
-            if (curItem.GetItemID == item.GetItemID && !curItem.CheckFull())
-            {
-                curItem.AddAmount(item.GetAmount);
-                targetList[i] = curItem;
-                if(curItem.GetAmount + item.GetAmount > Constant.MAX_COUNT_INVENTORY)
-                {
-                    var remainder = item;
-                    remainder.SetAmount((short)(curItem.GetAmount + item.GetAmount - Constant.MAX_COUNT_INVENTORY));
-                    AddItem(type, remainder, boxNum);
-                }
+            GameItem curItem = targetList[i];
+
+            if (!CanStack(curItem, item))
+                continue;
+
+            int moveAmount = Mathf.Min(curItem.GetRemainStackSpace(), item.Count);
+            curItem.Count += moveAmount;
+            item.Count -= moveAmount;
+
+            if (item.Count <= 0)
                 return;
-            }
         }
 
-        // 2. 빈 슬롯 확인
+        // 2. 빈 슬롯에 남은 아이템을 넣음.
         for (int i = 0; i < targetList.Count; i++)
         {
-            if (targetList[i].GetItemID == 0)
-            {
-                targetList[i] = item;
-                return;
-            }
-        }
+            if (!IsEmpty(targetList[i]))
+                continue;
 
-        if(type == ContainerType.INVENTORY)
-        {
-            targetList.Add(item);
+            targetList[i] = item;
             return;
         }
 
+        // 3. 인벤토리는 5x10 고정 크기라 임의 확장하지 않음.
         Debug.Log($"[{type} Box:{boxNum}] 슬롯 가득 참");
     }
 
     public void SortList(ContainerType type, int boxNum = 0)
     {
-        var targetList = GetItemList(type, boxNum);
-        if (targetList == null) return;
+        IList<GameItem> targetList = GetItemList(type, boxNum);
+        if (targetList == null)
+            return;
 
-        var sorted = targetList
-            .OrderByDescending(item => item.GetItemID != 0)
-            .ThenBy(item => item.GetItemID)
-            .ThenByDescending(item => item.GetAmount)
+        List<GameItem> sorted = targetList
+            .OrderByDescending(item => !IsEmpty(item))
+            .ThenBy(item => IsEmpty(item) ? int.MaxValue : item.Id)
+            .ThenByDescending(item => IsEmpty(item) ? 0 : item.Count)
             .ToList();
 
         for (int i = 0; i < targetList.Count; i++)
-        {
             targetList[i] = sorted[i];
-        }
     }
+
+    public static bool IsEmpty(GameItem item)
+    {
+        return item == null || item.Id <= 0 || item.Count <= 0;
+    }
+
+    public static bool CanStack(GameItem a, GameItem b)
+    {
+        return !IsEmpty(a)
+            && !IsEmpty(b)
+            && a.Id == b.Id
+            && a.GetRemainStackSpace() > 0;
+    }
+
+
+
 }
 
 [MemoryPackable]

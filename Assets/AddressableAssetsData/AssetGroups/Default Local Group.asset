@@ -23,6 +23,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Plot
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 782308e3efbf4ca4ca2e4e12b4257a26
+    m_Address: Spr_F.psd
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7bb275bace6ad02409e5e122621180b3
     m_Address: Spr_Plot_Default
     m_ReadOnly: 0

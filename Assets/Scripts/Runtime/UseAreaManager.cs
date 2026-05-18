@@ -14,7 +14,6 @@ public interface IUseItem
     public void Fire();
 }
 
-    
 
 public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {

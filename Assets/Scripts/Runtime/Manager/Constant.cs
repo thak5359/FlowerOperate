@@ -94,8 +94,7 @@ public class Constant
 
     #endregion
 
-
-
+    public const float CHUNK_SIZE = 15.0f;
 
 }
 

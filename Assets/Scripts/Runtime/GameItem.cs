@@ -34,11 +34,14 @@ public partial class GameItem : IGameResource
     {
     }
 
-    public GameItem(int id, int count)
+    public GameItem(int id, int count = 1)
     {
         Id = id;
         Count = count;
     }
+
+
+
     public virtual async UniTask OnLoadAsync(IPropData propData = default)
     {
         if (!GlobalItemDB.IsInitialized)
@@ -78,5 +81,41 @@ public partial class GameItem : IGameResource
     public int GetRemainStackSpace()
     {
         return Mathf.Max(0, StackLimit - Count);
+    }
+
+    public void AddAmount(short input_amount)
+    {
+        if (this.Count + input_amount > Constant.MAX_COUNT_INVENTORY)
+        {
+            this.Count = Constant.MAX_COUNT_INVENTORY;
+            return;
+        }
+        this.Count += input_amount;
+    }
+
+
+    public bool CheckEmpty()
+    {
+        if (this.Count <= 0)
+            return true;
+        return false;
+    }
+
+    public bool CheckFull()
+    {
+        // 스택이 Full인지 Zero인지 판단하는 함수
+        if (Count == Constant.MAX_COUNT_INVENTORY)
+            return true;
+        return false;
+    }
+
+    public void AddCount(short amount)
+    {
+        if (this.Count + amount > Constant.MAX_COUNT_INVENTORY)
+        {
+            this.Count = Constant.MAX_COUNT_INVENTORY;
+            return;
+        }
+        this.Count += amount;
     }
 }
