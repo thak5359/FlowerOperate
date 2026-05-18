@@ -6,7 +6,7 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
-
+    private SaveDatas loadedData;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
 
@@ -76,14 +76,9 @@ public class SaveLoadManager : MonoBehaviour
     public void Load(string file = null)
     {
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
-
-        SaveDatas loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
-
-        if (loadedData == null && saveData == null)
-        {
-            Debug.LogWarning($"로드할 데이터가 없습니다: {SAVE_FILE_NAME}");
-            return;
-        }
+        
+        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) || loadedData == null)
+            loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
 
         saveData = (loadedData != null) ? loadedData : saveData;
 

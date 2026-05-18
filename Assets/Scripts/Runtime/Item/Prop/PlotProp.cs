@@ -309,6 +309,7 @@ public class PlotProp : Prop
 
     public override async UniTask OnLoadAsync(IPropData propData)
     {
+        PlotManager.Instance.GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
         base.OnLoadAsync(propData).Forget();
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
