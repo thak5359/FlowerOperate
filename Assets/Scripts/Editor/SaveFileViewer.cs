@@ -112,9 +112,9 @@ public class SaveFileViewer : EditorWindow
                     EditorGUI.indentLevel++;
                     foreach (var slot in box.BoxSlots)
                     {
-                        if (slot.GetItemID != 0)
+                        if (slot.Id != 0)
                         {
-                            EditorGUILayout.LabelField($"Item ID: {slot.GetItemID}, Amount: {slot.GetAmount}, Grade: {slot.GetGrade}");
+                            EditorGUILayout.LabelField($"Item ID: {slot.Id}, Amount: {slot.Count}, Name: {slot.ItemName}");
                         }
                     }
                     EditorGUI.indentLevel--;

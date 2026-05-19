@@ -310,7 +310,7 @@ public class PlotProp : Prop
     public override void OnLoadAsync(IPropData propData)
     {
         PlotManager.Instance.GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
-        base.OnLoadAsync(propData).Forget();
+        base.OnLoadAsync(propData);
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
     }
