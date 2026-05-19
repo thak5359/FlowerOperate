@@ -10,7 +10,7 @@ public partial class GearItem : GameItem
     [MemoryPackIgnore]public GearGrade Grade { get; set; }
     [MemoryPackIgnore] public GearType GearType { get; private set; }
     [MemoryPackIgnore] public GearMaxDuration MaxDurability { get; private set; }
-    [MemoryPackIgnore] public int Efficiency { get; private set; }
+    [MemoryPackIgnore] public GearEfficiency Efficiency { get; private set; }
     [MemoryPackIgnore] public ChargeInfo ChargeInfo { get; private set; }
 
     [MemoryPackConstructor]
@@ -24,9 +24,9 @@ public partial class GearItem : GameItem
         MaxDurability = input_MaxDuration;
     }
 
-    public override async UniTask OnLoadAsync(IPropData propData = default)
+    public override void OnLoadAsync(IPropData propData = default)
     {
-        await base.OnLoadAsync(propData);
+        base.OnLoadAsync(propData);
 
         if (!GlobalItemDB.TryGetGear(Id, out GearItemBlobData gearData))
         {
@@ -36,7 +36,7 @@ public partial class GearItem : GameItem
 
         GearType = gearData.GearType;
         MaxDurability = gearData.MaxDuration;
-        Efficiency = (int)gearData.Efficiency;
+        Efficiency = gearData.Efficiency;
 
         ChargeInfo = new ChargeInfo(
             GearValueConverter.ToSeconds(gearData.ChargeTime),

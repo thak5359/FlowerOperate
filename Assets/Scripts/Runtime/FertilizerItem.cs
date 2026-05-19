@@ -21,9 +21,9 @@ public partial class FertilizerItem : GameItem
     {
     }
 
-    public override async UniTask OnLoadAsync(IPropData propData = default)
+    public override void OnLoadAsync(IPropData propData = default)
     {
-        await base.OnLoadAsync(propData);
+        base.OnLoadAsync(propData);
 
         if (!GlobalItemDB.TryGetFertilizer(Id, out FertilizerItemBlobData FertilizerData))
         {

@@ -124,6 +124,23 @@ public class HotbarManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 현재 핫바에서 선택된 슬롯의 아이템을 반환합니다.
+    /// GameItem은 클래스(참조 타입)이므로 반환된 아이템의 데이터를 수정하면 인벤토리 원본 데이터에 그대로 반영돼요!
+    /// </summary>
+    public GameItem GetCurrentSelectedItem()
+    {
+        if (_itemDataManager == null) return null;
+        if (pointingSlot < 0 || slots == null || pointingSlot >= slots.Count) return null;
+
+        // 1. 현재 선택된 인벤토리 줄(세그먼트 10칸)을 구조체 뷰로 가져옵니다.
+        var currentSegment = _itemDataManager.GetInventorySegment(pointingInventoryArray);
+
+        // 2. 해당 줄에서 현재 가리키고 있는 슬롯의 아이템을 반환해요 (빈 슬롯이면 null이 반환됩니다).
+        return currentSegment[pointingSlot];
+    }
+
+
 
     // 수정할 위치: HotbarManager 스크립트 내부의 UpdateHotSlotItems 메서드 전체 수정
     // 변경 이유: 

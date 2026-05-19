@@ -20,11 +20,11 @@ public partial class FlowerItem : GameItem
     public FlowerItem(int id, int count, FlowerGrade grade = FlowerGrade.Lv0) : base(id, count)
     {
         Grade = grade;
-        OnLoadAsync().Forget();
+        OnLoadAsync();
     }
-    public override async UniTask OnLoadAsync(IPropData propData = default)
+    public override void OnLoadAsync(IPropData propData = default)
     {
-        await base.OnLoadAsync(propData);
+        base.OnLoadAsync(propData);
 
         if (!GlobalItemDB.TryGetFlower(Id, out FlowerItemBlobData flowerData))
         {
