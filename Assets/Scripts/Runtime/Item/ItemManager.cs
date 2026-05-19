@@ -96,7 +96,7 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         return BlobAssetReference<T>.Create(data);
     }
 
-    public GameItem CreateItem(int itemId, int count)
+    public GameItem CreateItem(int itemId, int count, FlowerGrade grade_F = FlowerGrade.Lv0, GearGrade grade_G = GearGrade.Old)
     {
         if (!GlobalItemDB.TryGetBase(itemId, out ItemBaseBlobData baseData))
         {
@@ -106,8 +106,8 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
 
         return baseData.SubType switch
         {
-            ItemSubType.Flower => new FlowerItem(itemId, count),
-            ItemSubType.Equipment => new GearItem(itemId, count),
+            ItemSubType.Flower => new FlowerItem(itemId, count, grade_F),
+            ItemSubType.Equipment => new GearItem(itemId, count, grade_G),
             ItemSubType.Fertilizer => new FertilizerItem(itemId, count),
             _ => new GameItem(itemId, count)
         };

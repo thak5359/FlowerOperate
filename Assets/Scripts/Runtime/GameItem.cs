@@ -38,6 +38,7 @@ public partial class GameItem : IGameResource
     {
         Id = id;
         Count = count;
+        OnLoadAsync().Forget();
     }
 
 
@@ -73,9 +74,33 @@ public partial class GameItem : IGameResource
 
     public bool CanStackWith(GameItem other)
     {
-        return other != null
-            && Id == other.Id
-            && Count < StackLimit;
+        if (other == null)
+            return false;
+
+        if (Id != other.Id)
+            return false;
+
+        if (Count >= StackLimit)
+            return false;
+
+        bool thisGradeManaged =
+            SubType == ItemSubType.Seed ||
+            SubType == ItemSubType.Flower;
+
+        bool otherGradeManaged =
+            other.SubType == ItemSubType.Seed ||
+            other.SubType == ItemSubType.Flower;
+
+        if (thisGradeManaged != otherGradeManaged)
+            return false;
+
+        if (!thisGradeManaged)
+            return true;
+
+        if (this is FlowerItem thisFlower && other is FlowerItem otherFlower)
+            return thisFlower.Grade == otherFlower.Grade;
+
+        return false;
     }
 
     public int GetRemainStackSpace()
@@ -92,7 +117,6 @@ public partial class GameItem : IGameResource
         }
         this.Count += input_amount;
     }
-
 
     public bool CheckEmpty()
     {

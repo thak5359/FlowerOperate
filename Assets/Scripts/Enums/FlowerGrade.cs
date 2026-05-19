@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class FlowerGrade : MonoBehaviour
+public enum FlowerGrade
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    Unknown = -1,
+    Lv0 = 0,
+    Lv1 = 1,
+    Lv2 = 2,
+    Lv3 = 3,
+    Lv4 = 4,
+    Lv5 = 5,
+    Lv6 = 6,
+    Lv7 = 7,
+    Lv8 = 8,
+    Lv9 = 9,
+    Lv10 = 10
 }

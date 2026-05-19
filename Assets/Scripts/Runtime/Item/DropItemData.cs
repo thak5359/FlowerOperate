@@ -1,50 +1,78 @@
 using Cysharp.Threading.Tasks;
-using Fungus;
 using MemoryPack;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DropItemData : MonoBehaviour
 {
-    [SerializeField]
-    ItemObjectData data;
-    [SerializeField]
-    GameItem _data;
-    [SerializeField]
-    int waitMilliSeconds = 1000;
+    [SerializeReference]
+    private GameItem data;
 
-    public ItemObjectData GetData => this.data;
-    public ref ItemObjectData GetDataRef => ref this.data;
-    public ushort GetItemID => data.GetItemID;
-    public short GetAmount => data.GetAmount;
-    public short GetDuration => data.GetDuration;
-    public byte GetGrade => data.GetGrade;
+    [SerializeField]
+    private int waitMilliSeconds = 1000;
 
-    public void SetData(ItemObjectData data) => this.data = data;
-    public void AddAmount(short amount) => data.SetAmount((short)(GetAmount + amount));
-    
+    private bool isPickingUp;
 
-    void OnTriggerEnter(Collider other)
+    public GameItem GetData => data;
+    public int GetItemId => data != null ? data.Id : 0;
+    public int GetCount => data != null ? data.Count : 0;
+
+    public FlowerGrade GetGrade
     {
-        if(other.CompareTag("Player"))
+        get
         {
-            Destroy(this.gameObject);
+            if (data is FlowerItem flowerItem)
+                return flowerItem.Grade;
+
+            return FlowerGrade.Unknown;
         }
+    }
+
+    public void SetData(GameItem data)
+    {
+        this.data = data;
+    }
+
+    public void AddAmount(int amount)
+    {
+        if (data == null)
+            return;
+
+        data.Count += amount;
+
+        if (data.Count < 0)
+            data.Count = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        if (isPickingUp)
+            return;
+
         DoOnTrigger().Forget();
     }
 
     private async UniTaskVoid DoOnTrigger()
     {
-        await UniTask.Delay(waitMilliSeconds);
-        Debug.Log("딜레이 끝!");
+        isPickingUp = true;
+
+        if (waitMilliSeconds > 0)
+            await UniTask.Delay(waitMilliSeconds);
+
+        if (data == null || data.Count <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         GlobalEventManager.InvokeItemPickedUp(data);
+        Destroy(gameObject);
     }
 }
+
 
 [MemoryPackable]
 [System.Serializable]

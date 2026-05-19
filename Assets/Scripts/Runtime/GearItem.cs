@@ -5,11 +5,11 @@ using UnityEngine;
 [MemoryPackable]
 public partial class GearItem : GameItem
 {
-    public int ReinforceLevel { get; set; }
-    public int CurrentDurability { get; set; }
 
+    [MemoryPackInclude]public int CurrentDurability { get; set; }
+    [MemoryPackIgnore]public GearGrade Grade { get; set; }
     [MemoryPackIgnore] public GearType GearType { get; private set; }
-    [MemoryPackIgnore] public int MaxDurability { get; private set; }
+    [MemoryPackIgnore] public GearMaxDuration MaxDurability { get; private set; }
     [MemoryPackIgnore] public int Efficiency { get; private set; }
     [MemoryPackIgnore] public ChargeInfo ChargeInfo { get; private set; }
 
@@ -18,8 +18,10 @@ public partial class GearItem : GameItem
     {
     }
 
-    public GearItem(int id, int count) : base(id, count)
+    public GearItem(int id, int count, GearGrade input_Grade = GearGrade.Old, GearMaxDuration input_MaxDuration = GearMaxDuration.Lv1) : base(id, count)
     {
+     Grade = input_Grade;
+        MaxDurability = input_MaxDuration;
     }
 
     public override async UniTask OnLoadAsync(IPropData propData = default)
@@ -33,7 +35,7 @@ public partial class GearItem : GameItem
         }
 
         GearType = gearData.GearType;
-        MaxDurability = (int)gearData.MaxDuration;
+        MaxDurability = gearData.MaxDuration;
         Efficiency = (int)gearData.Efficiency;
 
         ChargeInfo = new ChargeInfo(
@@ -41,7 +43,7 @@ public partial class GearItem : GameItem
             ((int)gearData.MaxCharge)
         );
 
-            CurrentDurability = MaxDurability;
+            CurrentDurability = (int)MaxDurability;
     }
 }
 /// <summary>

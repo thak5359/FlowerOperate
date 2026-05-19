@@ -5,23 +5,23 @@
         <ui:VisualElement name="GhostIcon" picking-mode="Ignore" style="flex-grow: 0; width: 68px; height: 68px; display: none; position: absolute;" />
         <ui:VisualElement name="Inventory__Container" style="flex-grow: 0; align-items: flex-start; align-self: center; flex-direction: column; width: 874px; height: 500px; position: absolute; left: 50%; top: 50%; right: 0%; bottom: 0%; justify-content: space-between; transform-origin: center; translate: -50% -50%; border-top-width: 0; border-bottom-width: 0; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px; margin-right: 0; margin-top: 0; margin-bottom: 0; margin-left: 0; border-right-width: 0; border-left-width: 0; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/Game_UI_StardewValley.png?fileID=21300000&amp;guid=0f04dac2a71701b4fb056ea2a01082f8&amp;type=3#Game_UI_StardewValley&quot;); display: flex; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
             <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="CloseButton" class="closeButton" style="background-color: rgba(188, 188, 188, 0); display: none;" />
-            <ui:VisualElement name="InventoryArray1" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; align-self: center; display: none;">
+            <ui:VisualElement name="InventoryArray1" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; align-self: center; display: flex;">
                 <ui:VisualElement name="HotSlotPointer" picking-mode="Ignore" class="hotSlotPointer hotSlotPointer--Active" />
                 <ui:Instance template="SlotRow" name="SlotRow1" style="align-self: auto; align-items: center;" />
             </ui:VisualElement>
-            <ui:VisualElement name="InventoryArray2" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: none;">
+            <ui:VisualElement name="InventoryArray2" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: flex;">
                 <ui:VisualElement name="HotSlotPointer" class="hotSlotPointer" />
                 <ui:Instance template="SlotRow" name="SlotRow2" />
             </ui:VisualElement>
-            <ui:VisualElement name="InventoryArray3" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: none;">
+            <ui:VisualElement name="InventoryArray3" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: flex;">
                 <ui:VisualElement name="HotSlotPointer" class="hotSlotPointer" />
                 <ui:Instance template="SlotRow" name="SlotRow3" />
             </ui:VisualElement>
-            <ui:VisualElement name="InventoryArray4" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: none;">
+            <ui:VisualElement name="InventoryArray4" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: flex;">
                 <ui:VisualElement name="HotSlotPointer" class="hotSlotPointer" />
                 <ui:Instance template="SlotRow" name="SlotRow4" />
             </ui:VisualElement>
-            <ui:VisualElement name="InventoryArray5" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: none;">
+            <ui:VisualElement name="InventoryArray5" picking-mode="Ignore" style="flex-grow: 0; height: 80px; width: 100%; flex-direction: row; display: flex;">
                 <ui:VisualElement name="HotSlotPointer" class="hotSlotPointer" />
                 <ui:Instance template="SlotRow" name="SlotRow5" />
             </ui:VisualElement>

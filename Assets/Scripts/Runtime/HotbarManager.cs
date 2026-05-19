@@ -1,4 +1,8 @@
+using Cysharp.Threading.Tasks;
+using R3;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -6,17 +10,25 @@ using VContainer;
 public class HotbarManager : MonoBehaviour
 {
 
+    [Inject] private readonly PlayerOwnItemDataManager _itemDataManager;
+
+    private DisposableBag disposableBag = new();// R3 구독 해제용 백
+
+
     [Header("핫키 슬롯을 등록해주세요")]
     [SerializeField] List<ItemObjectData> items;
     [SerializeField] List<HotBarSlot> slots;
     [SerializeField] PlayerController player;
 
+    private Sprite oldSprite;
+    private Sprite newSprite;
+
     private int cachedInt;
     private int pointingSlot = -1;
 
-    private byte pointingInventoryArray = 0; // 0~4 
+    private int pointingInventoryArray = 0; // 0~4 
 
-    public int PointingSlot => pointingSlot; //  TODO :: 핫바 번호에 따라서 범위가 바뀌는지 테스트 하기 위한 임시용. 나중에 제대로 지워둬!
+    public int PointingSlot => pointingSlot;
 
     private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
@@ -36,39 +48,128 @@ public class HotbarManager : MonoBehaviour
 
     private void Start()
     {
-        if (items == null || items.Count == 0)
-        //{
-        //    Debug.LogWarning("Hotbar items list is NULL or Empty! Defaulting to empty items.");
-        //    if (inventoryManager != null && inventoryManager.SlotList != null)
-        //    {
-        //        //UpdateHotSlotItems(); TODO :코드 읽고 고치기
-        //    }
-        //    else
-        //    {
-        //        items = new List<ItemObjectData>();
-        //    }
-        //}
-
         lastScrollTime = -scrollCooldown;
         pointSlot(0);
+
+        if (_itemDataManager != null)
+        {
+            _itemDataManager.InventoryRevisionChanged
+                .Subscribe(_ => RefreshHotbarSlots())
+                .AddTo(ref disposableBag);
+
+            // 첫 시작 시 UI 초기화용 강제 1회 새로고침
+            RefreshHotbarSlots();
+        }
+    }
+    private void OnDestroy()
+    {
+        disposableBag.Dispose(); // 메모리 누수 방지를 위한 R3 스트림 일괄 해제
     }
 
-    // 이 함수는 여기가 아니라 인벤토리 쪽에서 가져오고 R키로 인벤토리에서 참조하는 열을 바꾸는게 맞는것 같아. 보류하자
-    private void UpdateHotSlotItems()
+
+
+    /// <summary>
+    /// 인벤토리에서 참조하는 열(Array)을 위로 한 칸 바꿉니다 (0 -> 4 -> 3...)
+    /// </summary>
+    public void OnSwapHotBarUp(InputAction.CallbackContext context)
     {
-        //for (int i = 0; i < slots.Count; i++)
-        //{
-        //    if (i < inventoryManager.SlotList.Count)
-        //    {
-        //        items.Add(inventoryManager.SlotList[i]);
-        //        Debug.Log("핫슬롯 데이터 업데이트: " + items[i].GetItemID);
-        //    }
-        //    else
-        //    {
-        //        items[i] = default;
-        //        Debug.Log("핫슬롯 데이터 업데이트: 빈 슬롯");
-        //    }
-        //}
+        if (context.performed)
+        {
+            // 0~4 순환 처리 (음수 방지를 위해 슬롯 총 수인 5를 더하고 나머지 연산)
+            pointingInventoryArray = (pointingInventoryArray - 1 + 5) % 5;
+            Debug.Log($"핫바 레이어 변경 (Up): {pointingInventoryArray}번 줄 가리킴");
+
+            RefreshHotbarSlots(); // UI 새로고침
+        }
+    }
+    /// <summary>
+    /// 인벤토리에서 참조하는 열(Array)을 아래로 한 칸 바꿉니다 (0 -> 1 -> 2...)
+    /// </summary>
+    public void OnSwapHotBarDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            pointingInventoryArray = (pointingInventoryArray + 1) % 5;
+            Debug.Log($"핫바 레이어 변경 (Down): {pointingInventoryArray}번 줄 가리킴");
+
+            RefreshHotbarSlots(); // UI 새로고침
+        }
+    }
+    /// <summary>
+    /// 주입받은 무할당 뷰 데이터를 기반으로 현재 선택된 핫바 슬롯 UI들을 새로고침합니다.
+    /// </summary>
+    public void RefreshHotbarSlots()
+    {
+        if (_itemDataManager == null) return;
+
+        // 가비지 컬렉터(GC)가 전혀 작동하지 않는 구조체 뷰 대여!
+        var currentSegment = _itemDataManager.GetInventorySegment(pointingInventoryArray);
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            // 10칸씩 쪼개진 세그먼트 내부 아이템에 인덱스로 바로 접근
+            GameItem item = currentSegment[i];
+
+            // 어드레서블 매니저 리소스 해제 처리 예시 유지
+            if (slots[i].ItemIcon != null)
+            {
+                AddressableManager.ReleaseAsset(slots[i].ItemIcon);
+            }
+
+            UpdateHotSlotItem(i,item).Forget(); // 각 슬롯 UI 업데이트 (비동기 대기)
+        }
+
+        // 핫바를 바꿨거나 아이템이 바뀌었으니 플레이어 손에 들린 아이템도 동기화해줘요.
+        SyncPlayerItem();
+    }
+
+
+
+    // 수정할 위치: HotbarManager 스크립트 내부의 UpdateHotSlotItems 메서드 전체 수정
+    // 변경 이유: 
+    // 1. 가비지를 유발하고 await을 무시하는 LINQ ForEach 대신, 기본 for문을 사용하여 비동기 대기를 완벽하게 처리했어요.
+    // 2. 어드레서블 해제 시, 새 이미지를 먼저 로드하고 UI에 덮어씌운 뒤에 이전 이미지를 안전하게 해제하도록 Swap 방식을 적용했어요.
+    private async UniTask UpdateHotSlotItem(int i, GameItem input_item)
+    {
+        var slot = slots[i];
+
+        // 1. 이미지(스프라이트) 갱신 로직
+        if (slot.ItemIcon != null)
+        {
+            oldSprite = slot.ItemIcon.sprite;
+            newSprite = null;
+
+            // input_item이 null이 아닐 때만 이미지를 로드하거나 가져옵니다.
+            if (input_item != null)
+            {
+                if (input_item.DisplaySprite != null)
+                {
+                    newSprite = input_item.DisplaySprite;
+                }
+                else if (!string.IsNullOrEmpty(input_item.SpriteAddress.ToString()))
+                {
+                    newSprite = await AddressableManager.LoadAssetAsync<Sprite>(input_item.SpriteAddress);
+                }
+            }
+
+            // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
+            slot.ItemIcon.sprite = newSprite;
+
+            // 기존 이미지가 있었고, 새로 덮어씌운 이미지와 다르다면 기존 이미지 메모리를 해제합니다
+            if (oldSprite != null && oldSprite != newSprite)
+            {
+                AddressableManager.ReleaseAsset(oldSprite);
+            }
+        }
+
+        // 2. 텍스트(아이템 개수) 갱신 로직
+        if (slot.Count != null)
+        {
+            if (input_item != null && input_item.Count > 1)
+                slot.Count.text = input_item.Count.ToString();
+            else
+                slot.Count.text = string.Empty; // 비어있거나 1개일 때는 숫자 텍스트를 비웁니다
+        }
     }
 
     public void OnPrevHotSlot(InputAction.CallbackContext context)
@@ -88,6 +189,7 @@ public class HotbarManager : MonoBehaviour
             pointSlot(pointingSlot + 1);
         }
     }
+
     public void pointSlot(int i)
     {
         cachedInt = (i + slots.Count) % slots.Count;
@@ -114,6 +216,7 @@ public class HotbarManager : MonoBehaviour
         Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
+    //플레이어가 들고있는 아이템 동기화 함수.
     public void SyncPlayerItem()
     {
         if (pointingSlot < 0 || pointingSlot >= slots.Count) return;
@@ -121,27 +224,6 @@ public class HotbarManager : MonoBehaviour
         {
             //player.SetItem(slots[pointingSlot].item);
         }
-    }
-
-    public void refresHotbarSlots(in List<ItemObjectData> slotList)
-    {
-        int i =  pointingInventoryArray * 10;
-
-        foreach (HotBarSlot slot in slots)
-        {
-            if(slot.ItemIcon != null)
-                AddressableManager.ReleaseAsset(slot.ItemIcon);
-
-
-            i++;
-        
-        
-        }
-
-
-
-
-
     }
 
 }

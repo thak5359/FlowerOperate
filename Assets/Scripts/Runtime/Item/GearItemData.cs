@@ -33,6 +33,7 @@ public struct GearItemAuthoringData
     public GearEfficiency efficiency;
     public GearChargeTime chargeTime;
     public GearMaxCharge maxCharge;
+    public GearGrade grade;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -46,6 +47,7 @@ public struct GearItemBlobData
     public GearEfficiency Efficiency;
     public GearChargeTime ChargeTime;
     public GearMaxCharge MaxCharge;
+    public GearGrade Grade;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

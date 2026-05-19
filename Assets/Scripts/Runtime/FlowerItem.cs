@@ -5,11 +5,11 @@ using UnityEngine;
 [MemoryPackable]
 public partial class FlowerItem : GameItem
 {
+    [MemoryPackInclude] public FlowerGrade Grade { get; private set; } = 0;
     [MemoryPackIgnore] public FlowerSpecies Species { get; private set; }
     [MemoryPackIgnore] public FlowerColor Color { get; private set; }
     [MemoryPackIgnore] public FlowerFlorio Florio1 { get; private set; }
     [MemoryPackIgnore] public FlowerFlorio Florio2 { get; private set; }
-
     [MemoryPackIgnore] public int GrowthDuration { get; private set; }
     [MemoryPackIgnore] public int HarvestAmount { get; private set; }
 
@@ -17,8 +17,9 @@ public partial class FlowerItem : GameItem
     protected FlowerItem()
     {
     }
-    public FlowerItem(int id, int count) : base(id, count)
+    public FlowerItem(int id, int count, FlowerGrade grade = FlowerGrade.Lv0) : base(id, count)
     {
+        Grade = grade;
         OnLoadAsync().Forget();
     }
     public override async UniTask OnLoadAsync(IPropData propData = default)

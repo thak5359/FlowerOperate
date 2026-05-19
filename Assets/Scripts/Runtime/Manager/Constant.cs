@@ -1,10 +1,7 @@
 using Unity.Collections;
 
-
 public class Constant
 {
-
-    
 
     // Class for Constant Value in this Project
 
@@ -95,6 +92,10 @@ public class Constant
     #endregion
 
     public const float CHUNK_SIZE = 15.0f;
+
+    public const int INVENTORY_ROW_SIZE = 5;
+    public const int INVENTORY_COLUMN_SIZE = 10;
+    public const int INVENTORY_SLOT_COUNT= INVENTORY_ROW_SIZE * INVENTORY_COLUMN_SIZE;
 
 }
 

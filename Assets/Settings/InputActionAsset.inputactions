@@ -187,9 +187,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwapHotBar",
+                    "name": "SwapHotBarUp",
                     "type": "Button",
                     "id": "c4ace598-bf27-47b0-a909-b6a9451fd58c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwapHotBarDown",
+                    "type": "Button",
+                    "id": "be90482b-c980-40d0-9a9d-0be12685b4fa",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -391,7 +400,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD_Scheme;Arrow_Scheme",
-                    "action": "SwapHotBar",
+                    "action": "SwapHotBarUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00a21e63-5ff9-4234-98f6-efd8006fe0a2",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "SwapHotBarDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
