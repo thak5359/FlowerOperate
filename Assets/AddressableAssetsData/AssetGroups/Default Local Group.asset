@@ -34,6 +34,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Plot
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a09667495a0ba240b3a3886980d35e3
+    m_Address: ExPrefab_Item
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b712121e49f702d4bb1c3cfe733f59c4
     m_Address: Prefab_Plot
     m_ReadOnly: 0
