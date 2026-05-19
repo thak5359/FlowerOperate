@@ -314,4 +314,9 @@ public class PlotProp : Prop
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
     }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+    }
 }

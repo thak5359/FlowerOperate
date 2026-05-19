@@ -107,4 +107,10 @@ public class OreProp : Prop
 
         _oreData = data;
     }
+
+    public override void OnDestroy()
+    {
+        if(oreData.Id != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(oreData.Id), oreData.Position);
+    }
 }
