@@ -721,7 +721,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 33247657}
-  - component: {fileID: 33247656}
   m_Layer: 0
   m_Name: StorageManager
   m_TagString: Untagged
@@ -729,23 +728,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &33247656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33247655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d960ce036ba16448f69b55374b1419, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Data:
-    money: 0
-    reputation: 0
-    invenList: []
-  _currentBoxIndex: 0
 --- !u!4 &33247657
 Transform:
   m_ObjectHideFlags: 0
@@ -60165,7 +60147,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerItemDataManager
       value: 
-      objectReference: {fileID: 33247656}
+      objectReference: {fileID: 0}
     - target: {fileID: 4114507864807019150, guid: 70eafd9572759294287042bfd95001dd,
         type: 3}
       propertyPath: parentReference.TypeName

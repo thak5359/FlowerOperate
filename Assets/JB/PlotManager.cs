@@ -61,7 +61,7 @@ public class PlotManager : MonoBehaviour
             var plot = Instantiate(plotPrefab, this.transform);
             var plotComponent = plot.GetComponent<PlotProp>();
 
-            plotComponent.OnLoadAsync(data.Value).Forget();
+            plotComponent.OnLoadAsync(data.Value);
         }
     }
 

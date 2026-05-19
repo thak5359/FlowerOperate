@@ -301,9 +301,9 @@ public class PlotProp : Prop
         _plotData = data;
     }
 
-    public override async UniTask OnLoadAsync(IPropData propData)
+    public override void OnLoadAsync(IPropData propData)
     {
-        base.OnLoadAsync(propData).Forget();
+        base.OnLoadAsync(propData);
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
     }
