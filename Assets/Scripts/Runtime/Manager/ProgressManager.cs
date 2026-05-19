@@ -24,7 +24,7 @@ public static partial class ProgressManager
         return (Day / totalDay) + 3026;
     }
 
-    public static int getMonth() => ((Day - 1 / 28 + 1));
+    public static int getMonth() => ((Day - 1) / 28 + 1);
     public static int getDay() => (Day - 1) % 28 + 1;
 
     public static int getPlayedDayOnGameSystem()

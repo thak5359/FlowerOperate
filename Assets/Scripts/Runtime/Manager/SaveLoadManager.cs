@@ -6,17 +6,37 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
-
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
 
+    private SaveDatas loadedData;
+
     [Inject]
     public void Construct(
-        PlayerOwnItemDataManager storageParent
+        PlayerOwnItemDataManager storageParent,
+        IPlotManager plotManager
     )
     {
         _storageManager = storageParent;
-        _plotManager = PlotManager.Instance;
+        _plotManager = (PlotManager)plotManager;
+
+        if (_storageManager == null)
+        {
+            Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
+        }
+        else
+        {
+            Debug.Log($"SaveLoadManager: storageParent injected successfully. Type: {_storageManager.GetType().Name}");
+        }
+
+        if (_plotManager == null)
+        {
+            Debug.LogError("<color=red>SaveLoadManager: plotManager (IPlotManager) is NULL during Construct!</color>");
+        }
+        else
+        {
+            Debug.Log($"SaveLoadManager: plotManager injected successfully. Type: {_plotManager.GetType().Name}");
+        }
 
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }
@@ -24,7 +44,10 @@ public class SaveLoadManager : MonoBehaviour
     private void SyncSaveData()
     {
         if (_storageManager == null || _plotManager == null)
+        {
+            Debug.Log("SaveLoadManager : 매니저 둘 중에 하나 null임");
             return;
+        }
 
         int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayedDayOnGameSystem() : 0;
 
@@ -54,14 +77,9 @@ public class SaveLoadManager : MonoBehaviour
     public void Load(string file = null)
     {
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
-
-        SaveDatas loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
-
-        if (loadedData == null && saveData == null)
-        {
-            Debug.LogWarning($"로드할 데이터가 없습니다: {SAVE_FILE_NAME}");
-            return;
-        }
+        
+        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) || loadedData == null)
+            loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
 
         saveData = (loadedData != null) ? loadedData : saveData;
 

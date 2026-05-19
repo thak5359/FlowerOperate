@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassTimeTest : MonoBehaviour
+public class NextDayTest : MonoBehaviour
 {
     public void OnClick()
     {

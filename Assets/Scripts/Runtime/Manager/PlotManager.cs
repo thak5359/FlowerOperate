@@ -6,12 +6,18 @@ using System.Linq;
 using VContainer;
 using Cysharp.Threading.Tasks;
 
-public class PlotManager : MonoBehaviour
+public interface IPlotManager
+{
+    SerializedDictionary<int, PlotData> GetPlotDataDict { get; }
+    void Load(SaveDatas saveDatas);
+}
+
+public class PlotManager : MonoBehaviour, IPlotManager
 {
     // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
     [SerializeField] 
-    private SerializedDictionary<int, PlotData> plotDataDict;
+    private SerializedDictionary<int, PlotData> plotDataDict = new();
 
     [SerializeField]
     private GameObject plotPrefab;
@@ -34,11 +40,11 @@ public class PlotManager : MonoBehaviour
         RefreshPlotCache();
     }
 
-    [Inject]
-    public void Construct(SaveLoadManager saveLoadManager)
-    {
-        _saveLoadManager = saveLoadManager;
-    }
+    //[Inject]
+    //public void Construct(SaveLoadManager saveLoadManager)
+    //{
+    //    _saveLoadManager = saveLoadManager;
+    //}
 
     /// <summary>
     /// 하이러키의 플롯 오브젝트들을 수집하고 캐싱합니다.
