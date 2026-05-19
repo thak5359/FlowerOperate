@@ -307,7 +307,7 @@ public class PlotProp : Prop
         _plotData = data;
     }
 
-    public override async UniTask OnLoadAsync(IPropData propData)
+    public override void OnLoadAsync(IPropData propData)
     {
         PlotManager.Instance.GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
         base.OnLoadAsync(propData).Forget();

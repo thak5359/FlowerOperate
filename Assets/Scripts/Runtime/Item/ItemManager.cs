@@ -120,7 +120,7 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         if (item == null)
             return null;
 
-        await item.OnLoadAsync();
+         item.OnLoadAsync();
         return item;
     }
 
