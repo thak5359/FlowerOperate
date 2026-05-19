@@ -6,9 +6,10 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
-    private SaveDatas loadedData;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
+
+    private SaveDatas loadedData;
 
     [Inject]
     public void Construct(
