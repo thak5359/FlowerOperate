@@ -22,6 +22,8 @@ public partial class GearItem : GameItem
     {
      Grade = input_Grade;
         MaxDurability = input_MaxDuration;
+
+        CurrentDurability = (int)MaxDurability;
     }
 
     public override void OnLoadAsync(IPropData propData = default)
@@ -38,13 +40,20 @@ public partial class GearItem : GameItem
         MaxDurability = gearData.MaxDuration;
         Efficiency = gearData.Efficiency;
 
+        //TODO : 진짜 ChargeInfo 값을 입력받도록 수정하기. 현재는 임시로 ChargeTime만 적용한 기본값으로 세팅
         ChargeInfo = new ChargeInfo(
             GearValueConverter.ToSeconds(gearData.ChargeTime),
-            ((int)gearData.MaxCharge)
+            new ChargeArea[] { ChargeArea.Default },
+            ChargeArea.Unknown
         );
 
-            CurrentDurability = (int)MaxDurability;
     }
+
+    public void repair()
+    {
+        CurrentDurability = (int)MaxDurability;
+    }
+
 }
 /// <summary>
 /// Enum으로 float 값을 적용할 수 없어서 별도의 전환 기능을 만듦. 내부 수치가 변동될 경우 이 함수도 수정

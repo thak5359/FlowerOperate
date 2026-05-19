@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -6,17 +7,19 @@ using UnityEngine;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ChargeInfo
 {
-    public float ChargeTime;
-    public int MaxChargeCount;
+    [SerializeField] public float ChargeTime;
+    [SerializeField] ChargeArea[] ChargeAreas;
+    [SerializeField] ChargeArea ChargeAreaSwap;
 
-    public ChargeInfo(float chargeTime, int maxChargeCount)
+    public ChargeInfo(float chargeTime, ChargeArea[] chargeAreas, ChargeArea input_ChargeAreaSwap = ChargeArea.Unknown)
     {
         ChargeTime = chargeTime;
-        MaxChargeCount = maxChargeCount;
+        ChargeAreas = chargeAreas;
+        ChargeAreaSwap = input_ChargeAreaSwap;
     }
 
     public void ReadValue()
     {
-        Debug.Log($"chargeTime : {ChargeTime}, maxChargeCount : {MaxChargeCount}");
+        Debug.Log($"chargeTime : {ChargeTime}, chargeAreas : {string.Join(", ", ChargeAreas)}, chargeAreaSwap : {ChargeAreaSwap}");
     }
 }
