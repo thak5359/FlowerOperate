@@ -30,22 +30,20 @@ public partial class GearItem : GameItem
     {
         base.OnLoadAsync(propData);
 
-        if (!GlobalItemDB.TryGetGear(Id, out GearItemBlobData gearData))
+        if (!GlobalItemDB.HasGear(Id))
         {
             Debug.LogError($"[GearItem] GearDB 조회 실패. Id: {Id}");
             return;
         }
 
+
+        ref GearItemBlobData gearData = ref  GlobalItemDB.GetGearRef(Id);
+
         GearType = gearData.GearType;
         MaxDurability = gearData.MaxDuration;
         Efficiency = gearData.Efficiency;
 
-        //TODO : 진짜 ChargeInfo 값을 입력받도록 수정하기. 현재는 임시로 ChargeTime만 적용한 기본값으로 세팅
-        ChargeInfo = new ChargeInfo(
-            GearValueConverter.ToSeconds(gearData.ChargeTime),
-            new ChargeArea[] { ChargeArea.Default },
-            ChargeArea.Unknown
-        );
+        ChargeInfo = new ChargeInfo(GearValueConverter.ToSeconds(gearData.ChargeTime),gearData.ChargeAreas.ToArray());
 
     }
 

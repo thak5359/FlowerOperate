@@ -1,7 +1,7 @@
 using System;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using VContainer;
 using static Constant;
 
@@ -21,11 +21,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     [Header("캐릭터가 상호작용 가능한 위치")]
     [SerializeField] public Transform interactableArea;
 
-    // 차징 관리용
-    [Header("차지 타임을 조절 하는 기능. 아이템 데이터가 만들어지기 전까지 실험용임.")]
-    [Range(1, 2)]
-    public float charTimePerPhase = 1.75f;
-    bool isCharging = false;
+
 
 
     //이동 로직 처리 중 사용할 속도/캐싱용 Vec3
@@ -37,6 +33,8 @@ public class PlayerController : MonoBehaviour, IInteractable
     private static readonly int isMovingHash = Animator.StringToHash(ANIM_MOVING);
 
     private UseAreaManager _useAreaManager;
+    private PlayerStateManager _playerState;
+
 
     private Vector2 moveInput;
     private Rigidbody rigidBody;
@@ -66,9 +64,10 @@ public class PlayerController : MonoBehaviour, IInteractable
     }
 
     [Inject]
-    void Construct(UseAreaManager input_UseAreaManager)
+    void Construct(UseAreaManager input_UseAreaManager, PlayerStateManager input_playerStateManager)
     {
         _useAreaManager = input_UseAreaManager;
+        _playerState = input_playerStateManager;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -98,7 +97,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
 
         // Can't Move While Charging    
-        if (isCharging == true)
+        if (_playerState.IsCharging.Value == true)
         {
             anim.SetBool(isMovingHash, false);
 
@@ -142,7 +141,7 @@ public class PlayerController : MonoBehaviour, IInteractable
     {
 
         //Debug.Log("OnInteracted has been detected 1 ");
-        if (isCharging == false && context.canceled)
+        if (_playerState.IsCharging.Value == false && context.canceled)
         {
             Debug.Log("OnInteracted has been detected 2 ");
             if (Time.time < lastInteractTime + interactCooldown)
@@ -193,18 +192,19 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
-            isCharging = true;
+            _playerState.IsCharging.Value = true;
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
         }
 
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
-            isCharging = false;
+            _playerState.IsCharging.Value = false;
             //Debug.Log("Use 버튼이 떼어졌습니다. 아이템 사용 시도!");
             _useAreaManager.Fire(); // 발사!
         }
     }
+
 
 
     private void locateInteractable()

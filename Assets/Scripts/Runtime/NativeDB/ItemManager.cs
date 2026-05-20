@@ -98,11 +98,14 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
 
     public GameItem CreateItem(int itemId, int count, FlowerGrade grade_F = FlowerGrade.Lv0, GearGrade grade_G = GearGrade.Old)
     {
-        if (!GlobalItemDB.TryGetBase(itemId, out ItemBaseBlobData baseData))
+        if (!GlobalItemDB.HasBase(itemId))
         {
             Debug.LogError($"[ItemManager] 존재하지 않는 ItemId입니다. Id: {itemId}");
             return null;
         }
+
+        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(itemId);
+
 
         return baseData.SubType switch
         {
@@ -113,7 +116,7 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         };
     }
 
-    public async UniTask<GameItem> CreateAndLoadItemAsync(int itemId, int count)
+    public GameItem CreateAndLoadItemAsync(int itemId, int count)
     {
         GameItem item = CreateItem(itemId, count);
 

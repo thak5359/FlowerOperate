@@ -203,6 +203,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwapGearDefaultArea",
+                    "type": "Button",
+                    "id": "eb894246-f68e-43e9-8cb5-c05a44c86c24",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -412,6 +421,17 @@
                     "processors": "",
                     "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "SwapHotBarDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7aff26a1-dec7-4c78-adc2-dc15121b3a23",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD_Scheme;Arrow_Scheme",
+                    "action": "SwapGearDefaultArea",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

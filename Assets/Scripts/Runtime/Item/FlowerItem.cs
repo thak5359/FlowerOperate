@@ -26,11 +26,12 @@ public partial class FlowerItem : GameItem
     {
         base.OnLoadAsync(propData);
 
-        if (!GlobalItemDB.TryGetFlower(Id, out FlowerItemBlobData flowerData))
+        if (!GlobalItemDB.HasFlower(Id))
         {
             Debug.LogError($"[FlowerItem] FlowerDB 조회 실패. Id: {Id}");
             return;
         }
+        ref FlowerItemBlobData flowerData = ref GlobalItemDB.GetFlowerRef(Id);
 
         Species = flowerData.Species;
         Color = flowerData.Color;

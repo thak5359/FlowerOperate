@@ -1,18 +1,14 @@
-using Cysharp.Threading.Tasks;
-using Fungus;
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Unity.Collections;
-using Unity.Mathematics;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using VContainer;
+using static EnumExtensions;
 using static Constant;
+
+# region interface for each tool function 
+
 public interface IUseAreaHoeFunc
 {
-    FarmActionResult DoHoeFunc(GameObject plot);
+    FarmActionResult DoHoeFunc(ref GearItem gear, GameObject plot);
 }
 public interface IUseAreaWateringCanFunc
 {
@@ -20,7 +16,7 @@ public interface IUseAreaWateringCanFunc
 }
 public interface IUseAreaHammerFunc
 {
-    FarmActionResult DoHammerFunc();
+    FarmActionResult DoHammerFunc(ref GearItem gear);
 }
 public interface IUseAreaSickleFunc
 {
@@ -28,17 +24,15 @@ public interface IUseAreaSickleFunc
 }
 public interface IUseAreaAxeFunc
 {
-    FarmActionResult DoAxeFunc();
+    FarmActionResult DoAxeFunc(ref GearItem gear);
 }
 public interface IUseAreaConsumableFunc
-{
-    FarmActionResult DoConsumableFunc(int Id);
-}
-public interface IUseAreaConsumableFuncTest
 {
     FarmActionResult DoSeedFunc(int itemID);
     FarmActionResult DoFertilizerFunc(int itemID);
 }
+
+#endregion
 
 public struct FarmActionResult
 {
@@ -70,15 +64,19 @@ public struct FarmActionResult
 }
 
 
+
+
 public class UseAreaFunction : MonoBehaviour,
     IUseAreaAxeFunc, IUseAreaHoeFunc, IUseAreaWateringCanFunc,
-    IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConsumableFunc, IUseAreaConsumableFuncTest
+    IUseAreaSickleFunc, IUseAreaHammerFunc, IUseAreaConsumableFunc
 {
     static readonly uint RandSeed = (uint)DateTime.Now.Ticks;
 
     Unity.Mathematics.Random mathRand = new Unity.Mathematics.Random(RandSeed);
 
     private PlotManager _plotManager;
+
+    
 
     private static int _hoeMask;
     private static int _treatMask;
@@ -110,7 +108,63 @@ public class UseAreaFunction : MonoBehaviour,
         _plotManager = PlotManager.Instance;
     }
 
-    FarmActionResult IUseAreaHoeFunc.DoHoeFunc(GameObject plot)
+    /// <summary>
+    /// 게임 아이템의 분류에 따라 기능을 분리하는 함수. 장비는 별도 함수로 분리.
+    /// </summary
+    public FarmActionResult FireFunc(ref GameItem gameItem, GameObject plot = null)
+    {
+        switch (gameItem.SubType)
+        {
+            case ItemSubType.Equipment:
+                if (gameItem is GearItem gearItem)
+                    return FireGearFunc(ref gearItem, plot);
+                else
+                {
+                    FixedString128Bytes errorCode =
+                        $"FireFunc error. Item is not GearItem. itemId : {gameItem.Id}, SubType : {gameItem.SubType}";
+                    Debug.Log(errorCode);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+                }
+
+            case ItemSubType.Fertilizer:
+                return ((IUseAreaConsumableFunc)this).DoFertilizerFunc(gameItem.Id);
+
+            case ItemSubType.Seed:
+                return ((IUseAreaConsumableFunc)this).DoSeedFunc(gameItem.Id);
+
+            default:
+                {
+                    FixedString128Bytes errorCode =
+                        $"FireFunc error. Unsupported SubType : {gameItem.SubType}, itemId : {gameItem.Id}";
+                    Debug.Log(errorCode);
+                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+                }
+        }
+    }
+    private FarmActionResult FireGearFunc(ref GearItem gearItem, GameObject plot = null)
+    {
+        return gearItem.GearType switch
+        {
+            GearType.Hoe =>
+                ((IUseAreaHoeFunc)this).DoHoeFunc(ref gearItem, plot),
+
+            GearType.WateringCan =>
+                ((IUseAreaWateringCanFunc)this).DoWateringCanFunc(),
+
+            GearType.Hammer =>
+                ((IUseAreaHammerFunc)this).DoHammerFunc(ref gearItem),
+
+            GearType.Sickle =>
+                ((IUseAreaSickleFunc)this).DoSickleFunc(),
+
+            _ => new FarmActionResult(
+                FarmActionResult.ResultType.Error,
+                $"FireGearFunc error. Unsupported GearType : {gearItem.GearType}, itemId : {gearItem.Id}"
+            )
+        };
+    }
+
+    FarmActionResult IUseAreaHoeFunc.DoHoeFunc(ref GearItem gear, GameObject plot)
     {
         try
         {
@@ -120,8 +174,13 @@ public class UseAreaFunction : MonoBehaviour,
                 Debug.LogAssertion(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
-            Collider[] hits = GetHits(_hoeMask);
-
+            else if (gear.CurrentDurability <= 0)
+            {
+                FixedString128Bytes errorCode = $"DoHoeFunc error. Durability is {gear.CurrentDurability}";
+                Debug.LogAssertion(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Failed, errorCode);
+            }
+                Collider[] hits = GetHits(_hoeMask);
 
             if (hits.Length == 0)
             {
@@ -143,7 +202,7 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "HOE_FUNC_EXCEPTION");
         }
     }
-    FarmActionResult IUseAreaAxeFunc.DoAxeFunc()
+    FarmActionResult IUseAreaAxeFunc.DoAxeFunc(ref GearItem gear)
     {
         try
         {
@@ -151,17 +210,18 @@ public class UseAreaFunction : MonoBehaviour,
 
             if (hits.Length > 0)
             {
-                // 나무 제거
+                // 나무에 타격
                 foreach (Collider hitCollider in hits)
                 {
-                    hitCollider.gameObject.SetActive(false);// TODO :: 나무에 데미지를 주게 만드는 함수 작성해서 여기에서 호출하기
+                    TreeProp tree = hitCollider.gameObject.GetComponent<TreeProp>();
+                    tree.Damaged((gear.Efficiency.ToValue()));
                 }
-                return new FarmActionResult(FarmActionResult.ResultType.Success); // 제거 성공
+                return new FarmActionResult(FarmActionResult.ResultType.Success); // 나무 패기 성공
             }
             else
             {
                 Debug.Log("DoAxeFunc error. No tree detected.");
-                return new FarmActionResult(FarmActionResult.ResultType.Failed); // 제거 실패
+                return new FarmActionResult(FarmActionResult.ResultType.Failed); // 나무 패기 실패
             }
         }
         catch (Exception e)
@@ -213,9 +273,9 @@ public class UseAreaFunction : MonoBehaviour,
         try
         {
             Collider[] hits = GetHits(_sickleMask);
-            if(hits.Length >= 1)
+            if (hits.Length >= 1)
             {
-                foreach(Collider hit in hits)
+                foreach (Collider hit in hits)
                 {
                     PlotProp targetPlot = hit.gameObject.GetComponent<PlotProp>();
                 }
@@ -229,7 +289,7 @@ public class UseAreaFunction : MonoBehaviour,
 
         return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
     }
-    FarmActionResult IUseAreaHammerFunc.DoHammerFunc()
+    FarmActionResult IUseAreaHammerFunc.DoHammerFunc(ref GearItem gear)
     {
         try
         {
@@ -242,15 +302,22 @@ public class UseAreaFunction : MonoBehaviour,
 
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 OreProp targetOre = hits[0].gameObject.GetComponent<OreProp>();
-                
+
 
                 if (targetPlot != null)
                 {
                     return targetPlot.Ruining();
                 }
-                else if ( targetOre != null)
+                else if (targetOre != null)
                 {
-                    return targetOre.Damaged(100);
+                    if (gear.CurrentDurability <= 0)
+                    {
+                        FixedString128Bytes errorCode = $"DoHammerFunc error. Durability is {gear.CurrentDurability}";
+                        Debug.LogAssertion(errorCode);
+                        return new FarmActionResult(FarmActionResult.ResultType.Failed, errorCode);
+                    }
+
+                    return targetOre.Damaged(gear.Efficiency.ToValue());
                 }
                 else
                 {
@@ -276,12 +343,7 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "HAMMER_FUNC_EXCEPTION");
         }
     }
-    FarmActionResult IUseAreaConsumableFunc.DoConsumableFunc(int Id)
-    {
-
-        return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
-    }
-    FarmActionResult IUseAreaConsumableFuncTest.DoSeedFunc(int itemID)
+    FarmActionResult IUseAreaConsumableFunc.DoSeedFunc(int itemID)
     {
         try
         {
@@ -319,48 +381,21 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
         }
     }
-    public FarmActionResult FireFunc(int itemId, GameObject plot = null)
-    {
-        if (!GlobalItemDB.TryGetBase(itemId, out ItemBaseBlobData baseData))
-        {
-            FixedString128Bytes errorCode = $"FireFunc error. Unknown itemId : {itemId}";
-            Debug.Log(errorCode);
-            return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
-        }
-
-        switch (baseData.SubType)
-        {
-            case ItemSubType.Equipment:
-                return FireGearFunc(itemId, plot);
-
-            case ItemSubType.Fertilizer:
-                return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
-
-            case ItemSubType.Seed:
-                return ((IUseAreaConsumableFunc)this).DoConsumableFunc(itemId);
-
-            default:
-                {
-                    FixedString128Bytes errorCode =
-                        $"FireFunc error. Unsupported SubType : {baseData.SubType}, itemId : {itemId}";
-                    Debug.Log(errorCode);
-                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
-                }
-        }
-    }
-
-    FarmActionResult IUseAreaConsumableFuncTest.DoFertilizerFunc(int itemID)
+    FarmActionResult IUseAreaConsumableFunc.DoFertilizerFunc(int itemID)
     {
         try
         {
             Debug.Log("DoFertilizerFunc has been Executed");
 
-            if (!GlobalItemDB.TryGetBase(itemID, out ItemBaseBlobData baseData))
+            if (!GlobalItemDB.HasFertilizer(itemID))
             {
                 FixedString128Bytes errorCode = $"DoFertilizerFunc error. Unknown itemId : {itemID}";
                 Debug.Log(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
+
+            ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(itemID);
+
 
             if (baseData.SubType != ItemSubType.Fertilizer)
             {
@@ -404,82 +439,5 @@ public class UseAreaFunction : MonoBehaviour,
         }
     }
 
-
-
-    private FarmActionResult FireGearFunc(int itemId, GameObject plot = null)
-    {
-        if (!GlobalItemDB.TryGetGear(itemId, out GearItemBlobData gearData))
-        {
-            FixedString128Bytes errorCode = $"FireGearFunc error. GearDB not found. itemId : {itemId}";
-            Debug.Log(errorCode);
-            return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
-        }
-
-        return gearData.GearType switch
-        {
-            GearType.Hoe =>
-                ((IUseAreaHoeFunc)this).DoHoeFunc(plot),
-
-            GearType.WateringCan =>
-                ((IUseAreaWateringCanFunc)this).DoWateringCanFunc(),
-
-            GearType.Hammer =>
-                ((IUseAreaHammerFunc)this).DoHammerFunc(),
-
-            GearType.Sickle =>
-                ((IUseAreaSickleFunc)this).DoSickleFunc(),
-
-
-            _ => new FarmActionResult(
-                FarmActionResult.ResultType.Error,
-                $"FireGearFunc error. Unsupported GearType : {gearData.GearType}, itemId : {itemId}"
-            )
-        };
-    }
-    /// <summary>
-    /// 테스트용 함수! 나중에는 FireFunc()를 사용하라구!
-    /// </summary>
-    /// <param name="pointingslot"></param>
-    /// <param name="plot"></param>
-    /// <returns></returns>
-    public FarmActionResult FireFuncTest(int pointingslot, GameObject plot = null)
-    {
-        switch (pointingslot)
-        {
-            case 1:
-                {
-                    return ((IUseAreaHoeFunc)this).DoHoeFunc(plot);
-                }
-            case 2:
-                {
-                    return ((IUseAreaSickleFunc)this).DoSickleFunc();
-                }
-            case 3:
-                {
-                    return ((IUseAreaAxeFunc)this).DoAxeFunc();
-                }
-            case 4:
-                {
-                    return ((IUseAreaWateringCanFunc)this).DoWateringCanFunc();
-                }
-            case 5:
-                {
-                    return ((IUseAreaHammerFunc)this).DoHammerFunc();
-                }
-            case 6:
-                {
-                    return ((IUseAreaConsumableFuncTest)this).DoSeedFunc(pointingslot);
-                }
-            case 7:
-                {
-                    return ((IUseAreaConsumableFuncTest)this).DoFertilizerFunc(pointingslot);
-                }
-            default:
-                {
-                    FixedString128Bytes errorCode = ("Fire Function Test error. 기능이할당 되었을 때만 동작함 : " + pointingslot);
-                    Debug.Log(errorCode);
-                    return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
-                }
-        }
-    }
+   
 }

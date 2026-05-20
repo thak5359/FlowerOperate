@@ -7,19 +7,22 @@ using UnityEngine;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct ChargeInfo
 {
-    [SerializeField] public float ChargeTime;
-    [SerializeField] ChargeArea[] ChargeAreas;
-    [SerializeField] ChargeArea ChargeAreaSwap;
+    [SerializeField] public float chargeTime;
+    [SerializeField] ChargeArea[] chargeAreas;
 
-    public ChargeInfo(float chargeTime, ChargeArea[] chargeAreas, ChargeArea input_ChargeAreaSwap = ChargeArea.Unknown)
+    public float ChargeTime => chargeTime;
+    public ChargeArea[] ChargeAreas => chargeAreas;
+
+
+
+    public ChargeInfo(float chargeTime, ChargeArea[] chargeAreas)
     {
-        ChargeTime = chargeTime;
-        ChargeAreas = chargeAreas;
-        ChargeAreaSwap = input_ChargeAreaSwap;
+        this.chargeTime = chargeTime;
+        this.chargeAreas = chargeAreas;
     }
 
     public void ReadValue()
     {
-        Debug.Log($"chargeTime : {ChargeTime}, chargeAreas : {string.Join(", ", ChargeAreas)}, chargeAreaSwap : {ChargeAreaSwap}");
+        Debug.Log($"chargeTime : {chargeTime}, chargeAreas : {string.Join(", ", chargeAreas)}");
     }
 }

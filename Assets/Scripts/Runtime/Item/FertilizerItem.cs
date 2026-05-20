@@ -25,12 +25,13 @@ public partial class FertilizerItem : GameItem
     {
         base.OnLoadAsync(propData);
 
-        if (!GlobalItemDB.TryGetFertilizer(Id, out FertilizerItemBlobData FertilizerData))
+        if (!GlobalItemDB.HasFertilizer(Id))
         {
             Debug.LogError($"[GearItem] GearDB 조회 실패. Id: {Id}");
             return;
         }
 
+        ref FertilizerItemBlobData FertilizerData = ref GlobalItemDB.GetFertilizerRef(Id);
 
         FertilizerLevel = (int)FertilizerData.Level;
         FertilizerType = FertilizerData.FertilizerType;

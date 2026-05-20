@@ -17,6 +17,10 @@ public class Constant
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
     public const ushort MAX_SLOT_INVENTORY = 50;
+
+
+    public const float HAND_CHARGETIME = 1.5f;
+
     //#endregion
 
     #region 액션 맵, 스키마 이름
