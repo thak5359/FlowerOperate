@@ -95,7 +95,7 @@ public class SaveLoadManager : MonoBehaviour
     private static string NormalizeBinaryFileName(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
-            return "SaveData.bytes";
+            return null;
 
         if (file.EndsWith(".bytes"))
             return file;

@@ -271,7 +271,7 @@ public class PlayerOwnItemDataManager : IDisposable
         var sellingBox = _Data.GetItemList(ContainerType.SELLING);
         if (sellingBox == null) return;
 
-        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice((short)item.Id) * item.Count);
+        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice(item.Id) * item.Count);
         _Data.SetItemList(ContainerType.SELLING, new List<GameItem>(new GameItem[50]));
         _Data.AddMoney(totalMoney);
 
@@ -299,7 +299,7 @@ public partial struct ItemInstantData
     [MemoryPackInclude, SerializeField] private List<GameItem> invenList;
     [MemoryPackInclude, SerializeField] private List<StorageBox> storageBoxList;
 
-    [MemoryPackIgnore] private List<GameItem> sellingBox;
+    [MemoryPackIgnore, SerializeField] private List<GameItem> sellingBox;
     #endregion
 
     #region Getter  & Setter

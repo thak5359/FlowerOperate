@@ -7,6 +7,6 @@ public enum GearChargeTime
     Lv1 = 4,
     Lv2 = 6,
     Lv3 = 7,
-    Lv4 = 16,
-    Lv5 = 20,
+    Lv4 = 8,
+    Lv5 = 12,
 }
