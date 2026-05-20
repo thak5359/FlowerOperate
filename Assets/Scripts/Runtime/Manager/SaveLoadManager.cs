@@ -11,6 +11,11 @@ public class SaveLoadManager : MonoBehaviour
 
     private SaveDatas loadedData;
 
+    void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     [Inject]
     public void Construct(
         PlayerOwnItemDataManager storageParent,
@@ -76,6 +81,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Load(string file = null)
     {
+        SyncSaveData();
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
         
         if(!string.IsNullOrEmpty(SAVE_FILE_NAME) || loadedData == null)
