@@ -43,5 +43,9 @@ public class TreeProp : Prop, IGameResource
             treeData.SetPosition(this.transform.position);
     }
 
-
+    public override void OnDestroy()
+    {
+        if(treeData.Id != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(treeData.Id), treeData.Position);
+    }
 }

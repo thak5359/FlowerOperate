@@ -32,6 +32,6 @@ public class ShopLogic : MonoBehaviour
             Debug.LogError("재화가 부족합니다.");
             return;
         }
-
+        _playerOwnItem.GetData.AddItem(ContainerType.INVENTORY, new FlowerItem(id, amount));
     }
 }

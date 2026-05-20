@@ -28,6 +28,12 @@ public partial struct OreData : IPropData
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;
+    
+    public void OnDestroy() 
+    {
+        if(Id != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(Id), Position);
+    }
 }
 
 
@@ -100,5 +106,11 @@ public class OreProp : Prop
         this.transform.position = data.Position;
 
         _oreData = data;
+    }
+
+    public override void OnDestroy()
+    {
+        if(oreData.Id != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(oreData.Id), oreData.Position);
     }
 }

@@ -31,4 +31,9 @@ public partial class Prop : MonoBehaviour, IGameResource
     {
         this.Id = propData.Id;
     }
+
+    public virtual void OnDestroy() 
+    {
+        
+    }
 }

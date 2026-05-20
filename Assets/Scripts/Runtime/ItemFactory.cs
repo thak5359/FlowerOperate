@@ -1,22 +1,29 @@
-
+using R3;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public static class ItemFactory
 {
-    //public static GameItem Create(int itemId, int count)
-    //{
-    //    if (!GlobalItemDB.TryGetBase(itemId, out var baseData))
-    //    {
-    //        Debug.LogError($"[ItemFactory] 존재하지 않는 ItemId입니다. Id: {itemId}");
-    //        return null;
-    //    }
+    private static GameObject itemPrefab = Addressables.LoadAssetAsync<GameObject>("ExPrefab_Item").WaitForCompletion();
 
-    //    return baseData.SubType switch
-    //    {
-    //        ItemSubType.Equipment => new GearItem(itemId, count),
-    //        ItemSubType.Flower => new FlowerItem(itemId, count),
-    //        ItemSubType.Seed => new SeedItem(itemId, count),
-    //        _ => new GameItem(itemId, count),
-    //    };
-    //}
+    public static void CreateItemPrefab(GameItem itemData, Vector3 position)
+    {
+        if (itemPrefab == null)
+        {
+            Debug.LogError("Item prefab is not loaded.");
+            return;
+        }
+
+        GameObject itemObject = Object.Instantiate(itemPrefab, position, Quaternion.identity);
+        DropItemData dropItemData = itemObject.GetComponent<DropItemData>();
+
+        if (dropItemData != null)
+        {
+            dropItemData.SetData(itemData);
+        }
+        else
+        {
+            Debug.LogError("DropItemData component is missing on the item prefab.");
+        }
+    }
 }
