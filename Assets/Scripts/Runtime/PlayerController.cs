@@ -22,8 +22,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     [SerializeField] public Transform interactableArea;
 
 
-
-
     //이동 로직 처리 중 사용할 속도/캐싱용 Vec3
     private Vector3 targetVelocity;
 
@@ -44,8 +42,6 @@ public class PlayerController : MonoBehaviour, IInteractable
     [SerializeField] private const float interactCooldown = 1f;
     [SerializeField] private const float lastInteractTime = 0f;
     
-    private float _chargeStartTime;
-    float elapsed;
 
 
     public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)

@@ -20,7 +20,7 @@ public interface IUseAreaHammerFunc
 }
 public interface IUseAreaSickleFunc
 {
-    FarmActionResult DoSickleFunc();
+    FarmActionResult DoSickleFunc(ref GearItem gear);
 }
 public interface IUseAreaAxeFunc
 {
@@ -28,8 +28,8 @@ public interface IUseAreaAxeFunc
 }
 public interface IUseAreaConsumableFunc
 {
-    FarmActionResult DoSeedFunc(int itemID);
-    FarmActionResult DoFertilizerFunc(int itemID);
+    FarmActionResult DoSeedFunc(ref GameItem item);
+    FarmActionResult DoFertilizerFunc(ref FertilizerItem item);
 }
 
 #endregion
@@ -60,10 +60,7 @@ public struct FarmActionResult
             result = ResultType.Failed;
         }
     }
-
 }
-
-
 
 
 public class UseAreaFunction : MonoBehaviour,
@@ -76,7 +73,7 @@ public class UseAreaFunction : MonoBehaviour,
 
     private PlotManager _plotManager;
 
-    
+
 
     private static int _hoeMask;
     private static int _treatMask;
@@ -108,6 +105,7 @@ public class UseAreaFunction : MonoBehaviour,
         _plotManager = PlotManager.Instance;
     }
 
+    #region  gameItem기반 동작 함수 분리.
     /// <summary>
     /// 게임 아이템의 분류에 따라 기능을 분리하는 함수. 장비는 별도 함수로 분리.
     /// </summary
@@ -127,10 +125,20 @@ public class UseAreaFunction : MonoBehaviour,
                 }
 
             case ItemSubType.Fertilizer:
-                return ((IUseAreaConsumableFunc)this).DoFertilizerFunc(gameItem.Id);
+                {
+                    if (gameItem is FertilizerItem fertItem)
+                        return ((IUseAreaConsumableFunc)this).DoFertilizerFunc(ref fertItem);
+                    else
+                    {
+                        FixedString128Bytes errorCode =
+                            $"FireFunc error. Item is not FertilizerItem. itemId : {gameItem.Id}, SubType : {gameItem.SubType}";
+                        Debug.Log(errorCode);
+                        return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+                    }
+                }
 
             case ItemSubType.Seed:
-                return ((IUseAreaConsumableFunc)this).DoSeedFunc(gameItem.Id);
+                return ((IUseAreaConsumableFunc)this).DoSeedFunc(ref gameItem);
 
             default:
                 {
@@ -141,6 +149,7 @@ public class UseAreaFunction : MonoBehaviour,
                 }
         }
     }
+
     private FarmActionResult FireGearFunc(ref GearItem gearItem, GameObject plot = null)
     {
         return gearItem.GearType switch
@@ -155,7 +164,7 @@ public class UseAreaFunction : MonoBehaviour,
                 ((IUseAreaHammerFunc)this).DoHammerFunc(ref gearItem),
 
             GearType.Sickle =>
-                ((IUseAreaSickleFunc)this).DoSickleFunc(),
+                ((IUseAreaSickleFunc)this).DoSickleFunc(ref gearItem),
 
             _ => new FarmActionResult(
                 FarmActionResult.ResultType.Error,
@@ -163,6 +172,8 @@ public class UseAreaFunction : MonoBehaviour,
             )
         };
     }
+    #endregion
+
 
     FarmActionResult IUseAreaHoeFunc.DoHoeFunc(ref GearItem gear, GameObject plot)
     {
@@ -174,13 +185,8 @@ public class UseAreaFunction : MonoBehaviour,
                 Debug.LogAssertion(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
-            else if (gear.CurrentDurability <= 0)
-            {
-                FixedString128Bytes errorCode = $"DoHoeFunc error. Durability is {gear.CurrentDurability}";
-                Debug.LogAssertion(errorCode);
-                return new FarmActionResult(FarmActionResult.ResultType.Failed, errorCode);
-            }
-                Collider[] hits = GetHits(_hoeMask);
+
+            Collider[] hits = GetHits(_hoeMask);
 
             if (hits.Length == 0)
             {
@@ -202,6 +208,8 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "HOE_FUNC_EXCEPTION");
         }
     }
+
+
     FarmActionResult IUseAreaAxeFunc.DoAxeFunc(ref GearItem gear)
     {
         try
@@ -215,6 +223,7 @@ public class UseAreaFunction : MonoBehaviour,
                 {
                     TreeProp tree = hitCollider.gameObject.GetComponent<TreeProp>();
                     tree.Damaged((gear.Efficiency.ToValue()));
+                    gear.CurrentDurability -= 1; // 내구도 1 감소
                 }
                 return new FarmActionResult(FarmActionResult.ResultType.Success); // 나무 패기 성공
             }
@@ -230,6 +239,7 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "AXE_FUNC_EXCEPTION");
         }
     }
+
     FarmActionResult IUseAreaWateringCanFunc.DoWateringCanFunc()
     {
         try
@@ -268,17 +278,46 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "WATERINGCAN_FUNC_EXCEPTION");
         }
     }
-    FarmActionResult IUseAreaSickleFunc.DoSickleFunc()
+    FarmActionResult IUseAreaSickleFunc.DoSickleFunc(ref GearItem gear)
     {
         try
         {
             Collider[] hits = GetHits(_sickleMask);
-            if (hits.Length >= 1)
+            if (hits.Length == 1)
             {
-                foreach (Collider hit in hits)
+
+                PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
+                GrassProp targetGrass = hits[0].gameObject.GetComponent<GrassProp>();
+                if (targetPlot != null)
                 {
-                    PlotProp targetPlot = hit.gameObject.GetComponent<PlotProp>();
+                    return targetPlot.Reaping(); // 꽃 수확 성공
                 }
+                if (targetGrass != null)
+                {
+                    if (gear.CurrentDurability <= 0)
+                    {
+                        FixedString128Bytes errorCode = $"DoSickleFunc error. Durability is {gear.CurrentDurability}";
+                        Debug.LogAssertion(errorCode);
+                        return new FarmActionResult(FarmActionResult.ResultType.Failed, errorCode);
+                    }
+                    else
+                    {
+                        targetGrass.Reaping();
+                        gear.CurrentDurability -= 1; // 내구도 1 감소
+                        return new FarmActionResult(FarmActionResult.ResultType.Success); // 풀 베기 성공
+                    }
+
+                }
+            }
+            else if (hits.Length == 0)
+            {
+                return new FarmActionResult(FarmActionResult.ResultType.Failed);
+            }
+            else
+            {
+                FixedString128Bytes errorCode = $" DoSickleFunc error. Unexpected amount of target : {hits.Length} ";
+                Debug.Log(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error);
             }
         }
         catch (Exception e)
@@ -289,6 +328,7 @@ public class UseAreaFunction : MonoBehaviour,
 
         return new FarmActionResult(FarmActionResult.ResultType.Error, "Func doesn't coded");
     }
+
     FarmActionResult IUseAreaHammerFunc.DoHammerFunc(ref GearItem gear)
     {
         try
@@ -303,11 +343,12 @@ public class UseAreaFunction : MonoBehaviour,
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 OreProp targetOre = hits[0].gameObject.GetComponent<OreProp>();
 
-
+                // PlotProp이 대상일 경우
                 if (targetPlot != null)
                 {
                     return targetPlot.Ruining();
                 }
+                // OreProp이 대상일 경우
                 else if (targetOre != null)
                 {
                     if (gear.CurrentDurability <= 0)
@@ -343,7 +384,8 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "HAMMER_FUNC_EXCEPTION");
         }
     }
-    FarmActionResult IUseAreaConsumableFunc.DoSeedFunc(int itemID)
+
+    FarmActionResult IUseAreaConsumableFunc.DoSeedFunc(ref GameItem item)
     {
         try
         {
@@ -355,7 +397,7 @@ public class UseAreaFunction : MonoBehaviour,
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
                 if (targetPlot != null)
                 {
-                    return targetPlot.Sowing(itemID);
+                    return targetPlot.Sowing(ref item);
                 }
                 else
                 {
@@ -381,29 +423,21 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "SEED_FUNC_EXCEPTION");
         }
     }
-    FarmActionResult IUseAreaConsumableFunc.DoFertilizerFunc(int itemID)
+    FarmActionResult IUseAreaConsumableFunc.DoFertilizerFunc(ref FertilizerItem item)
     {
         try
         {
             Debug.Log("DoFertilizerFunc has been Executed");
 
-            if (!GlobalItemDB.HasFertilizer(itemID))
+            if (item.Count <= 0)
             {
-                FixedString128Bytes errorCode = $"DoFertilizerFunc error. Unknown itemId : {itemID}";
+                FixedString128Bytes errorCode = $"DoFertilizerFunc error. Item count is {item.Count}";
                 Debug.Log(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
 
-            ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(itemID);
 
 
-            if (baseData.SubType != ItemSubType.Fertilizer)
-            {
-                FixedString128Bytes errorCode =
-                    $"DoFertilizerFunc error. Item is not Fertilizer. itemId : {itemID}, SubType : {baseData.SubType}";
-                Debug.Log(errorCode);
-                return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
-            }
 
             Collider[] hits = GetHits(_treatMask);
 
@@ -411,7 +445,24 @@ public class UseAreaFunction : MonoBehaviour,
             {
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
 
-                if (targetPlot == null)
+                if (targetPlot != null)
+                {
+                    switch(item.FertilizerType)
+                    {
+                        case FertilizerType.Quality:
+                            return targetPlot.TryQualityUp();
+                        case FertilizerType.Bountiful:
+                            return targetPlot.TryBountyUP(item.FertilizerGrade.ToValue());
+                        default:
+                            FixedString128Bytes errorCode = $"DoFertilizerFunc error. Unsupported FertilizerType : {item.FertilizerType}, itemId : {item.Id}";
+                            Debug.Log(errorCode);
+                            return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+                    }
+
+
+
+                }
+                else
                 {
                     FixedString128Bytes errorCode = $"DoFertilizerFunc error. Plot component not found.";
                     Debug.Log(errorCode);
@@ -419,6 +470,10 @@ public class UseAreaFunction : MonoBehaviour,
                 }
                 //TODO :: Fertilizer 코드 완성하기!
                 return new FarmActionResult(FarmActionResult.ResultType.Error, "DoFertilizerFunc error.Plot component not found");
+
+
+
+
             }
             else if (hits.Length == 0)
             {
@@ -438,6 +493,4 @@ public class UseAreaFunction : MonoBehaviour,
             return new FarmActionResult(FarmActionResult.ResultType.Error, "FERTILIZER_FUNC_EXCEPTION");
         }
     }
-
-   
 }

@@ -34,9 +34,6 @@ public class HotbarManager : MonoBehaviour
     public bool isSwappingGearDefaultArea { get; private set; } = false;
 
 
-    private int pointingItemId;
-
-    public int PointingItemId => pointingItemId;
 
 
 

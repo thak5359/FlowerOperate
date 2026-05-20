@@ -38,7 +38,6 @@ public struct GearItemAuthoringData
     [Header("차지(Charge) 영역 정보")]
     // 인스펙터에서 직렬화되어 입력받을 수 있도록 배열로 선언해요.
     public ChargeArea[] chargeAreas;
-    public ChargeArea chargeAreaSwap;
 }
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct GearItemBlobData
