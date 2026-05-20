@@ -52,11 +52,14 @@ public partial class GameItem : IGameResource
             return;
         }
 
-        if (!GlobalItemDB.TryGetBase(Id, out ItemBaseBlobData baseData))
+        if (!GlobalItemDB.HasBase(Id))
         {
             Debug.LogError($"[GameItem] ItemBaseDB 조회 실패. Id: {Id}");
             return;
         }
+
+        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);    
+
 
         MainType = baseData.MainType;
         SubType = baseData.SubType;

@@ -1,73 +1,68 @@
-using Fungus;
 using MemoryPack;
+using Spine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
+using TreeEditor;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 [MemoryPackable]
-public partial struct OreData : IPropData
+public partial struct TreeData : IPropData
 {
     public Vector3 Position { get; private set; }
     public readonly int Id { get; init; }
-    [field: SerializeField] public int Duration { get; set; }
+    public int Duration { get; set; }
 
-    public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
+    public TreeData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
         Id = input_OreId;
         Duration = input_Duration;
     }
 
-    public OreData(int input_OreID)
+    public TreeData(int input_OreID)
     {
         Position = default;
         Id = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;
-    
-    public void OnDestroy() 
-    {
-        if(Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(Id), Position);
-    }
 }
 
 
-[Serializable]
-public class OreProp : Prop
-{
-    // 어떤 광물 종류, 광물 아이템... 파편.. 인벤토리에는 들어가지 않는 아이템 타입이고, 어떤 금속이고, 어떤 아이템을 가지고..
-    [SerializeField] private OreData _oreData = new(0);
 
-    public ref OreData oreData => ref _oreData;
+
+public class TreeProp : Prop, IGameResource
+{
+
+    private TreeData _treeData = new(0);
+
+    public ref TreeData treeData => ref _treeData;
 
     public void OnEnable()
     {
-        if (oreData.Position == default)
-            oreData.SetPosition(this.transform.position);
+        if (treeData.Position == default)
+            treeData.SetPosition(this.transform.position);
     }
 
-    // 2. 데미지 계산
+
+
     public FarmActionResult Damaged(int Damage)
     {
         try
         {
-            
-            Debug.Log($"Damaged has been called. Current Duration : {oreData.Duration}");
-            oreData.Duration -= Damage;
 
-            Debug.Log($"Current Duration : { oreData.Duration}");
-            if (oreData.Duration <= 0)
-            { 
+            Debug.Log($"Damaged has been called. Current Duration : {treeData.Duration}");
+            treeData.Duration -= Damage;
+
+            Debug.Log($"Current Duration : {treeData.Duration}");
+            if (treeData.Duration <= 0)
+            {
                 return Ruining();
             }
             else
-            { 
-            return new FarmActionResult(FarmActionResult.ResultType.Success);
+            {
+                return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
         }
         catch (Exception e)
@@ -78,8 +73,8 @@ public class OreProp : Prop
     }
 
     // 3. 죽음 & 아이템 뱉기 ( 추후0)
-    
-    
+
+
     // TODO 아이템 뱉는 로직 만들기
     private FarmActionResult Ruining()
     {
@@ -101,16 +96,11 @@ public class OreProp : Prop
         }
     }
 
-    public void LoadFromData(OreData data)
+    public void LoadFromData(TreeData data)
     {
         this.transform.position = data.Position;
 
-        _oreData = data;
+        _treeData = data;
     }
 
-    public override void OnDestroy()
-    {
-        if(oreData.Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(oreData.Id), oreData.Position);
-    }
 }

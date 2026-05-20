@@ -136,134 +136,84 @@ public static class GlobalItemDB
         }
     }
 
-    public static bool TryGetBase(int itemId, out ItemBaseBlobData data)
+    // 수정할 위치: GlobalItemDB.cs 내부
+    // 변경 이유: 구조체를 복사하는 기존의 TryGet 메서드들을 삭제하고, 존재 여부를 묻는 Has 메서드와 원본 메모리를 가리키는 GetRef 메서드로 분리했어요.
+
+    // ==========================================
+    // 기존의 TryGet... 메서드들을 전부 지우고 아래 코드로 교체해주세요!
+    // ==========================================
+
+    // ItemBase
+    public static bool HasBase(int itemId)
     {
-        data = default;
-
-        if (!_accessor.ItemBaseDB.IsCreated)
-        {
-            Debug.LogError("[GlobalItemDB] ItemBaseDB가 초기화되지 않았습니다.");
-            return false;
-        }
-
-        if (!_baseIndexById.TryGetValue(itemId, out int index))
-        {
-            return false;
-        }
-
-        data = _accessor.ItemBaseDB.Value.Items[index];
-        return true;
+        return _accessor.ItemBaseDB.IsCreated && _baseIndexById.ContainsKey(itemId);
+    }
+    public static ref ItemBaseBlobData GetBaseRef(int itemId)
+    {
+        return ref _accessor.ItemBaseDB.Value.Items[_baseIndexById[itemId]];
     }
 
-    public static bool TryGetFlower(int itemId, out FlowerItemBlobData data)
+    // Flower
+    public static bool HasFlower(int itemId)
     {
-        data = default;
-
-        if (!_accessor.FlowerDB.IsCreated)
-        {
-            Debug.LogError("[GlobalItemDB] FlowerDB가 초기화되지 않았습니다.");
-            return false;
-        }
-
-        if (!_flowerIndexById.TryGetValue(itemId, out int index))
-        {
-            return false;
-        }
-
-        data = _accessor.FlowerDB.Value.Items[index];
-        return true;
+        return _accessor.FlowerDB.IsCreated && _flowerIndexById.ContainsKey(itemId);
+    }
+    public static ref FlowerItemBlobData GetFlowerRef(int itemId)
+    {
+        return ref _accessor.FlowerDB.Value.Items[_flowerIndexById[itemId]];
     }
 
-    public static bool TryGetGear(int itemId, out GearItemBlobData data)
+    // Gear (이 녀석 때문에 시작된 최적화죠!)
+    public static bool HasGear(int itemId)
     {
-        data = default;
-
-        if (!_accessor.GearDB.IsCreated)
-        {
-            Debug.LogError("[GlobalItemDB] GearDB가 초기화되지 않았습니다.");
-            return false;
-        }
-
-        if (!_gearIndexById.TryGetValue(itemId, out int index))
-        {
-            return false;
-        }
-
-        data = _accessor.GearDB.Value.Items[index];
-        return true;
+        return _accessor.GearDB.IsCreated && _gearIndexById.ContainsKey(itemId);
+    }
+    public static ref GearItemBlobData GetGearRef(int itemId)
+    {
+        return ref _accessor.GearDB.Value.Items[_gearIndexById[itemId]];
     }
 
-    public static bool TryGetFertilizer(int itemId, out FertilizerItemBlobData data)
+    // Fertilizer
+    public static bool HasFertilizer(int itemId)
     {
-        data = default;
-
-        if (!_accessor.FertilizerDB.IsCreated)
-        {
-            Debug.LogError("[GlobalItemDB] GearDB가 초기화되지 않았습니다.");
-            return false;
-        }
-
-        if (!_fertilizerIndexById.TryGetValue(itemId, out int index))
-        {
-            return false;
-        }
-
-        data = _accessor.FertilizerDB.Value.Items[index];
-        return true;
+        return _accessor.FertilizerDB.IsCreated && _fertilizerIndexById.ContainsKey(itemId);
+    }
+    public static ref FertilizerItemBlobData GetFertilizerRef(int itemId)
+    {
+        return ref _accessor.FertilizerDB.Value.Items[_fertilizerIndexById[itemId]];
     }
 
-
-    public static bool Exists(int itemId)
-    {
-        return _baseIndexById.ContainsKey(itemId);
-    }
+    public static bool Exists(int itemId) => HasBase(itemId);
 
     public static ItemMainType GetMainType(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.MainType
-            : ItemMainType.Unknown;
+        return HasBase(itemId) ? GetBaseRef(itemId).MainType : ItemMainType.Unknown;
     }
 
     public static ItemSubType GetSubType(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.SubType
-            : ItemSubType.Unknown;
+        return HasBase(itemId) ? GetBaseRef(itemId).SubType : ItemSubType.Unknown;
     }
 
     public static int GetStackLimit(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.StackLimit
-            : 0;
+        return HasBase(itemId) ? GetBaseRef(itemId).StackLimit : 0;
     }
 
     public static int GetPrice(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.RefundPrice
-            : 0;
+        return HasBase(itemId) ? GetBaseRef(itemId).RefundPrice : 0;
     }
-
     public static FixedString64Bytes GetItemName(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.ItemName
-            : default;
+        return HasBase(itemId) ? GetBaseRef(itemId).ItemName : default;
     }
-
     public static FixedString128Bytes GetDescription(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.Description
-            : default;
+        return HasBase(itemId) ? GetBaseRef(itemId).Description : default;
     }
-
     public static FixedString128Bytes GetSpriteAddress(int itemId)
     {
-        return TryGetBase(itemId, out var data)
-            ? data.SpriteAddress
-            : default;
+        return HasBase(itemId) ? GetBaseRef(itemId).SpriteAddress : default;
     }
 }

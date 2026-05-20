@@ -45186,11 +45186,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 473.96603, y: 940.1206}
+  scrollPos: {x: 523.9034, y: 856.4379}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
-  blockViewHeight: 570
-  zoom: 0.68333334
+  blockViewHeight: 609
+  zoom: 0.8333332
   scrollViewRect:
     serializedVersion: 2
     x: -343
@@ -45199,7 +45199,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1618246223}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 1618246226}
   variables: []
   description: 
   stepPause: 0
@@ -45257,7 +45258,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 15.917988
     y: -601.97955
-    width: 137.80487
+    width: 136.40002
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -45374,7 +45375,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: -244.82898
     y: -599.2959
-    width: 184.63414
+    width: 179.60002
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -45410,8 +45411,8 @@ MonoBehaviour:
   fromPosition: {fileID: 0}
   toPosition: {fileID: 0}
   facing: 0
-  useDefaultSettings: 1
-  fadeDuration: 0.5
+  useDefaultSettings: 0
+  fadeDuration: 0
   moveDuration: 1
   shiftOffset: {x: 0, y: 0}
   move: 0
@@ -60756,7 +60757,10 @@ SceneRoots:
   - {fileID: 1496295575}
   - {fileID: 3228583530057610999}
   - {fileID: 564172835}
+<<<<<<< HEAD
   - {fileID: 2042595363031557264}
+=======
+>>>>>>> Mingi
   - {fileID: 3598777553732813658}
   - {fileID: 46257266}
   - {fileID: 253619111}

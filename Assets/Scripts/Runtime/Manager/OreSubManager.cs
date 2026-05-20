@@ -7,7 +7,7 @@ public class OreSubManager
 {
     public async UniTask OnLoadAsync()
     {
-
+        await UniTask.Yield();
 
 
 

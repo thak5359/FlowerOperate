@@ -1,7 +1,8 @@
-using VContainer;
-using VContainer.Unity;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
+using VContainer;
+using VContainer.Unity;
 
 public class FarmSceneLifetimeScope : LifetimeScope
 {
@@ -11,6 +12,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private InventoryUIController inventoryUI;
     [SerializeField] private PlayerOwnItemDataManager playerItemDataManager;
     [SerializeField] private PlotManager plotManager;
+
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -22,7 +24,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         //builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
-
+        builder.Register<PlayerStateManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterComponent<PlotManager>(plotManager).As<IPlotManager>().AsSelf();
         builder.RegisterComponent<PlayerController>(playerController);
         builder.RegisterComponent<HotbarManager>(hotbarManager);
@@ -30,6 +32,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
         builder.RegisterComponent<PlayerOwnItemDataManager>(playerItemDataManager).AsSelf();
         
+
         builder.RegisterComponentInHierarchy<SaveLoadManager>().AsSelf();
     }
 }

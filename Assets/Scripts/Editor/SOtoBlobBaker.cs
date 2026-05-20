@@ -167,6 +167,9 @@ public class ItemBlobBaker : EditorWindow
         }
     }
 
+    // 수정할 위치: ItemBlobBaker.cs 파일 내부의 BakeGearItemData 메서드 전체 교체
+    // 변경 이유: BlobArray 내부에 또 다른 BlobArray(ChargeAreas)를 할당하기 위해 ref 참조 방식을 사용하고 배열 메모리를 직접 구워줍니다.
+
     private bool BakeGearItemData(GearItemData so)
     {
         if (so == null)
@@ -185,15 +188,32 @@ public class ItemBlobBaker : EditorWindow
             {
                 GearItemAuthoringData source = so.Get(i);
 
-                arrayBuilder[i] = new GearItemBlobData
+                // 1. 배열의 요소를 참조(ref)로 가져옵니다. 
+                // (내부 BlobArray 할당을 위해선 반드시 ref로 접근해야 메모리 오프셋이 안 깨져요!)
+                ref GearItemBlobData element = ref arrayBuilder[i];
+
+                // 2. 기본 데이터 매핑 (기존에 누락되었던 Grade도 추가했어요)
+                element.ItemId = source.itemId;
+                element.GearType = source.gearType;
+                element.MaxDuration = source.maxDurability;
+                element.Efficiency = source.efficiency;
+                element.ChargeTime = source.chargeTime;
+                element.MaxCharge = source.maxCharge;
+                element.Grade = source.grade;
+
+                element.ChargeAreaSwap = source.chargeAreaSwap;
+
+                // 3. ChargeAreas 내부 배열 메모리 할당 및 복사
+                if (source.chargeAreas != null && source.chargeAreas.Length > 0)
                 {
-                    ItemId = source.itemId,
-                    GearType = source.gearType,
-                    MaxDuration = source.maxDurability,
-                    Efficiency = source.efficiency,
-                    ChargeTime = source.chargeTime,
-                    MaxCharge = source.maxCharge
-                };
+                    // 해당 element의 ChargeAreas 필드를 타겟으로 배열 크기만큼 메모리 할당
+                    BlobBuilderArray<ChargeArea> chargeAreasBuilder = builder.Allocate(ref element.ChargeAreas, source.chargeAreas.Length);
+
+                    for (int j = 0; j < source.chargeAreas.Length; j++)
+                    {
+                        chargeAreasBuilder[j] = source.chargeAreas[j];
+                    }
+                }
             }
 
             SaveToBlob<GearItemBlobDatas>(builder, so.name);
@@ -205,7 +225,6 @@ public class ItemBlobBaker : EditorWindow
             builder.Dispose();
         }
     }
-
     private bool BakeFertilizerItemData(FertilizerItemData so)
     {
         if (so == null)
