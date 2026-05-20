@@ -203,6 +203,20 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         actionNextHotSlot.performed += _hotbarManager.OnNextHotSlot;
         #endregion
 
+
+        #region 핫 슬롯 레이어 변경 
+        InputAction actionSwapHotBarUp = map.FindAction("SwapHotBarUp");
+        if (actionSwapHotBarUp != null) actionSwapHotBarUp.performed += _hotbarManager.OnSwapHotBarUp;
+
+        InputAction actionSwapHotBarDown = map.FindAction("SwapHotBarDown");
+        if (actionSwapHotBarDown != null) actionSwapHotBarDown.performed += _hotbarManager.OnSwapHotBarDown;
+
+        #endregion
+
+        // Ctrl 키로 기본 영역 강제 사용 토글 (차징 중에 사용 불가)
+        InputAction actionSwapGearDefaultArea = map.FindAction("SwapGearDefaultArea");
+        if (actionSwapGearDefaultArea != null) actionSwapGearDefaultArea.performed += _hotbarManager.OnSwapGearDefaultArea;
+
         InputAction actionEscape = map.FindAction("Escape");
         actionEscape.performed += _pauseMenu.OnBackAction;
 
@@ -280,6 +294,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
 
 
     #region 키 할당 해제 스크립트
+   
     #region 정지 메뉴 키 해제
     void PauseMapActionDeallocator()
     {
@@ -356,11 +371,22 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         var actionNextHotSlot = map.FindAction("NextHotSlot");
         actionNextHotSlot.performed -= _hotbarManager.OnNextHotSlot;
 
+        var actionSwapHotBarUp = map.FindAction("SwapHotBarUp");
+        if (actionSwapHotBarUp != null) actionSwapHotBarUp.performed -= _hotbarManager.OnSwapHotBarUp;
+
+        var actionSwapHotBarDown = map.FindAction("SwapHotBarDown");
+        if (actionSwapHotBarDown != null) actionSwapHotBarDown.performed -= _hotbarManager.OnSwapHotBarDown;
+
+        var actionSwapGearDefaultArea = map.FindAction("SwapGearDefaultArea");
+        if (actionSwapGearDefaultArea != null) actionSwapGearDefaultArea.performed -= _hotbarManager.OnSwapGearDefaultArea;
+
+
         var actionEscape = map.FindAction("Escape");
         actionEscape.performed -= _pauseMenu.OnBackAction;
 
         var actionInventory = map.FindAction("OpenInventory");
         actionInventory.performed -= _inventoryUIContoller.OnOpenInventory;
+
 
 
         // 핫슬롯 1~0번 해제 (하드 코딩)
@@ -388,7 +414,10 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         actionEscape.performed -= _inventoryUIContoller.OnEscape;   
     }
     #endregion
+    
+    #endregion
 
+    #region 편의성 함수
     #region 핫슬롯키 할당용 함수
     private void OnHotSlot1Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(0);
     private void OnHotSlot2Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(1);
@@ -401,5 +430,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
     private void OnHotSlot9Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(8);
     private void OnHotSlot0Performed(InputAction.CallbackContext ctx) => _hotbarManager.pointSlot(9);
     #endregion
+    
+
     #endregion
 }

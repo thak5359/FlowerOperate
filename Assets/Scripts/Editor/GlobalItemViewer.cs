@@ -115,7 +115,7 @@ public class GlobalItemViewer : EditorWindow
         ref var items = ref accessor.GearDB.Value.Items;
         for (int i = 0; i < items.Length; i++)
         {
-            var item = items[i];
+            ref GearItemBlobData item = ref items[i];
             if (!MatchesSearch(item.ItemId.ToString(), "")) continue;
 
             BeginItemBox(item.ItemId, "Gear Data");

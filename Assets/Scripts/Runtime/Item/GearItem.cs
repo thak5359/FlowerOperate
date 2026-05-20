@@ -22,29 +22,36 @@ public partial class GearItem : GameItem
     {
      Grade = input_Grade;
         MaxDurability = input_MaxDuration;
+
+        CurrentDurability = (int)MaxDurability;
     }
 
     public override void OnLoadAsync(IPropData propData = default)
     {
         base.OnLoadAsync(propData);
 
-        if (!GlobalItemDB.TryGetGear(Id, out GearItemBlobData gearData))
+        if (!GlobalItemDB.HasGear(Id))
         {
             Debug.LogError($"[GearItem] GearDB 조회 실패. Id: {Id}");
             return;
         }
 
+
+        ref GearItemBlobData gearData = ref  GlobalItemDB.GetGearRef(Id);
+
         GearType = gearData.GearType;
         MaxDurability = gearData.MaxDuration;
         Efficiency = gearData.Efficiency;
 
-        ChargeInfo = new ChargeInfo(
-            GearValueConverter.ToSeconds(gearData.ChargeTime),
-            ((int)gearData.MaxCharge)
-        );
+        ChargeInfo = new ChargeInfo(GearValueConverter.ToSeconds(gearData.ChargeTime),gearData.ChargeAreas.ToArray());
 
-            CurrentDurability = (int)MaxDurability;
     }
+
+    public void repair()
+    {
+        CurrentDurability = (int)MaxDurability;
+    }
+
 }
 /// <summary>
 /// Enum으로 float 값을 적용할 수 없어서 별도의 전환 기능을 만듦. 내부 수치가 변동될 경우 이 함수도 수정

@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -26,7 +27,7 @@ public class OreManager: IAsyncStartable
 
     public async UniTask StartAsync(CancellationToken cancellationToken)
     {
-        
+       await UniTask.Yield();
 
 
     }

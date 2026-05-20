@@ -1,8 +1,6 @@
 using Cysharp.Threading.Tasks;
 using R3;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -10,7 +8,8 @@ using VContainer;
 public class HotbarManager : MonoBehaviour
 {
 
-    [Inject] private readonly PlayerOwnItemDataManager _itemDataManager;
+    private PlayerOwnItemDataManager _itemDataManager;
+    private PlayerStateManager _playerState;
 
     private DisposableBag disposableBag = new();// R3 구독 해제용 백
 
@@ -18,7 +17,6 @@ public class HotbarManager : MonoBehaviour
     [Header("핫키 슬롯을 등록해주세요")]
     [SerializeField] List<ItemObjectData> items;
     [SerializeField] List<HotBarSlot> slots;
-    [SerializeField] PlayerController player;
 
     private Sprite oldSprite;
     private Sprite newSprite;
@@ -33,10 +31,22 @@ public class HotbarManager : MonoBehaviour
     private float scrollCooldown = 0.05f;
     private float lastScrollTime = 0.0f;
 
+    public bool isSwappingGearDefaultArea { get; private set; } = false;
+
+
     private int pointingItemId;
 
     public int PointingItemId => pointingItemId;
 
+
+
+
+    [Inject]
+    void Constuct(PlayerOwnItemDataManager input_itemDataManager, PlayerStateManager input_playerStateManager)
+    {
+        _itemDataManager = input_itemDataManager;
+        _playerState = input_playerStateManager;
+    }
 
     void Awake()
     {
@@ -67,6 +77,19 @@ public class HotbarManager : MonoBehaviour
     }
 
 
+    public void OnSwapGearDefaultArea(InputAction.CallbackContext context)
+    {
+        if (_playerState.IsCharging.Value) return; // 전광판 보고 차징 중인지 판단!
+
+        if (context.performed)
+        {
+            // 무조건 true가 되는 것보다, 같은 키를 눌러서 껐다 켰다(토글) 할 수 있는 게 플레이하기 편할 거예요!
+            isSwappingGearDefaultArea = !isSwappingGearDefaultArea;
+
+            Debug.Log($"기본 영역(1x1) 강제 사용 상태: {isSwappingGearDefaultArea}");
+        }
+    }
+
 
     /// <summary>
     /// 인벤토리에서 참조하는 열(Array)을 위로 한 칸 바꿉니다 (0 -> 4 -> 3...)
@@ -75,11 +98,13 @@ public class HotbarManager : MonoBehaviour
     {
         if (context.performed)
         {
-            // 0~4 순환 처리 (음수 방지를 위해 슬롯 총 수인 5를 더하고 나머지 연산)
+            if (_playerState.IsCharging.Value) return; // 차징 중이면 무시!
+
             pointingInventoryArray = (pointingInventoryArray - 1 + 5) % 5;
             Debug.Log($"핫바 레이어 변경 (Up): {pointingInventoryArray}번 줄 가리킴");
 
-            RefreshHotbarSlots(); // UI 새로고침
+            isSwappingGearDefaultArea = false; // 슬롯 환경이 변했으니 false로 초기화
+            RefreshHotbarSlots();
         }
     }
     /// <summary>
@@ -89,10 +114,13 @@ public class HotbarManager : MonoBehaviour
     {
         if (context.performed)
         {
+            if (_playerState.IsCharging.Value) return; // 차징 중이면 무시!
+
             pointingInventoryArray = (pointingInventoryArray + 1) % 5;
             Debug.Log($"핫바 레이어 변경 (Down): {pointingInventoryArray}번 줄 가리킴");
 
-            RefreshHotbarSlots(); // UI 새로고침
+            isSwappingGearDefaultArea = false; // 슬롯 환경이 변했으니 false로 초기화
+            RefreshHotbarSlots();
         }
     }
     /// <summary>
@@ -110,13 +138,9 @@ public class HotbarManager : MonoBehaviour
             // 10칸씩 쪼개진 세그먼트 내부 아이템에 인덱스로 바로 접근
             GameItem item = currentSegment[i];
 
-            // 어드레서블 매니저 리소스 해제 처리 예시 유지
-            if (slots[i].ItemIcon != null)
-            {
-                AddressableManager.ReleaseAsset(slots[i].ItemIcon);
-            }
 
-            UpdateHotSlotItem(i,item).Forget(); // 각 슬롯 UI 업데이트 (비동기 대기)
+
+            UpdateHotSlotItem(i, item).Forget(); // 각 슬롯 UI 업데이트 (비동기 대기)
         }
 
         // 핫바를 바꿨거나 아이템이 바뀌었으니 플레이어 손에 들린 아이템도 동기화해줘요.
@@ -169,8 +193,18 @@ public class HotbarManager : MonoBehaviour
                 }
             }
 
-            // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
-            slot.ItemIcon.sprite = newSprite;
+
+            if (newSprite == null || newSprite == default(Sprite))
+            {
+                Debug.LogWarning($"아이템 {input_item?.Id}의 스프라이트가 null이거나 기본값입니다. 빈 슬롯으로 처리됩니다.");
+            }
+            else
+            {
+                // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
+                slot.ItemIcon.sprite = newSprite;
+            }
+            //  핵심 해결책: 스프라이트가 존재하면 Image를 켜고, null이면 Image 컴포넌트를 끕니다.
+            slot.ItemIcon.enabled = (newSprite != null);
 
             // 기존 이미지가 있었고, 새로 덮어씌운 이미지와 다르다면 기존 이미지 메모리를 해제합니다
             if (oldSprite != null && oldSprite != newSprite)
@@ -237,7 +271,7 @@ public class HotbarManager : MonoBehaviour
     public void SyncPlayerItem()
     {
         if (pointingSlot < 0 || pointingSlot >= slots.Count) return;
-        if (player != null)
+        if (_playerState != null)
         {
             //player.SetItem(slots[pointingSlot].item);
         }
