@@ -8,8 +8,8 @@ using VContainer;
 public class HotbarManager : MonoBehaviour
 {
 
-     private PlayerOwnItemDataManager _itemDataManager;
-     private PlayerStateManager _playerState;
+    private PlayerOwnItemDataManager _itemDataManager;
+    private PlayerStateManager _playerState;
 
     private DisposableBag disposableBag = new();// R3 구독 해제용 백
 
@@ -42,7 +42,7 @@ public class HotbarManager : MonoBehaviour
 
 
     [Inject]
-    void Constuct( PlayerOwnItemDataManager input_itemDataManager, PlayerStateManager input_playerStateManager)
+    void Constuct(PlayerOwnItemDataManager input_itemDataManager, PlayerStateManager input_playerStateManager)
     {
         _itemDataManager = input_itemDataManager;
         _playerState = input_playerStateManager;
@@ -86,7 +86,6 @@ public class HotbarManager : MonoBehaviour
             // 무조건 true가 되는 것보다, 같은 키를 눌러서 껐다 켰다(토글) 할 수 있는 게 플레이하기 편할 거예요!
             isSwappingGearDefaultArea = !isSwappingGearDefaultArea;
 
-           if(isSwappingGearDefaultArea == true)
             Debug.Log($"기본 영역(1x1) 강제 사용 상태: {isSwappingGearDefaultArea}");
         }
     }
@@ -139,13 +138,9 @@ public class HotbarManager : MonoBehaviour
             // 10칸씩 쪼개진 세그먼트 내부 아이템에 인덱스로 바로 접근
             GameItem item = currentSegment[i];
 
-            // 어드레서블 매니저 리소스 해제 처리 예시 유지
-            if (slots[i].ItemIcon != null)
-            {
-                AddressableManager.ReleaseAsset(slots[i].ItemIcon);
-            }
 
-            UpdateHotSlotItem(i,item).Forget(); // 각 슬롯 UI 업데이트 (비동기 대기)
+
+            UpdateHotSlotItem(i, item).Forget(); // 각 슬롯 UI 업데이트 (비동기 대기)
         }
 
         // 핫바를 바꿨거나 아이템이 바뀌었으니 플레이어 손에 들린 아이템도 동기화해줘요.
@@ -198,9 +193,16 @@ public class HotbarManager : MonoBehaviour
                 }
             }
 
-            // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
-            slot.ItemIcon.sprite = newSprite;
 
+            if (newSprite == null || newSprite == default(Sprite))
+            {
+                Debug.LogWarning($"아이템 {input_item?.Id}의 스프라이트가 null이거나 기본값입니다. 빈 슬롯으로 처리됩니다.");
+            }
+            else
+            {
+                // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
+                slot.ItemIcon.sprite = newSprite;
+            }
             //  핵심 해결책: 스프라이트가 존재하면 Image를 켜고, null이면 Image 컴포넌트를 끕니다.
             slot.ItemIcon.enabled = (newSprite != null);
 

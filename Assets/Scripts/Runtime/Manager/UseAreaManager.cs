@@ -406,8 +406,8 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     #endregion
 
-   private PlayerOwnItemDataManager _itemDataManager;
-   private PlayerStateManager _playerState;
+    private PlayerOwnItemDataManager _itemDataManager;
+    private PlayerStateManager _playerState;
 
 
     private Transform _originTransform;
@@ -417,8 +417,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     public float charTimePerPhase = 1.75f;
 
 
-    private GameItem _cachedItem;
-    private bool _isCharging;
+    private GameItem _cachedSelectedItem;
     private float _chargeStartTime;
     float elapsed;
 
@@ -508,9 +507,12 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         return segment[slot];
     }
 
+    // 수정할 위치: UseAreaManager.cs 내부의 StartCharging 메서드 수정
+    // 변경 이유: 아이템이 없을 때 차징 스위치(_isCharging)가 켜진 채 리턴되는 버그를 수정하고, 플레이어 전광판의 상태도 함께 꺼지도록 안전하게 방어해요.
+
     public void StartCharging(in Transform playerTransform, in Vector2 heading)
     {
-        if (_isCharging) return;
+        if (_playerState.IsCharging.Value) return;
         if (!IsReady)
         {
             Debug.Log($"차징 시작 불가: 준비 상태 \n " +
@@ -520,15 +522,19 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             return;
         }
 
-        _isCharging = true;
+        // 💡 [수정 위치] 현재 가리키는 아이템 정보를 '먼저' 가져와 유효성 검사를 합니다.
+        var selectedItem = GetCurrentSelectedItem();
 
-        _cachedItem = GetCurrentSelectedItem(); // 현재 가리키는 아이템 정보 저장
-
-        if (_cachedItem == null || _cachedItem.Count <= 0)
+        if (selectedItem == null || selectedItem.Count <= 0)
         {
             Debug.Log("사용할 수 있는 아이템이 없습니다.");
+
             return;
         }
+
+        // 💡 아이템이 확실히 있을 때만 진짜 차징 프로세스를 시작해요!
+        _playerState.IsCharging.Value = true;
+        _cachedSelectedItem = selectedItem;
 
         _originTransform = playerTransform; // 참조 저장
 
@@ -543,53 +549,94 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
         _chargeStartTime = Time.time;
     }
-
     void ITickable.Tick()  // 모았다가...
     {
-        if (_useAreaPrefab == null || _isCharging == false) return;
-
-        elapsed = Time.time - _chargeStartTime;
-
-        // 아이템 종류에 따라 적절한 영역 데이터를 가져옵니다.
-        List<Vector3> rawOffsets = null;
-
-        if (_cachedItem is GearItem)
+        try
         {
-            rawOffsets = GetAreaList();
+            if (_useAreaPrefab == null || !_playerState.IsCharging.Value) return;
+
+            if (_cachedSelectedItem == null)
+            {
+                Debug.LogWarning("아이템이 없는데 차징 로직이 돌았습니다. 강제 종료합니다.");
+                _playerState.IsCharging.Value = false;
+                ClearActiveArea();
+                return;
+            }
+
+
+
+            elapsed = Time.time - _chargeStartTime;
+
+            // 아이템 종류에 따라 적절한 영역 데이터를 가져옵니다.
+            List<Vector3> rawOffsets = null;
+
+            if (_cachedSelectedItem is GearItem)
+            {
+                rawOffsets = GetAreaList();
+            }
+            else if (_cachedSelectedItem is FertilizerItem || _cachedSelectedItem.SubType == ItemSubType.Seed)
+            {
+                rawOffsets = GetHandAreaList();
+            }
+            else
+            {
+                // 도구나 소모품이 아닌 일반 아이템을 들고 차징할 경우 캔슬합니다!
+                _playerState.IsCharging.Value = false;
+                ClearActiveArea();
+                return;
+            }
+
+            if (rawOffsets != null)
+            {
+                List<Vector3> worldPositions = new List<Vector3>();
+                foreach (var offset in rawOffsets)
+                {
+                    Vector3 rotated = RotateOffset(offset, _currentHeading);
+                    // 소수점 반올림으로 그리드 스냅 적용
+                    Vector3 snapPos = new Vector3(
+                        Mathf.Round(_originTransform.position.x + rotated.x),
+                        0.15f,
+                        Mathf.Round(_originTransform.position.z + rotated.z)
+                    );
+                    worldPositions.Add(snapPos);
+                }
+
+                // 4. 화면에 영역 표시
+                UpdateVisualArea(worldPositions);
+            }
         }
-        else if (_cachedItem is FertilizerItem || _cachedItem.SubType == ItemSubType.Seed)
+        catch (Exception e)
         {
-            rawOffsets = GetHandAreaList();
+            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.StackTrace}");
+            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.Message}");
         }
-        else
+    }
+    public void Fire() // Context.canceled, 버튼을 땠을 때 발사!
+    {
+        if (!_playerState.IsCharging.Value) return; // 차징이 시작되지 않았으면 무시
+
+        if (_cachedSelectedItem == null || _cachedSelectedItem.Count <= 0)
         {
-            // 도구나 소모품이 아닌 일반 아이템을 들고 차징할 경우 캔슬합니다!
-            _isCharging = false;
+            Debug.Log("차징 도중 아이템이 사라졌습니다.");
+            _playerState.IsCharging.Value = false;
             ClearActiveArea();
             return;
         }
 
-        if (rawOffsets != null)
+        try
         {
-            List<Vector3> worldPositions = new List<Vector3>();
-            foreach (var offset in rawOffsets)
-            {
-                Vector3 rotated = RotateOffset(offset, _currentHeading);
-                // 소수점 반올림으로 그리드 스냅 적용
-                Vector3 snapPos = new Vector3(
-                    Mathf.Round(_originTransform.position.x + rotated.x),
-                    0.15f,
-                    Mathf.Round(_originTransform.position.z + rotated.z)
-                );
-                worldPositions.Add(snapPos);
-            }
-
-            // 4. 화면에 영역 표시
-            UpdateVisualArea(worldPositions);
+            FireUseAreaFunction();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.StackTrace}");
+        }
+        finally
+        {
+            _playerState.IsCharging.Value = false;
+            ClearActiveArea();
         }
     }
-
-
 
     private void UpdateVisualArea(List<Vector3> worldPositions)
     {
@@ -609,32 +656,6 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     }
 
 
-    public void Fire() // Context.canceled, 버튼을 땠을 때 발사!
-    {
-        if (!_isCharging) return; // 차징이 시작되지 않았으면 무시
-
-        if (_cachedItem == null || _cachedItem.Count <= 0)
-        {
-            Debug.Log("차징 도중 아이템이 사라졌습니다.");
-            _isCharging = false;
-            ClearActiveArea();
-            return;
-        }
-
-        try
-        {
-            FireUseAreaFunction();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"<color=red><b>[CRITICAL ERROR]</b></color> {e.StackTrace}");
-        }
-        finally
-        {
-            _isCharging = false;
-            ClearActiveArea();
-        }
-    }
 
     private void ClearActiveArea()
     {
@@ -648,7 +669,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     public void CancelCharging()
     {
-        _isCharging = false;
+        _playerState.IsCharging.Value = false;
         ClearActiveArea();
         Debug.Log("캐릭터가 메모리에서 해제됨. 강제로 차징을 해제합니다.");
     }
@@ -667,7 +688,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     public void FireUseAreaFunction()
     {
 
-        if(_cachedItem == null)
+        if (_cachedSelectedItem == null)
         {
             Debug.LogError("발사 시도 중 아이템 정보가 없습니다!");
             return;
@@ -678,7 +699,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             UseAreaFunction obj = _activeObjects.Pop();
             if (obj != null)
             {
-                obj.FireFunc(ref _cachedItem, _plotPrefab);
+                obj.FireFunc(ref _cachedSelectedItem, _plotPrefab);
 
 
 
@@ -723,9 +744,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     public void DimensionExpansion()
     {
         //ItemObjectData에서 데이터를 출력
-
         foreach (var obj in pool) obj.SetActive(false);
-
     }
 
 
@@ -735,13 +754,13 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     /// <returns></returns>
     private List<Vector3> GetAreaList()
     {
-        if (_cachedItem is not GearItem gear) return null;
+        if (_cachedSelectedItem is not GearItem gear) return null;
 
         float chargeTime = gear.ChargeInfo.ChargeTime > 0 ? gear.ChargeInfo.ChargeTime : 0.1f; // Zero Split 방지
-        int maxLevel = Mathf.Max(0, gear.ChargeInfo.ChargeAreas.Length - 1); 
+        int maxLevel = Mathf.Max(0, gear.ChargeInfo.ChargeAreas.Length - 1);
 
         int chargeLv = (int)Mathf.Clamp(elapsed / chargeTime, 0, maxLevel);
-        if( chargeLv == 0 && _playerState.IsSwappingGearDefaultArea.Value )
+        if (chargeLv == 0 && _playerState.IsSwappingGearDefaultArea.Value)
         {
             return AreaOrigin; // Ctrl 누르고 있으면 첫 번째 레벨은 무조건 1칸
         }
@@ -782,11 +801,10 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         }
     }
 
-
     private List<Vector3> GetHandAreaList()
     {
         // 씨앗이거나 비료일 때만 동작하도록 이중 체크
-        bool isHandItem = _cachedItem is FertilizerItem || _cachedItem.SubType == ItemSubType.Seed;
+        bool isHandItem = _cachedSelectedItem is FertilizerItem || _cachedSelectedItem.SubType == ItemSubType.Seed;
         if (!isHandItem) return null;
 
         // 경과 시간을 기준으로 0, 1, 2 레벨(최대 2)로 계산합니다.
@@ -802,10 +820,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         };
     }
 
-
-
-
-    private ChargeArea GetTargetArea(in GearItem item, float chargeLv )
+    private ChargeArea GetTargetArea(in GearItem item, float chargeLv)
     {
         var areas = item.ChargeInfo.ChargeAreas;
 

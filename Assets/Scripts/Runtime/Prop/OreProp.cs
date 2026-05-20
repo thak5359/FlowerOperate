@@ -8,11 +8,12 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 [MemoryPackable]
+[Serializable]
 public partial struct OreData : IPropData
 {
     public Vector3 Position { get; private set; }
     public readonly int Id { get; init; }
-    [field: SerializeField] public int Duration { get; set; }
+    [field: SerializeField] public int Duration;
 
     public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
     {

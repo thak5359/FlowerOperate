@@ -41,8 +41,11 @@ public class PlayerController : MonoBehaviour, IInteractable
     private SpriteRenderer sprRenderer;
 
     // 상호작용 연속 방지용 
-    private float interactCooldown = 1f;
-    private float lastInteractTime = 0f;
+    [SerializeField] private const float interactCooldown = 1f;
+    [SerializeField] private const float lastInteractTime = 0f;
+    
+    private float _chargeStartTime;
+    float elapsed;
 
 
     public Vector2 heading = Vector2.down;  // 캐릭터가 보고 있는 방향 ( 아이템 사용)
@@ -192,15 +195,12 @@ public class PlayerController : MonoBehaviour, IInteractable
         // 1. 버튼을 누르기 시작했을 때 (Started)
         if (context.started)
         {
-            _playerState.IsCharging.Value = true;
             _useAreaManager.StartCharging(this.transform, heading);// 차징 시작!
         }
 
         // 2. 버튼을 떼었을 때 (Canceled)
         if (context.canceled)
         {
-            _playerState.IsCharging.Value = false;
-            //Debug.Log("Use 버튼이 떼어졌습니다. 아이템 사용 시도!");
             _useAreaManager.Fire(); // 발사!
         }
     }
