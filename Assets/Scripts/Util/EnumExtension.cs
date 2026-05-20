@@ -20,4 +20,14 @@ public static class EnumExtensions
 
         return (T)values.GetValue(nextIndex);
     }
+
+    public static int ToValue(this GearEfficiency efficiency)
+    {
+        return (int)efficiency;
+    }
+
+    public static int ToValue(this FertilizerGrade fertGrade)
+    {
+        return (int)fertGrade;
+    }
 }
