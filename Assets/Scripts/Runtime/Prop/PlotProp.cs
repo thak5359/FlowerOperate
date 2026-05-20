@@ -8,6 +8,9 @@ using UnityEngine.UIElements;
 using VContainer;
 using static Constant;
 
+
+
+
 [MemoryPackable]
 [Serializable]
 public partial struct PlotData : IPropData // 저장용 데이터 바구니
@@ -104,7 +107,7 @@ public class PlotProp : Prop
     /// </summary>
     /// <param name="seedID"></param>
     /// <returns></returns>
-    public FarmActionResult Sowing(int seedID) 
+    public FarmActionResult Sowing(ref GameItem item) 
     {
         try
         {
@@ -114,6 +117,8 @@ public class PlotProp : Prop
             }
             else if (plotData.Id == 0)
             {
+
+
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
             else
@@ -168,8 +173,8 @@ public class PlotProp : Prop
             Debug.Log($"Reaping Error : {e.Message}");
             return new FarmActionResult(FarmActionResult.ResultType.Error, "REAPING_EXCEPTION");
         }
-
     }
+
     public FarmActionResult Ruining() // 파멸의 일격!!
     {
         try
@@ -196,7 +201,7 @@ public class PlotProp : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "Ruining_EXCEPTION");
         }
     }
-    public FarmActionResult QualityUp() // 등급 업
+    public FarmActionResult TryQualityUp() // 등급 업
     {
         try
         {
@@ -214,7 +219,7 @@ public class PlotProp : Prop
             return new FarmActionResult(FarmActionResult.ResultType.Error, "QUALITYUP_EXCEPTION");
         }
     }
-    public FarmActionResult BountyUP(int increaseAmount) // 수확 개수를 증가
+    public FarmActionResult TryBountyUP(int increaseAmount) // 수확 개수를 증가
     {
         try
         {
