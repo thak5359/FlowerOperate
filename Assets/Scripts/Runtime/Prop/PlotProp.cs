@@ -13,7 +13,7 @@ using Fungus.EditorUtils;
 public partial struct PlotData : IPropData // 저장용 데이터 바구니
 {
     public Vector3 Position { get; private set; }
-    public int Id { get; set; }
+    public int ItemId { get; set; }
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public FlowerGrade Grade { get; set; }
@@ -34,7 +34,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         int input_BountyAmount, bool input_IsAppliedBountyFert, int4 input_growthDays)
     {
         Position = input_pos;
-        Id = input_flowerId;
+        ItemId = input_flowerId;
         Grade = input_grade;
 
         Growth = input_growth;
@@ -54,7 +54,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     public PlotData(int input_flowerId )
     {
         Position = default;
-        Id = input_flowerId;
+        ItemId = input_flowerId;
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Vivid;
         Grade = FlowerGrade.Unknown;
@@ -199,7 +199,7 @@ public class PlotProp : Prop
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
-            else if (plotData.Id == 0)
+            else if (plotData.ItemId == 0)
             {
                 FarmActionResult result = _plotData.Sowing(in item);
                 return result;
@@ -249,7 +249,7 @@ public class PlotProp : Prop
         try
         {
             Debug.Log("Runing has been called");
-            if (plotData.Id == 0)
+            if (plotData.ItemId == 0)
             {
                 Destroy(this.gameObject);
             }
@@ -257,7 +257,7 @@ public class PlotProp : Prop
             {
                 AddressableManager.ReleaseAsset(flowerSprite);
                 flowerSprite = default;
-                plotData.Id = default;
+                plotData.ItemId = default;
                 plotData.State = FlowerState.Unknown;
                 FlowerSpriteRenderer.sprite = null;
 

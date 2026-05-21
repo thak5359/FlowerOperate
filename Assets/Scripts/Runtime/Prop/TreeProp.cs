@@ -10,20 +10,20 @@ using UnityEngine;
 public partial struct TreeData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int Id { get; init; }
+    public readonly int ItemId { get; init; }
     public int Duration { get; set; }
 
     public TreeData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
-        Id = input_OreId;
+        ItemId = input_OreId;
         Duration = input_Duration;
     }
 
     public TreeData(int input_OreID)
     {
         Position = default;
-        Id = input_OreID;
+        ItemId = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;

@@ -11,6 +11,15 @@ public class SaveLoadManager : MonoBehaviour
 
     private SaveDatas loadedData;
 
+    private void OnEnable()
+    {
+        GlobalEventManager.OnDataChanged += SyncSaveData;
+    }
+    private void OnDisable()
+    {
+        GlobalEventManager.OnDataChanged -= SyncSaveData;
+    }
+
     [Inject]
     public void Construct(
         PlayerOwnItemDataManager storageParent,
@@ -78,7 +87,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
         
-        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) || loadedData == null)
+        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) && saveData == null)
             loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
 
         saveData = (loadedData != null) ? loadedData : saveData;
@@ -95,7 +104,7 @@ public class SaveLoadManager : MonoBehaviour
     private static string NormalizeBinaryFileName(string file)
     {
         if (string.IsNullOrWhiteSpace(file))
-            return "SaveData.bytes";
+            return null;
 
         if (file.EndsWith(".bytes"))
             return file;

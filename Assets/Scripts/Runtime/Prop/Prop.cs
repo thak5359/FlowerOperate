@@ -29,7 +29,7 @@ public partial class Prop : MonoBehaviour, IGameResource
 
     public virtual void OnLoadAsync(IPropData propData)
     {
-        this.Id = propData.Id;
+        this.Id = propData.ItemId;
     }
 
     public virtual void OnDestroy() 

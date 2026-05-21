@@ -22,7 +22,7 @@ public enum ContainerType
 /// 데이터의 변경(추가, 삭제, 이동 등)이 발생하면 스트림을 통해 UI 등에 변경 사항을 알립니다.
 /// </summary>
 [Serializable]
-public class PlayerOwnItemDataManager : IDisposable, IInitializable
+public class PlayerOwnItemDataManager : IInitializable, IDisposable
 {
     #region Fields & Properties
     [SerializeField]
@@ -270,10 +270,10 @@ public class PlayerOwnItemDataManager : IDisposable, IInitializable
 
     public void CalculateMoneyInSellingBox()
     {
-        var sellingBox = _Data.GetItemList(ContainerType.SELLING);
-        if (sellingBox == null) return;
+        var sellingBox = _Data.GetItemList(ContainerType.SELLING).ToList<GameItem>();
+        if (sellingBox.Count == 0 || sellingBox.Count(item => item.Id == 0) == 50) return;
 
-        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice((short)item.Id) * item.Count);
+        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice(item.Id) * item.Count);
         _Data.SetItemList(ContainerType.SELLING, new List<GameItem>(new GameItem[50]));
         _Data.AddMoney(totalMoney);
 
@@ -301,7 +301,7 @@ public partial struct ItemInstantData
     [MemoryPackInclude, SerializeField] private List<GameItem> invenList;
     [MemoryPackInclude, SerializeField] private List<StorageBox> storageBoxList;
 
-    [MemoryPackIgnore] private List<GameItem> sellingBox;
+    [MemoryPackIgnore, SerializeField] private List<GameItem> sellingBox;
     #endregion
 
     #region Getter  & Setter
@@ -390,7 +390,7 @@ public partial struct ItemInstantData
         for (int i = 0; i < targetList.Count; i++)
         {
             GameItem curItem = targetList[i];
-            if (!curItem.CanStackWith(item)) continue;
+            if (curItem == null || !curItem.CanStackWith(item)) continue;
 
             int moveAmount = Mathf.Min(curItem.GetRemainStackSpace(), item.Count);
             curItem.Count += moveAmount;

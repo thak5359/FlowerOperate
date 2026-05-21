@@ -1,4 +1,5 @@
 
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Constant;
 
@@ -26,9 +27,11 @@ public partial class ProgressManager
 {
     public static void GoNextDay()
     {
+        Debug.Log("ProgressManager 0");
         GlobalEventManager.InvokeNextDay();
+        Debug.Log("ProgressManager 1");
         SceneManager.LoadScene(FARM_SCENE_NAME.ToString());
-        //GoNextDay 
+        Debug.Log("ProgressManager 2");
         nextDay();
     }
 }

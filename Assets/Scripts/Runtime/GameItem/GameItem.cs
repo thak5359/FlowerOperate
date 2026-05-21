@@ -1,11 +1,13 @@
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using System;
 using System.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
 
 
 [MemoryPackable]
+[Serializable]
 //[MemoryPackUnion(0, typeof(GameItem))] 내부적으로 어떤아이템인지 알수 있게 분류할 방법. 저장 로직 확정후에 같이 결정!
 //[MemoryPackUnion(1, typeof(FlowerItem))]
 //[MemoryPackUnion(2, typeof(GearItem))]
@@ -14,6 +16,7 @@ public partial class GameItem : IGameResource
     [field: SerializeField]
     public int Id { get; protected set; }
 
+    [field: SerializeField]
     public int Count { get; set; }
     [MemoryPackIgnore]
     public int RefundPrice { get; protected set; } // 되팔기 기준 금액 ( 상점가의 50%)

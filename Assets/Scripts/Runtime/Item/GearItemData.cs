@@ -53,7 +53,6 @@ public struct GearItemBlobData
     public GearGrade Grade;
 
     public BlobArray<ChargeArea> ChargeAreas;
-    public ChargeArea ChargeAreaSwap;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
