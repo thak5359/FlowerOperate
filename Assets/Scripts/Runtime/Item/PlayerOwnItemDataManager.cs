@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Linq;
 using static Constant;
+using VContainer.Unity;
 
 public enum ContainerType
 {
@@ -21,7 +22,7 @@ public enum ContainerType
 /// 데이터의 변경(추가, 삭제, 이동 등)이 발생하면 스트림을 통해 UI 등에 변경 사항을 알립니다.
 /// </summary>
 [Serializable]
-public class PlayerOwnItemDataManager : IDisposable
+public class PlayerOwnItemDataManager : IDisposable, IInitializable
 {
     #region Fields & Properties
     [SerializeField]
@@ -64,8 +65,9 @@ public class PlayerOwnItemDataManager : IDisposable
 
     #region Initialization & Lifecycle
 
-    public PlayerOwnItemDataManager()
+    void IInitializable.Initialize()
     {
+    
         GlobalEventManager.OnItemPickedUp += AddItem;
         GlobalEventManager.NextDay += CalculateMoneyInSellingBox;
     }

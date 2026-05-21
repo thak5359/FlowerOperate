@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour, IInteractable
             else
             {
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
-
+                sprRenderer.flipX = false;
                 bool isHeadingFront = (moveInput.y > 0) ? true : false;
 
                 anim.SetFloat(MoveYHash, heading.y);

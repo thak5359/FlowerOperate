@@ -10,7 +10,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private IngameSettingMenuController pauseMenu;
     [SerializeField] private InventoryUIController inventoryUI;
-    [SerializeField] private PlayerOwnItemDataManager playerItemDataManager;
     [SerializeField] private PlotManager plotManager;
 
 
@@ -30,7 +29,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<IngameSettingMenuController>(pauseMenu);
         builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
-        builder.RegisterComponent<PlayerOwnItemDataManager>(playerItemDataManager).AsSelf();
         
 
         builder.RegisterComponentInHierarchy<SaveLoadManager>().AsSelf();

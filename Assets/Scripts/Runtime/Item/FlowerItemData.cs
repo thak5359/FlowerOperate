@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "FlowerItemData", menuName = "ItemData/FlowerItemData")]
 public class FlowerItemData : ScriptableObject
@@ -35,6 +36,7 @@ public struct FlowerItemAuthoringData
     [Header("재배 정보")]
     public int growthDuration;
     public int harvestAmount;
+    public int4 growthDays;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -49,6 +51,7 @@ public struct FlowerItemBlobData
 
     public int GrowthDuration;
     public int HarvestAmount;
+    public int4 GrowthDays;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

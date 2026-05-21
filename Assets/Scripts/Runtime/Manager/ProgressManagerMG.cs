@@ -28,6 +28,7 @@ public partial class ProgressManager
     {
         GlobalEventManager.InvokeNextDay();
         SceneManager.LoadScene(FARM_SCENE_NAME.ToString());
+        //GoNextDay 
         nextDay();
     }
 }
