@@ -11,8 +11,13 @@ public class Constant
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_DEFAULT = "Spr_Plot_Default";
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_WATERED = "Spr_Plot_Watered";
 
-    public static readonly FixedString64Bytes ADDRESSABLE_SPR_FLOWER_SEED;
-    
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW0 = "Spr_Seed";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW1 = "Spr_Grow[Spr_Grow1]";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW2 = "Spr_Grow[Spr_Grow2]";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW3 = "Spr_Grow[Spr_Grow3]";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW4 = "Spr_Grow[Spr_Grow4]";
+
+
 
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;

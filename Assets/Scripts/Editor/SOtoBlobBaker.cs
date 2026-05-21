@@ -201,6 +201,7 @@ public class ItemBlobBaker : EditorWindow
                 element.MaxCharge = source.maxCharge;
                 element.Grade = source.grade;
 
+
                 // 3. ChargeAreas 내부 배열 메모리 할당 및 복사
                 if (source.chargeAreas != null && source.chargeAreas.Length > 0)
                 {

@@ -8,7 +8,7 @@ using UnityEngine;
 [MemoryPackable]
 public partial class FertilizerItem : GameItem
 {
-     public int FertilizerLevel { get; set; }
+    [MemoryPackIgnore] public FertilizerGrade FertilizerGrade { get; private set; }
     [MemoryPackIgnore] public FertilizerType FertilizerType { get; private set; }
     
 
@@ -33,7 +33,7 @@ public partial class FertilizerItem : GameItem
 
         ref FertilizerItemBlobData FertilizerData = ref GlobalItemDB.GetFertilizerRef(Id);
 
-        FertilizerLevel = (int)FertilizerData.Level;
+        FertilizerGrade = FertilizerData.Level;
         FertilizerType = FertilizerData.FertilizerType;
 
     }
