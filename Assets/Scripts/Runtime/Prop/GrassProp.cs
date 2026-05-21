@@ -9,20 +9,20 @@ using UnityEngine;
 public partial struct GrassData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int Id { get; init; }
+    public readonly int ItemId { get; init; }
     [field: SerializeField] public int Duration;
 
     public GrassData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
-        Id = input_OreId;
+        ItemId = input_OreId;
         Duration = input_Duration;
     }
 
     public GrassData(int input_OreID)
     {
         Position = default;
-        Id = input_OreID;
+        ItemId = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;
@@ -31,8 +31,8 @@ public partial struct GrassData : IPropData
     // ?
     public void OnDestroy()
     {
-        if (Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(Id), Position);
+        if (ItemId != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(ItemId), Position);
     }
 }
 
@@ -73,7 +73,7 @@ public class GrassProp : Prop
 
     public override void OnDestroy()
     {
-        if (grassData.Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(grassData.Id), grassData.Position);
+        if (grassData.ItemId != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(grassData.ItemId), grassData.Position);
     }
 }

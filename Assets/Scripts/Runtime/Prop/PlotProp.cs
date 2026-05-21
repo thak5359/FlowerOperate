@@ -61,9 +61,9 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         IsAppliedBountyFert = false;
         AppliedQualityFert = FertilizerGrade.Unknown;
 
-        if (GlobalItemDB.HasFlower(Id) == true)
+        if (GlobalItemDB.HasFlower(ItemId) == true)
         {
-            FlowerItemBlobData data = GlobalItemDB.GetFlowerRef(Id);
+            FlowerItemBlobData data = GlobalItemDB.GetFlowerRef(ItemId);
             harvestAmount = data.HarvestAmount;
             GrowthDays = int4.zero;
         }
@@ -72,7 +72,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             harvestAmount = 0;
 
             GrowthDays = int4.zero;
-            Debug.LogAssertion($"PlotData Constructor Error. itemID : {Id}");
+            Debug.LogAssertion($"PlotData Constructor Error. itemID : {ItemId}");
         }
     }
 
@@ -90,7 +90,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
         }
 
-        Id = seed.Id;
+        ItemId = seed.Id;
 
         if (seed.Grade != FlowerGrade.Unknown)
 
@@ -164,7 +164,7 @@ public class PlotProp : Prop
 
                 isDried = false;
 
-                if (plotData.Growth < FlowerGrowth.Bloom && plotData.Id != 0) plotData.Growth++;
+                if (plotData.Growth < FlowerGrowth.Bloom && plotData.ItemId != 0) plotData.Growth++;
             }
             else
             {
@@ -194,7 +194,7 @@ public class PlotProp : Prop
     {
         try
         {
-            if (plotData.Id > 0 || item.Count <= 0)
+            if (plotData.ItemId > 0 || item.Count <= 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
@@ -355,7 +355,7 @@ public class PlotProp : Prop
                 {
 
 
-                    ItemFactory.CreateItemPrefab(new FlowerItem(_plotData.Id, 1, TryQualityUp()), _plotData.Position);
+                    ItemFactory.CreateItemPrefab(new FlowerItem(_plotData.ItemId, 1, TryQualityUp()), _plotData.Position);
                 }
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
@@ -399,7 +399,7 @@ public class PlotProp : Prop
     private async UniTask changeFlowerSpr()
     {
 
-        if (_plotData.Id == 0)
+        if (_plotData.ItemId == 0)
         {
             Debug.Log("Id is 0 but changeFlowerSpr called");
             return;
@@ -423,7 +423,7 @@ public class PlotProp : Prop
                 flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW2);
                 break;
             case FlowerGrowth.Bloom:
-                ItemBaseBlobData data = GlobalItemDB.GetBaseRef(_plotData.Id);
+                ItemBaseBlobData data = GlobalItemDB.GetBaseRef(_plotData.ItemId);
                 flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(data.SpriteAddress);
                 break;
         }
