@@ -68,7 +68,7 @@ public struct ChunkData
                 throw new Exception("Input level must be greater than 0.");
             }
 
-            ChunkLevel.Next<ChunkLevel>();
+            ChunkLevel = ChunkLevel.Next<ChunkLevel>();
             return new FarmActionResult(FarmActionResult.ResultType.Success);
         }
         catch (Exception e)

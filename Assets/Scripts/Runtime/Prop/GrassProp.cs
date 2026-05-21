@@ -26,7 +26,9 @@ public partial struct GrassData : IPropData
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;
-
+    
+    
+    // ?
     public void OnDestroy()
     {
         if (Id != 0)

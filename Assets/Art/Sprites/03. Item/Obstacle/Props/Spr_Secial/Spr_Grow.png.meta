@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_0"
+      name: Spr_Grow1
       rect:
         serializedVersion: 2
         x: 163
@@ -131,7 +131,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_1"
+      name: Spr_Grow2
       rect:
         serializedVersion: 2
         x: 482
@@ -177,7 +177,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_2"
+      name: Spr_Grow3
       rect:
         serializedVersion: 2
         x: 754
@@ -385,7 +385,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_3"
+      name: Spr_Grow4
       rect:
         serializedVersion: 2
         x: 1311
@@ -416,10 +416,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_0": -1570021592
-      "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_1": 578512201
-      "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_2": 1600161441
-      "\uAF43 (\uC131\uC7A5\uB2E8\uACC4)_3": 1736972810
+      Spr_Grow1: -1570021592
+      Spr_Grow2: 578512201
+      Spr_Grow3: 1600161441
+      Spr_Grow4: 1736972810
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

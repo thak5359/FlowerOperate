@@ -1,7 +1,6 @@
 using System;
 using Unity.Collections;
 using UnityEngine;
-using static EnumExtensions;
 using static Constant;
 
 # region interface for each tool function 
@@ -69,7 +68,6 @@ public class UseAreaFunction : MonoBehaviour,
 {
     static readonly uint RandSeed = (uint)DateTime.Now.Ticks;
 
-    Unity.Mathematics.Random mathRand = new Unity.Mathematics.Random(RandSeed);
 
     private PlotManager _plotManager;
 
@@ -290,7 +288,11 @@ public class UseAreaFunction : MonoBehaviour,
                 GrassProp targetGrass = hits[0].gameObject.GetComponent<GrassProp>();
                 if (targetPlot != null)
                 {
-                    return targetPlot.Reaping(); // 꽃 수확 성공
+                    FarmActionResult result = targetPlot.Reaping(ref gear); // 꽃 수확 성공
+                    if(result.Result() == FarmActionResult.ResultType.Success)
+                    {
+                        gear.CurrentDurability -= 1;
+                    }
                 }
                 if (targetGrass != null)
                 {
@@ -346,7 +348,7 @@ public class UseAreaFunction : MonoBehaviour,
                 // PlotProp이 대상일 경우
                 if (targetPlot != null)
                 {
-                    return targetPlot.Ruining();
+                    return targetPlot.Hammering();
                 }
                 // OreProp이 대상일 경우
                 else if (targetOre != null)
@@ -395,16 +397,15 @@ public class UseAreaFunction : MonoBehaviour,
             if (hits.Length == 1)
             {
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
-                if (targetPlot != null)
+                if (targetPlot != null && item is FlowerItem seed)
                 {
-                    return targetPlot.Sowing(ref item);
+                    if(seed.SubType == ItemSubType.Seed)
+                    return targetPlot.Sowing(ref seed);
                 }
-                else
-                {
+
                     FixedString128Bytes errorCode = $" DoSeedFunc error. Unexpected Error : {hits.Length} ";
                     Debug.Log(errorCode);
                     return new FarmActionResult(FarmActionResult.ResultType.Error);
-                }
             }
             else if (hits.Length == 0)
             {
@@ -436,31 +437,53 @@ public class UseAreaFunction : MonoBehaviour,
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
 
-
-
-
             Collider[] hits = GetHits(_treatMask);
 
             if (hits.Length == 1)
             {
                 PlotProp targetPlot = hits[0].gameObject.GetComponent<PlotProp>();
-
+                FarmActionResult result;
                 if (targetPlot != null)
                 {
-                    switch(item.FertilizerType)
+                    switch (item.FertilizerType)
                     {
+                        
                         case FertilizerType.Quality:
-                            return targetPlot.TryQualityUp();
+                            result = targetPlot.ApplyQualityFertilizer(item.FertilizerGrade);
+                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            {
+                                item.Count -= 1;
+                            }
+                            return result;
+
                         case FertilizerType.Bountiful:
-                            return targetPlot.TryBountyUP(item.FertilizerGrade.ToValue());
+                            result = targetPlot.ApplyBountyFertilizer(item.FertilizerGrade);
+                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            {
+                                item.Count -= 1;
+                            }
+                            return result;
+
+
+                        case FertilizerType.AllInOne:
+                            result = targetPlot.ApplyQualityFertilizer(item.FertilizerGrade);
+                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            {
+                                FarmActionResult bountyResult = targetPlot.ApplyBountyFertilizer(item.FertilizerGrade);
+
+                                result.Combine(bountyResult);
+                                if (bountyResult.Result() == FarmActionResult.ResultType.Success)
+                                {
+                                    item.Count -= 1;
+                                }
+                            }
+
+                            return result;
                         default:
                             FixedString128Bytes errorCode = $"DoFertilizerFunc error. Unsupported FertilizerType : {item.FertilizerType}, itemId : {item.Id}";
                             Debug.Log(errorCode);
                             return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
                     }
-
-
-
                 }
                 else
                 {
@@ -468,12 +491,6 @@ public class UseAreaFunction : MonoBehaviour,
                     Debug.Log(errorCode);
                     return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
                 }
-                //TODO :: Fertilizer 코드 완성하기!
-                return new FarmActionResult(FarmActionResult.ResultType.Error, "DoFertilizerFunc error.Plot component not found");
-
-
-
-
             }
             else if (hits.Length == 0)
             {

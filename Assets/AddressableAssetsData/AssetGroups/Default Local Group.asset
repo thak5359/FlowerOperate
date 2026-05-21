@@ -40,6 +40,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a70afa970b0fdbf4c928a0f9bfd4c156
+    m_Address: Spr_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b712121e49f702d4bb1c3cfe733f59c4
     m_Address: Prefab_Plot
     m_ReadOnly: 0
@@ -51,6 +56,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edc547792b2752e4e8c14fbbc2d3d752
+    m_Address: Spr_Grow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: f3f0a6ce9cecb2c43819d6af1dcfcd9e, type: 2}
