@@ -85,7 +85,6 @@ public class SaveLoadManager : MonoBehaviour
 
     public void Load(string file = null)
     {
-        SyncSaveData();
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
         
         if(!string.IsNullOrEmpty(SAVE_FILE_NAME) && saveData == null)
