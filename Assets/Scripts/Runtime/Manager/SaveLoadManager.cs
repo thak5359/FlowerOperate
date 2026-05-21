@@ -11,9 +11,13 @@ public class SaveLoadManager : MonoBehaviour
 
     private SaveDatas loadedData;
 
-    void Start()
+    private void OnEnable()
     {
-        DontDestroyOnLoad(this.gameObject);
+        GlobalEventManager.OnDataChanged += SyncSaveData;
+    }
+    private void OnDisable()
+    {
+        GlobalEventManager.OnDataChanged -= SyncSaveData;
     }
 
     [Inject]
@@ -84,7 +88,7 @@ public class SaveLoadManager : MonoBehaviour
         SyncSaveData();
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
         
-        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) || loadedData == null)
+        if(!string.IsNullOrEmpty(SAVE_FILE_NAME) && saveData == null)
             loadedData = FileDataHandler.LoadBinary<SaveDatas>(SAVE_FILE_NAME);
 
         saveData = (loadedData != null) ? loadedData : saveData;

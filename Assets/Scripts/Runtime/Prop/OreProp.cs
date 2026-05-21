@@ -12,28 +12,28 @@ using UnityEngine.InputSystem.LowLevel;
 public partial struct OreData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int Id { get; init; }
+    public readonly int ItemId { get; init; }
     [field: SerializeField] public int Duration;
 
     public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
     {
         Position = input_pos;
-        Id = input_OreId;
+        ItemId = input_OreId;
         Duration = input_Duration;
     }
 
     public OreData(int input_OreID)
     {
         Position = default;
-        Id = input_OreID;
+        ItemId = input_OreID;
         Duration = 100;
     }
     public void SetPosition(Vector3 position) => Position = position;
     
     public void OnDestroy() 
     {
-        if(Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(Id), Position);
+        if(ItemId != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(ItemId), Position);
     }
 }
 
@@ -111,7 +111,7 @@ public class OreProp : Prop
 
     public override void OnDestroy()
     {
-        if(oreData.Id != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(oreData.Id), oreData.Position);
+        if(oreData.ItemId != 0)
+            ItemFactory.CreateItemPrefab(new GameItem(oreData.ItemId), oreData.Position);
     }
 }

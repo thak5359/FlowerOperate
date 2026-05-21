@@ -13,7 +13,7 @@ using static Constant;
 public partial struct PlotData : IPropData // 저장용 데이터 바구니
 {
     public Vector3 Position { get; private set; }
-    public int Id { get; set; }
+    public int ItemId { get; set; }
     public FlowerGrowth Growth { get; set; }
     public FlowerState State { get; set; }
     public int grade { get; set; }
@@ -27,7 +27,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     public PlotData(Vector3 input_pos, int input_flowerId, int input_grade, FlowerGrowth input_growth, FlowerState input_state, FertilizerType input_fertilizerType, FertilizerGrade input_fertilizerGrade)
     {
         Position = input_pos;
-        Id = input_flowerId;
+        ItemId = input_flowerId;
         grade = input_grade;
 
         Growth = input_growth;
@@ -39,7 +39,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     public PlotData(int input_flowerId)
     {
         Position = default;
-        Id = input_flowerId;
+        ItemId = input_flowerId;
         grade = 0;
 
         Growth = FlowerGrowth.Unknown;
@@ -108,11 +108,11 @@ public class PlotProp : Prop
     {
         try
         {
-            if (plotData.Id > 0)
+            if (plotData.ItemId > 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
-            else if (plotData.Id == 0)
+            else if (plotData.ItemId == 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
@@ -175,7 +175,7 @@ public class PlotProp : Prop
         try
         {
             Debug.Log("Runing has been called");
-            if (plotData.Id == 0)
+            if (plotData.ItemId == 0)
             {
                 Destroy(this.gameObject);
             }
@@ -183,7 +183,7 @@ public class PlotProp : Prop
             {
                 AddressableManager.ReleaseAsset(flowerSprite);
                 flowerSprite = default;
-                plotData.Id = default;
+                plotData.ItemId = default;
                 plotData.State = FlowerState.Unknown;
                 FlowerSpriteRenderer.sprite = null;
 
@@ -243,7 +243,7 @@ public class PlotProp : Prop
                 isWatered = false;
                 isDried = false;
 
-                if (plotData.Growth < FlowerGrowth.Bloom && plotData.Id != 0) plotData.Growth++;
+                if (plotData.Growth < FlowerGrowth.Bloom && plotData.ItemId != 0) plotData.Growth++;
             }
             else
             {
@@ -281,14 +281,14 @@ public class PlotProp : Prop
         if (flowerSprite != null)
             AddressableManager.ReleaseAsset(flowerSprite);
 
-        if (_plotData.Id != 0 && _plotData.Growth == FlowerGrowth.Unknown)
+        if (_plotData.ItemId != 0 && _plotData.Growth == FlowerGrowth.Unknown)
         {
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_FLOWER_SEED);
             FlowerSpriteRenderer.sprite = flowerSprite;
         }
-        else if (_plotData.Id != 0)
+        else if (_plotData.ItemId != 0)
         {
-            FixedString128Bytes address = GlobalItemDB.GetSpriteAddress(_plotData.Id);
+            FixedString128Bytes address = GlobalItemDB.GetSpriteAddress(_plotData.ItemId);
             flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
             FlowerSpriteRenderer.sprite = flowerSprite;
         }

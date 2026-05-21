@@ -135,7 +135,7 @@ public class SaveFileViewer : EditorWindow
             {
                 EditorGUILayout.LabelField($"Plot ID: {kvp.Key}");
                 EditorGUI.indentLevel++;
-                EditorGUILayout.LabelField($"Flower ID: {kvp.Value.Id}");
+                EditorGUILayout.LabelField($"Flower ID: {kvp.Value.ItemId}");
                 EditorGUILayout.LabelField($"Growth: {kvp.Value.Growth}");
                 EditorGUILayout.LabelField($"State: {kvp.Value.State}");
                 EditorGUILayout.LabelField($"Grade: {kvp.Value.grade}");
