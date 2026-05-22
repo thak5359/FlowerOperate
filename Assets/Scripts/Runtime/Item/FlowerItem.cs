@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using Unity.Mathematics;
 using UnityEngine;
 
 [MemoryPackable]
@@ -11,6 +12,7 @@ public partial class FlowerItem : GameItem
     [MemoryPackIgnore] public FlowerFlorio Florio1 { get; private set; }
     [MemoryPackIgnore] public FlowerFlorio Florio2 { get; private set; }
     [MemoryPackIgnore] public int GrowthDuration { get; private set; }
+    [MemoryPackIgnore] public int4 GrowthDurationID { get; private set; }
     [MemoryPackIgnore] public int HarvestAmount { get; private set; }
 
     [MemoryPackConstructor]
@@ -38,7 +40,8 @@ public partial class FlowerItem : GameItem
         Florio1 = flowerData.Florio1;
         Florio2 = flowerData.Florio2;
 
-        GrowthDuration = flowerData.GrowthDuration;
+        GrowthDuration = flowerData.GrowthDurationID;
+        GrowthDurationID = flowerData.GrowthDuration;
         HarvestAmount = flowerData.HarvestAmount;
     }
 }

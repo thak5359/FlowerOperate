@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FlowerItemData", menuName = "ItemData/FlowerItemData")]
@@ -33,7 +34,8 @@ public struct FlowerItemAuthoringData
     public FlowerFlorio florio2;
 
     [Header("재배 정보")]
-    public int growthDuration;
+    public int growthDurationID;
+    public int4 growthDuration;
     public int harvestAmount;
 }
 
@@ -47,7 +49,8 @@ public struct FlowerItemBlobData
     public FlowerFlorio Florio1;
     public FlowerFlorio Florio2;
 
-    public int GrowthDuration;
+    public int GrowthDurationID;
+    public int4 GrowthDuration;
     public int HarvestAmount;
 }
 

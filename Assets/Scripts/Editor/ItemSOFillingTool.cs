@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
@@ -92,6 +93,31 @@ public class ItemSOFillingTool : EditorWindow
         return false;
     }
 
+    public int4 GrowthDayInitialize(int growthDurationID)
+    {
+        switch (growthDurationID)
+        {
+            default:
+                return int4.zero;
+            case 1:
+                return new int4(1, 1, 1, 1);
+            case 2:
+                return new int4(1, 1, 2, 1);
+            case 3:
+                return new int4(1, 1, 2, 2);
+            case 4:
+                return new int4(1, 1, 3, 2);
+            case 5:
+                return new int4(1, 1, 4, 2);
+            case 6:
+                return new int4(1, 1, 5, 2);
+            case 7:
+                return new int4(1, 1, 5, 3);
+            case 8:
+                return new int4(1, 1, 6, 3);
+        }
+    }
+    
     private bool FillData(ItemBaseData itemBase)
     {
         if (lines == null || lines.Length < 2)
@@ -146,7 +172,8 @@ public class ItemSOFillingTool : EditorWindow
             data.color = (FlowerColor)(int.Parse(line[4].Trim()));
             data.florio1 = (FlowerFlorio)(int.Parse(line[5].Trim()));
             data.florio2 = (FlowerFlorio)((int.TryParse(line[6].Trim(), out int value)) ? value : 0);
-            data.growthDuration = int.Parse(line[7].Trim());
+            data.growthDurationID = int.Parse(line[7].Trim());
+            data.growthDuration = GrowthDayInitialize(data.growthDurationID);
             data.harvestAmount = int.Parse(line[8].Trim());
 
             temp.Add(data);

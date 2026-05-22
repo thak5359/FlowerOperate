@@ -152,6 +152,7 @@ public class ItemBlobBaker : EditorWindow
                     Color = source.color,
                     Florio1 = source.florio1,
                     Florio2 = source.florio2,
+                    GrowthDurationID = source.growthDurationID,
                     GrowthDuration = source.growthDuration,
                     HarvestAmount = source.harvestAmount
                 };
@@ -355,7 +356,7 @@ public class ItemBlobBaker : EditorWindow
                 Debug.LogError($"[FlowerItemData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
             }
 
-            if (item.growthDuration < 0)
+            if (item.growthDurationID < 0)
             {
                 Debug.LogWarning($"[FlowerItemData] GrowthDuration이 음수입니다. SO: {so.name}, ItemId: {item.itemId}");
             }

@@ -72,7 +72,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             harvestAmount = 0;
 
             GrowthDays = int4.zero;
-            Debug.LogAssertion($"PlotData Constructor Error. itemID : {ItemId}");
+            Debug.Log($"PlotData Constructor Error. itemID : {ItemId}");
         }
     }
 

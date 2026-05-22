@@ -101,6 +101,7 @@ public class GlobalItemViewer : EditorWindow
             EditorGUILayout.LabelField("Color", item.Color.ToString());
             EditorGUILayout.LabelField("Florio1", item.Florio1.ToString());
             EditorGUILayout.LabelField("Florio2", item.Florio2.ToString());
+            EditorGUILayout.LabelField("DurationID", item.GrowthDurationID.ToString());
             EditorGUILayout.LabelField("Duration", item.GrowthDuration.ToString());
             EditorGUILayout.LabelField("Harvest", item.HarvestAmount.ToString());
             EndItemBox();
