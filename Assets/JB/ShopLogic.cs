@@ -5,7 +5,7 @@ using VContainer;
 
 public class ShopLogic : MonoBehaviour
 {
-    [SerializeField] private int _money = 0;
+    [SerializeField] private ref int _money => ref _saveLoadManager.GetSaveDatas.GetRefMoney;
 
     private SaveLoadManager _saveLoadManager;
     private PlayerOwnItemDataManager _playerOwnItem;
@@ -15,11 +15,6 @@ public class ShopLogic : MonoBehaviour
     {
         _saveLoadManager = saveLoad;
         _playerOwnItem = playerOwn;
-    }
-
-    private void Start()
-    {
-        this._money = _saveLoadManager.GetSaveDatas.GetMoney;
     }
 
     public void BuyItem(int id, int amount)
@@ -33,5 +28,10 @@ public class ShopLogic : MonoBehaviour
             return;
         }
         _playerOwnItem.GetData.AddItem(ContainerType.INVENTORY, new FlowerItem(id, amount));
+    }
+
+    public void BuyChunk()
+    {
+        
     }
 }

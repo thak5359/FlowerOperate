@@ -27,6 +27,7 @@ public partial class SaveDatas
     public ItemInstantData GetItemData => itemData;
 
     public int GetMoney => money;
+    public ref int GetRefMoney => ref money;
     public int GetReputation => reputation;
 
     [MemoryPackIgnore]

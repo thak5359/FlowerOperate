@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Constant;
 
+[CreateAssetMenu(fileName = "PlaneStatus", menuName = "Plane/PlaneStatus", order = 1)]
 public class PlaneStatus : ScriptableObject
 {
-    [SerializeField] private List<ChunkData> chunks { get; set; } = new List<ChunkData>();
+    [field:SerializeField] private List<ChunkData> chunks { get; set; } = new List<ChunkData>();
     public IReadOnlyList<ChunkData> Chunks() => chunks;
 
     public ChunkData GetChunk(int index)
