@@ -1,6 +1,7 @@
 using Fungus;
 using UnityEngine;
 using VContainer;
+using R3;
 
 public class SaveLoadManager : MonoBehaviour
 {
@@ -11,13 +12,17 @@ public class SaveLoadManager : MonoBehaviour
 
     private SaveDatas loadedData;
 
+    // 구독 해제를 관리할 가방
+    private DisposableBag disposableBag = new();
+
+
     private void OnEnable()
     {
-        GlobalEventManager.OnDataChanged += SyncSaveData;
+        _storageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData()).AddTo(ref disposableBag);
     }
     private void OnDisable()
     {
-        GlobalEventManager.OnDataChanged -= SyncSaveData;
+        disposableBag.Dispose();
     }
 
     [Inject]

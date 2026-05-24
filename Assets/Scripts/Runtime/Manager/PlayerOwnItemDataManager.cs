@@ -59,7 +59,6 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     {
         inventoryRevision++;
         inventoryRevisionChanged.OnNext(inventoryRevision);
-        GlobalEventManager.InvokeDataChanged();
     }
     #endregion
 
