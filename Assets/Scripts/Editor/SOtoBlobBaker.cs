@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
@@ -355,7 +356,7 @@ public class ItemBlobBaker : EditorWindow
                 Debug.LogError($"[FlowerItemData] 중복 ItemId 발견. SO: {so.name}, ItemId: {item.itemId}");
             }
 
-            if (item.growthDuration < 0)
+            if (item.growthDurationID < 0)
             {
                 Debug.LogWarning($"[FlowerItemData] GrowthDuration이 음수입니다. SO: {so.name}, ItemId: {item.itemId}");
             }
@@ -363,6 +364,11 @@ public class ItemBlobBaker : EditorWindow
             if (item.harvestAmount < 0)
             {
                 Debug.LogWarning($"[FlowerItemData] HarvestAmount가 음수입니다. SO: {so.name}, ItemId: {item.itemId}");
+            }
+
+            if (math.all(item.growthDuration == int4.zero)) 
+            {
+                Debug.LogWarning($"[FlowerItemData] growthDuration가 int4.zero 입니다. SO: {so.name}, ItemId: {item.itemId}");
             }
         }
     }
