@@ -1,10 +1,13 @@
+using R3;
 using System;
 
 public static class GlobalEventManager
 {
-    public static event Action<GameItem> OnItemPickedUp;
+    private static readonly Subject<GameItem> OnItemPickedUp = new Subject<GameItem>();
     public static event Action NextDay;
     public static event Action<string> OnLoadScene;
+
+    public static Observable<GameItem> OnItemPickedUpObservable => OnItemPickedUp;
 
     public static void InvokeNextDay()
     {
@@ -13,7 +16,7 @@ public static class GlobalEventManager
 
     public static void InvokeItemPickedUp(GameItem data)
     {
-        OnItemPickedUp?.Invoke(data);
+        OnItemPickedUp.OnNext(data);
     }
 
     public static void InvokeLoadScene(string fileName)
