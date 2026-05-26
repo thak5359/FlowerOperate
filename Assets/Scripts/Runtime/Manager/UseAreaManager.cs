@@ -14,8 +14,6 @@ public interface IUseItem
     public void Fire();
 }
 
-
-
 public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 {
     #region 영역범위 벡터 리스트

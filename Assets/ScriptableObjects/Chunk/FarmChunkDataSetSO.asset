@@ -1,0 +1,240 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: FarmChunkDataSetSO
+  m_EditorClassIdentifier: Assembly-CSharp::FarmChunkDataSet
+  DataList:
+  - ChunkNo: 1
+    Type: 1
+    Grade: 1
+    Pos: {x: 0, y: 0, z: -15}
+    ContinguousChunk:
+      x: 2
+      y: 3
+      z: 4
+      w: 0
+  - ChunkNo: 2
+    Type: 1
+    Grade: 2
+    Pos: {x: -15, y: 0, z: -15}
+    ContinguousChunk:
+      x: 1
+      y: 5
+      z: 6
+      w: 0
+  - ChunkNo: 3
+    Type: 1
+    Grade: 2
+    Pos: {x: 0, y: 0, z: -30}
+    ContinguousChunk:
+      x: 1
+      y: 6
+      z: 7
+      w: 8
+  - ChunkNo: 4
+    Type: 1
+    Grade: 2
+    Pos: {x: 15, y: 0, z: -15}
+    ContinguousChunk:
+      x: 1
+      y: 8
+      z: 9
+      w: 0
+  - ChunkNo: 5
+    Type: 1
+    Grade: 3
+    Pos: {x: -30, y: 0, z: -15}
+    ContinguousChunk:
+      x: 2
+      y: 11
+      z: 12
+      w: 0
+  - ChunkNo: 6
+    Type: 1
+    Grade: 3
+    Pos: {x: -15, y: 0, z: -30}
+    ContinguousChunk:
+      x: 2
+      y: 3
+      z: 11
+      w: 12
+  - ChunkNo: 7
+    Type: 1
+    Grade: 3
+    Pos: {x: 0, y: 0, z: -45}
+    ContinguousChunk:
+      x: 3
+      y: 12
+      z: 13
+      w: 14
+  - ChunkNo: 8
+    Type: 1
+    Grade: 3
+    Pos: {x: 15, y: 0, z: -30}
+    ContinguousChunk:
+      x: 3
+      y: 4
+      z: 14
+      w: 15
+  - ChunkNo: 9
+    Type: 1
+    Grade: 3
+    Pos: {x: 30, y: 0, z: -15}
+    ContinguousChunk:
+      x: 4
+      y: 15
+      z: 16
+      w: 0
+  - ChunkNo: 10
+    Type: 1
+    Grade: 4
+    Pos: {x: -45, y: 0, z: -15}
+    ContinguousChunk:
+      x: 5
+      y: 17
+      z: 18
+      w: 0
+  - ChunkNo: 11
+    Type: 1
+    Grade: 4
+    Pos: {x: -30, y: 0, z: -30}
+    ContinguousChunk:
+      x: 5
+      y: 6
+      z: 18
+      w: 19
+  - ChunkNo: 12
+    Type: 1
+    Grade: 4
+    Pos: {x: -15, y: 0, z: -45}
+    ContinguousChunk:
+      x: 6
+      y: 7
+      z: 19
+      w: 20
+  - ChunkNo: 13
+    Type: 1
+    Grade: 4
+    Pos: {x: 0, y: 0, z: -60}
+    ContinguousChunk:
+      x: 7
+      y: 20
+      z: 21
+      w: 22
+  - ChunkNo: 14
+    Type: 1
+    Grade: 4
+    Pos: {x: 15, y: 0, z: -45}
+    ContinguousChunk:
+      x: 7
+      y: 8
+      z: 22
+      w: 23
+  - ChunkNo: 15
+    Type: 1
+    Grade: 4
+    Pos: {x: 30, y: 0, z: -30}
+    ContinguousChunk:
+      x: 8
+      y: 9
+      z: 23
+      w: 24
+  - ChunkNo: 16
+    Type: 1
+    Grade: 4
+    Pos: {x: 45, y: 0, z: -15}
+    ContinguousChunk:
+      x: 9
+      y: 24
+      z: 25
+      w: 0
+  - ChunkNo: 17
+    Type: 1
+    Grade: 5
+    Pos: {x: 45, y: 0, z: -15}
+    ContinguousChunk:
+      x: 10
+      y: 0
+      z: 0
+      w: 0
+  - ChunkNo: 18
+    Type: 1
+    Grade: 5
+    Pos: {x: -45, y: 0, z: -30}
+    ContinguousChunk:
+      x: 10
+      y: 11
+      z: 0
+      w: 0
+  - ChunkNo: 19
+    Type: 1
+    Grade: 5
+    Pos: {x: -30, y: 0, z: -45}
+    ContinguousChunk:
+      x: 11
+      y: 12
+      z: 0
+      w: 0
+  - ChunkNo: 20
+    Type: 1
+    Grade: 5
+    Pos: {x: -15, y: 0, z: -60}
+    ContinguousChunk:
+      x: 12
+      y: 13
+      z: 0
+      w: 0
+  - ChunkNo: 21
+    Type: 1
+    Grade: 5
+    Pos: {x: 0, y: 0, z: -75}
+    ContinguousChunk:
+      x: 13
+      y: 0
+      z: 0
+      w: 0
+  - ChunkNo: 22
+    Type: 1
+    Grade: 5
+    Pos: {x: 15, y: 0, z: -60}
+    ContinguousChunk:
+      x: 13
+      y: 14
+      z: 0
+      w: 0
+  - ChunkNo: 23
+    Type: 1
+    Grade: 5
+    Pos: {x: 30, y: 0, z: -45}
+    ContinguousChunk:
+      x: 14
+      y: 15
+      z: 0
+      w: 0
+  - ChunkNo: 24
+    Type: 1
+    Grade: 5
+    Pos: {x: 30, y: 0, z: -45}
+    ContinguousChunk:
+      x: 14
+      y: 15
+      z: 0
+      w: 0
+  - ChunkNo: 25
+    Type: 1
+    Grade: 5
+    Pos: {x: 60, y: 0, z: -15}
+    ContinguousChunk:
+      x: 16
+      y: 0
+      z: 0
+      w: 0

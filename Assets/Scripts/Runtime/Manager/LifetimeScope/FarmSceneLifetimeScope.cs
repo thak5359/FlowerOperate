@@ -30,7 +30,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<IngameSettingMenuController>(pauseMenu);
         builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
-        builder.RegisterComponent(saveLoadManager).AsSelf();
+        
 
     }
 }

@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: ForestChunkDataSet
+  m_EditorClassIdentifier: Assembly-CSharp::ForestChunkDataSet
+  DataList:
+  - ChunkNo: 1
+    Type: 2
+    Grade: 1
+    Pos: {x: -15, y: 0, z: 0}
+    ContinguousChunk:
+      x: 2
+      y: 0
+      z: 0
+      w: 0
+  - ChunkNo: 2
+    Type: 2
+    Grade: 2
+    Pos: {x: -30, y: 0, z: 0}
+    ContinguousChunk:
+      x: 3
+      y: 0
+      z: 0
+      w: 0
+  - ChunkNo: 3
+    Type: 2
+    Grade: 3
+    Pos: {x: -45, y: 0, z: 0}
+    ContinguousChunk:
+      x: 4
+      y: 0
+      z: 0
+      w: 0
+  - ChunkNo: 4
+    Type: 1
+    Grade: 4
+    Pos: {x: -30, y: 0, z: 15}
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0

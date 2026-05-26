@@ -14,6 +14,7 @@ public static class GlobalItemDB
     private static readonly Dictionary<int, int> _gearIndexById = new();
     private static readonly Dictionary<int, int> _fertilizerIndexById = new();
 
+    #region Initialize
 
     public static bool IsInitialized => _accessor.IsInitialized;
 
@@ -51,6 +52,7 @@ public static class GlobalItemDB
         BuildFertilizerIndexMap();
 
     }
+    
 
     private static void BuildBaseIndexMap()
     {
@@ -136,13 +138,9 @@ public static class GlobalItemDB
         }
     }
 
-    // 수정할 위치: GlobalItemDB.cs 내부
-    // 변경 이유: 구조체를 복사하는 기존의 TryGet 메서드들을 삭제하고, 존재 여부를 묻는 Has 메서드와 원본 메모리를 가리키는 GetRef 메서드로 분리했어요.
+    #endregion
 
-    // ==========================================
-    // 기존의 TryGet... 메서드들을 전부 지우고 아래 코드로 교체해주세요!
-    // ==========================================
-
+    #region 아이템 ID 유효성 검사
     // ItemBase
     public static bool HasBase(int itemId)
     {
@@ -163,7 +161,6 @@ public static class GlobalItemDB
         return ref _accessor.FlowerDB.Value.Items[_flowerIndexById[itemId]];
     }
 
-    // Gear (이 녀석 때문에 시작된 최적화죠!)
     public static bool HasGear(int itemId)
     {
         return _accessor.GearDB.IsCreated && _gearIndexById.ContainsKey(itemId);
@@ -173,7 +170,7 @@ public static class GlobalItemDB
         return ref _accessor.GearDB.Value.Items[_gearIndexById[itemId]];
     }
 
-    // Fertilizer
+
     public static bool HasFertilizer(int itemId)
     {
         return _accessor.FertilizerDB.IsCreated && _fertilizerIndexById.ContainsKey(itemId);
@@ -184,6 +181,8 @@ public static class GlobalItemDB
     }
 
     public static bool Exists(int itemId) => HasBase(itemId);
+
+    #endregion
 
     public static ItemMainType GetMainType(int itemId)
     {
