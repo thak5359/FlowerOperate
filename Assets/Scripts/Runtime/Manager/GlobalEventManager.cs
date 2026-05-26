@@ -4,14 +4,17 @@ using System;
 public static class GlobalEventManager
 {
     private static readonly Subject<GameItem> OnItemPickedUp = new Subject<GameItem>();
-    public static event Action NextDay;
+    private static readonly Subject<Unit> NextDay;
     public static event Action<string> OnLoadScene;
 
     public static Observable<GameItem> OnItemPickedUpObservable => OnItemPickedUp;
+    public static Observable<Unit> OnNextDayObservable => NextDay;
+
+    public static CompositeDisposable disposables = new CompositeDisposable();
 
     public static void InvokeNextDay()
     {
-        NextDay?.Invoke();
+        NextDay.OnNext(default);
     }
 
     public static void InvokeItemPickedUp(GameItem data)
@@ -22,5 +25,12 @@ public static class GlobalEventManager
     public static void InvokeLoadScene(string fileName)
     {
         OnLoadScene?.Invoke(fileName);
+    }
+
+    //종료될 때 실행
+    public static void DisposeAll()
+    {
+        disposables.Dispose();
+        disposables = null;
     }
 }

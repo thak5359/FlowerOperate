@@ -5,6 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 using Unity.Mathematics;
 using static Constant;
+using R3;
 using Fungus.EditorUtils;
 
 
@@ -121,9 +122,11 @@ public class PlotProp : Prop
     private bool isWatered = false;
     private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
 
+    private IDisposable disposable;
+
     public void OnEnable()
     {
-        GlobalEventManager.NextDay += OnNextDay;
+        disposable = GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDay()).AddTo(GlobalEventManager.disposables);
         plotData.SetPosition(this.transform.position);
     }
 
@@ -136,7 +139,8 @@ public class PlotProp : Prop
     public override void OnDisable()
     {
         base.OnDisable();
-        GlobalEventManager.NextDay -= OnNextDay;
+        disposable?.Dispose();
+        disposable = null;
 
         if (flowerSprite != null) AddressableManager.ReleaseAsset(flowerSprite);
     }

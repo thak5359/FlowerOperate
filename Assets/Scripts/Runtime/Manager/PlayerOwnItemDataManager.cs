@@ -48,7 +48,6 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     private readonly Subject<int> inventoryRevisionChanged = new Subject<int>();
     private int inventoryRevision;
-    private CompositeDisposable disposables = new CompositeDisposable();
 
     /// <summary>
     /// Inventory, Storage, SellingBox 등 소유 아이템 데이터가 변경될 때 증가하는 revision 스트림.
@@ -67,13 +66,12 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     void IInitializable.Initialize()
     {
-        GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(disposables);
-        GlobalEventManager.NextDay += CalculateMoneyInSellingBox;
+        GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(GlobalEventManager.disposables);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(GlobalEventManager.disposables);
     }
 
     void IDisposable.Dispose()
     {
-        disposables.Dispose();
         inventoryRevisionChanged.Dispose();
     }
     protected virtual void Initialize(ItemInstantData data)

@@ -147,6 +147,8 @@ public class ItemSOFillingTool : EditorWindow
             data.stackLimit = (itemMainType == ItemMainType.Equipment) ? 1 : 999;
             data.itemName = line[2].Trim();
             data.price = (itemMainType != ItemMainType.Equipment) ? int.Parse(line[line.Length - 1].Trim()) : 0;
+            data.spriteAddress = FillSpriteAddress(data.itemName);
+
             temp.Add(data);
         }
         itemBase.setItems(temp);
@@ -284,5 +286,48 @@ public class ItemSOFillingTool : EditorWindow
 
         fertilizerItem.setFertilizers(temp);
         return true;
+    }
+
+    private string FillSpriteAddress(string name)
+    {
+        switch(name.Split(" ")[1])
+        {
+            case "거베라":
+                return "Gerbera";
+            case "국화":
+                return "Chrysanthemum";
+            case "델피늄":
+                return "Delphinium";
+            case "라넌큘러스":
+                return "Ranunculus";
+            case "리시안셔스":
+                return "Lisianthus";
+            case "백합":
+                return "Lily";
+            case "수국":
+                return "Hydrangea";
+            case "아네모네":
+                return "Anemone";
+            case "연꽃":
+                return "Lotus";
+            case "작약":
+                return "Peony";
+            case "장미":
+                return "Rose";
+            case "카네이션":
+                return "Carnation";
+            case "코스모스":
+                return "Cosmos";
+            case "튤립":
+                return "Tulip";
+            case "프리지아":
+                return "Freesia";
+            case "해바라기":
+                return "Sunflower";
+            case "히아신스":
+                return "Hyacinth";
+            default:
+                return null;
+        }
     }
 }
