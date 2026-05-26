@@ -48,6 +48,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         GrowthDays = input_growthDays;
     }
 
+
     /// <summary>
     ///  기본 생성자.
     /// </summary>
@@ -73,7 +74,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             harvestAmount = 0;
 
             GrowthDays = int4.zero;
-            Debug.Log($"PlotData Constructor Error. itemID : {ItemId}");
+            //Debug.LogAssertion($"PlotData Constructor Error. itemID : {Id}");
         }
     }
 
@@ -334,7 +335,7 @@ public class PlotProp : Prop
 
     #endregion
 
-    #region  수확 메서드 및 유틸리티
+    #region  수확 메서드 및 관련 유틸리티
 
     /// <summary>
     /// 다 자란 작물을 수확합니다.
@@ -386,6 +387,9 @@ public class PlotProp : Prop
     }
     #endregion
 
+
+
+
     private async UniTask changePlotSpr()
     {
         Debug.Log("changePlotSpr has been called");
@@ -402,7 +406,6 @@ public class PlotProp : Prop
 
     private async UniTask changeFlowerSpr()
     {
-
         if (_plotData.ItemId == 0)
         {
             Debug.Log("Id is 0 but changeFlowerSpr called");
@@ -432,6 +435,7 @@ public class PlotProp : Prop
                 break;
         }
     }
+
     public PlotData GetPlotData()
     {
         return _plotData;
@@ -449,6 +453,4 @@ public class PlotProp : Prop
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
     }
-
-
 }
