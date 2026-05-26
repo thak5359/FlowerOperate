@@ -17,23 +17,52 @@ public struct ChunkData
     [SerializeField]Vector3 Pos;
 
     [Header("인접해 있는 청크 번호")]
-    [SerializeField]int3 ContinguousChunk;
+    [SerializeField]int4 ContinguousChunk;
 }
 
 [CreateAssetMenu(fileName = "FarmChunkDataSetSO", menuName = "Dataset/FarmChunks", order = 1)]
 public class FarmChunkDataSet : ScriptableObject
 {
-    [field: SerializeField] public List<ChunkData> DataList;
+    [field: SerializeField] private ChunkData[] DataList;
+
+    public ref ChunkData getChunk(ref int chunkNo)
+    {
+        return ref DataList[chunkNo];
+    }
+
 }
 
 [CreateAssetMenu(fileName = "ForestChunkDataSetSO", menuName = "Dataset/ForestChunks", order = 2)]
 public class ForestChunkDataSet : ScriptableObject
 {
-    [field: SerializeField] public List<ChunkData> DataList;
+    [field: SerializeField] private ChunkData[] DataList;
+
+    public ref ChunkData getChunk(ref int chunkNo)
+    {
+        return ref DataList[chunkNo];
+    }
 }
 
 [CreateAssetMenu(fileName = "MineChunkDataSetSO", menuName = "Dataset/MineChunks", order = 3)]
 public class MineChunkDataSet : ScriptableObject
 {
-    [field: SerializeField] public List<ChunkData> DataList;
+    [field: SerializeField] private ChunkData[] DataList;
+
+    public ref ChunkData getChunk(ref int chunkNo)
+    {
+        return ref DataList[chunkNo];
+    }
+}
+
+
+
+[CreateAssetMenu(fileName = "FieldChunkDataSetSO", menuName = "Dataset/FieldChunks", order = 4)]
+public class FieldChunkDataSet : ScriptableObject
+{
+    [field: SerializeField] private ChunkData[] DataList;
+
+    public ref ChunkData getChunk(ref int chunkNo)
+    {
+        return ref DataList[chunkNo];
+    }
 }
