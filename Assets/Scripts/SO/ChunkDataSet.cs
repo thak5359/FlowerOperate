@@ -24,7 +24,7 @@ public struct ChunkData
 public class FarmChunkDataSet : ScriptableObject
 {
     [field: SerializeField] private ChunkData[] DataList;
-
+    
     public ref ChunkData getChunk(ref int chunkNo)
     {
         return ref DataList[chunkNo + 1];
