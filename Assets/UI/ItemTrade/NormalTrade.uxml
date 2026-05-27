@@ -1,0 +1,45 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="SlotRow10" src="project://database/Assets/UI/Common/SlotRow10.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow10" />
+    <ui:VisualElement name="lTradeContainer" style="flex-grow: 0; width: 880px; height: 800px; font-size: 46px; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&amp;guid=7f4a2fed048061b479a84b7e1d64a862&amp;type=3#Maplestory OTF Bold&quot;); -unity-text-align: middle-center;">
+        <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CloseButton" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 50px; height: 50px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; align-self: flex-end; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile02.png?fileID=21300000&amp;guid=78b262051b81ce947bddfa18f83589c5&amp;type=3#UI_Tile02&quot;);" />
+        <ui:VisualElement name="TradeContainer" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile01.png?fileID=21300000&amp;guid=f71c8f459a18ed645bdc23972e6728f9&amp;type=3#UI_Tile01&quot;); height: 800px; width: 100%; visibility: visible; padding-top: 20px; padding-right: 15px; padding-left: 15px; padding-bottom: 20px;">
+            <ui:VisualElement name="BoxSwapContainer" style="flex-grow: 0; flex-direction: row; visibility: visible; height: 70px; width: 100%; align-items: center; justify-content: center; align-self: auto;">
+                <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1; width: 50px; height: 50px;" />
+                <ui:Label tabindex="-1" text="일반 거래" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1; width: 50px; height: 50px;" />
+            </ui:VisualElement>
+            <ui:ScrollView name="ScrollView" style="height: 630px; width: 850px;">
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+                <ui:Instance template="SlotRow10" name="SlotRow10" />
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Common/SlotRowUSS.uss?fileID=7433441132597879392&amp;guid=1510485a29ee4284a859aa7eb8024e4f&amp;type=3#SlotRowUSS" />
+    <ui:VisualElement name="RootVisualElement" class="slot-array" style="flex-direction: row; align-items: center; justify-content: center; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&amp;guid=7f4a2fed048061b479a84b7e1d64a862&amp;type=3#Maplestory OTF Bold&quot;); font-size: 20px; margin-bottom: 0; height: 80px; align-self: center;">
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+        <ui:Button name="SlotButton" class="slotButton" style="background-color: rgba(188, 188, 188, 0); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);">
+            <ui:VisualElement name="ImageSlot" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-image: none;" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>
