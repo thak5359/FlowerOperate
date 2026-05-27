@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5850368381678022880}
   - component: {fileID: 734376341636141761}
   - component: {fileID: 21585766931932021}
+  - component: {fileID: 3736632926101619631}
   m_Layer: 0
   m_Name: itemExample
   m_TagString: Item
@@ -49,7 +50,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -120,7 +121,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    itemID: 0
-    Duration: 0
-    amount: 0
-    grade: 0
+    rid: -2
+  waitMilliSeconds: 1000
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &3736632926101619631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3892958132853151626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7e52a755e36ed45a5ff9fb8365c318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

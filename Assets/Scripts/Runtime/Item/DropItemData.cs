@@ -46,6 +46,7 @@ public class DropItemData : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"트리거됨 : {other.tag}");
         if (!other.CompareTag("Player"))
             return;
 
