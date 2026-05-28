@@ -40,8 +40,8 @@ public class DropItemAnim : MonoBehaviour
 
             await UniTask.Delay(1000);
 
-            // Ease.InSine을 사용하여 progress 변수를 0에서 1로 1초 동안 보간합니다.
-            _tween = DOTween.To(() => progress, x => progress = x, 1f, 1f)
+            // Ease.InSine을 사용하여 progress 변수를 0에서 3로 1초 동안 보간합니다.
+            _tween = DOTween.To(() => progress, x => progress = x, 3f, 1f)
                 .SetEase(Ease.InSine)
                 .OnUpdate(() =>
                 {

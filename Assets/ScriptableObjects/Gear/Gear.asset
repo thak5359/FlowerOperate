@@ -13,11 +13,323 @@ MonoBehaviour:
   m_Name: Gear
   m_EditorClassIdentifier: 
   gears:
-  - itemId: 0
-    gearType: 0
+  - itemId: 201001
+    gearType: 1
     maxDurability: 0
     efficiency: 0
     chargeTime: 0
     maxCharge: 0
-    grade: 0
-    chargeAreas: 
+    grade: 1
+    chargeAreas: 01000000
+  - itemId: 201002
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 8
+    maxCharge: 1
+    grade: 2
+    chargeAreas: 010000000c000000
+  - itemId: 201003
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 8
+    maxCharge: 1
+    grade: 3
+    chargeAreas: 010000000c0000000d000000
+  - itemId: 201004
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 7
+    maxCharge: 2
+    grade: 4
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201005
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 7
+    maxCharge: 2
+    grade: 5
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201006
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 6
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201007
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 7
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201008
+    gearType: 1
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 4
+    maxCharge: 1
+    grade: 8
+    chargeAreas: 0e0000000f000000
+  - itemId: 201009
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 0
+    maxCharge: 0
+    grade: 1
+    chargeAreas: 01000000
+  - itemId: 201010
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 8
+    maxCharge: 1
+    grade: 2
+    chargeAreas: 010000000c000000
+  - itemId: 201011
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 8
+    maxCharge: 1
+    grade: 3
+    chargeAreas: 010000000c0000000d000000
+  - itemId: 201012
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 7
+    maxCharge: 2
+    grade: 4
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201013
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 7
+    maxCharge: 2
+    grade: 5
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201014
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 6
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201015
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 7
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201016
+    gearType: 2
+    maxDurability: 0
+    efficiency: 0
+    chargeTime: 4
+    maxCharge: 1
+    grade: 8
+    chargeAreas: 0e0000000f000000
+  - itemId: 201017
+    gearType: 3
+    maxDurability: 10
+    efficiency: 1
+    chargeTime: 0
+    maxCharge: 0
+    grade: 1
+    chargeAreas: 01000000
+  - itemId: 201018
+    gearType: 3
+    maxDurability: 200
+    efficiency: 2
+    chargeTime: 8
+    maxCharge: 1
+    grade: 2
+    chargeAreas: 010000000c000000
+  - itemId: 201019
+    gearType: 3
+    maxDurability: 500
+    efficiency: 5
+    chargeTime: 8
+    maxCharge: 1
+    grade: 3
+    chargeAreas: 010000000c0000000d000000
+  - itemId: 201020
+    gearType: 3
+    maxDurability: 1000
+    efficiency: 7
+    chargeTime: 7
+    maxCharge: 2
+    grade: 4
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201021
+    gearType: 3
+    maxDurability: 2000
+    efficiency: 10
+    chargeTime: 7
+    maxCharge: 2
+    grade: 5
+    chargeAreas: 0c0000000d0000000e000000
+  - itemId: 201022
+    gearType: 3
+    maxDurability: 5000
+    efficiency: 15
+    chargeTime: 6
+    maxCharge: 2
+    grade: 6
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201023
+    gearType: 3
+    maxDurability: 7000
+    efficiency: 20
+    chargeTime: 6
+    maxCharge: 2
+    grade: 7
+    chargeAreas: 0d0000000e0000000f000000
+  - itemId: 201024
+    gearType: 3
+    maxDurability: 10000
+    efficiency: 25
+    chargeTime: 4
+    maxCharge: 1
+    grade: 8
+    chargeAreas: 0e0000000f000000
+  - itemId: 201025
+    gearType: 4
+    maxDurability: 10
+    efficiency: 0
+    chargeTime: 0
+    maxCharge: 0
+    grade: 1
+    chargeAreas: 01000000
+  - itemId: 201026
+    gearType: 4
+    maxDurability: 200
+    efficiency: 0
+    chargeTime: 12
+    maxCharge: 1
+    grade: 2
+    chargeAreas: 0100000015000000
+  - itemId: 201027
+    gearType: 4
+    maxDurability: 500
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 1
+    grade: 3
+    chargeAreas: 0100000015000000
+  - itemId: 201028
+    gearType: 4
+    maxDurability: 1000
+    efficiency: 0
+    chargeTime: 8
+    maxCharge: 2
+    grade: 4
+    chargeAreas: 010000001500000016000000
+  - itemId: 201029
+    gearType: 4
+    maxDurability: 2000
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 5
+    chargeAreas: 010000001500000016000000
+  - itemId: 201030
+    gearType: 4
+    maxDurability: 5000
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 6
+    chargeAreas: 150000001600000017000000
+  - itemId: 201031
+    gearType: 4
+    maxDurability: 7000
+    efficiency: 0
+    chargeTime: 6
+    maxCharge: 2
+    grade: 7
+    chargeAreas: 150000001600000017000000
+  - itemId: 201032
+    gearType: 4
+    maxDurability: 10000
+    efficiency: 0
+    chargeTime: 4
+    maxCharge: 1
+    grade: 8
+    chargeAreas: 1500000017000000
+  - itemId: 201033
+    gearType: 5
+    maxDurability: 10
+    efficiency: 1
+    chargeTime: 0
+    maxCharge: 0
+    grade: 1
+    chargeAreas: 01000000
+  - itemId: 201034
+    gearType: 5
+    maxDurability: 200
+    efficiency: 2
+    chargeTime: 8
+    maxCharge: 1
+    grade: 2
+    chargeAreas: 0100000020000000
+  - itemId: 201035
+    gearType: 5
+    maxDurability: 500
+    efficiency: 5
+    chargeTime: 8
+    maxCharge: 1
+    grade: 3
+    chargeAreas: 010000002000000021000000
+  - itemId: 201036
+    gearType: 5
+    maxDurability: 1000
+    efficiency: 7
+    chargeTime: 7
+    maxCharge: 2
+    grade: 4
+    chargeAreas: 200000002100000022000000
+  - itemId: 201037
+    gearType: 5
+    maxDurability: 2000
+    efficiency: 10
+    chargeTime: 7
+    maxCharge: 2
+    grade: 5
+    chargeAreas: 200000002100000022000000
+  - itemId: 201038
+    gearType: 5
+    maxDurability: 5000
+    efficiency: 15
+    chargeTime: 6
+    maxCharge: 2
+    grade: 6
+    chargeAreas: 210000002200000023000000
+  - itemId: 201039
+    gearType: 5
+    maxDurability: 7000
+    efficiency: 20
+    chargeTime: 6
+    maxCharge: 2
+    grade: 7
+    chargeAreas: 210000002200000023000000
+  - itemId: 201040
+    gearType: 5
+    maxDurability: 10000
+    efficiency: 25
+    chargeTime: 4
+    maxCharge: 1
+    grade: 8
+    chargeAreas: 2200000023000000
