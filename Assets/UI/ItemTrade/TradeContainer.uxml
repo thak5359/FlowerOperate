@@ -8,9 +8,9 @@
                 <ui:Label tabindex="-1" text="일반 거래" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
                 <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-shrink: 1; width: 50px; height: 50px;" />
             </ui:VisualElement>
-            <ui:VisualElement name="TradeItemContainer" style="flex-grow: 1;">
+            <ui:VisualElement name="TradeItemContainer" style="flex-grow: 1; display: flex;">
                 <ui:VisualElement name="NormalTradeCOntainer" style="flex-grow: 0; height: 100%; display: none;">
-                    <ui:ScrollView name="ScrollView" style="height: auto; width: 850px; display: flex;">
+                    <ui:ScrollView name="ScrollView" style="height: 562px; width: 838px; display: flex;">
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
@@ -43,13 +43,19 @@
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
                     </ui:ScrollView>
                 </ui:VisualElement>
-                <ui:VisualElement name="SPTradeCOntainer" style="flex-grow: 0; height: 100%;">
-                    <ui:ScrollView style="height: 460px;">
-                        <ui:VisualElement style="flex-grow: 0; height: 100px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;);" />
+                <ui:VisualElement name="SPTradeCOntainer" style="flex-grow: 0; height: 100%; display: flex;">
+                    <ui:ScrollView style="height: 390px;">
+                        <ui:VisualElement style="flex-grow: 0; height: 120px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;); margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+                        <ui:VisualElement style="flex-grow: 0; height: 120px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;); margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+                        <ui:VisualElement style="flex-grow: 0; height: 120px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;); margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+                        <ui:VisualElement style="flex-grow: 0; height: 120px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&amp;guid=452902406e317744b835363e2e73ddd1&amp;type=3#UI_Tile03&quot;); margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
                     </ui:ScrollView>
-                    <ui:VisualElement name="SubmissionContainer" style="flex-grow: 1;">
+                    <ui:VisualElement name="SubmissionContainer" style="flex-grow: 0; justify-content: center; height: 180px;">
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
                         <ui:Instance template="SlotRow10" name="SlotRow10" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ButtonContainer" style="flex-grow: 1; align-items: flex-end; padding-top: 10px; padding-right: 20px; padding-bottom: 10px; padding-left: 10px; height: 160px;">
+                        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" text="제출" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 50px; width: 150px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;); font-size: 30px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>

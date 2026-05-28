@@ -12,4 +12,204 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a2c8a241be40d468909ddb51d7c89b, type: 3}
   m_Name: FarmChunkDataSetSO
   m_EditorClassIdentifier: Assembly-CSharp::FarmChunkDataSet
-  DataList: []
+  DataList:
+  - ChunkId: 0
+    Type: 1
+    Grade: 1
+    ContinguousChunk:
+      x: 2
+      y: 3
+      z: 4
+      w: 0
+  - ChunkId: 0
+    Type: 1
+    Grade: 2
+    ContinguousChunk:
+      x: 5
+      y: 6
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 1
+    Grade: 2
+    ContinguousChunk:
+      x: 6
+      y: 7
+      z: 8
+      w: 0
+  - ChunkId: 0
+    Type: 1
+    Grade: 2
+    ContinguousChunk:
+      x: 8
+      y: 9
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 1
+    Grade: 3
+    ContinguousChunk:
+      x: 2
+      y: 11
+      z: 12
+      w: 0
+  - ChunkId: 0
+    Type: 1
+    Grade: 3
+    ContinguousChunk:
+      x: 2
+      y: 3
+      z: 11
+      w: 12
+  - ChunkId: 0
+    Type: 1
+    Grade: 3
+    ContinguousChunk:
+      x: 3
+      y: 12
+      z: 13
+      w: 14
+  - ChunkId: 0
+    Type: 1
+    Grade: 3
+    ContinguousChunk:
+      x: 3
+      y: 4
+      z: 14
+      w: 15
+  - ChunkId: 0
+    Type: 1
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 0
+    Type: 0
+    Grade: 0
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0

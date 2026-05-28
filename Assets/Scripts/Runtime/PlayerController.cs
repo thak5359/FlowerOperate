@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         //Debug.Log("OnInteracted has been detected 1 ");
         if (_playerState.IsCharging.Value == false && context.canceled)
         {
-            Debug.Log("OnInteracted has been detected 2 ");
+           
             if (Time.time < lastInteractTime + interactCooldown)
             {
                 Debug.Log("잠시 뒤에 말을 걸어보자...");
