@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 77d8ef05cbe2b3e46a6802d82660b02d
   m_currentHash:
     serializedVersion: 2
-    Hash: 7951aa56bb708171389b795b2281784d
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -91,6 +91,10 @@ MonoBehaviour:
     - Flower
     - Plot
     - Prefab
+    - Seed
+    - Ingot
+    - Ore
+    - Gem
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: d4758836a0623c84f98807e42f4c5dd4, type: 2}

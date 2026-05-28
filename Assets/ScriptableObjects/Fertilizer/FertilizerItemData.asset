@@ -12,4 +12,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc1850a8db302b4caad4a44dfbe08e0, type: 3}
   m_Name: FertilizerItemData
   m_EditorClassIdentifier: 
-  fertilizers: []
+  fertilizers:
+  - itemId: 301001
+    gearType: 1
+    level: 1
+  - itemId: 301002
+    gearType: 1
+    level: 2
+  - itemId: 301003
+    gearType: 1
+    level: 3
+  - itemId: 301004
+    gearType: 1
+    level: 4
+  - itemId: 301005
+    gearType: 1
+    level: 5
+  - itemId: 301006
+    gearType: 2
+    level: 1
+  - itemId: 301007
+    gearType: 2
+    level: 2
+  - itemId: 301008
+    gearType: 2
+    level: 3
+  - itemId: 301009
+    gearType: 2
+    level: 4
+  - itemId: 301010
+    gearType: 2
+    level: 5
+  - itemId: 301011
+    gearType: 3
+    level: 1
+  - itemId: 301012
+    gearType: 3
+    level: 2
+  - itemId: 301013
+    gearType: 3
+    level: 3
+  - itemId: 301014
+    gearType: 3
+    level: 4
+  - itemId: 301015
+    gearType: 3
+    level: 5

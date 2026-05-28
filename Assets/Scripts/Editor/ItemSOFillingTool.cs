@@ -49,18 +49,48 @@ public class ItemSOFillingTool : EditorWindow
             return;
         }
 
+        // 베이스 SO 초기화 (새로운 데이터를 누적하여 채우므로 시작 시점에 비워줍니다)
+        if (baseSO != null)
+        {
+            baseSO.setItems(new List<ItemBaseAuthoringData>());
+            EditorUtility.SetDirty(baseSO);
+        }
+
+        bool anySuccess = false;
+
         foreach (ScriptableObject so in targetSOList)
         {
             if (so == null) continue;
+            if (so == baseSO) continue; // baseSO는 개별 SO 데이터 채울 때 같이 채워지므로 직접 루프에서 처리하지 않습니다
 
             bool success = so switch
             {
-                ItemBaseData itemBaseData => FillData(itemBaseData),
                 FlowerItemData flowerItemData => FillData(flowerItemData),
                 GearItemData gearItemData => FillData(gearItemData),
                 FertilizerItemData fertilizerItemData => FillData(fertilizerItemData),
                 _ => false
             };
+
+            if (success)
+            {
+                EditorUtility.SetDirty(so);
+                anySuccess = true;
+            }
+        }
+
+        if (anySuccess)
+        {
+            if (baseSO != null)
+            {
+                EditorUtility.SetDirty(baseSO);
+            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("완료", "데이터 삽입 및 저장이 완료되었습니다.", "확인");
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("알림", "삽입된 데이터가 없거나 처리에 실패했습니다.", "확인");
         }
     }
 
@@ -126,7 +156,11 @@ public class ItemSOFillingTool : EditorWindow
             return false;
         }
 
-        List<ItemBaseAuthoringData> temp = new();
+        // 기존 아이템들을 복사한 리스트를 준비하여 데이터를 덮어쓰지 않고 누적합니다.
+        List<ItemBaseAuthoringData> temp = itemBase.Items != null 
+            ? new List<ItemBaseAuthoringData>(itemBase.Items) 
+            : new List<ItemBaseAuthoringData>();
+
         // 헤더가 "번호,ID..."로 시작하는 경우 1번줄부터 데이터임 (0번은 헤더)
         // 만약 첫줄이 "Gear" 같은 타입명이라면 2번줄부터 데이터임
         int startIdx = lines[0].Contains("ID") ? 1 : 2;
@@ -147,7 +181,7 @@ public class ItemSOFillingTool : EditorWindow
             data.stackLimit = (itemMainType == ItemMainType.Equipment) ? 1 : 999;
             data.itemName = line[2].Trim();
             data.price = (itemMainType != ItemMainType.Equipment) ? int.Parse(line[line.Length - 1].Trim()) : 0;
-            data.spriteAddress = FillSpriteAddress(data.itemName);
+            data.spriteAddress = (data.subType == ItemSubType.Flower) ? FillFlowerSpriteAddress(data.itemName) : null;
 
             temp.Add(data);
         }
@@ -268,7 +302,7 @@ public class ItemSOFillingTool : EditorWindow
     private bool FillData(FertilizerItemData fertilizerItem)
     {
         itemMainType = ItemMainType.Usable;
-        SelectCsv("Fertilizer");
+        if (!SelectCsv("Fertilizer")) return false;
 
         FillData(baseSO);
 
@@ -288,46 +322,101 @@ public class ItemSOFillingTool : EditorWindow
         return true;
     }
 
-    private string FillSpriteAddress(string name)
+    private string FillFlowerSpriteAddress(string name)
     {
-        switch(name.Split(" ")[1])
+        string[] temp = name.Split(" ");
+        switch (temp[0])
+        {
+            case "빨간":
+                temp[0] = "Red";
+                break;
+            case "주황":
+                temp[0] = "Orange";
+                break;
+            case "노란":
+                temp[0] = "Yellow";
+                break;
+            case "분홍":
+                temp[0] = "Pink";
+                break;
+            case "하얀":
+                temp[0] = "White";
+                break;
+            case "초록":
+                temp[0] = "Green";
+                break;
+            case "보라":
+                temp[0] = "Purple";
+                break;
+            case "검은":
+                temp[0] = "Black";
+                break;
+            case "파랑":
+                temp[0] = "Blue";
+                break;
+            case "무지개":
+                temp[0] = "Rainbow";
+                break;
+
+        }
+
+        switch(temp[1])
         {
             case "거베라":
-                return "Gerbera";
+                temp[1] = "Gerbera";
+                break;
             case "국화":
-                return "Chrysanthemum";
+                temp[1] = "Chrysanthemum";
+                break;
             case "델피늄":
-                return "Delphinium";
+                temp[1] = "Delphinium";
+                break;
             case "라넌큘러스":
-                return "Ranunculus";
+                temp[1] = "Ranunculus";
+                break;
             case "리시안셔스":
-                return "Lisianthus";
+                temp[1] = "Lisianthus";
+                break;
             case "백합":
-                return "Lily";
+                temp[1] = "Lily";
+                break;
             case "수국":
-                return "Hydrangea";
+                temp[1] = "Hydrangea";
+                break;
             case "아네모네":
-                return "Anemone";
+                temp[1] = "Anemone";
+                break;
             case "연꽃":
-                return "Lotus";
+                temp[1] = "Lotus";
+                break;
             case "작약":
-                return "Peony";
+                temp[1] = "Peony";
+                break;
             case "장미":
-                return "Rose";
+                temp[1] = "Rose";
+                break;
             case "카네이션":
-                return "Carnation";
+                temp[1] = "Carnation";
+                break;
             case "코스모스":
-                return "Cosmos";
+                temp[1] = "Cosmos";
+                break;
             case "튤립":
-                return "Tulip";
+                temp[1] = "Tulip";
+                break;
             case "프리지아":
-                return "Freesia";
+                temp[1] = "Freesia";
+                break;
             case "해바라기":
-                return "Sunflower";
+                temp[1] = "Sunflower";
+                break;
             case "히아신스":
-                return "Hyacinth";
+                temp[1] = "Hyacinth";
+                break;
             default:
                 return null;
         }
+
+        return temp[0] + '_' + temp[1];
     }
 }

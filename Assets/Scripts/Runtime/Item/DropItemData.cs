@@ -7,7 +7,8 @@ public class DropItemData : MonoBehaviour
 {
     [SerializeReference]
     private GameItem data;
-
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
     [SerializeField]
     private int waitMilliSeconds = 1000;
 
@@ -16,6 +17,11 @@ public class DropItemData : MonoBehaviour
     public GameItem GetData => data;
     public int GetItemId => data != null ? data.Id : 0;
     public int GetCount => data != null ? data.Count : 0;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public FlowerGrade GetGrade
     {
@@ -31,6 +37,7 @@ public class DropItemData : MonoBehaviour
     public void SetData(GameItem data)
     {
         this.data = data;
+        spriteRenderer.sprite = data.DisplaySprite;
     }
 
     public void AddAmount(int amount)
@@ -53,15 +60,12 @@ public class DropItemData : MonoBehaviour
         if (isPickingUp)
             return;
 
-        DoOnTrigger().Forget();
+        DoOnTrigger();
     }
 
-    private async UniTaskVoid DoOnTrigger()
+    private void DoOnTrigger()
     {
         isPickingUp = true;
-
-        if (waitMilliSeconds > 0)
-            await UniTask.Delay(waitMilliSeconds);
 
         if (data == null || data.Count <= 0)
         {
