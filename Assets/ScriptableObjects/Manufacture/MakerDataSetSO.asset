@@ -1,0 +1,240 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6cb0bbbd1658d4594db7a933e0de56, type: 3}
+  m_Name: MakerDataSetSO
+  m_EditorClassIdentifier: 
+  makerDataList:
+  - makerType: 0
+    makerTier: 0
+    makerSize:
+      x: 1
+      y: 2
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 50
+  - makerType: 0
+    makerTier: 1
+    makerSize:
+      x: 2
+      y: 2
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 100
+  - makerType: 0
+    makerTier: 2
+    makerSize:
+      x: 2
+      y: 4
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 200
+  - makerType: 0
+    makerTier: 3
+    makerSize:
+      x: 3
+      y: 4
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 300
+  - makerType: 0
+    makerTier: 4
+    makerSize:
+      x: 4
+      y: 4
+    IngredientRatio:
+      x: 1
+      y: 2
+    maxProduction: 500
+  - makerType: 1
+    makerTier: 0
+    makerSize:
+      x: 1
+      y: 1
+    IngredientRatio:
+      x: 4
+      y: 1
+    maxProduction: 10
+  - makerType: 1
+    makerTier: 1
+    makerSize:
+      x: 1
+      y: 2
+    IngredientRatio:
+      x: 3
+      y: 1
+    maxProduction: 20
+  - makerType: 1
+    makerTier: 2
+    makerSize:
+      x: 2
+      y: 2
+    IngredientRatio:
+      x: 2
+      y: 1
+    maxProduction: 30
+  - makerType: 1
+    makerTier: 3
+    makerSize:
+      x: 2
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 50
+  - makerType: 1
+    makerTier: 4
+    makerSize:
+      x: 3
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 2
+    maxProduction: 100
+  - makerType: 2
+    makerTier: 0
+    makerSize:
+      x: 1
+      y: 1
+    IngredientRatio:
+      x: 4
+      y: 1
+    maxProduction: 10
+  - makerType: 2
+    makerTier: 1
+    makerSize:
+      x: 1
+      y: 2
+    IngredientRatio:
+      x: 3
+      y: 1
+    maxProduction: 20
+  - makerType: 2
+    makerTier: 2
+    makerSize:
+      x: 2
+      y: 2
+    IngredientRatio:
+      x: 2
+      y: 1
+    maxProduction: 30
+  - makerType: 2
+    makerTier: 3
+    makerSize:
+      x: 2
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 50
+  - makerType: 2
+    makerTier: 4
+    makerSize:
+      x: 3
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 2
+    maxProduction: 100
+  - makerType: 3
+    makerTier: 0
+    makerSize:
+      x: 1
+      y: 1
+    IngredientRatio:
+      x: 4
+      y: 1
+    maxProduction: 10
+  - makerType: 3
+    makerTier: 1
+    makerSize:
+      x: 1
+      y: 2
+    IngredientRatio:
+      x: 3
+      y: 1
+    maxProduction: 20
+  - makerType: 3
+    makerTier: 2
+    makerSize:
+      x: 2
+      y: 2
+    IngredientRatio:
+      x: 2
+      y: 1
+    maxProduction: 30
+  - makerType: 3
+    makerTier: 3
+    makerSize:
+      x: 2
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 1
+    maxProduction: 50
+  - makerType: 3
+    makerTier: 4
+    makerSize:
+      x: 3
+      y: 3
+    IngredientRatio:
+      x: 1
+      y: 2
+    maxProduction: 100
+  - makerType: 4
+    makerTier: 0
+    makerSize:
+      x: 1
+      y: 1
+    IngredientRatio:
+      x: 5
+      y: 1
+    maxProduction: 10
+  - makerType: 4
+    makerTier: 1
+    makerSize:
+      x: 1
+      y: 2
+    IngredientRatio:
+      x: 5
+      y: 1
+    maxProduction: 20
+  - makerType: 4
+    makerTier: 2
+    makerSize:
+      x: 2
+      y: 2
+    IngredientRatio:
+      x: 5
+      y: 2
+    maxProduction: 30
+  - makerType: 4
+    makerTier: 3
+    makerSize:
+      x: 2
+      y: 3
+    IngredientRatio:
+      x: 5
+      y: 2
+    maxProduction: 50
+  - makerType: 4
+    makerTier: 4
+    makerSize:
+      x: 3
+      y: 3
+    IngredientRatio:
+      x: 5
+      y: 3
+    maxProduction: 100

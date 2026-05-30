@@ -18,6 +18,10 @@ public partial class SaveDatas
     [MemoryPackInclude, SerializeField] private ItemInstantData itemData;
 
     [MemoryPackInclude, SerializeField] private List<PlotSaveEntry> plotDataList = new();
+    [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _FarmChunkDatas;
+    [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _FieldChunkDatas;
+    [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _ForestChunkDatas;
+    [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _MineChunkDatas;
 
     [MemoryPackIgnore]
     private SerializedDictionary<int, PlotData> plotDataDictCache;
@@ -64,7 +68,11 @@ public partial class SaveDatas
         ItemInstantData itemData,
         SerializedDictionary<int, PlotData> plotData,
         int money = 0,
-        int reputation = 0
+        int reputation = 0,
+        ChunkDataIngame[] farmChunkDatas = null,
+        ChunkDataIngame[] fieldChunkDatas = null,
+        ChunkDataIngame[] forestChunkDatas = null,
+        ChunkDataIngame[] mineChunkDatas = null
     )
     {
         saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
@@ -72,9 +80,12 @@ public partial class SaveDatas
         this.itemData = itemData;
         this.money = money;
         this.reputation = reputation;
-
         plotDataList = FromSerializedDictionary(plotData);
         plotDataDictCache = plotData;
+        _FarmChunkDatas = farmChunkDatas;
+        _FieldChunkDatas = fieldChunkDatas;
+        _ForestChunkDatas = forestChunkDatas;
+        _MineChunkDatas = mineChunkDatas;
     }
 
     private static List<PlotSaveEntry> FromSerializedDictionary(
