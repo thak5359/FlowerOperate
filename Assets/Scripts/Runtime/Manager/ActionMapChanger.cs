@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
-using Unity.Collections;
 using VContainer.Unity;
 using static Constant;
-
+using Fungus;
 
 
 public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이 인터페이스를 포함.
@@ -24,18 +25,53 @@ public interface IMapChangable // 컨트롤 방법을 변경하는 기능은 이
 
 }
 
-public class ActionMapChanger : IMapChangable
+public class ActionMapChanger : IMapChangable, IInitializable, IDisposable
 {
     private PlayerInput _playerInput;
     private Stack<FixedString64Bytes> prevMapStack = new();
 
     [Inject]
-    void Construct(PlayerInput input_playerInput)
+    public void Construct(PlayerInput input_playerInput) 
     {
         _playerInput = input_playerInput;
-        Debug.Log("ActionMapChanger has been successfully injected!");
+        //Debug.Log("ActionMapChanger has been successfully injected!");
     }
 
+    public void Initialize()
+    {
+        Fungus.FungusEventBridge.OnFungusMessageBroadcasted -= HandleFungusMessage;
+        Fungus.FungusEventBridge.OnFungusMessageBroadcasted += HandleFungusMessage;
+        
+
+        //Debug.Log("[ActionMapChanger] Initialize 완료! Fungus 전역 이벤트 구독 성공.");
+    }
+
+    public void Dispose()
+    {
+        Fungus.FungusEventBridge.OnFungusMessageBroadcasted -= HandleFungusMessage;
+    }
+
+
+
+    private void HandleFungusMessage(string message)
+    {
+        Debug.Log($"[ActionMapChanger] Fungus로부터 전역 신호 수신: {message}");
+
+        switch (message)
+        {
+            case "OpenChatBox":
+                ((IMapChangable)this).changeIAmapChatBox();
+                break;
+
+            case "CloseChatBox":
+                ((IMapChangable)this).changeIAmapPrev();
+                break;
+
+            default:
+                Debug.LogWarning($"[ActionMapChanger] 처리되지 않은 전역 신호입니다: {message}");
+                break;
+        }
+    }
 
     #region IA 맵 변경
 

@@ -12,4 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ba5fa4a1b584e4189ba28bde75a3ec, type: 3}
   m_Name: ForestChunkDataSet
   m_EditorClassIdentifier: Assembly-CSharp::ForestChunkDataSet
-  DataList: []
+  DataList:
+  - ChunkId: 1
+    Type: 2
+    Grade: 1
+    ContinguousChunk:
+      x: 2
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 2
+    Type: 2
+    Grade: 2
+    ContinguousChunk:
+      x: 3
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 3
+    Type: 2
+    Grade: 3
+    ContinguousChunk:
+      x: 4
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 4
+    Type: 2
+    Grade: 4
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0

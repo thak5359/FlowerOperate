@@ -110,7 +110,7 @@ public static class GlobalItemDB
         {
             int itemId = items[i].ItemId;
 
-            if (!_gearIndexById.TryAdd(itemId, i))
+            if (!_gearIndexById.TryAdd(itemId, i) && itemId != 0)
             {
                 Debug.LogError($"[GlobalItemDB] GearDB 중복 ItemId 발견: {itemId}");
             }

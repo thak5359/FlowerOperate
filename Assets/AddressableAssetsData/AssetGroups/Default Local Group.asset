@@ -145,7 +145,8 @@ MonoBehaviour:
   - m_GUID: 16b5b28438b08df4ba1378ba346f0b0a
     m_Address: FieldChunkDataSetSO
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - ScriptableObjects
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 183107d8386f47e49b8c6678810d9bff
     m_Address: Orange_Carnation
@@ -584,7 +585,8 @@ MonoBehaviour:
   - m_GUID: 64a0a6f46ac051f48a6fd450595fdab6
     m_Address: ForestChunkDataSet
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - ScriptableObjects
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 658f0b2174325d041a13bea36e1e4435
     m_Address: Gold_Ingot
@@ -661,7 +663,8 @@ MonoBehaviour:
   - m_GUID: 721e4e5858869af4687957d44d238105
     m_Address: FarmChunkDataSetSO
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - ScriptableObjects
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7272caeb105247242a5deb3743d7a05d
     m_Address: Orange_Hyacinth
@@ -835,7 +838,8 @@ MonoBehaviour:
   - m_GUID: 8950078194f7f4e4c901a67f451f5f02
     m_Address: MineChunkDataSetSO
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - ScriptableObjects
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8a27cc3b5caa17447a467277e967815a
     m_Address: Orange_Sunflower

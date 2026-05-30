@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FieldChunkDataSetSO", menuName = "Dataset/FieldChunks", order = 4)]
@@ -13,4 +9,10 @@ public class FieldChunkDataSet : ScriptableObject
     {
         return ref DataList[chunkNo - 1];
     }
+
+    public int GetLength()
+    {
+        return DataList.Length;
+    }
+
 }

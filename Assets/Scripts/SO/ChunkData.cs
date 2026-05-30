@@ -15,5 +15,7 @@ public struct ChunkData
     [SerializeField] public ChunkGrade Grade;
 
     [Header("인접해 있는 청크 번호")]
-    [SerializeField] int4 ContinguousChunk;
+    [SerializeField] public int4 ContinguousChunk;
+
+
 }

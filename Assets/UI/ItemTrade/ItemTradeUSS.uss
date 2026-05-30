@@ -1,0 +1,31 @@
+#unity-tracker {
+    background-color: rgb(207, 156, 83);
+    border-left-color: rgb(132, 55, 5);
+    border-right-color: rgb(132, 55, 5);
+    border-top-color: rgb(132, 55, 5);
+    border-bottom-color: rgb(132, 55, 5);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+}
+
+#unity-dragger {
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Assets/Art/Sprites/01.UI/SamplePSD/A19.png?fileID=-1575046477&guid=d4769ffc37c31c7439eacbd3972f965c&type=3#A19_0");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+#unity-low-button {
+    display: none;
+    visibility: hidden;
+}
+
+#unity-high-button {
+    display: none;
+    visibility: hidden;
+}
+
+#unity-slider {
+}

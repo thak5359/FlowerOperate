@@ -13,4 +13,8 @@ public class MineChunkDataSet : ScriptableObject
     {
         return ref DataList[chunkNo - 1];
     }
+    public int GetLength()
+    {
+        return DataList.Length;
+    }
 }

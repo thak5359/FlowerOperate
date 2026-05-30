@@ -163,7 +163,7 @@ public class SettingManager : IStartable, IDisposable
     public void ApplyAllSettings()
     {
 
-        Debug.Log($"{_settings}");
+        //Debug.Log($"{_settings}");
         ApplyResolution(_settings.resWidth, _settings.resHeight);
         ApplyVolume("MasterVolume", _settings.masterVol);
         ApplyVolume("BGMVolume", _settings.bgmVol);

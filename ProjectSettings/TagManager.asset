@@ -8,6 +8,11 @@ TagManager:
   - SeedMaker
   - Storage
   - Bed
+  - Item
+  - Plot
+  - Hwaja
+  - Mago
+  - Hex
   layers:
   - Default
   - TransparentFX

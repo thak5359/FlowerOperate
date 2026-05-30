@@ -55,10 +55,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.2
+    - _Alpha: 0.21
     - _AuroraPower: 0
     - _Gradient_Offset: 0.18
-    - _NoiseIntensity: 10
+    - _NoiseIntensity: 11.59
     - _NoiseScale: 0
     - _QueueControl: 0
     - _QueueOffset: 0

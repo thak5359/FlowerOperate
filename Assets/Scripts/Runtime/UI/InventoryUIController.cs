@@ -53,7 +53,8 @@ public class InventoryUIController : MonoBehaviour
             _uiDocument = GetComponent<UIDocument>();
         if (_uiDocument == null)
             Debug.Log("<color=red>GetComponent on Start is failed</color>");
-        Debug.Log("<color=green>GetComponent on Start is success</color>");
+        else
+            Debug.Log("<color=green>GetComponent on Start is success</color>");
     }
 
     private void OnEnable()

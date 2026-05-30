@@ -4,7 +4,7 @@ using System;
 public static class GlobalEventManager
 {
     private static readonly Subject<GameItem> OnItemPickedUp = new Subject<GameItem>();
-    private static readonly Subject<Unit> NextDay;
+    private static readonly Subject<Unit> NextDay = new Subject<Unit>();
     public static event Action<string> OnLoadScene;
 
     public static Observable<GameItem> OnItemPickedUpObservable => OnItemPickedUp;

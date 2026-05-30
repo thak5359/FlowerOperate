@@ -46,7 +46,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         var inventoryUIControllers = container.Resolve<IReadOnlyList<InventoryUIController>>();
         _inventoryUIContoller = inventoryUIControllers.Count > 0 ? inventoryUIControllers[0] : null;
 
-        Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");
+     //   Debug.Log($"주입 완료: PlayerController는 {(_playerController == null ? "없음" : "있음")}");
     }
 
 
@@ -81,7 +81,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
             InventoryMapActionAllocator();
             _playerInput.SwitchCurrentActionMap(FARM_MAP_NAME.ToString());
         }
-        Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
+        //Debug.Log($"{currentSceneName}에 맞춰 현재 맵 전환 완료!");
     }
 
 
@@ -159,7 +159,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         {
             actionEscape.performed += _pauseMenu.OnBackAction;
         }
-        Debug.Log("세팅 키 할당됨!");
+        //Debug.Log("세팅 키 할당됨!");
     }
     #endregion
 
@@ -238,7 +238,7 @@ public class ActionKeyMapper : IAsyncStartable, IDisposable
         actionInventory.performed += _inventoryUIContoller.OnOpenInventory;   //TODO : 인벤토리 UI를 여는 함수 할당하기
 
         map.Enable();
-        Debug.Log("FarmActionKey 할당됨!");
+        //Debug.Log("FarmActionKey 할당됨!");
 
     }
     #endregion

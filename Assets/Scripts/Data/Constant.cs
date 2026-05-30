@@ -106,5 +106,18 @@ public class Constant
     public const int INVENTORY_COLUMN_SIZE = 10;
     public const int INVENTORY_SLOT_COUNT= INVENTORY_ROW_SIZE * INVENTORY_COLUMN_SIZE;
 
+    public const string FARM_CHUNK_DATASET = "FarmChunkDataSetSO";
+    public const string FIELD_CHUNK_DATASET = "FieldChunkDataSetSO";
+    public const string FOREST_CHUNK_DATASET = "ForestChunkDataSetSO";
+    public const string MINE_CHUNK_DATASET = "MineChunkDataSetSO";
+
+
+
+
+
+
+
+
+
 }
 

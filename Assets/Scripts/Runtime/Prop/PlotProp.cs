@@ -151,7 +151,7 @@ public class PlotProp : Prop
     /// </summary>
     private async void OnNextDay()
     {
-        if (GrowUp().Result() == FarmActionResult.ResultType.Success)
+        if (GrowUp().Result == FarmActionResult.ResultType.Success)
         {
             await changeFlowerSpr();
         }

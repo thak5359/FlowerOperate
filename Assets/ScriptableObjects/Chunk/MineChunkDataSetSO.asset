@@ -12,4 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28fb516d0d43ac24fa5e605dfe011914, type: 3}
   m_Name: MineChunkDataSetSO
   m_EditorClassIdentifier: Assembly-CSharp::MineChunkDataSet
-  DataList: []
+  DataList:
+  - ChunkId: 1
+    Type: 4
+    Grade: 1
+    ContinguousChunk:
+      x: 2
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 2
+    Type: 4
+    Grade: 2
+    ContinguousChunk:
+      x: 3
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 3
+    Type: 4
+    Grade: 3
+    ContinguousChunk:
+      x: 4
+      y: 0
+      z: 0
+      w: 0
+  - ChunkId: 4
+    Type: 4
+    Grade: 4
+    ContinguousChunk:
+      x: 0
+      y: 0
+      z: 0
+      w: 0

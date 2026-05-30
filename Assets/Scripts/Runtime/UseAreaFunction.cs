@@ -38,28 +38,31 @@ public struct FarmActionResult
     public enum ResultType { Success, Failed, Error }
 
     private ResultType result;
-    public FixedString128Bytes errorMessage { get; private set; }
+    public ResultType Result => result;
 
-    public ResultType Result() => result;
+    public FixedString128Bytes errorMessage { get; private set; }
 
     public FarmActionResult(ResultType input_result, FixedString128Bytes input_errorCode = default)
     {
         result = input_result;
         errorMessage = input_errorCode;
     }
+
     public void Combine(FarmActionResult resultB)
     {
-        if (resultB.Result() == ResultType.Error)
+        if (resultB.Result == ResultType.Error)
         {
             result = ResultType.Error;
             errorMessage = resultB.errorMessage;
         }
-        else if (resultB.Result() == ResultType.Failed && result != ResultType.Error)
+        else if (resultB.Result == ResultType.Failed && result != ResultType.Error)
         {
             result = ResultType.Failed;
         }
     }
 }
+
+
 
 
 public class UseAreaFunction : MonoBehaviour,
@@ -289,7 +292,7 @@ public class UseAreaFunction : MonoBehaviour,
                 if (targetPlot != null)
                 {
                     FarmActionResult result = targetPlot.Reaping(ref gear); // 꽃 수확 성공
-                    if(result.Result() == FarmActionResult.ResultType.Success)
+                    if(result.Result == FarmActionResult.ResultType.Success)
                     {
                         gear.CurrentDurability -= 1;
                     }
@@ -450,7 +453,7 @@ public class UseAreaFunction : MonoBehaviour,
                         
                         case FertilizerType.Quality:
                             result = targetPlot.ApplyQualityFertilizer(item.FertilizerGrade);
-                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            if (result.Result == FarmActionResult.ResultType.Success)
                             {
                                 item.Count -= 1;
                             }
@@ -458,7 +461,7 @@ public class UseAreaFunction : MonoBehaviour,
 
                         case FertilizerType.Bountiful:
                             result = targetPlot.ApplyBountyFertilizer(item.FertilizerGrade);
-                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            if (result.Result == FarmActionResult.ResultType.Success)
                             {
                                 item.Count -= 1;
                             }
@@ -467,12 +470,12 @@ public class UseAreaFunction : MonoBehaviour,
 
                         case FertilizerType.AllInOne:
                             result = targetPlot.ApplyQualityFertilizer(item.FertilizerGrade);
-                            if (result.Result() == FarmActionResult.ResultType.Success)
+                            if (result.Result == FarmActionResult.ResultType.Success)
                             {
                                 FarmActionResult bountyResult = targetPlot.ApplyBountyFertilizer(item.FertilizerGrade);
 
                                 result.Combine(bountyResult);
-                                if (bountyResult.Result() == FarmActionResult.ResultType.Success)
+                                if (bountyResult.Result == FarmActionResult.ResultType.Success)
                                 {
                                     item.Count -= 1;
                                 }

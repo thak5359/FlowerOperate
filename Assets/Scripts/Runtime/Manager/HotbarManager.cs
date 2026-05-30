@@ -186,37 +186,42 @@ public class HotbarManager : MonoBehaviour
                 }
                 else if (!string.IsNullOrEmpty(input_item.SpriteAddress.ToString()))
                 {
+                    Debug.Log("이미지 로드 시도!");
                     newSprite = await AddressableManager.LoadAssetAsync<Sprite>(input_item.SpriteAddress);
                 }
             }
 
 
-            if (newSprite == null || newSprite == default(Sprite))
+            if (newSprite != null)
             {
-                Debug.LogWarning($"아이템 {input_item?.Id}의 스프라이트가 null이거나 기본값입니다. 빈 슬롯으로 처리됩니다.");
+                slot.ItemIcon.sprite = newSprite;
+                slot.ItemIcon.enabled = true; // 이미지 활성화
+
+                // 새 이미지로 덮어씌웠으므로, 이전 이미지가 남아있다면 메모리 해제
+                if (oldSprite != null && oldSprite != newSprite)
+                {
+                    Debug.Log("메모리 해제 시도!");
+                    AddressableManager.ReleaseAsset(oldSprite);
+                }
             }
             else
             {
-                // 새로운 스프라이트를 UI에 적용 (input_item이 null이라면 newSprite도 null이므로 빈칸으로 처리됨)
-                slot.ItemIcon.sprite = newSprite;
-            }
-            //  핵심 해결책: 스프라이트가 존재하면 Image를 켜고, null이면 Image 컴포넌트를 끕니다.
-            slot.ItemIcon.enabled = (newSprite != null);
-
-            // 기존 이미지가 있었고, 새로 덮어씌운 이미지와 다르다면 기존 이미지 메모리를 해제합니다
-            if (oldSprite != null && oldSprite != newSprite)
-            {
-                AddressableManager.ReleaseAsset(oldSprite);
+                // 스프라이트가 없는 경우(빈 슬롯): 어드레서블 해제 시도 없이 깔끔하게 비활성화만 수행
+                slot.ItemIcon.enabled = false;
+                slot.ItemIcon.sprite = null; // 남아있는 참조 비우기
             }
         }
 
-        // 2. 텍스트(아이템 개수) 갱신 로직
         if (slot.Count != null)
         {
             if (input_item != null && input_item.Count > 1)
+            {
                 slot.Count.text = input_item.Count.ToString();
+            }
             else
-                slot.Count.text = string.Empty; // 비어있거나 1개일 때는 숫자 텍스트를 비웁니다
+            {
+                slot.Count.text = string.Empty; // 비어있거나 1개일 때는 숫자 텍스트를 비워요
+            }
         }
     }
 
@@ -261,7 +266,7 @@ public class HotbarManager : MonoBehaviour
 
         // 현재 가리키고 있는 아이템의 ID를 pointingItedId에 대입
         //pointingItemId = items[i].GetItemID;
-        Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
+        //Debug.Log($"{cachedInt + 1}번 슬롯 선택됨");
     }
 
     //플레이어가 들고있는 아이템 동기화 함수.
