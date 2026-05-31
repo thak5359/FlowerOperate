@@ -184,6 +184,16 @@ public class ItemSOFillingTool : EditorWindow
             data.spriteAddress = (data.subType == ItemSubType.Flower) ? FillFlowerSpriteAddress(data.itemName) : null;
 
             temp.Add(data);
+
+            if (data.subType == ItemSubType.Flower)
+            {
+                ItemBaseAuthoringData seedData = data;
+                seedData.itemName += " 씨앗";
+                seedData.itemId = data.itemId - 1000;
+                seedData.subType = ItemSubType.Seed;
+                seedData.spriteAddress = FillFlowerSpriteAddress(seedData.itemName) + "_Seed";
+                temp.Add(seedData);
+            }
         }
         itemBase.setItems(temp);
         return true;

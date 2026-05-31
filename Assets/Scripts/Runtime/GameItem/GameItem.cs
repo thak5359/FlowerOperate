@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Fungus;
 using MemoryPack;
 using System;
 using System.Threading.Tasks;
@@ -113,7 +114,7 @@ public partial class GameItem : IGameResource
         return Mathf.Max(0, StackLimit - Count);
     }
 
-    public void AddAmount(short input_amount)
+    public void AddAmount(int input_amount)
     {
         if (this.Count + input_amount > Constant.MAX_COUNT_INVENTORY)
         {
@@ -121,6 +122,25 @@ public partial class GameItem : IGameResource
             return;
         }
         this.Count += input_amount;
+    }
+    
+    /// 요청사항만큼 amount를 빼고 남은 amount를 반환합니다.
+    public void SubCount(ref int amount)
+    {
+        if (amount <= 0) return;
+
+        if (this.Count - amount <= 0)
+        {
+            amount = 0;
+            this.Id = 0;
+            amount -= this.Count;
+        }
+        else
+        {
+            this.Count -= amount;
+            amount = 0;
+        }
+
     }
 
     public bool CheckEmpty()
@@ -136,15 +156,5 @@ public partial class GameItem : IGameResource
         if (Count == Constant.MAX_COUNT_INVENTORY)
             return true;
         return false;
-    }
-
-    public void AddCount(short amount)
-    {
-        if (this.Count + amount > Constant.MAX_COUNT_INVENTORY)
-        {
-            this.Count = Constant.MAX_COUNT_INVENTORY;
-            return;
-        }
-        this.Count += amount;
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MakerDataSetSO", menuName = "Dataset/MakerData", order = 5)]
 public class MakerDataSet : ScriptableObject
 {
-    [SerializeField] private MakerDataSO[] makerDataList;
+    [SerializeField] private MakerData[] makerDataList;
 
-    public ref MakerDataSO GetMakerData(ref int makerNo)
+    public ref MakerData GetMakerData(ref int makerNo)
     {
         return ref makerDataList[makerNo - 1];
     }
@@ -18,9 +18,22 @@ public class MakerDataSet : ScriptableObject
     }
 
 #if UNITY_EDITOR
-    public void SetMakerDataList(MakerDataSO[] list)
+    public void SetMakerDataList(MakerData[] list)
     {
         makerDataList = list;
     }
 #endif
+
+    public ref MakerData GetMakerDataByTypeAndTier(MakerType type, MakerTier tier)
+    {
+        for (int i = (int)type; i < makerDataList.Length; i++)
+        {
+            if (makerDataList[i].GetMakerTier == tier)
+            {
+                return ref makerDataList[i];
+            }
+        }
+
+        throw new System.Exception($"No MakerData found for Type: {type} and Tier: {tier}");
+    }
 }

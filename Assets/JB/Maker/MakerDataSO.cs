@@ -5,16 +5,23 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+[MemoryPackable]
 [Serializable]
-public struct MakerDataSO
+public partial struct MakerData
 {
-    [SerializeField] private MakerType makerType;
-    [SerializeField] private MakerTier makerTier;
-    [SerializeField] private int2 makerSize;
-    [SerializeField] private int2 IngredientRatio;
-    [SerializeField] private int maxProduction;
+    [MemoryPackInclude, SerializeField] private MakerType makerType;
+    [MemoryPackInclude, SerializeField] private MakerTier makerTier;
+    [MemoryPackInclude, SerializeField] private int2 makerSize;
+    [MemoryPackInclude, SerializeField] private int2 IngredientRatio;
+    [MemoryPackInclude, SerializeField] private int maxProduction;
 
-    public MakerDataSO(MakerType makerType, MakerTier makerTier, int2 makerSize, int2 ingredientRatio, int maxProduction)
+    public MakerType GetMakerType => makerType;
+    public MakerTier GetMakerTier => makerTier;
+    public int2 GetMakerSize => makerSize;
+    public int2 GetIngredientRatio => IngredientRatio;
+    public int GetMaxProduction => maxProduction;
+
+    public MakerData(MakerType makerType, MakerTier makerTier, int2 makerSize, int2 ingredientRatio, int maxProduction)
     {
         this.makerType = makerType;
         this.makerTier = makerTier;

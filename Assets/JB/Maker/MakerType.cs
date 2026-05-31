@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum MakerType
 {
-    Seed,
-    Ingot,
-    Jewerly,
-    Wood,
-    Fertilizer,
+    Seed = 0,
+    Ingot = 5,
+    Jewerly = 10,
+    Wood = 15,
+    Fertilizer = 20,
 }

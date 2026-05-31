@@ -58,7 +58,7 @@ MonoBehaviour:
       x: 1
       y: 2
     maxProduction: 500
-  - makerType: 1
+  - makerType: 5
     makerTier: 0
     makerSize:
       x: 1
@@ -67,7 +67,7 @@ MonoBehaviour:
       x: 4
       y: 1
     maxProduction: 10
-  - makerType: 1
+  - makerType: 5
     makerTier: 1
     makerSize:
       x: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
       x: 3
       y: 1
     maxProduction: 20
-  - makerType: 1
+  - makerType: 5
     makerTier: 2
     makerSize:
       x: 2
@@ -85,7 +85,7 @@ MonoBehaviour:
       x: 2
       y: 1
     maxProduction: 30
-  - makerType: 1
+  - makerType: 5
     makerTier: 3
     makerSize:
       x: 2
@@ -94,7 +94,7 @@ MonoBehaviour:
       x: 1
       y: 1
     maxProduction: 50
-  - makerType: 1
+  - makerType: 5
     makerTier: 4
     makerSize:
       x: 3
@@ -103,7 +103,7 @@ MonoBehaviour:
       x: 1
       y: 2
     maxProduction: 100
-  - makerType: 2
+  - makerType: 10
     makerTier: 0
     makerSize:
       x: 1
@@ -112,7 +112,7 @@ MonoBehaviour:
       x: 4
       y: 1
     maxProduction: 10
-  - makerType: 2
+  - makerType: 10
     makerTier: 1
     makerSize:
       x: 1
@@ -121,7 +121,7 @@ MonoBehaviour:
       x: 3
       y: 1
     maxProduction: 20
-  - makerType: 2
+  - makerType: 10
     makerTier: 2
     makerSize:
       x: 2
@@ -130,7 +130,7 @@ MonoBehaviour:
       x: 2
       y: 1
     maxProduction: 30
-  - makerType: 2
+  - makerType: 10
     makerTier: 3
     makerSize:
       x: 2
@@ -139,7 +139,7 @@ MonoBehaviour:
       x: 1
       y: 1
     maxProduction: 50
-  - makerType: 2
+  - makerType: 10
     makerTier: 4
     makerSize:
       x: 3
@@ -148,7 +148,7 @@ MonoBehaviour:
       x: 1
       y: 2
     maxProduction: 100
-  - makerType: 3
+  - makerType: 15
     makerTier: 0
     makerSize:
       x: 1
@@ -157,7 +157,7 @@ MonoBehaviour:
       x: 4
       y: 1
     maxProduction: 10
-  - makerType: 3
+  - makerType: 15
     makerTier: 1
     makerSize:
       x: 1
@@ -166,7 +166,7 @@ MonoBehaviour:
       x: 3
       y: 1
     maxProduction: 20
-  - makerType: 3
+  - makerType: 15
     makerTier: 2
     makerSize:
       x: 2
@@ -175,7 +175,7 @@ MonoBehaviour:
       x: 2
       y: 1
     maxProduction: 30
-  - makerType: 3
+  - makerType: 15
     makerTier: 3
     makerSize:
       x: 2
@@ -184,7 +184,7 @@ MonoBehaviour:
       x: 1
       y: 1
     maxProduction: 50
-  - makerType: 3
+  - makerType: 15
     makerTier: 4
     makerSize:
       x: 3
@@ -193,7 +193,7 @@ MonoBehaviour:
       x: 1
       y: 2
     maxProduction: 100
-  - makerType: 4
+  - makerType: 20
     makerTier: 0
     makerSize:
       x: 1
@@ -202,7 +202,7 @@ MonoBehaviour:
       x: 5
       y: 1
     maxProduction: 10
-  - makerType: 4
+  - makerType: 20
     makerTier: 1
     makerSize:
       x: 1
@@ -211,7 +211,7 @@ MonoBehaviour:
       x: 5
       y: 1
     maxProduction: 20
-  - makerType: 4
+  - makerType: 20
     makerTier: 2
     makerSize:
       x: 2
@@ -220,7 +220,7 @@ MonoBehaviour:
       x: 5
       y: 2
     maxProduction: 30
-  - makerType: 4
+  - makerType: 20
     makerTier: 3
     makerSize:
       x: 2
@@ -229,7 +229,7 @@ MonoBehaviour:
       x: 5
       y: 2
     maxProduction: 50
-  - makerType: 4
+  - makerType: 20
     makerTier: 4
     makerSize:
       x: 3

@@ -73,7 +73,7 @@ public class MakerDataFillngTool : EditorWindow
         try
         {
             string[] lines = File.ReadAllLines(fullPath);
-            List<MakerDataSO> dataList = new List<MakerDataSO>();
+            List<MakerData> dataList = new List<MakerData>();
 
             // 0번째 라인은 헤더이므로 생략
             for (int i = 1; i < lines.Length; i++)
@@ -131,7 +131,7 @@ public class MakerDataFillngTool : EditorWindow
                 int.TryParse(values[6].Trim(), out maxProd);
 
                 // MakerDataSO 생성 및 리스트에 추가
-                MakerDataSO data = new MakerDataSO(type, tier, size, ratio, maxProd);
+                MakerData data = new MakerData(type, tier, size, ratio, maxProd);
                 dataList.Add(data);
             }
 
