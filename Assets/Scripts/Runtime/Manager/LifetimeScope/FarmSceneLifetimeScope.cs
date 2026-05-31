@@ -12,7 +12,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private InventoryUIController inventoryUI;
     [SerializeField] private PlotManager plotManager;
     [SerializeField] private SaveLoadManager saveLoadManager;
-
+    [SerializeField] private ShopUIController shopUIController;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -20,8 +20,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
 
-        //밑에 두 코드는 테스트용, 나중에 상점 씬 생기면 삭제해야함.
-        //builder.RegisterEntryPoint<ItemManagerHeavilyModified>().AsSelf();
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
         builder.Register<PlayerStateManager>(Lifetime.Singleton).AsSelf();
@@ -30,6 +28,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<HotbarManager>(hotbarManager);
         builder.RegisterComponent<IngameSettingMenuController>(pauseMenu);
         builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
-
+        builder.RegisterComponent<ShopUIController>(shopUIController).AsSelf();
     }
 }

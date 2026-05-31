@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="ItemShopUI" src="project://database/Assets/UI/ItemShop/ItemShopUI.uxml?fileID=9197481963319205126&amp;guid=485ba8ef5d06ad64ca9eb8b75ec203ff&amp;type=3#ItemShopUI" />
+    <ui:Template name="ItemShopMessageBox" src="project://database/Assets/UI/ItemShop/ItemShopMessageBox.uxml?fileID=9197481963319205126&amp;guid=928279e738b15d34aa21e73035425b3a&amp;type=3#ItemShopMessageBox" />
+    <ui:VisualElement name="ClickBlocker" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);" />
+    <ui:Instance template="ItemShopUI" name="ItemShopUI" style="width: 100%; height: 100%; position: absolute; top: 0; left: 5px;" />
+    <ui:Instance template="ItemShopMessageBox" name="ItemShopMessageBox" style="translate: -50% -50%; left: 50%; top: 50%; position: absolute;" />
+</ui:UXML>

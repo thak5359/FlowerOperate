@@ -3,6 +3,7 @@ using MemoryPack;
 using System;
 using System.Threading.Tasks;
 using Unity.Collections;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 
@@ -47,7 +48,7 @@ public partial class GameItem : IGameResource
 
 
 
-    public virtual void  OnLoadAsync(IPropData propData = default)
+    public virtual void OnLoadAsync(IPropData propData = default)
     {
         if (!GlobalItemDB.IsInitialized)
         {
@@ -61,7 +62,7 @@ public partial class GameItem : IGameResource
             return;
         }
 
-        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);    
+        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);
 
 
         MainType = baseData.MainType;
@@ -73,7 +74,7 @@ public partial class GameItem : IGameResource
 
         if (!SpriteAddress.IsEmpty)
         {
-            DisplaySprite =  AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress).GetAwaiter().GetResult();   
+            DisplaySprite = AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress).GetAwaiter().GetResult();
         }
     }
 
@@ -88,7 +89,7 @@ public partial class GameItem : IGameResource
         if (Count >= StackLimit)
             return false;
 
-        bool thisGradeManaged = 
+        bool thisGradeManaged =
             SubType == ItemSubType.Seed ||
             SubType == ItemSubType.Flower;
 
@@ -113,7 +114,7 @@ public partial class GameItem : IGameResource
         return Mathf.Max(0, StackLimit - Count);
     }
 
-    public void AddAmount(short input_amount)
+    public void AddAmount(int input_amount)
     {
         if (this.Count + input_amount > Constant.MAX_COUNT_INVENTORY)
         {
@@ -121,6 +122,25 @@ public partial class GameItem : IGameResource
             return;
         }
         this.Count += input_amount;
+    }
+
+    /// 요청사항만큼 amount를 빼고 남은 amount를 반환합니다.
+    public void SubCount(ref int amount)
+    {
+        if (amount <= 0) return;
+
+        if (this.Count - amount <= 0)
+        {
+            amount = 0;
+            this.Id = 0;
+            amount -=this.Count;
+        }
+        else
+        {
+            this.Count -= amount;
+            amount = 0;
+        }
+
     }
 
     public bool CheckEmpty()
@@ -138,13 +158,5 @@ public partial class GameItem : IGameResource
         return false;
     }
 
-    public void AddCount(short amount)
-    {
-        if (this.Count + amount > Constant.MAX_COUNT_INVENTORY)
-        {
-            this.Count = Constant.MAX_COUNT_INVENTORY;
-            return;
-        }
-        this.Count += amount;
-    }
+
 }

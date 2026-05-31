@@ -59,12 +59,17 @@ public partial struct ChunkDataIngame
     private ChunkUnlockState unlockState;
     public ChunkUnlockState UnlockState => unlockState;
 
+    [MemoryPackInclude]
+    private ChunkLevel chunkLevel;
+    public ChunkLevel ChunkLevel => chunkLevel;
+
 
     public ChunkDataIngame(int input_ChunkNO, ChunkType input_Type, ChunkUnlockState input_state)
     {
         chunkNo = input_ChunkNO;
         chunkType = input_Type;
         unlockState = input_state;
+        chunkLevel = ChunkLevel.Lv1;
     }
 
     /// <summary>
@@ -109,6 +114,32 @@ public partial struct ChunkDataIngame
                 return new ChunkActionResult(ResultType.Error, NewResultMessage("청크 해금 실패!"));
         }
     }
+
+    /// <summary>
+    /// 청크가 해금된 상태라면, 청크의 레벨업을 시도합니다. 
+    /// </summary>
+    public ChunkActionResult LevelUP()
+    {
+        
+        if (unlockState != ChunkUnlockState.Unlocked)
+            return new ChunkActionResult(ResultType.Error, NewResultMessage($"Unexpected Error: Level has been called but Chunk is not Unlocked"));
+
+        switch (chunkLevel)
+        {
+            case ChunkLevel.Lv1:
+            case ChunkLevel.Lv2:
+            case ChunkLevel.Lv3:
+                {
+                    chunkLevel.Next<ChunkLevel>();
+                    return new ChunkActionResult(ResultType.Success);
+
+                    
+                }
+            case ChunkLevel.Lv4: return new ChunkActionResult(ResultType.Failed, NewResultMessage($"Already Level is Max But LevelUp Callled. ChunkNO : {chunkNo}"));
+            default: return new ChunkActionResult(ResultType.Error, NewResultMessage($"Unexpected ChunkLevel : {ChunkLevel}, Chunk NO : {chunkNo}, Chunk Type : {chunkType}"));
+        }
+    }
+
 
     private FixedString128Bytes NewResultMessage(string message)
     {
@@ -223,7 +254,7 @@ public class ChunkManager : MonoBehaviour
         _MineChunkDatas[0].Unlock();
     }
     #endregion
-    
+
     #endregion
 
     #region Chunk Operations (해금 로직)

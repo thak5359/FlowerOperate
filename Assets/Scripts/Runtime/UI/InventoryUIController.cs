@@ -11,16 +11,20 @@ public class InventoryUIController : MonoBehaviour
 
     [SerializeField] private UIDocument _uiDocument;
 
+
+    #region UI 요소
+
     private List<Button> buttons = new();
     private List<VisualElement> images = new();
+
     VisualElement root;
     VisualElement _ghostIcon;
 
     private Button closeButton;
+    #endregion
 
     private IMapChangable _mapChanger;
     private PlayerOwnItemDataManager _inventoryManager;
-
 
 
     private int dragStartIdx;
@@ -42,19 +46,7 @@ public class InventoryUIController : MonoBehaviour
         if (_uiDocument == null)
             _uiDocument = GetComponent<UIDocument>();
         if (_uiDocument == null)
-            Debug.Log("<color=red>GetComponent on Awake is failed</color>");
-        else
-            Debug.Log("<color=green>GetComponent on Awake is success</color>");
-    }
-
-    private void Start()
-    {
-        if (_uiDocument == null)
-            _uiDocument = GetComponent<UIDocument>();
-        if (_uiDocument == null)
-            Debug.Log("<color=red>GetComponent on Start is failed</color>");
-        else
-            Debug.Log("<color=green>GetComponent on Start is success</color>");
+            Debug.Log("<color=red>GetComponent on Awake in InventoryUI is failed </color>");
     }
 
     private void OnEnable()
