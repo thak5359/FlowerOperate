@@ -100,6 +100,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 114d3441f04efe744bb4e0850c81e399
+    m_Address: Yellow_Cosmos
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 124ae806915a8df4ab0abb5685321e57
     m_Address: Red_Peony
     m_ReadOnly: 0
@@ -211,6 +216,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Flower
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23690a8e3051202429ef01d93c4a949b
+    m_Address: Pink_Chrysanthemum_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 23fd76b4c15ac244db92474c1507870b
     m_Address: Iron_Ore
@@ -672,6 +682,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73842a6328c6c7b47be08ab8d50fd77d
+    m_Address: Yellow_Lotus_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 754c699327a68564485fbf367c2c133d
     m_Address: Topaz_Ore
     m_ReadOnly: 0
@@ -777,6 +792,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 818234bb30901db4e90c7bb2bd2dc587
+    m_Address: Pink_Anemone
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8293d3b8f0a471e4aa05885d21c4ed8c
     m_Address: Amethyst_Gem
     m_ReadOnly: 0
@@ -852,6 +872,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Ore
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c032a05512acd149a8df1527dea0e26
+    m_Address: Yellow_Carnation_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c1e81aadd3cb0f44ba4195f6f936c06
     m_Address: Hydrangea
@@ -930,6 +955,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9737464bd0eb3aa4389c3e2bee64be97
+    m_Address: Yellow_Cosmos_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 97c9c4eebb10c724fa6175ee119eba6c
     m_Address: Purple_Chrysanthemum
     m_ReadOnly: 0
@@ -953,6 +983,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Seed
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9915a5e0bf9754d47a33985e3528b039
+    m_Address: Pink_Chrysanthemum
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99ded4e40d45abc4b8affcb84cbe6897
     m_Address: Purple_Lisianthus
@@ -1007,6 +1042,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Seed
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a142ed8b82cdf854bb28b4f71b5e6e13
+    m_Address: Yellow_Carnation
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a2289509b01790a45bc87149b7570653
     m_Address: Orange_Tulip
@@ -1217,6 +1257,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ceed481c980cf9e49814213a1bdfe4ff
+    m_Address: Yellow_Lotus
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d21503506812590489fe4be504378d35
     m_Address: Sapphire_Ore
     m_ReadOnly: 0
@@ -1402,6 +1447,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea2a36f2f5e613e4093cf3ab42365523
+    m_Address: Black_Lily
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb08019d1c4e78e4db9b3c25a028bc35
     m_Address: Red_Freesia
     m_ReadOnly: 0
@@ -1441,6 +1491,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Seed
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f16f3971c02d40a4ea25a1d8e8956fd6
+    m_Address: Pink_Anemone_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f1cee5c0c02576b44b6a7ca2336f7a30
     m_Address: Adamantite_Ingot
