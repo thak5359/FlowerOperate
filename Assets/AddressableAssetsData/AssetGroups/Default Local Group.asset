@@ -94,6 +94,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f46ce9699897794ba445bc1a45638c9
+    m_Address: Yellow_Lotus_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 103e7fa0bfd28fa4abb4dc57924ee0c6
     m_Address: Orange_Anemone
     m_ReadOnly: 0
@@ -167,7 +172,7 @@ MonoBehaviour:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1a1f280b3e516a9458744998c20ecd45
-    m_Address: Delphinium_Seed
+    m_Address: Pink_Delphinium_Seed
     m_ReadOnly: 0
     m_SerializedLabels:
     - Seed
@@ -510,6 +515,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58e6650320a55f64da14a3a1d1db6522
+    m_Address: Pink_Anemone_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 59376c9974f2f6746b4175668fdc4c66
     m_Address: Purple_Rose_Seed
     m_ReadOnly: 0
@@ -533,6 +543,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Flower
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5cdff0b6d02448a498f590c1c04f5a24
+    m_Address: Black_Lily_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5e3db576d4e547f4587ce47a69134f04
     m_Address: Blue_Hyacinth
@@ -647,6 +662,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Flower
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f3972ccc06680748844c7e0ebdae043
+    m_Address: Yellow_Cosmos_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70ffa688b20706b4baa85cd017592aa0
     m_Address: Red_Peony_Seed
@@ -1343,6 +1363,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3cc9849022bfe6489619ed1f3301de6
+    m_Address: Pink_Chrysanthemum_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e5d63166d262ae942bd7b2f4411aee6f
     m_Address: Black_Cosmos
     m_ReadOnly: 0
@@ -1383,6 +1408,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Flower
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e879cc992bac5984996c12a60f4875b8
+    m_Address: Yellow_Carnation_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e89b83de2793422429fec0dec22ca2b1
     m_Address: Yellow_Tulip

@@ -70,7 +70,8 @@ public static class GlobalItemDB
 
             if (!_baseIndexById.TryAdd(itemId, i))
             {
-                Debug.LogError($"[GlobalItemDB] ItemBaseDB 중복 ItemId 발견: {itemId}");
+                Debug.LogError($"[GlobalItemDB] ItemBaseDB 중복 ItemId 발견: {itemId}{i}");
+                Debug.LogError($"지금 들어가 있는거 {items[_baseIndexById[itemId]].ItemId}, {items[_baseIndexById[itemId]].ItemName}");
             }
         }
     }
@@ -112,7 +113,8 @@ public static class GlobalItemDB
 
             if (!_gearIndexById.TryAdd(itemId, i) && itemId != 0)
             {
-                Debug.LogError($"[GlobalItemDB] GearDB 중복 ItemId 발견: {itemId}");
+                int temp = _gearIndexById[itemId];
+                Debug.LogError($"[GlobalItemDB] GearDB 중복 ItemId 발견: {itemId} {i} {temp}");
             }
         }
     }
