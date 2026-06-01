@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements; // UI Toolkit 사용을 위해 필수
 using System;
-using VContainer; // DateTime 사용을 위해 필요
+using VContainer;
+using R3; // DateTime 사용을 위해 필요
 
 public class InfoUIController : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class InfoUIController : MonoBehaviour
     private Label _dayOfWeekLabel;
     private Label _timeLabel;
     private Label _moneyLabel;
-    
+
+
     private void Awake()
     {
         // 1. UIDocument 컴포넌트 가져오기
@@ -35,6 +37,9 @@ public class InfoUIController : MonoBehaviour
         _moneyLabel = root.Q<Label>("MoneyLabel");
         // 초기값 설정
         UpdateDateTime();
+
+        // 이벤트 구독
+        _ownItemManager.InventoryRevisionChanged.Subscribe(_ => UpdateMoney()).AddTo(this);
     }
 
     private void UpdateDateTime()
@@ -44,7 +49,7 @@ public class InfoUIController : MonoBehaviour
             Debug.Log("레이블이 존재하지 않음");
             return;
         }
-        ref var data = ref _ownItemManager.GetData;
+
         // 4. 데이터 적용 (text 속성 변경)
         _yearLabel.text = $"{ProgressManager.getYear()}년";
         _dateLabel.text = $"{ProgressManager.getMonth():D2}월 {ProgressManager.getDay():D2}일";
@@ -52,12 +57,16 @@ public class InfoUIController : MonoBehaviour
         //요일과 시간 정보도 추가로 업데이트 가능합니다.
         if (_dayOfWeekLabel != null)
             _dayOfWeekLabel.text = GetKoreanDayOfWeek(ProgressManager.getDay() % 7);
-        if(_moneyLabel != null)
-            _moneyLabel.text = data.GetMoney.ToString() + "$";
+        UpdateMoney();
         //if (_timeLabel != null)
         //    _timeLabel.text = now.ToString("HH:mm");
     }
 
+    private void UpdateMoney()
+    {
+        if (_moneyLabel != null)
+            _moneyLabel.text = _ownItemManager.GetData.GetMoney.ToString() + "$";
+    }
 
     public void UpdateDateTime(string Year)
     {

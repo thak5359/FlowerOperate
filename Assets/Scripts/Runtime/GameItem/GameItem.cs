@@ -71,6 +71,7 @@ public partial class GameItem : IGameResource
 
         if (!SpriteAddress.IsEmpty)
         {
+            Debug.Log($"[GameItem] Loading sprite for ItemId: {Id} from address: {SpriteAddress}");
             DisplaySprite = AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress).GetAwaiter().GetResult();
         }
     }

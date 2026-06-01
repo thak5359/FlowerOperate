@@ -1973,7 +1973,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB0A1\uC740 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Old_Hoe
     price: 0
   - itemId: 201002
     refundPrice: 0
@@ -1982,7 +1982,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB3D9 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Copper_Hoe
     price: 0
   - itemId: 201003
     refundPrice: 0
@@ -1991,7 +1991,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uCCA0 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Iron_Hoe
     price: 0
   - itemId: 201004
     refundPrice: 0
@@ -2000,7 +2000,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC740 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Silver_Hoe
     price: 0
   - itemId: 201005
     refundPrice: 0
@@ -2009,7 +2009,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uAE08 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Gold_Hoe
     price: 0
   - itemId: 201006
     refundPrice: 0
@@ -2018,7 +2018,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uD50C\uB798\uD2F0\uB118 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Platinum_Hoe
     price: 0
   - itemId: 201007
     refundPrice: 0
@@ -2027,7 +2027,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Adamantium_Hoe
     price: 0
   - itemId: 201008
     refundPrice: 0
@@ -2036,7 +2036,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC624\uB9AC\uD560\uCF58 \uAD2D\uC774"
     description: 
-    spriteAddress: 
+    spriteAddress: Orichalcum_Hoe
     price: 0
   - itemId: 201009
     refundPrice: 0
@@ -2045,7 +2045,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB0A1\uC740 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Old_Watering_Can
     price: 0
   - itemId: 201010
     refundPrice: 0
@@ -2054,7 +2054,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB3D9 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Copper_Watering_Can
     price: 0
   - itemId: 201011
     refundPrice: 0
@@ -2063,7 +2063,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uCCA0 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Iron_Watering_Can
     price: 0
   - itemId: 201012
     refundPrice: 0
@@ -2072,7 +2072,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC740 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Silver_Watering_Can
     price: 0
   - itemId: 201013
     refundPrice: 0
@@ -2081,7 +2081,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uAE08 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Gold_Watering_Can
     price: 0
   - itemId: 201014
     refundPrice: 0
@@ -2090,7 +2090,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uD50C\uB798\uD2F0\uB118 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Platinum_Watering_Can
     price: 0
   - itemId: 201015
     refundPrice: 0
@@ -2099,7 +2099,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Adamantium_Watering_Can
     price: 0
   - itemId: 201016
     refundPrice: 0
@@ -2108,7 +2108,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC624\uB9AC\uD560\uCF58 \uBB3C\uBFCC\uB9AC\uAC1C"
     description: 
-    spriteAddress: 
+    spriteAddress: Orichalcum_Watering_Can
     price: 0
   - itemId: 201017
     refundPrice: 0
@@ -2117,7 +2117,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB0A1\uC740 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Old_Hammer
     price: 0
   - itemId: 201018
     refundPrice: 0
@@ -2126,7 +2126,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB3D9 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Copper_Hammer
     price: 0
   - itemId: 201019
     refundPrice: 0
@@ -2135,7 +2135,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uCCA0 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Iron_Hammer
     price: 0
   - itemId: 201020
     refundPrice: 0
@@ -2144,7 +2144,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC740 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Silver_Hammer
     price: 0
   - itemId: 201021
     refundPrice: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uAE08 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Gold_Hammer
     price: 0
   - itemId: 201022
     refundPrice: 0
@@ -2162,7 +2162,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uD50C\uB798\uD2F0\uB118 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Platinum_Hammer
     price: 0
   - itemId: 201023
     refundPrice: 0
@@ -2171,7 +2171,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Adamantium_Hammer
     price: 0
   - itemId: 201024
     refundPrice: 0
@@ -2180,7 +2180,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC624\uB9AC\uD560\uCF58 \uB9DD\uCE58"
     description: 
-    spriteAddress: 
+    spriteAddress: Orichalcum_Hammer
     price: 0
   - itemId: 201025
     refundPrice: 0
@@ -2189,7 +2189,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB0A1\uC740 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Old_Scythe
     price: 0
   - itemId: 201026
     refundPrice: 0
@@ -2198,7 +2198,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB3D9 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Copper_Scythe
     price: 0
   - itemId: 201027
     refundPrice: 0
@@ -2207,7 +2207,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uCCA0 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Iron_Scythe
     price: 0
   - itemId: 201028
     refundPrice: 0
@@ -2216,7 +2216,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC740 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Silver_Scythe
     price: 0
   - itemId: 201029
     refundPrice: 0
@@ -2225,7 +2225,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uAE08 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Gold_Scythe
     price: 0
   - itemId: 201030
     refundPrice: 0
@@ -2234,7 +2234,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uD50C\uB798\uD2F0\uB118 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Platinum_Scythe
     price: 0
   - itemId: 201031
     refundPrice: 0
@@ -2243,7 +2243,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Adamantium_Scythe
     price: 0
   - itemId: 201032
     refundPrice: 0
@@ -2252,7 +2252,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC624\uB9AC\uD560\uCF58 \uB0AB"
     description: 
-    spriteAddress: 
+    spriteAddress: Orichalcum_Scythe
     price: 0
   - itemId: 201033
     refundPrice: 0
@@ -2261,7 +2261,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB0A1\uC740 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Old_Axe
     price: 0
   - itemId: 201034
     refundPrice: 0
@@ -2270,7 +2270,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uB3D9 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Copper_Axe
     price: 0
   - itemId: 201035
     refundPrice: 0
@@ -2279,7 +2279,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uCCA0 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Iron_Axe
     price: 0
   - itemId: 201036
     refundPrice: 0
@@ -2288,7 +2288,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC740 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Silver_Axe
     price: 0
   - itemId: 201037
     refundPrice: 0
@@ -2297,7 +2297,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uAE08 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Gold_Axe
     price: 0
   - itemId: 201038
     refundPrice: 0
@@ -2306,7 +2306,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uD50C\uB798\uD2F0\uB118 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Platinum_Axe
     price: 0
   - itemId: 201039
     refundPrice: 0
@@ -2315,7 +2315,7 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC544\uB2E4\uB9CC\uD2F0\uC6C0 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Adamantium_Axe
     price: 0
   - itemId: 201040
     refundPrice: 0
@@ -2324,9 +2324,9 @@ MonoBehaviour:
     stackLimit: 1
     itemName: "\uC624\uB9AC\uD560\uCF58 \uB3C4\uB07C"
     description: 
-    spriteAddress: 
+    spriteAddress: Orichalcum_Axe
     price: 0
-  - itemId: 402001
+  - itemId: 403001
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2335,7 +2335,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402002
+  - itemId: 403002
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2344,7 +2344,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402003
+  - itemId: 403003
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2353,7 +2353,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402004
+  - itemId: 403004
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2362,7 +2362,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402005
+  - itemId: 403005
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2371,7 +2371,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402006
+  - itemId: 403006
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2380,7 +2380,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402007
+  - itemId: 403007
     refundPrice: 100
     mainType: 4
     subType: 405
@@ -2389,7 +2389,7 @@ MonoBehaviour:
     description: 
     spriteAddress: 
     price: 100
-  - itemId: 402008
+  - itemId: 403008
     refundPrice: 100
     mainType: 4
     subType: 405
