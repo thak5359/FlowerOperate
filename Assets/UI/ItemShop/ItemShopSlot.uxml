@@ -1,10 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/ItemShop/ItemShopSlot.uss?fileID=7433441132597879392&amp;guid=40573fe45eb9b2d4ca37c8d212422b12&amp;type=3#ItemShopSlot" />
-    <ui:VisualElement name="ItemArray" class="shop-slot-array" style="-unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold%20SDF%201.asset?fileID=11400000&amp;guid=ac2d889ee572b904da5db2690bfebf35&amp;type=2#Maplestory OTF Bold SDF 1&quot;); -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&amp;guid=7f4a2fed048061b479a84b7e1d64a862&amp;type=3#Maplestory OTF Bold&quot;);">
-        <ui:VisualElement name="ItemInfoContainer" class="shop-slot-info-container">
-            <ui:VisualElement name="Image" class="shop-slot-image" style="background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;);" />
-            <ui:Label tabindex="-1" text="계속하" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemText" class="shop-slot-item-text" />
+    <ui:VisualElement style="flex-grow: 0; width: 750px; height: 150px; flex-direction: row; border-left-width: 26px; border-right-width: 18px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A03.png?fileID=21300000&amp;guid=5cdff0b6d02448a498f590c1c04f5a24&amp;type=3#A03&quot;); border-bottom-width: 16px; border-top-width: 16px; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold.ttf?fileID=12800000&amp;guid=364da4f09d6bb1c43828e1b1261ec182&amp;type=3#Maplestory Bold&quot;); font-size: 30px; -unity-text-align: middle-right;">
+        <ui:VisualElement style="flex-grow: 3; flex-shrink: 1; flex-direction: row; align-items: center;">
+            <ui:VisualElement style="flex-grow: 0; width: 100px; height: 100px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;);">
+                <ui:VisualElement style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:Label tabindex="-1" text="아이템 이름" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-left: 40px;" />
         </ui:VisualElement>
-        <ui:Label tabindex="-1" text="100,000,000,000 $" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceText" class="shop-slot-price-text" />
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceLabel" text="돈" style="flex-grow: 1; flex-shrink: 1; padding-right: 40px;" />
     </ui:VisualElement>
 </ui:UXML>
