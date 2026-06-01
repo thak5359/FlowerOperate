@@ -105,7 +105,7 @@ MonoBehaviour:
     \uD558\uC790!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3db6125da19cfa4991530e33de2039e, type: 2}
-  m_sharedMaterial: {fileID: 3557559663781836450, guid: a3db6125da19cfa4991530e33de2039e,
+  m_sharedMaterial: {fileID: -1534851978889466007, guid: a3db6125da19cfa4991530e33de2039e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_text: "\uC740\uD589\uC744 \uD138\uC790!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3db6125da19cfa4991530e33de2039e, type: 2}
-  m_sharedMaterial: {fileID: 3557559663781836450, guid: a3db6125da19cfa4991530e33de2039e,
+  m_sharedMaterial: {fileID: -1534851978889466007, guid: a3db6125da19cfa4991530e33de2039e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -884,8 +884,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
@@ -1166,7 +1166,7 @@ MonoBehaviour:
   m_text: "\uC5B4\uB978\uC758 \uCE74\uB4DC\uB97C \uAEBC\uB0B8\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3db6125da19cfa4991530e33de2039e, type: 2}
-  m_sharedMaterial: {fileID: 3557559663781836450, guid: a3db6125da19cfa4991530e33de2039e,
+  m_sharedMaterial: {fileID: -1534851978889466007, guid: a3db6125da19cfa4991530e33de2039e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1391,7 +1391,7 @@ MonoBehaviour:
   m_text: "\uC2A4\uCFE8\uBC84\uC2A4 \uD558\uC774\uC7AC\uD0B9\uC774\uB2E4!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3db6125da19cfa4991530e33de2039e, type: 2}
-  m_sharedMaterial: {fileID: 3557559663781836450, guid: a3db6125da19cfa4991530e33de2039e,
+  m_sharedMaterial: {fileID: -1534851978889466007, guid: a3db6125da19cfa4991530e33de2039e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1670,7 +1670,7 @@ MonoBehaviour:
     \uC2E0\uACBD\uC4F0\uC9C0\uB9C8\uC138\uC694"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3db6125da19cfa4991530e33de2039e, type: 2}
-  m_sharedMaterial: {fileID: 3557559663781836450, guid: a3db6125da19cfa4991530e33de2039e,
+  m_sharedMaterial: {fileID: -1534851978889466007, guid: a3db6125da19cfa4991530e33de2039e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

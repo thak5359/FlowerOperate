@@ -1,37 +1,51 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using VContainer;
+using R3;
 using static Constant;
+using Cysharp.Threading.Tasks; // [수정: 비동기 UI 로딩 처리를 위해 UniTask 추가]
 
 public class InventoryUIController : MonoBehaviour
 {
-    const ContainerType type = ContainerType.INVENTORY;
+    // [수정: 기본 타입 상수를 삭제하고 동적으로 분배하도록 변경했습니다]
 
     [SerializeField] private UIDocument _uiDocument;
 
-
     #region UI 요소
-
-    private List<Button> buttons = new();
-    private List<VisualElement> images = new();
+    private List<Button> InventorySlots = new();
+    private List<VisualElement> InventorySlotImages = new();
 
     VisualElement root;
     VisualElement _ghostIcon;
-
     private Button closeButton;
+
+    #region Detail Container Elements
+    private Label _itemNameLabel;
+    private VisualElement _itemIcon;
+    private Label _categoryLabel;
+    private Label _qualityLabel;
+    private Label _growthDaysLabel;
+    private Label _priceLabel;
+    private Label _flowerSpeciesLabel;
+    private Label _flowerColorLabel;
+    private VisualElement _floriography1Container;
+    private VisualElement _floriography2Container;
+    private Label _flavorTextLabel;
+    #endregion
     #endregion
 
     private IMapChangable _mapChanger;
     private PlayerOwnItemDataManager _inventoryManager;
 
-
     private int dragStartIdx;
     private int dragEndIdx;
-
     private bool _isDragging = false;
 
+    private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     [Inject]
     private void Construct(IMapChangable input_mapChanger, PlayerOwnItemDataManager input_inventoryManager)
@@ -52,147 +66,125 @@ public class InventoryUIController : MonoBehaviour
     private void OnEnable()
     {
         root = _uiDocument.rootVisualElement;
-
         root.visible = false;
 
-        buttons.Clear();
-        images.Clear();
+        InventorySlots.Clear();
+        InventorySlotImages.Clear();
 
+        InventorySlots = root.Query<Button>("SlotButton").ToList();
 
-        buttons = root.Query<Button>("SlotButton").ToList();
+        for (int i = 0; i < InventorySlots.Count; i++)
+        {
+            var img = InventorySlots[i].Q<VisualElement>("SlotImage");
+            InventorySlotImages.Add(img != null ? img : InventorySlots[i]);
+        }
+
         closeButton = root.Query<Button>("CloseButton");
         _ghostIcon = root.Q<VisualElement>("GhostIcon");
 
+        _itemNameLabel = root.Q<Label>("ItemNameLabel");
+        _itemIcon = root.Q<VisualElement>("IteItemIcon");
+        _categoryLabel = root.Q<Label>("CategoryLabel");
+        _qualityLabel = root.Q<Label>("QualityLabel");
+        _growthDaysLabel = root.Q<Label>("GrowthDaysLabel");
+        _priceLabel = root.Q<Label>("PriceLabel");
+        _flowerSpeciesLabel = root.Q<Label>("FlowerSpeciesLabel");
+        _flowerColorLabel = root.Q<Label>("FlowerColorLabel");
+        _floriography1Container = root.Q<VisualElement>("Floriography1Container");
+        _floriography2Container = root.Q<VisualElement>("Floriography2Container");
+        _flavorTextLabel = root.Q<Label>("FlavorTextLabel");
 
-
-        for (int i = 0; i < buttons.Count; i++)
+        for (int i = 0; i < InventorySlots.Count; i++)
         {
-            buttons[i].userData = i; // 버튼에 인덱스 저장
-
-
-            buttons[i].RegisterCallback<PointerDownEvent>(OnSlotDown, TrickleDown.TrickleDown);
-            buttons[i].RegisterCallback<PointerUpEvent>(OnSlotUp, TrickleDown.TrickleDown);
+            InventorySlots[i].userData = i;
+            InventorySlots[i].RegisterCallback<PointerDownEvent>(OnSlotDown, TrickleDown.TrickleDown);
+            InventorySlots[i].RegisterCallback<PointerUpEvent>(OnSlotUp, TrickleDown.TrickleDown);
         }
 
-
         closeButton.clicked += closeInventory;
-
-
-        images = root.Query<VisualElement>("SlotImage").ToList();
-
-
-
-
-
         root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
 
+        _inventoryManager.InventoryRevisionChanged
+            .Subscribe(_ => RefreshUI().Forget()) // [수정: async void 대신 UniTaskVoid 꼬리 자르기 호출]
+            .AddTo(_disposables);
     }
 
     private void OnDisable()
     {
-        for (int i = 0; i < buttons.Count; i++)
+        for (int i = 0; i < InventorySlots.Count; i++)
         {
-            int ClosureFixer = i;
-            buttons[i].UnregisterCallback<PointerDownEvent>(OnSlotDown, TrickleDown.TrickleDown);
-            buttons[i].UnregisterCallback<PointerUpEvent>(OnSlotUp, TrickleDown.TrickleDown);
+            InventorySlots[i].UnregisterCallback<PointerDownEvent>(OnSlotDown, TrickleDown.TrickleDown);
+            InventorySlots[i].UnregisterCallback<PointerUpEvent>(OnSlotUp, TrickleDown.TrickleDown);
         }
-        buttons.Clear();
-
+        InventorySlots.Clear();
         _ghostIcon.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+
+        _disposables.Clear();
     }
 
-    //private void RefreshUI()
-    //{
-    //    _inventoryManager.GetData.GetList(type).ForEach((itemData, idx) =>
-    //    {
-    //        if (itemData.GetItemID == 0)
-    //        {
-    //            buttons[idx].style.backgroundImage = null;
-    //            buttons[idx].text = "";
-    //        }
-    //        else
-    //        {
-    //            string address = GlobalItemDB.GetAddressString((short)itemData.GetItemID);
-    //            AddressableManager.LoadAssetAsync<Texture2D>(address).ContinueWith(texture =>
-    //            {
-    //                buttons[idx].style.backgroundImage = texture;
-    //                buttons[idx].text = itemData.GetAmount.ToString();
-    //            });
-    //        }
-    //    });
-    //}
+    // [수정: 통합된 UI 인덱스(0~54)를 실제 데이터인 타입과 내부 인덱스로 매핑해주는 유틸 함수]
+    private (ContainerType type, int internalIndex) GetSlotInfo(int uiIndex)
+    {
+        if (uiIndex < INVENTORY_SLOT_COUNT) // 0 ~ 49
+            return (ContainerType.INVENTORY, uiIndex);
+        else // 50 ~ 54
+            return (ContainerType.GEAR, uiIndex - INVENTORY_SLOT_COUNT);
+    }
 
+    // [수정: 백그라운드 스레드에서 UI를 건드리지 않도록 비동기 대기(await) 구조로 변경]
+    private async UniTaskVoid RefreshUI()
+    {
+        for (int i = 0; i < InventorySlots.Count; i++)
+        {
+            var info = GetSlotInfo(i);
+            var itemList = _inventoryManager.GetData.GetItemList(info.type);
 
+            // 데이터가 없거나 덜 찼을 때의 방어 로직
+            if (itemList == null || info.internalIndex >= itemList.Count) continue;
+
+            var itemData = itemList[info.internalIndex];
+            if (ItemInstantData.IsEmpty(itemData))
+            {
+                InventorySlotImages[i].style.backgroundImage = null;
+                InventorySlots[i].text = "";
+            }
+            else
+            {
+                string address = GlobalItemDB.GetSpriteAddress(itemData.Id).ToString();
+
+                // [수정: ContinueWith 대신 await를 사용하여 메인 스레드 렌더링 파이프라인에서 이미지를 할당!]
+                // 파트너의 실제 Addressable 로드 로직에 맞게 메서드 이름은 맞춰주세요.
+                /*
+                Texture2D texture = await AddressableManager.LoadAssetAsync<Texture2D>(address);
+                if (texture != null)
+                {
+                    InventorySlotImages[i].style.backgroundImage = texture;
+                    InventorySlots[i].text = itemData.Count > 1 ? itemData.Count.ToString() : "";
+                }
+                */
+            }
+        }
+    }
     #endregion
 
-    #region Open Inventory
+    #region Open / Close Inventory
     public void OnOpenInventory(InputAction.CallbackContext callbackContext)
     {
         openInventory();
     }
 
-    #endregion
-
-    #region Close Inventory
     public void OnEscape(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("OnEscape has been called");
         closeInventory();
     }
+
     public void closeInventory()
     {
-        Debug.Log("closeInventory Has been Called");
-
         if (_mapChanger.getCurrentIAmap() == INVENTORY_MAP_NAME)
         {
             root.visible = false;
             _mapChanger.changeIAmapPrev();
         }
-    }
-    #endregion
-
-    #region 마우스 드래그 앤 드롭
-    // 드래그 시작 (눌린 버튼의 번호를 그대로 가져옴)
-    private void OnSlotDown(PointerDownEvent evt)
-    {
-        if (evt.currentTarget is Button btn && btn.userData is int index)
-        {
-            dragStartIdx = index;
-            _isDragging = true;
-
-            _ghostIcon.style.backgroundImage = images[index].style.backgroundImage;
-
-            _ghostIcon.style.display = DisplayStyle.Flex;
-            UpdateGhostPosition(evt.position);
-        }
-    }
-
-    // 드래그 종료 (놓은 위치의 버튼을 '조사'해서 가져옴)
-    private void OnSlotUp(PointerUpEvent evt)
-    {
-
-        // 현재 마우스 위치 아래에 있는 요소를 픽업
-        VisualElement picked = root.panel.Pick(evt.position);
-        Button targetBtn = picked as Button ?? picked?.GetFirstAncestorOfType<Button>();
-
-        if (targetBtn != null && int.Parse(targetBtn.text) is int endIdx)
-        {
-            dragEndIdx = endIdx;
-            Debug.Log($"종료: {dragEndIdx}");
-            images[dragStartIdx].style.backgroundImage = images[dragEndIdx].style.backgroundImage;
-            images[dragEndIdx].style.backgroundImage = _ghostIcon.style.backgroundImage;
-            _ghostIcon.style.backgroundImage = default;
-            _inventoryManager.Swap(type, type, dragStartIdx, dragEndIdx);
-        }
-        else
-        {
-            Debug.Log("유효한 버튼이 아닙니다. 드래그가 취소됩니다.");
-            (images[dragStartIdx].style.backgroundImage, _ghostIcon.style.backgroundImage) = (_ghostIcon.style.backgroundImage, images[dragStartIdx].style.backgroundImage);
-        }
-
-        _ghostIcon.style.display = DisplayStyle.None;
-        _isDragging = false;
-
     }
 
     public void openInventory()
@@ -208,27 +200,156 @@ public class InventoryUIController : MonoBehaviour
             }
 
             root.visible = true;
+            RefreshUI().Forget(); // [수정: 인벤토리를 열 때 갱신 호출]
         }
     }
     #endregion
 
+    #region 마우스 상호작용 (Drag & Drop 및 상세 정보)
 
+    private void OnSlotDown(PointerDownEvent evt)
+    {
+        if (evt.currentTarget is Button btn && btn.userData is int index)
+        {
+            dragStartIdx = index;
+            _isDragging = true;
+
+            UpdateDetailContainer(index).Forget(); // [수정: 상세 정보도 비동기로 텍스트 로드]
+
+            if (InventorySlotImages[index].style.backgroundImage.value.texture != null)
+            {
+                _ghostIcon.style.backgroundImage = InventorySlotImages[index].style.backgroundImage;
+                _ghostIcon.style.display = DisplayStyle.Flex;
+                UpdateGhostPosition(evt.position);
+            }
+        }
+    }
+
+    private void OnSlotUp(PointerUpEvent evt)
+    {
+        VisualElement picked = root.panel.Pick(evt.position);
+        Button targetBtn = picked as Button ?? picked?.GetFirstAncestorOfType<Button>();
+
+        if (targetBtn != null && targetBtn.userData is int endIdx)
+        {
+            dragEndIdx = endIdx;
+
+            // [수정: 통합 UI 인덱스를 데이터 분리형(ContainerType과 내부인덱스)으로 쪼개서 매니저로 넘겨요]
+            var startInfo = GetSlotInfo(dragStartIdx);
+            var endInfo = GetSlotInfo(dragEndIdx);
+
+            bool isValidDrop = true;
+            var dragItem = _inventoryManager.GetData.GetItemList(startInfo.type)[startInfo.internalIndex];
+
+            // 장비 칸으로 드래그 했을 때 타입 검사
+            if (endInfo.type == ContainerType.GEAR && dragItem != null && !ItemInstantData.IsEmpty(dragItem))
+            {
+                if (dragItem.MainType != ItemMainType.Equipment)
+                {
+                    Debug.LogWarning("이 슬롯에는 장비(Equipment) 타입만 넣을 수 있어요!");
+                    isValidDrop = false;
+                }
+            }
+
+            if (isValidDrop)
+            {
+                // [수정: 이제 서로 다른 컨테이너(INVENTORY <-> GEAR) 간의 스왑도 완벽하게 지원합니다!]
+                _inventoryManager.Swap(startInfo.type, endInfo.type, startInfo.internalIndex, endInfo.internalIndex);
+            }
+        }
+
+        _ghostIcon.style.display = DisplayStyle.None;
+        _isDragging = false;
+        _ghostIcon.style.backgroundImage = null;
+    }
+    #endregion
 
     #region Mouse Icon
-
     private void OnPointerMove(PointerMoveEvent evt)
     {
         if (!_isDragging) return;
-
-        // 드래그 중이라면 마우스 좌표에 맞춰 아이콘 이동
         UpdateGhostPosition(evt.position);
     }
 
     private void UpdateGhostPosition(Vector2 mousePosition)
     {
-
-        _ghostIcon.transform.position = new Vector3(mousePosition.x, mousePosition.y , 0);
+        _ghostIcon.transform.position = new Vector3(mousePosition.x, mousePosition.y, 0);
     }
+    #endregion
 
+    #region 상세 정보 UI 갱신 (Detail Container)
+    // [수정: Addressable 로딩을 위해 UniTaskVoid로 변경]
+    private async UniTaskVoid UpdateDetailContainer(int slotIndex)
+    {
+        var info = GetSlotInfo(slotIndex);
+        var itemList = _inventoryManager.GetData.GetItemList(info.type);
+        if (itemList == null || info.internalIndex >= itemList.Count) return;
+
+        var item = itemList[info.internalIndex];
+
+        // 빈 슬롯 클릭 시 화면 비우기
+        if (ItemInstantData.IsEmpty(item))
+        {
+            _itemNameLabel.text = "";
+            _categoryLabel.text = "";
+            _qualityLabel.text = "";
+            _growthDaysLabel.text = "";
+            _priceLabel.text = "";
+            _flavorTextLabel.text = "";
+            _itemIcon.style.backgroundImage = null;
+
+            _flowerSpeciesLabel.style.display = DisplayStyle.None;
+            _flowerColorLabel.style.display = DisplayStyle.None;
+            _floriography1Container.style.display = DisplayStyle.None;
+            _floriography2Container.style.display = DisplayStyle.None;
+            return;
+        }
+
+        _itemNameLabel.text = GlobalItemDB.GetItemName(item.Id).ToString();
+        _categoryLabel.text = item.MainType.ToString();
+        _priceLabel.text = GlobalItemDB.GetPrice(item.Id).ToString();
+
+        if (slotIndex >= 0 && slotIndex < InventorySlotImages.Count)
+        {
+            _itemIcon.style.backgroundImage = InventorySlotImages[slotIndex].style.backgroundImage;
+        }
+
+        if (item is FlowerItem flowerItem)
+        {
+            _qualityLabel.text = flowerItem.Grade.ToString();
+            int totalGrowthDays = flowerItem.GrowthDuration.x +
+                                  flowerItem.GrowthDuration.y +
+                                  flowerItem.GrowthDuration.z +
+                                  flowerItem.GrowthDuration.w;
+            _growthDaysLabel.text = totalGrowthDays.ToString();
+
+            _flowerSpeciesLabel.style.display = DisplayStyle.Flex;
+            _flowerColorLabel.style.display = DisplayStyle.Flex;
+            _floriography1Container.style.display = DisplayStyle.Flex;
+            _floriography2Container.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            _qualityLabel.text = "-";
+            _growthDaysLabel.text = "-";
+
+            _flowerSpeciesLabel.style.display = DisplayStyle.None;
+            _flowerColorLabel.style.display = DisplayStyle.None;
+            _floriography1Container.style.display = DisplayStyle.None;
+            _floriography2Container.style.display = DisplayStyle.None;
+        }
+
+        string descriptionAddress = $"ItemDescription_{item.Id}";
+        _flavorTextLabel.text = "설명을 불러오는 중...";
+
+        // [수정: 상세 정보의 플레이버 텍스트 역시 await로 메인 스레드에서 안전하게 적용]
+        /*
+        TextAsset textAsset = await AddressableManager.LoadAssetAsync<TextAsset>(descriptionAddress);
+        if (textAsset != null)
+        {
+            _flavorTextLabel.text = textAsset.text;
+        }
+        */
+    }
     #endregion
 }

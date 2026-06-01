@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/ItemShop/ItemShopSlot.uss?fileID=7433441132597879392&amp;guid=40573fe45eb9b2d4ca37c8d212422b12&amp;type=3#ItemShopSlot" />
-    <ui:VisualElement name="ItemArray" class="shop-slot-array">
+    <ui:VisualElement name="ItemArray" class="shop-slot-array" style="-unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&amp;guid=7f4a2fed048061b479a84b7e1d64a862&amp;type=3#Maplestory OTF Bold&quot;);">
         <ui:VisualElement name="ItemInfoContainer" class="shop-slot-info-container">
-            <ui:VisualElement name="Image" class="shop-slot-image" />
+            <ui:VisualElement name="Image" class="shop-slot-image" style="background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;);" />
             <ui:Label tabindex="-1" text="붉은 라넌큘러스 씨앗" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ItemText" class="shop-slot-item-text" />
         </ui:VisualElement>
         <ui:Label tabindex="-1" text="100,000,000,000 $" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceText" class="shop-slot-price-text" />

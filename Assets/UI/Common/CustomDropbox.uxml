@@ -1,4 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Custom/CustomDropboxUSS.uss?fileID=7433441132597879392&amp;guid=b5c4cee154850a1439e5283828fc3dc6&amp;type=3#CustomDropboxUSS" />
-    <ui:DropdownField label="해상도" name="CustomDropbox" />
-</ui:UXML>

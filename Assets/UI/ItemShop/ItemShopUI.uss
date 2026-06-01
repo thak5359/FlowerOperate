@@ -20,8 +20,6 @@
     height: 800px;
     align-self: center;
     -unity-text-align: middle-center;
-    -unity-font-definition: initial;
-    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Light.otf?fileID=12800000&guid=c898bc1e681edb94cadfa44f910b0511&type=3#Maplestory OTF Light");
     flex-direction: row;
     padding-top: 40px;
     padding-right: 50px;

@@ -13,9 +13,7 @@
     padding: 10px 25px;
     align-items: center;
     justify-content: space-between;
-    -unity-font-definition: initial;
     font-size: 30px;
-    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&guid=7f4a2fed048061b479a84b7e1d64a862&type=3#Maplestory OTF Bold");
     margin: 0;
     background-image: url("project://database/Assets/Art/Sprites/01.UI/UI_Tile01.png?fileID=21300000&guid=f71c8f459a18ed645bdc23972e6728f9&type=3#UI_Tile01");
 }

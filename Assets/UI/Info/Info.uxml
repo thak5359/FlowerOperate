@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/InfoUSS.uss?fileID=7433441132597879392&amp;guid=26e843afe16dc954981c7584bc0e5385&amp;type=3#InfoUSS" />
-    <ui:VisualElement name="InfoContainer">
+    <Style src="project://database/Assets/UI/Info/InfoUSS.uss?fileID=7433441132597879392&amp;guid=26e843afe16dc954981c7584bc0e5385&amp;type=3#InfoUSS" />
+    <ui:VisualElement name="InfoContainer" style="-unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold%20SDF%201.asset?fileID=11400000&amp;guid=ac2d889ee572b904da5db2690bfebf35&amp;type=2#Maplestory OTF Bold SDF 1&quot;); -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&amp;guid=7f4a2fed048061b479a84b7e1d64a862&amp;type=3#Maplestory OTF Bold&quot;);">
         <ui:VisualElement name="DateContainer" class="row">
             <ui:VisualElement name="CalendarPanel" class="panel-base flex-center">
                 <ui:Label name="YearLabel" text="XXXX년" class="info-label text-medium" style="-unity-text-align: middle-center; height: 50%;" />

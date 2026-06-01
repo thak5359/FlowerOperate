@@ -1,8 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="SlotRow10" src="project://database/Assets/UI/Common/SlotRow10.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow10" />
     <ui:Template name="SlotRow5" src="project://database/Assets/UI/Common/SlotRow5.uxml?fileID=9197481963319205126&amp;guid=b42b7a1b0e7ec2b4ebccb5e0f72efb15&amp;type=3#SlotRow5" />
+    <ui:Template name="InventoryDetailContainer" src="project://database/Assets/UI/Inventory/InventoryDetailContainer.uxml?fileID=9197481963319205126&amp;guid=a77a2c0c9dfb93d4a96b4d76f564692c&amp;type=3#InventoryDetailContainer" />
     <Style src="project://database/Assets/UI/Inventory/InventoryUSS.uss?fileID=7433441132597879392&amp;guid=0dbcc085fbbe8b54ba4859a96be446bb&amp;type=3#InventoryUSS" />
-    <ui:VisualElement name="Inventory__Screen" picking-mode="Ignore" style="flex-grow: 1; width: 100%; height: 100%; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-direction: row;">
+    <ui:VisualElement name="Inventory__Screen" picking-mode="Ignore" style="flex-grow: 1; width: 100%; height: 100%; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-direction: row; -unity-font-definition: initial;">
         <ui:VisualElement name="GhostIcon" picking-mode="Ignore" style="flex-grow: 0; width: 68px; height: 68px; display: none; position: absolute;" />
         <ui:VisualElement name="VisualElement" style="flex-grow: 0; translate: -50% -58%; position: absolute; left: 50%; top: 50%; width: 1170px; height: 620px;">
             <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="CloseButton" class="closeButton" style="background-color: rgba(188, 188, 188, 0); display: flex; align-self: flex-end; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile02.png?fileID=21300000&amp;guid=78b262051b81ce947bddfa18f83589c5&amp;type=3#UI_Tile02&quot;); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
@@ -19,7 +20,7 @@
                         <ui:Instance template="SlotRow5" name="SlotRow5" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="Detail_Container" style="flex-grow: 0; width: 300px; height: 550px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile01.png?fileID=21300000&amp;guid=f71c8f459a18ed645bdc23972e6728f9&amp;type=3#UI_Tile01&quot;);" />
+                <ui:Instance template="InventoryDetailContainer" name="InventoryDetailContainer" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
