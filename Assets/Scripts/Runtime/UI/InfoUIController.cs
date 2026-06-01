@@ -6,12 +6,14 @@ using VContainer; // DateTime 사용을 위해 필요
 public class InfoUIController : MonoBehaviour
 {
     private UIDocument _uiDocument;
+    [Inject] PlayerOwnItemDataManager _ownItemManager;
 
     // UXML에서 설정한 Label 요소들을 담을 변수
     private Label _yearLabel;
     private Label _dateLabel;
     private Label _dayOfWeekLabel;
     private Label _timeLabel;
+    private Label _moneyLabel;
 
 
     private void Awake()
@@ -31,7 +33,7 @@ public class InfoUIController : MonoBehaviour
         _dateLabel = root.Q<Label>("DateLabelDay");
         _dayOfWeekLabel = root.Q<Label>("DayOfWeekLabel");
         _timeLabel = root.Q<Label>("TimeLabel");
-
+        _moneyLabel = root.Q<Label>("MoneyLabel");
         // 초기값 설정
         UpdateDateTime();
     }
@@ -47,11 +49,12 @@ public class InfoUIController : MonoBehaviour
         // 4. 데이터 적용 (text 속성 변경)
         _yearLabel.text = $"{ProgressManager.getYear()}년";
         _dateLabel.text = $"{ProgressManager.getMonth():D2}월 {ProgressManager.getDay():D2}일";
-
+        
         //요일과 시간 정보도 추가로 업데이트 가능합니다.
         if (_dayOfWeekLabel != null)
             _dayOfWeekLabel.text = GetKoreanDayOfWeek(ProgressManager.getDay() % 7);
-
+        if(_moneyLabel != null)
+            _moneyLabel.text = _ownItemManager.GetData.GetMoney.ToString();
         //if (_timeLabel != null)
         //    _timeLabel.text = now.ToString("HH:mm");
     }
