@@ -13,6 +13,7 @@ public enum ItemSubType
     MetalMaterial = 405,
     Metal = 406,
     Wood = 407,
-    Lumber = 408
-    // PaPas Item
+    Lumber = 408,
+    Grass = 409,
+    consumable = 501
 }

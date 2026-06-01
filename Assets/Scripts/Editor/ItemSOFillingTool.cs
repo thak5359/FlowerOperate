@@ -190,6 +190,7 @@ public class ItemSOFillingTool : EditorWindow
                 ItemBaseAuthoringData seedData = data;
                 seedData.itemName += " 씨앗";
                 seedData.itemId = data.itemId - 1000;
+                seedData.mainType = ItemMainType.Farm;
                 seedData.subType = ItemSubType.Seed;
                 seedData.spriteAddress = FillFlowerSpriteAddress(seedData.itemName) + "_Seed";
                 temp.Add(seedData);
@@ -361,7 +362,7 @@ public class ItemSOFillingTool : EditorWindow
             case "검은":
                 temp[0] = "Black";
                 break;
-            case "파랑":
+            case "파란":
                 temp[0] = "Blue";
                 break;
             case "무지개":

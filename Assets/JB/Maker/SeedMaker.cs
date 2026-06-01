@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class SeedMaker : MakerBaseModel
+public class SeedMaker : MakerBaseModel, IMaker
 {
-    protected override GameItem ReturnGameItem()
+    public GameItem ReturnGameItem()
     {
         if (gameItem == null || gameItem.Count < makerData.GetIngredientRatio.x)
         {
             Debug.LogError("반환할 아이템이 없습니다.");
             return null;
         }
-        FlowerItem itemToReturn = new FlowerItem(gameItem.Id - 1000, 0);
+        GameItem itemToReturn = new GameItem(gameItem.Id - 1000, 0);
         int2 ingredientRatio = makerData.GetIngredientRatio;
         while(gameItem.Count >= ingredientRatio.x)
         {
