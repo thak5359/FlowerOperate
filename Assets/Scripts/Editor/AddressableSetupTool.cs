@@ -35,28 +35,28 @@ public class AddressableSetupTool : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("¼±ÅÃ Ç×¸ñ Addressable ÀÏ°ı ¼³Á¤", EditorStyles.boldLabel);
+        GUILayout.Label("ì„ íƒ í•­ëª© Addressable ì¼ê´„ ì„¤ì •", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
         if (groupNames.Length == 0)
         {
-            EditorGUILayout.HelpBox("Addressable Settings¸¦ ¸ÕÀú »ı¼ºÇØÁÖ¼¼¿ä.", MessageType.Warning);
-            if (GUILayout.Button("¼³Á¤ »õ·Î°íÄ§")) RefreshGroups();
+            EditorGUILayout.HelpBox("Addressable Settingsë¥¼ ë¨¼ì € ìƒì„±í•´ì£¼ì„¸ìš”.", MessageType.Warning);
+            if (GUILayout.Button("ì„¤ì • ìƒˆë¡œê³ ì¹¨")) RefreshGroups();
             return;
         }
 
-        selectedGroupIndex = EditorGUILayout.Popup("´ë»ó ±×·ì", selectedGroupIndex, groupNames);
+        selectedGroupIndex = EditorGUILayout.Popup("ëŒ€ìƒ ê·¸ë£¹", selectedGroupIndex, groupNames);
 
-        labelToApply = EditorGUILayout.TextField("Àû¿ëÇÒ ¶óº§ (¼±ÅÃ)", labelToApply);
+        labelToApply = EditorGUILayout.TextField("ì ìš©í•  ë¼ë²¨ (ì„ íƒ)", labelToApply);
 
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("¼±ÅÃÇÑ Ç×¸ñ ÀÏ°ı Àû¿ë", GUILayout.Height(30)))
+        if (GUILayout.Button("ì„ íƒí•œ í•­ëª© ì¼ê´„ ì ìš©", GUILayout.Height(30)))
         {
             ApplyAddressableSettings();
         }
 
-        EditorGUILayout.HelpBox("ÆÁ: ÇÁ·ÎÁ§Æ® Ã¢¿¡¼­ ÆÄÀÏÀ» ¼±ÅÃÇÑ ÈÄ ¹öÆ°À» ´©¸£¼¼¿ä.\nÁÖ¼Ò´Â ÆÄÀÏ¸í(È®ÀåÀÚ Á¦¿Ü)À¸·Î ÀÚµ¿ ¼³Á¤µË´Ï´Ù.", MessageType.Info);
+        EditorGUILayout.HelpBox("íŒ: í”„ë¡œì íŠ¸ ì°½ì—ì„œ íŒŒì¼ì„ ì„ íƒí•œ í›„ ë²„íŠ¼ì„ ëˆ„ë¥´ì„¸ìš”.\nì£¼ì†ŒëŠ” íŒŒì¼ëª…(í™•ì¥ì ì œì™¸)ìœ¼ë¡œ ìë™ ì„¤ì •ë©ë‹ˆë‹¤.", MessageType.Info);
     }
 
     private void ApplyAddressableSettings()
@@ -69,7 +69,7 @@ public class AddressableSetupTool : EditorWindow
 
         if (selectedObjects.Length == 0)
         {
-            Debug.LogWarning("[AddressableSetup] ¼±ÅÃµÈ Ç×¸ñÀÌ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("[AddressableSetup] ì„ íƒëœ í•­ëª©ì´ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -81,18 +81,18 @@ public class AddressableSetupTool : EditorWindow
 
             string guid = AssetDatabase.AssetPathToGUID(path);
 
-            // ¿¡¼Â Ç×¸ñ »ı¼º ¶Ç´Â °¡Á®¿À±â
+            // ì—ì…‹ í•­ëª© ìƒì„± ë˜ëŠ” ê°€ì ¸ì˜¤ê¸°
             AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, targetGroup);
 
             if (entry != null)
             {
-                // ÁÖ¼Ò¸¦ ÆÄÀÏ ÀÌ¸§À¸·Î ¼³Á¤ (È®ÀåÀÚ Á¦¿Ü)
+                // ì£¼ì†Œë¥¼ íŒŒì¼ ì´ë¦„ìœ¼ë¡œ ì„¤ì • (í™•ì¥ì ì œì™¸)
                 entry.address = Path.GetFileNameWithoutExtension(path);
 
-                // ¶óº§ Àû¿ë
+                // ë¼ë²¨ ì ìš©
                 if (!string.IsNullOrEmpty(labelToApply))
                 {
-                    // ¼¼ÆÃ¿¡ ¶óº§ÀÌ ¾øÀ¸¸é ¸ÕÀú Ãß°¡
+                    // ì„¸íŒ…ì— ë¼ë²¨ì´ ì—†ìœ¼ë©´ ë¨¼ì € ì¶”ê°€
                     if (!settings.GetLabels().Contains(labelToApply))
                     {
                         settings.AddLabel(labelToApply);
@@ -106,6 +106,6 @@ public class AddressableSetupTool : EditorWindow
 
         settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, null, true);
         AssetDatabase.SaveAssets();
-        Debug.Log($"[AddressableSetup] {count}°³ÀÇ Ç×¸ñÀÌ '{targetGroup.Name}' ±×·ì¿¡ ¼³Á¤µÇ¾ú½À´Ï´Ù.");
+        Debug.Log($"[AddressableSetup] {count}ê°œì˜ í•­ëª©ì´ '{targetGroup.Name}' ê·¸ë£¹ì— ì„¤ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
     }
 }

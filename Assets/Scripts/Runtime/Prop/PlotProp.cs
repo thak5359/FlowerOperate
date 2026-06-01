@@ -6,7 +6,6 @@ using UnityEngine;
 using Unity.Mathematics;
 using static Constant;
 using R3;
-using Fungus.EditorUtils;
 
 
 [MemoryPackable]
