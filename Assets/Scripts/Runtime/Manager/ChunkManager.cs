@@ -147,6 +147,14 @@ public class ChunkManager : MonoBehaviour
     private int cachedDatasetLength;
     #endregion
 
+    #region Getter
+    public ref ChunkDataIngame[] GetFarmChunkDatas => ref _FarmChunkDatas;
+    public ref ChunkDataIngame[] GetFieldChunkDatas => ref _FieldChunkDatas;
+    public ref ChunkDataIngame[] GetForestChunkDatas => ref _ForestChunkDatas;
+    public ref ChunkDataIngame[] GetMineChunkDatas => ref _MineChunkDatas;
+
+    #endregion
+
     #region Initialization
     private void Awake()
     {

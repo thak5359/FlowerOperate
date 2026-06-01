@@ -7,6 +7,7 @@ public class SaveLoadManager : MonoBehaviour
 {
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
+    private ChunkManager _chunkManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
 
@@ -28,12 +29,13 @@ public class SaveLoadManager : MonoBehaviour
     [Inject]
     public void Construct(
         PlayerOwnItemDataManager storageParent,
-        IPlotManager plotManager
+        IPlotManager plotManager,
+        ChunkManager chunkManager 
     )
     {
         _storageManager = storageParent;
         _plotManager = (PlotManager)plotManager;
-
+        _chunkManager = chunkManager;
         if (_storageManager == null)
         {
             Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
@@ -52,6 +54,17 @@ public class SaveLoadManager : MonoBehaviour
             Debug.Log($"SaveLoadManager: plotManager injected successfully. Type: {_plotManager.GetType().Name}");
         }
 
+        if (_chunkManager == null)
+        {
+            Debug.LogError("<color=red>SaveLoadManager: plotManager (ChunkManager) is NULL during Construct!</color>");
+        }
+        else
+        {
+            Debug.Log($"SaveLoadManager: chunkManager injected successfully. Type: {_chunkManager.GetType().Name}");
+        }
+
+
+
         Debug.Log("SaveLoadManager 의존성 주입 완료");
     }
 
@@ -59,7 +72,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         if (_storageManager == null || _plotManager == null)
         {
-            Debug.Log("SaveLoadManager : 매니저 둘 중에 하나 null임");
+            Debug.Log("SaveLoadManager : 매니저 셋 중에 하나 null임");
             return;
         }
 
@@ -68,7 +81,13 @@ public class SaveLoadManager : MonoBehaviour
         saveData = new SaveDatas(
             day,
             _storageManager.GetData,
-            _plotManager.GetPlotDataDict
+            _plotManager.GetPlotDataDict,
+            _storageManager.GetData.GetMoney,
+            _storageManager.GetData.GetReputation,
+            _chunkManager.GetFarmChunkDatas,
+            _chunkManager.GetFieldChunkDatas,
+            _chunkManager.GetForestChunkDatas,
+            _chunkManager.GetMineChunkDatas
         );
     }
 

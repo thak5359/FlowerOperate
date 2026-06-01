@@ -1,7 +1,9 @@
+using Fungus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,6 +13,23 @@ public class FertilizerMaker : MakerBaseModel, IMaker
     [SerializeField] private FlowerItem[] flowerSlot = new FlowerItem[3];
 
     private int ReturnTimes = 0;
+
+    public override void SetGameItem(GameItem item)
+    {
+        if(item.SubType == ItemSubType.Grass)
+        {
+            GameItem grass = grassSlot.FirstOrDefault(element => element.CheckEmpty());
+            if (grass != null)
+                grass = item;
+        }
+        else if (item.SubType == ItemSubType.Flower)
+        {
+            FlowerItem flower = flowerSlot.FirstOrDefault(element => element.CheckEmpty());
+            if (flower != null)
+                flower = (FlowerItem)item;
+        }
+    }
+
     public GameItem ReturnGameItem()
     {
         ReturnTimes = CalculateMixableTimes();
@@ -51,11 +70,20 @@ public class FertilizerMaker : MakerBaseModel, IMaker
 
     public FertilizerItem MixFertilizerItem()
     {
+        // 전부다 신령초
+        if(grassSlot.All(item => item.Id == 409006)) return null;
+
         bool isQualityFertilizer = flowerSlot.All(item => item.Color == flowerSlot[0].Color);
         int grade = (int)grassSlot.Average(item => item.Id - 409000);
+
         if(isQualityFertilizer)
         {
             return new FertilizerItem(301000 + grade, 0);
+        }
+        else if(grassSlot.Any(item => item.Id == 409006))
+        {
+            grade = (grade * 2) - 6;
+            return new FertilizerItem(301010 + grade, 0);
         }
         return new FertilizerItem(301005 + grade, 0);
     }

@@ -9,7 +9,28 @@ public class MakerBaseModel : MonoBehaviour
 
     public virtual void SetGameItem(GameItem item)
     {
-        gameItem = item;
+        switch(makerData.GetMakerType)
+        {
+            case MakerType.Seed:
+                if(item.SubType == ItemSubType.Flower)
+                    gameItem = item;
+                break;
+            case MakerType.Ingot:
+                if(item.SubType == ItemSubType.MetalMaterial)
+                    gameItem = item;
+                break;
+            case MakerType.Jewerly:
+                if (item.SubType == ItemSubType.JewelryMaterial)
+                    gameItem = item;
+                break;
+            case MakerType.Wood:
+                if(item.SubType == ItemSubType.Wood)
+                    gameItem = item;
+                break;
+            default:
+                break;
+        }
+        return;
     }
 
     public virtual void AddGameItem(GameItem item)
