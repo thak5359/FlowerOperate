@@ -14,6 +14,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private SaveLoadManager saveLoadManager;
     [SerializeField] private ShopUIController shopUIController;
     [SerializeField] private InfoUIController infoUIController;
+    [SerializeField] private ItemGenTest itemGenTest;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -31,5 +32,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<InventoryUIController>(inventoryUI).AsSelf();
         builder.RegisterComponent<ShopUIController>(shopUIController).AsSelf();
         builder.RegisterComponent<InfoUIController>(infoUIController).AsSelf();
+        builder.RegisterComponent<ItemGenTest>(itemGenTest).AsSelf();
     }
 }

@@ -151,17 +151,15 @@ public class InventoryUIController : MonoBehaviour
             else
             {
                 string address = GlobalItemDB.GetSpriteAddress(itemData.Id).ToString();
-
+                Debug.Log($"[InventoryUIController] Loading sprite for ItemId: {itemData.Id} from address: {address} into slot index: {i}");
                 // [수정: ContinueWith 대신 await를 사용하여 메인 스레드 렌더링 파이프라인에서 이미지를 할당!]
                 // 파트너의 실제 Addressable 로드 로직에 맞게 메서드 이름은 맞춰주세요.
-                /*
-                Texture2D texture = await AddressableManager.LoadAssetAsync<Texture2D>(address);
-                if (texture != null)
+                Texture2D itemSprite = await AddressableManager.LoadAssetAsync<Texture2D>(address);
+                if (itemSprite != null)
                 {
-                    InventorySlotImages[i].style.backgroundImage = texture;
+                    InventorySlotImages[i].style.backgroundImage = itemSprite;
                     InventorySlots[i].text = itemData.Count > 1 ? itemData.Count.ToString() : "";
                 }
-                */
             }
         }
     }
