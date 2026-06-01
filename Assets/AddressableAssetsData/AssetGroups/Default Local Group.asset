@@ -583,7 +583,7 @@ MonoBehaviour:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64a0a6f46ac051f48a6fd450595fdab6
-    m_Address: ForestChunkDataSet
+    m_Address: ForestChunkDataSetSO
     m_ReadOnly: 0
     m_SerializedLabels:
     - ScriptableObjects

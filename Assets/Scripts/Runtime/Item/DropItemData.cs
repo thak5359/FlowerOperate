@@ -9,8 +9,8 @@ public class DropItemData : MonoBehaviour
     private GameItem data;
     [SerializeField]
     private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private int waitMilliSeconds = 1000;
+    //[SerializeField]
+    //private int waitMilliSeconds = 1000;
 
     private bool isPickingUp;
 

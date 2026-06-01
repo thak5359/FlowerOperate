@@ -1,6 +1,7 @@
 // 수정 위치: 전체 스크립트 (ChunkActionResult, ChunkDataIngame, ChunkManager 전체)
 // 작업 내용: 서브 프로그래머의 이해를 돕기 위한 #region 그룹화, /// <summary> 문서화 및 연동 가이드 주석 추가
 
+using Cysharp.Threading.Tasks;
 using MemoryPack;
 using Unity.Collections;
 using UnityEngine;
@@ -181,18 +182,18 @@ public class ChunkManager : MonoBehaviour
     #region Initialization
     private void Awake()
     {
-        initalizeScriptableObjectDataset();
+        initalizeScriptableObjectDataset().Forget();
     }
 
     /// <summary>
     /// Addressable을 통해 각 청크 타입별 SO 데이터를 로드하고 인게임 데이터를 초기화합니다.
     /// </summary>
-    private void initalizeScriptableObjectDataset()
+    private async UniTaskVoid initalizeScriptableObjectDataset()
     {
-        _FarmChunkDataSet = AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET).GetAwaiter().GetResult();
-        _FieldChunkDataSet = AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET).GetAwaiter().GetResult();
-        _ForestChunkDataSet = AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET).GetAwaiter().GetResult();
-        _MineChunkDataSet = AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET).GetAwaiter().GetResult();
+        _FarmChunkDataSet = await AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET);
+        _FieldChunkDataSet = await AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET);
+        _ForestChunkDataSet = await AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET);
+        _MineChunkDataSet = await AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET    );
 
         if (_FarmChunkDataSet != null) initializeChunkDatas_Farm();
         if (_FieldChunkDataSet != null) initializeChunkDatas_Field();

@@ -1,109 +1,99 @@
 using System.IO;
-using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class USSMissingAssetFinder : EditorWindow
 {
-    [MenuItem("Tools/USS Missing Asset Finder")]
+    [MenuItem("Tools/USS & UXML Missing Asset Finder")]
     public static void ShowWindow()
     {
-        GetWindow<USSMissingAssetFinder>("USS Missing Asset Finder");
+        GetWindow<USSMissingAssetFinder>("USS & UXML Finder");
     }
 
     private void OnGUI()
     {
         EditorGUILayout.HelpBox(
-            "USS 스타일시트 내부의 에셋 참조(m_Assets) 중 MissingReferenceAsset(깨진 이미지/폰트 등) 상태인 항목을 찾아냅니다.",                                                                                                         
-
+            "UXML 및 USS 파일 내부의 에셋 참조(GUID) 중 존재하지 않는 깨진 에셋(MissingAssetReference)을 찾아냅니다.",
             MessageType.Info);
 
-        if (GUILayout.Button("USS 깨진 에셋 스캔", GUILayout.Height(40)))
+        if (GUILayout.Button("UXML / USS 깨진 참조 스캔", GUILayout.Height(40)))
         {
-            ScanStyleSheets();
+            ScanUIAssets();
         }
     }
 
-    private static void ScanStyleSheets()
+    private static void ScanUIAssets()
     {
-        // 1. 프로젝트 내 모든 StyleSheet (.uss) 에셋 로드                                                          
-        string[] guids = AssetDatabase.FindAssets("t:StyleSheet");
+        // Assets 폴더 내의 모든 .uxml, .uss, .asset 파일을 직접 가져와 검사합니다.
+        string[] allFiles = Directory.GetFiles(Application.dataPath, "*.*", SearchOption.AllDirectories);
+
         int errorCount = 0;
+        int scannedCount = 0;
+        Debug.Log("[UI Toolkit Validator] 스캔을 시작합니다...");
 
-        Debug.Log("[USS Finder] 스타일시트 에셋 스캔을 시작합니다...");
-
-        foreach (string guid in guids)
+        foreach (var file in allFiles)
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(path);
+            string ext = Path.GetExtension(file).ToLower();
+            if (ext != ".uxml" && ext != ".uss" && ext != ".asset") continue;
 
-            if (styleSheet == null) continue;
+            // 경로 구분자 통일 (역슬래시와 슬래시 혼용 방지)
+            string cleanFile = file.Replace('\\', '/');
+            string cleanDataPath = Application.dataPath.Replace('\\', '/');
+            string relativePath = "Assets" + cleanFile.Replace(cleanDataPath, "");
 
-            // 2. StyleSheet의 내부 직렬화 목록인 m_Assets 필드에 접근 (Reflection)                                 
-            FieldInfo assetsField = typeof(StyleSheet).GetField("m_Assets", BindingFlags.NonPublic | BindingFlags.
-Instance)
-                                 ?? typeof(StyleSheet).GetField("assets", BindingFlags.NonPublic | BindingFlags.
-Instance | BindingFlags.Public);
+            errorCount += ValidateFile(file, relativePath);
+            scannedCount++;
+        }
 
-            if (assetsField != null)
+        Debug.Log($"[UI Toolkit Validator] 총 {scannedCount}개의 UI 관련 파일을 스캔했습니다.");
+
+        if (errorCount == 0)
+        {
+            Debug.Log("<color=green>[UI Toolkit Validator] 스캔 완료: 깨진 에셋 참조가 없습니다!</color>");
+        }
+        else
+        {
+            Debug.LogWarning($"[UI Toolkit Validator] 스캔 완료: 총 {errorCount}개의 깨진 에셋 참조를 검출했습니다. 콘솔창의 에러 로그를 확인해 주세요.");
+        }
+    }
+
+    private static int ValidateFile(string fullPath, string relativePath)
+    {
+        int errors = 0;
+        string[] lines = File.ReadAllLines(fullPath);
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string line = lines[i];
+
+            // Match guid=xxxx 또는 guid: xxxx (32자리 16진수)
+            var matches = Regex.Matches(line, @"guid[=:]\s*[""']?([a-fA-F0-9]{32})");
+            foreach (Match match in matches)
             {
-                var assetsList = assetsField.GetValue(styleSheet) as System.Collections.IList;
-                if (assetsList != null)
+                string guid = match.Groups[1].Value;
+
+                // Unity 내장 리소스 관련 특수 GUID(00000...)는 제외합니다.
+                if (guid.StartsWith("00000000")) continue;
+
+                // Unity 에셋 데이터베이스에서 해당 GUID가 유효한지 확인하고, 파일이 실제로 존재하는지도 체크합니다.
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+                // 캐시 문제로 AssetDatabase가 이전 경로를 리턴할 수 있으므로, 실제 파일이 존재하는지 검사합니다.
+                if (string.IsNullOrEmpty(assetPath) || !File.Exists(assetPath))
                 {
-                    for (int i = 0; i < assetsList.Count; i++)
-                    {
-                        Object obj = assetsList[i] as Object;
-                        bool isMissing = false;
-                        string assetInfo = "Unknown Asset";
-
-                        // Case A: 객체가 아예 로드되지 않아 null 상태이지만 인스턴스 ID 정보만 남아있는 경우       (Missing)
-                            if (obj == null)
-                        {
-                            SerializedObject so = new SerializedObject(styleSheet);
-                            SerializedProperty assetsProp = so.FindProperty("m_Assets");
-                            if (assetsProp != null && assetsProp.isArray && i < assetsProp.arraySize)
-                            {
-                                SerializedProperty element = assetsProp.GetArrayElementAtIndex(i);
-                                if (element.objectReferenceValue == null && element.objectReferenceInstanceIDValue
-!= 0)
-                                {
-                                    isMissing = true;
-                                    assetInfo = $"[Serialized Instance ID: {element.objectReferenceInstanceIDValue}]";
-                                }
-                            }
-                        }
-                        // Case B: Unity가 깨진 참조 대신 'MissingReferenceAsset' 타입의 임시 객체를 할당해둔 경우  
-                        else if (obj.GetType().Name == "MissingReferenceAsset" || obj.name ==
-"MissingReferenceAsset" || obj.ToString().Contains("MissingReferenceAsset"))
-                        {
-                            isMissing = true;
-                            assetInfo = $"Type: {obj.GetType().Name} (Name: {obj.name})";
-                        }
-
-                        if (isMissing)
-                        {
-                            Debug.LogError(
-                                $"<color=red><b>[USS Missing Asset]</b></color> 깨진 참조 발견!\n" +
-                                $"<b>스타일시트 파일:</b> <a href=\"{path}\">{path}</a>\n" +
-                                $"<b>내부 에셋 인덱스:</b> [{i}]\n" +
-                                $"<b>에셋 상세 정보:</b> {assetInfo}\n" +
-                                $"<i>해당 스타일시트를 UI Builder로 열어 깨진 폰트/이미지 속성을 재지정하거나 USS 텍스트에서 유효하지 않은 url()을 제거해 주세요.</ i > "                                                                  
-                            );
-                            errorCount++;
-                        }
-                    }
+                    string cleanLine = line.Trim();
+                    Debug.LogError(
+                        $"<color=red><b>[UI Toolkit Validator]</b></color> 깨진 참조(MissingAssetReference) 발견!\n" +
+                        $"<b>파일:</b> <a href=\"{relativePath}\">{relativePath}</a> (Line {i + 1})\n" +
+                        $"<b>깨진 GUID:</b> {guid}\n" +
+                        $"<b>줄 내용:</b> {cleanLine}"
+                    );
+                    errors++;
                 }
             }
         }
 
-        if (errorCount == 0)
-        {
-            Debug.Log("<color=green>[USS Finder] 스캔 완료: 깨진 USS 에셋 참조가 없습니다!</color>");
-        }
-        else
-        {
-            Debug.LogWarning($"[USS Finder] 스캔 완료: 총 {errorCount}개의 깨진 USS 에셋 참조를 검출했습니다.       콘솔창의 에러 로그를 확인해 주세요.");                                                                                
-            }
+        return errors;
     }
 }
