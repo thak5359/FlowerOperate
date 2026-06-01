@@ -14,8 +14,7 @@ public class InfoUIController : MonoBehaviour
     private Label _dayOfWeekLabel;
     private Label _timeLabel;
     private Label _moneyLabel;
-
-
+    
     private void Awake()
     {
         // 1. UIDocument 컴포넌트 가져오기
@@ -45,7 +44,7 @@ public class InfoUIController : MonoBehaviour
             Debug.Log("레이블이 존재하지 않음");
             return;
         }
-
+        ref var data = ref _ownItemManager.GetData;
         // 4. 데이터 적용 (text 속성 변경)
         _yearLabel.text = $"{ProgressManager.getYear()}년";
         _dateLabel.text = $"{ProgressManager.getMonth():D2}월 {ProgressManager.getDay():D2}일";
@@ -54,7 +53,7 @@ public class InfoUIController : MonoBehaviour
         if (_dayOfWeekLabel != null)
             _dayOfWeekLabel.text = GetKoreanDayOfWeek(ProgressManager.getDay() % 7);
         if(_moneyLabel != null)
-            _moneyLabel.text = _ownItemManager.GetData.GetMoney.ToString();
+            _moneyLabel.text = data.GetMoney.ToString() + "$";
         //if (_timeLabel != null)
         //    _timeLabel.text = now.ToString("HH:mm");
     }

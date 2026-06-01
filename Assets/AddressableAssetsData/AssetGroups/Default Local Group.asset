@@ -538,6 +538,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a198740025880a47bdfcf09df5818b2
+    m_Address: Black_Lily_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5a74c262e34dbd544972d89a02a36739
     m_Address: Red_Chrysanthemum
     m_ReadOnly: 0
