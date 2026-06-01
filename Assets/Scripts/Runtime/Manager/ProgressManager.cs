@@ -14,7 +14,7 @@ public enum Season
 public static partial class ProgressManager
 {
     //13개월, 월 28일
-    private static int Day = 1; // 몇일차
+    private static int Day = 999; // 몇일차
     private static int totalDay = 364;
     // 일정 관리하는 SO 데이터
     // 날짜 관리하는 알고리즘

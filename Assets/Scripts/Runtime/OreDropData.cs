@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "OreDropTable", menuName = "DropTable/OreDropTable")]
-public class OreDropData : MonoBehaviour
+public class OreDropData : ScriptableObject
 {
     [SerializeField]List<OreDrop> oreLists;
 

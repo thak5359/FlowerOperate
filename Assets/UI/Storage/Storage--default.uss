@@ -1,12 +1,8 @@
-.font-maple {
-    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Bold.otf?fileID=12800000&guid=7f4a2fed048061b479a84b7e1d64a862&type=3#Maplestory OTF Bold");
-    -unity-font-definition: initial;
-}
+.
 
-.font-maple-light {
-    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory%20OTF%20Light.otf?fileID=12800000&guid=c898bc1e681edb94cadfa44f910b0511&type=3#Maplestory OTF Light");
-    -unity-font-definition: initial;
-}
+
+
+
 
 #InventoryContainer {
     width: 820px;

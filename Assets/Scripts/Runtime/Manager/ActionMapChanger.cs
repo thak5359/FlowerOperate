@@ -51,8 +51,6 @@ public class ActionMapChanger : IMapChangable, IInitializable, IDisposable
         Fungus.FungusEventBridge.OnFungusMessageBroadcasted -= HandleFungusMessage;
     }
 
-
-
     private void HandleFungusMessage(string message)
     {
         Debug.Log($"[ActionMapChanger] Fungus로부터 전역 신호 수신: {message}");

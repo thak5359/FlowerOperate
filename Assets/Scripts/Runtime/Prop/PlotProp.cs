@@ -103,6 +103,11 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         Growth = FlowerGrowth.Seed;
         State = FlowerState.Vivid;
 
+
+        int useAmount = 1;
+         seed.SubCount(ref useAmount);
+        if( useAmount ==1) return new FarmActionResult(FarmActionResult.ResultType.Failed, " seed amount is not enough");
+
         return new FarmActionResult(FarmActionResult.ResultType.Success);
     }
 }

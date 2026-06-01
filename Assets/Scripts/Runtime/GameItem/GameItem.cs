@@ -4,6 +4,7 @@ using MemoryPack;
 using System;
 using System.Threading.Tasks;
 using Unity.Collections;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 
@@ -48,7 +49,7 @@ public partial class GameItem : IGameResource
 
 
 
-    public virtual void  OnLoadAsync(IPropData propData = default)
+    public virtual void OnLoadAsync(IPropData propData = default)
     {
         if (!GlobalItemDB.IsInitialized)
         {
@@ -62,7 +63,7 @@ public partial class GameItem : IGameResource
             return;
         }
 
-        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);    
+        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);
 
 
         MainType = baseData.MainType;
@@ -74,7 +75,7 @@ public partial class GameItem : IGameResource
 
         if (!SpriteAddress.IsEmpty)
         {
-            DisplaySprite =  AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress).GetAwaiter().GetResult();   
+            DisplaySprite = AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress).GetAwaiter().GetResult();
         }
     }
 
@@ -89,7 +90,7 @@ public partial class GameItem : IGameResource
         if (Count >= StackLimit)
             return false;
 
-        bool thisGradeManaged = 
+        bool thisGradeManaged =
             SubType == ItemSubType.Seed ||
             SubType == ItemSubType.Flower;
 
@@ -131,9 +132,9 @@ public partial class GameItem : IGameResource
 
         if (this.Count - amount <= 0)
         {
-            amount = 0;
             this.Id = 0;
             amount -= this.Count;
+            this.Count = 0;
         }
         else
         {

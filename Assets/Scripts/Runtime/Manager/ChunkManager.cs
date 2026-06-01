@@ -1,6 +1,7 @@
 // 수정 위치: 전체 스크립트 (ChunkActionResult, ChunkDataIngame, ChunkManager 전체)
 // 작업 내용: 서브 프로그래머의 이해를 돕기 위한 #region 그룹화, /// <summary> 문서화 및 연동 가이드 주석 추가
 
+using Cysharp.Threading.Tasks;
 using MemoryPack;
 using Unity.Collections;
 using UnityEngine;
@@ -59,12 +60,17 @@ public partial struct ChunkDataIngame
     private ChunkUnlockState unlockState;
     public ChunkUnlockState UnlockState => unlockState;
 
+    [MemoryPackInclude]
+    private ChunkLevel chunkLevel;
+    public ChunkLevel ChunkLevel => chunkLevel;
+
 
     public ChunkDataIngame(int input_ChunkNO, ChunkType input_Type, ChunkUnlockState input_state)
     {
         chunkNo = input_ChunkNO;
         chunkType = input_Type;
         unlockState = input_state;
+        chunkLevel = ChunkLevel.Lv1;
     }
 
     /// <summary>
@@ -109,6 +115,32 @@ public partial struct ChunkDataIngame
                 return new ChunkActionResult(ResultType.Error, NewResultMessage("청크 해금 실패!"));
         }
     }
+
+    /// <summary>
+    /// 청크가 해금된 상태라면, 청크의 레벨업을 시도합니다. 
+    /// </summary>
+    public ChunkActionResult LevelUP()
+    {
+        
+        if (unlockState != ChunkUnlockState.Unlocked)
+            return new ChunkActionResult(ResultType.Error, NewResultMessage($"Unexpected Error: Level has been called but Chunk is not Unlocked"));
+
+        switch (chunkLevel)
+        {
+            case ChunkLevel.Lv1:
+            case ChunkLevel.Lv2:
+            case ChunkLevel.Lv3:
+                {
+                    chunkLevel.Next<ChunkLevel>();
+                    return new ChunkActionResult(ResultType.Success);
+
+                    
+                }
+            case ChunkLevel.Lv4: return new ChunkActionResult(ResultType.Failed, NewResultMessage($"Already Level is Max But LevelUp Callled. ChunkNO : {chunkNo}"));
+            default: return new ChunkActionResult(ResultType.Error, NewResultMessage($"Unexpected ChunkLevel : {ChunkLevel}, Chunk NO : {chunkNo}, Chunk Type : {chunkType}"));
+        }
+    }
+
 
     private FixedString128Bytes NewResultMessage(string message)
     {
@@ -158,18 +190,18 @@ public class ChunkManager : MonoBehaviour
     #region Initialization
     private void Awake()
     {
-        initalizeScriptableObjectDataset();
+        initalizeScriptableObjectDataset().Forget();
     }
 
     /// <summary>
     /// Addressable을 통해 각 청크 타입별 SO 데이터를 로드하고 인게임 데이터를 초기화합니다.
     /// </summary>
-    private void initalizeScriptableObjectDataset()
+    private async UniTaskVoid initalizeScriptableObjectDataset()
     {
-        _FarmChunkDataSet = AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET).GetAwaiter().GetResult();
-        _FieldChunkDataSet = AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET).GetAwaiter().GetResult();
-        _ForestChunkDataSet = AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET).GetAwaiter().GetResult();
-        _MineChunkDataSet = AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET).GetAwaiter().GetResult();
+        _FarmChunkDataSet = await AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET);
+        _FieldChunkDataSet = await AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET);
+        _ForestChunkDataSet = await AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET);
+        _MineChunkDataSet = await AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET    );
 
         if (_FarmChunkDataSet != null) initializeChunkDatas_Farm();
         if (_FieldChunkDataSet != null) initializeChunkDatas_Field();
@@ -231,7 +263,7 @@ public class ChunkManager : MonoBehaviour
         _MineChunkDatas[0].Unlock();
     }
     #endregion
-    
+
     #endregion
 
     #region Chunk Operations (해금 로직)

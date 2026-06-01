@@ -1,4 +1,5 @@
-/* 1. º¯¼ö ¼³Á¤: À¯Áöº¸¼ö°¡ ¾öÃ» ÆíÇØÁı´Ï´Ù */
+
+/* 1. ë³€ìˆ˜ ì„¤ì •: ìœ ì§€ë³´ìˆ˜ê°€ ì—„ì²­ í¸í•´ì§‘ë‹ˆë‹¤ */
 :root {
     --bg-calendar: rgba(255, 0, 0, 0.52);
     --bg-day: rgba(255, 252, 0, 0.45);
@@ -6,13 +7,11 @@
     --bg-money: rgba(45, 255, 25, 0.55);
     --ruby-color: rgba(255, 255, 255, 0.9);
     
-    /* ÆùÆ® »ó¼ÓÀ» À§ÇØ ÃÖ»óÀ§¿¡¼­ ÇÑ ¹ø¸¸ ¼±¾ğ */
-    -unity-font: url("project://database/Assets/Art/Fonts/Maplestory OTF Bold.otf");
-    -unity-font-definition: initial;
+    /* í°íŠ¸ ìƒì†ì„ ìœ„í•´ ìµœìƒìœ„ì—ì„œ í•œ ë²ˆë§Œ ì„ ì–¸ */
     color: white;
 }
 
-/* 2. ·¹ÀÌ¾Æ¿ô °øÅë Å¬·¡½º */
+/* 2. ë ˆì´ì•„ì›ƒ ê³µí†µ í´ë˜ìŠ¤ */
 .flex-center {
     justify-content: center;
     align-items: center;
@@ -26,7 +25,7 @@
     flex-direction: column;
 }
 
-/* 3. ¸ŞÀÎ ÄÁÅ×ÀÌ³Ê ¹× ÆĞ³Î */
+/* 3. ë©”ì¸ ì»¨í…Œì´ë„ˆ ë° íŒ¨ë„ */
 #InfoContainer {
     width: 26%;
     height: 18%;
@@ -58,7 +57,7 @@
     background-color: var(--bg-money);
 }
 
-/* 4. ¶óº§ ¹× ÅØ½ºÆ® ½ºÅ¸ÀÏ */
+/* 4. ë¼ë²¨ ë° í…ìŠ¤íŠ¸ ìŠ¤íƒ€ì¼ */
 .info-label {
     margin: 0;
     padding: 0;
@@ -69,7 +68,7 @@
 .text-medium { font-size: 40px; }
 .text-small { font-size: 35px; }
 
-/* 5. ·çºñ ¹®ÀÚ ÃÖÀûÈ­ */
+/* 5. ë£¨ë¹„ ë¬¸ì ìµœì í™” */
 #DateGroup {
     height: 35%;
     align-items: flex-end;

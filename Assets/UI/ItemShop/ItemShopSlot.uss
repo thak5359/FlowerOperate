@@ -1,0 +1,44 @@
+/* 수정 위치: ItemShopUSS.uss 파일의 가장 아래쪽에 슬롯 템플릿용 스타일을 추가해 주세요. */
+
+/* ========================================= */
+/* [ ItemShopSlot ] 슬롯 템플릿 스타일       */
+/* ========================================= */
+
+.shop-slot-array {
+    flex-grow: 0;
+    width: 750px;
+    height: 150px;
+    background-color: rgba(82, 84, 108, 0);
+    flex-direction: row;
+    padding: 10px 25px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 30px;
+    margin: 0;
+    background-image: url("project://database/Assets/Art/Sprites/01.UI/UI_Tile01.png?fileID=21300000&guid=f71c8f459a18ed645bdc23972e6728f9&type=3#UI_Tile01");
+}
+
+.shop-slot-info-container {
+    flex-grow: 0;
+    flex-direction: row;
+    align-items: center;
+    width: 545px;
+}
+
+.shop-slot-image {
+    flex-grow: 0;
+    width: 80px;
+    height: 80px;
+    background-image: url("project://database/Assets/Art/Sprites/01.UI/UI_Tile03.png?fileID=21300000&guid=452902406e317744b835363e2e73ddd1&type=3#UI_Tile03");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.shop-slot-item-text {
+    width: 306px;
+    padding-left: 15px;
+}
+
+.shop-slot-price-text {
+    width: 300px;
+    -unity-text-align: upper-right;
+}

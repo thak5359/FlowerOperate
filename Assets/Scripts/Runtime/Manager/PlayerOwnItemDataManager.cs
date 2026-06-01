@@ -11,6 +11,7 @@ using VContainer.Unity;
 public enum ContainerType
 {
     INVENTORY,
+    GEAR,
     STORAGE,
     SELLING
 }
@@ -70,6 +71,8 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     {
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
+
+        this._Data.AddMoney(10000); /// 상점 UI 테스트용 용돈.
     }
 
     void IDisposable.Dispose()
@@ -263,7 +266,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         if (!IsGradeManagedItem(item)) return true;
 
         // Seed / Flower는 FlowerItem이어야 하며, Grade까지 같아야 함
-        if (item is FlowerItem flowerItem)  return flowerItem.Grade == grade;
+        if (item is FlowerItem flowerItem) return flowerItem.Grade == grade;
 
         return false;
     }
@@ -298,7 +301,8 @@ public partial struct ItemInstantData
     #region Fields
     [MemoryPackInclude, SerializeField] private int money;
     [MemoryPackInclude, SerializeField] private int reputation;
-    [MemoryPackInclude, SerializeField] private List<GameItem> invenList;
+    [MemoryPackInclude, SerializeField] private List<GameItem> invenList; // 기본적인 인벤토리 슬롯 리스트
+    [MemoryPackInclude, SerializeField] private List<GameItem> invenGearList; // 장비만을 넣을 수 있는 인벤토리 슬롯 리스트 (5칸)
     [MemoryPackInclude, SerializeField] private List<StorageBox> storageBoxList;
 
     [MemoryPackIgnore, SerializeField] private List<GameItem> sellingBox;
@@ -312,16 +316,24 @@ public partial struct ItemInstantData
     public IList<GameItem> GetItemList(ContainerType type, int boxNum = 0)
     {
         if (type == ContainerType.INVENTORY) return invenList;
+        if (type == ContainerType.GEAR) return invenGearList;
         if (type == ContainerType.STORAGE) return storageBoxList[boxNum].BoxSlots;
         if (type == ContainerType.SELLING) return sellingBox;
         return null;
     }
+
     public void SetItemList(ContainerType type, List<GameItem> itemList, int boxNum = 0)
     {
 
         if (type == ContainerType.INVENTORY)
         {
             invenList = itemList;
+            return;
+        }
+
+        if (type == ContainerType.GEAR)
+        {
+            invenGearList = itemList;
             return;
         }
 
@@ -349,7 +361,7 @@ public partial struct ItemInstantData
     #region Initialization & List Management
 
 
-   
+
     // size 만큼 null로 채워진 GameItem 리스트를 생성하는 유틸리티 메서드입니다. (예: 인벤토리 초기화 시 사용)
     public static List<GameItem> CreateEmptyItemList(int size)
     {
@@ -373,6 +385,7 @@ public partial struct ItemInstantData
     public void EnsureSlotLists()
     {
         invenList = EnsureFixedSlotList(invenList, INVENTORY_SLOT_COUNT);
+        invenGearList = EnsureFixedSlotList(invenGearList, INVENTORY_GEAR_SLOT_COUNT);
         sellingBox ??= CreateEmptyItemList(INVENTORY_SLOT_COUNT);
         storageBoxList ??= new List<StorageBox>();
     }
