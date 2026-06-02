@@ -157,11 +157,13 @@ public class PlayerController : MonoBehaviour, IInteractable
                 if (hits[0].CompareTag(TAG_STORAGE))
                 {
                     // TODO:: 창고 여는 스크립트 여기에 작성하기
+                    return;
                 }
 
                 if (hits[0].CompareTag(TAG_BED))
                 {
-                    GlobalEventManager.InvokeNextDay();
+                    ProgressManager.GoNextDay();
+                    return;
                 }
 
 
@@ -177,6 +179,7 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void IInteractable.Interact(string Tag)
     {
+
         Debug.Log($"메세지 송신 to :{Tag}");
         Debug.Log("OnInteracted has been detected 3 ");
         Fungus.Flowchart.BroadcastFungusMessage(Tag);

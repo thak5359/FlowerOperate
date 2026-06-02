@@ -12,7 +12,7 @@ using UnityEngine.InputSystem.LowLevel;
 public partial struct OreData : IPropData
 {
     public Vector3 Position { get; private set; }
-    public readonly int ItemId { get; init; }
+    [field: SerializeField]public int ItemId { get; set; }
     [field: SerializeField] public int Duration;
 
     public OreData(Vector3 input_pos, int input_OreId, int input_Duration)
@@ -30,11 +30,7 @@ public partial struct OreData : IPropData
     }
     public void SetPosition(Vector3 position) => Position = position;
     
-    public void OnDestroy() 
-    {
-        if(ItemId != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(ItemId), Position);
-    }
+
 }
 
 
@@ -43,13 +39,17 @@ public class OreProp : Prop
 {
     // 어떤 광물 종류, 광물 아이템... 파편.. 인벤토리에는 들어가지 않는 아이템 타입이고, 어떤 금속이고, 어떤 아이템을 가지고..
     [SerializeField] private OreData _oreData = new(0);
-
+    
     public ref OreData oreData => ref _oreData;
 
     public void OnEnable()
     {
         if (oreData.Position == default)
             oreData.SetPosition(this.transform.position);
+
+        //oreData.ItemId = this.Id;
+        oreData = new(this.gameObject.transform.localPosition, 402001, 3);
+
     }
 
     // 2. 데미지 계산
@@ -78,10 +78,7 @@ public class OreProp : Prop
         }
     }
 
-    // 3. 죽음 & 아이템 뱉기 ( 추후0)
     
-    
-    // TODO 아이템 뱉는 로직 만들기
     private FarmActionResult Ruining()
     {
         try
@@ -113,5 +110,7 @@ public class OreProp : Prop
     {
         if(oreData.ItemId != 0)
             ItemFactory.CreateItemPrefab(new GameItem(oreData.ItemId), oreData.Position);
+        else
+            Debug.Log("OreProp destroyed without item drop. ItemId is 0.");
     }
 }

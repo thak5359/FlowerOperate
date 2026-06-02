@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="SlotRow10" src="project://database/Assets/UI/Common/SlotRow10.uxml?fileID=9197481963319205126&amp;guid=a1fba23aea46bb24ba8937cb99a765ed&amp;type=3#SlotRow10" />
     <ui:Template name="SlotRow5" src="project://database/Assets/UI/Common/SlotRow5.uxml?fileID=9197481963319205126&amp;guid=20dfde6defd5ae440b06f23d37bf03a9&amp;type=3#SlotRow5" />
     <ui:Template name="InventoryDetailContainer" src="project://database/Assets/UI/Inventory/InventoryDetailContainer.uxml?fileID=9197481963319205126&amp;guid=a77a2c0c9dfb93d4a96b4d76f564692c&amp;type=3#InventoryDetailContainer" />
+    <ui:Template name="SlotRowCount10" src="project://database/Assets/UI/Common/SlotRowCount10.uxml?fileID=9197481963319205126&amp;guid=bc99a4b1ab3503e4099b91ff02f57980&amp;type=3#SlotRowCount10" />
     <Style src="project://database/Assets/UI/Inventory/InventoryUSS.uss?fileID=7433441132597879392&amp;guid=0dbcc085fbbe8b54ba4859a96be446bb&amp;type=3#InventoryUSS" />
     <ui:VisualElement name="Inventory__Screen" picking-mode="Ignore" style="flex-grow: 1; width: 100%; height: 100%; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; flex-direction: row; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold%201%20SDF.asset?fileID=11400000&amp;guid=1a1ed7525bccd6d4cbb9d93f9f48a3c6&amp;type=2#Maplestory Bold 1 SDF&quot;);">
         <ui:VisualElement name="GhostIcon" picking-mode="Ignore" style="flex-grow: 0; width: 68px; height: 68px; display: none; position: absolute;" />
@@ -10,11 +10,11 @@
             <ui:VisualElement name="InventoryContainer" style="flex-grow: 0; width: 1170px; height: 550px; flex-direction: row; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold%201%20SDF.asset?fileID=11400000&amp;guid=1a1ed7525bccd6d4cbb9d93f9f48a3c6&amp;type=2#Maplestory Bold 1 SDF&quot;);">
                 <ui:VisualElement name="ItemBox_Container" style="flex-grow: 0; align-items: center; align-self: center; flex-direction: column; width: 870px; height: 550px; justify-content: space-around; border-top-width: 0; border-bottom-width: 0; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px; border-right-width: 0; border-left-width: 0; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile01.png?fileID=21300000&amp;guid=f71c8f459a18ed645bdc23972e6728f9&amp;type=3#UI_Tile01&quot;); display: flex; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
                     <ui:VisualElement name="InventoryArrays" style="flex-grow: 0; justify-content: space-around;">
-                        <ui:Instance template="SlotRow10" name="SlotRow10" />
-                        <ui:Instance template="SlotRow10" name="SlotRow10" />
-                        <ui:Instance template="SlotRow10" name="SlotRow10" />
-                        <ui:Instance template="SlotRow10" name="SlotRow10" />
-                        <ui:Instance template="SlotRow10" name="SlotRow10" />
+                        <ui:Instance template="SlotRowCount10" name="SlotRowCount10" />
+                        <ui:Instance template="SlotRowCount10" name="SlotRowCount10" />
+                        <ui:Instance template="SlotRowCount10" name="SlotRowCount10" />
+                        <ui:Instance template="SlotRowCount10" name="SlotRowCount10" />
+                        <ui:Instance template="SlotRowCount10" name="SlotRowCount10" />
                     </ui:VisualElement>
                     <ui:VisualElement name="EquipArray" picking-mode="Ignore" style="height: 80px; width: 100%; display: flex; justify-content: center;">
                         <ui:Instance template="SlotRow5" name="SlotRow5" />

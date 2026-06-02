@@ -343,7 +343,6 @@ public class PlotProp : Prop
         Debug.Log(ErrorCode);
         return new FarmActionResult(FarmActionResult.ResultType.Error, ErrorCode);
     }
-
     #endregion
 
     #region  수확 메서드 및 관련 유틸리티
