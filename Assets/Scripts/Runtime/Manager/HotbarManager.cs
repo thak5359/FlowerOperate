@@ -99,6 +99,7 @@ public class HotbarManager : MonoBehaviour
 
             pointingInventoryArray = (pointingInventoryArray - 1 + 5) % 5;
             Debug.Log($"핫바 레이어 변경 (Up): {pointingInventoryArray}번 줄 가리킴");
+            _playerState.CurrentHotbarLayer.Value = pointingInventoryArray; // 플레이어 상태에 현재 핫바 레이어 정보도 업데이트
 
             isSwappingGearDefaultArea = false; // 슬롯 환경이 변했으니 false로 초기화
             RefreshHotbarSlots();
@@ -115,6 +116,7 @@ public class HotbarManager : MonoBehaviour
 
             pointingInventoryArray = (pointingInventoryArray + 1) % 5;
             Debug.Log($"핫바 레이어 변경 (Down): {pointingInventoryArray}번 줄 가리킴");
+            _playerState.CurrentHotbarLayer.Value = pointingInventoryArray; // 플레이어 상태에 현재 핫바 레이어 정보도 업데이트
 
             isSwappingGearDefaultArea = false; // 슬롯 환경이 변했으니 false로 초기화
             RefreshHotbarSlots();
@@ -259,6 +261,7 @@ public class HotbarManager : MonoBehaviour
         }
 
         pointingSlot = cachedInt;
+        _playerState.CurrentHotbarSlot.Value = pointingSlot; // 플레이어 상태에 현재 핫바 슬롯 정보도 업데이트
         lastScrollTime = Time.time;
 
         slots[cachedInt].toggle.isOn = true;

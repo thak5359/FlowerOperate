@@ -1,11 +1,11 @@
-﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 0; width: 750px; height: 150px; flex-direction: row; border-left-width: 26px; border-right-width: 18px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A03.png?fileID=21300000&amp;guid=5cdff0b6d02448a498f590c1c04f5a24&amp;type=3#A03&quot;); border-bottom-width: 16px; border-top-width: 16px; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory_Bold_SDF.asset?fileID=11400000&amp;guid=c1f3b7bcc25b8da4abea5f1d7b8970c9&amp;type=2#Maplestory_Bold_SDF&quot;); font-size: 30px; -unity-text-align: middle-right">
-        <ui:VisualElement style="flex-grow: 3; flex-shrink: 1; flex-direction: row; align-items: center">
-            <ui:VisualElement style="flex-grow: 0; width: 100px; height: 100px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;)">
-                <ui:VisualElement style="flex-grow: 1" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 0; width: 750px; height: 150px; flex-direction: row; border-left-width: 26px; border-right-width: 18px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A03.png?fileID=21300000&amp;guid=5cdff0b6d02448a498f590c1c04f5a24&amp;type=3#A03&quot;); border-bottom-width: 16px; border-top-width: 16px; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold%201%20SDF.asset?fileID=11400000&amp;guid=1a1ed7525bccd6d4cbb9d93f9f48a3c6&amp;type=2#Maplestory Bold 1 SDF&quot;); font-size: 30px; -unity-text-align: middle-right;">
+        <ui:VisualElement style="flex-grow: 3; flex-shrink: 1; flex-direction: row; align-items: center;">
+            <ui:VisualElement style="flex-grow: 0; width: 100px; height: 100px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/UI_Tile03_1.png?fileID=21300000&amp;guid=d66e0a95be1ddf544a98b2f706703a57&amp;type=3#UI_Tile03_1&quot;);">
+                <ui:VisualElement name="Image" style="flex-grow: 1;" />
             </ui:VisualElement>
-            <ui:Label tabindex="-1" text="아이템 이름" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-left: 40px" />
+            <ui:Label name="ItemText" tabindex="-1" text="아이템 이름" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-left; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-left: 40px;" />
         </ui:VisualElement>
-        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PriceLabel" text="돈" style="flex-grow: 1; flex-shrink: 1; padding-right: 40px" />
+        <ui:Label name="PriceText" tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" text="돈" style="flex-grow: 1; flex-shrink: 1; padding-right: 40px;" />
     </ui:VisualElement>
 </ui:UXML>

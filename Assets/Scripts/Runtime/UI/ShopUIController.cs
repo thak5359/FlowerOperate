@@ -180,7 +180,12 @@ public class ShopUIController : MonoBehaviour
             UnityEngine.UIElements.Label priceLabel = newSlot.Q<UnityEngine.UIElements.Label>("PriceText");
             VisualElement iconElement = newSlot.Q<VisualElement>("Image");
 
-            if (nameLabel != null) nameLabel.text = product.ProductName;
+            string itemName = GlobalItemDB.GetItemName(itemId).ToString();
+            if (string.IsNullOrEmpty(itemName))
+            {
+                itemName = product.ProductName;
+            }
+            if (nameLabel != null) nameLabel.text = itemName;
             if (priceLabel != null) priceLabel.text = $"{price:N0} $";
 
             FixedString128Bytes spriteAddress = GlobalItemDB.GetSpriteAddress(itemId);
@@ -213,8 +218,8 @@ public class ShopUIController : MonoBehaviour
     {
         if (address.IsEmpty) return;
 
-        Sprite loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(address);
-        if (loadedSprite != null && targetElement != null)
+        Sprite loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(address, _shopImageLabel);
+        if (loadedSprite != null && targetElement != null && targetElement.panel != null)
         {
             targetElement.style.backgroundImage = new StyleBackground(loadedSprite);
         }

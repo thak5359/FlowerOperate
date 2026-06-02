@@ -112,6 +112,7 @@ public class UseAreaFunction : MonoBehaviour,
     /// </summary
     public FarmActionResult FireFunc(ref GameItem gameItem, GameObject plot = null)
     {
+
         switch (gameItem.SubType)
         {
             case ItemSubType.Equipment:
@@ -153,6 +154,8 @@ public class UseAreaFunction : MonoBehaviour,
 
     private FarmActionResult FireGearFunc(ref GearItem gearItem, GameObject plot = null)
     {
+        Debug.Log($"gear : {gearItem.ItemName}, gear.GearType : {gearItem.GearType}");
+
         return gearItem.GearType switch
         {
             GearType.Hoe =>
@@ -178,6 +181,7 @@ public class UseAreaFunction : MonoBehaviour,
 
     FarmActionResult IUseAreaHoeFunc.DoHoeFunc(ref GearItem gear, GameObject plot)
     {
+        
         try
         {
             if (plot == null)
