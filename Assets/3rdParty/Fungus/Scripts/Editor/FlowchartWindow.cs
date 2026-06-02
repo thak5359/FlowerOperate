@@ -1370,6 +1370,8 @@ namespace Fungus.EditorUtils
                         DeselectAll();
 
                         menu.AddItem(new GUIContent("Add Block"), false, () => CreateBlock(flowchart, mousePosition / flowchart.Zoom - flowchart.ScrollPos));
+                        menu.AddItem(new GUIContent("Add Quest Accept Block"), false, () => CreateQuestAcceptBlock(flowchart, mousePosition / flowchart.Zoom - flowchart.ScrollPos));
+                        menu.AddItem(new GUIContent("Add Quest Reject Block"), false, () => CreateQuestRejectBlock(flowchart, mousePosition / flowchart.Zoom - flowchart.ScrollPos));
 
                         if (copyList.Count > 0)
                         {
@@ -1622,6 +1624,54 @@ namespace Fungus.EditorUtils
             Undo.RegisterCreatedObjectUndo(newBlock, "New Block");
 
             return newBlock;
+        }
+
+        public void CreateQuestAcceptBlock(Flowchart flowchart, Vector2 position)
+        {
+            Block acceptBlock = flowchart.CreateBlock(position);
+            acceptBlock.BlockName = "Quest Accept";
+            UpdateBlockCollection();
+            Undo.RegisterCreatedObjectUndo(acceptBlock, "Quest Accept Block");
+            AddDefaultQuestCommands(flowchart, acceptBlock);
+
+            flowchart.ClearSelectedBlocks();
+            flowchart.AddSelectedBlock(acceptBlock);
+            SetBlockForInspector(flowchart, acceptBlock);
+        }
+
+        public void CreateQuestRejectBlock(Flowchart flowchart, Vector2 position)
+        {
+            Block rejectBlock = flowchart.CreateBlock(position);
+            rejectBlock.BlockName = "Quest Reject";
+            UpdateBlockCollection();
+            Undo.RegisterCreatedObjectUndo(rejectBlock, "Quest Reject Block");
+            AddDefaultQuestCommands(flowchart, rejectBlock);
+
+            flowchart.ClearSelectedBlocks();
+            flowchart.AddSelectedBlock(rejectBlock);
+            SetBlockForInspector(flowchart, rejectBlock);
+        }
+
+        private void AddDefaultQuestCommands(Flowchart flowchart, Block block)
+        {
+            System.Type[] commandTypes = new System.Type[] {
+                typeof(Fungus.Say),
+                typeof(Fungus.Portrait),
+                typeof(Fungus.BroadcastMessage)
+            };
+
+            Undo.RecordObject(block, "Add Quest Commands");
+
+            foreach (var type in commandTypes)
+            {
+                var newCommand = Undo.AddComponent(block.gameObject, type) as Command;
+                newCommand.ParentBlock = block;
+                newCommand.ItemId = flowchart.NextItemId();
+                newCommand.OnCommandAdded(block);
+                block.CommandList.Add(newCommand);
+            }
+
+            PrefabUtility.RecordPrefabInstancePropertyModifications(block);
         }
 
         //prevent every DrawConnections from allocating a new list for all of its connections
