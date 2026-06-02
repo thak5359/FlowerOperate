@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 762597ede6ab0f741bc99a3bc600f250, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 6, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1023580402185108593
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 44857aeafdb0df249863f8216951d3bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b61020bb5678a3409dd9598523ddddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -220,7 +220,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 03acc8e21e4c7d94ea45dc516de9ab75, type: 2}
+  - {fileID: 2100000, guid: ae0324b9e38c15f4f8583ea39863f341, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -241,7 +241,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0ba8521f3a1bf434f8784b2a1d893f6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bcabfd576e9a2e640ba0081214a725af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -331,5 +331,9 @@ MonoBehaviour:
       z: 0
       w: 0
     <AppliedQualityFert>k__BackingField: 0
+  PlotTileRenderer: {fileID: 5787204077540344317}
   FlowerSpriteRenderer: {fileID: 911332243200406309}
-  <flowerSprite>k__BackingField: {fileID: 0}
+  <plotTileSprite>k__BackingField: {fileID: 21300000, guid: 7b61020bb5678a3409dd9598523ddddf,
+    type: 3}
+  <flowerSprite>k__BackingField: {fileID: 21300000, guid: bcabfd576e9a2e640ba0081214a725af,
+    type: 3}

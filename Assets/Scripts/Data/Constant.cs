@@ -8,8 +8,11 @@ public class Constant
     public static readonly FixedString64Bytes ADDRESSABLE_USEAREA = "Prefab_UseArea";
     public static readonly FixedString64Bytes ADDRESSABLE_PLOT= "Prefab_Plot";
 
-    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_DEFAULT = "Spr_Plot_Default";
-    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOT_WATERED = "Spr_Plot_Watered";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOTPROP_DEFAULT = "Spr_PlotProp_Default";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOTPROP_WATERED = "Spr_PlotProp_Watered";
+
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOTTILE_DEFAULT = "Spr_PlotTile_Default";
+    public static readonly FixedString64Bytes ADDRESSABLE_SPR_PLOTTILE_WATERED = "Spr_PlotTile_Watered";
 
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW0 = "Spr_Seed";
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW1 = "Spr_Grow[Spr_Grow1]";

@@ -51,7 +51,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     /// <summary>
     ///  기본 생성자.
     /// </summary>
-    public PlotData(int input_flowerId )
+    public PlotData(int input_flowerId)
     {
         Position = default;
         ItemId = input_flowerId;
@@ -104,8 +104,8 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
 
 
         int useAmount = 1;
-         seed.SubCount(ref useAmount);
-        if( useAmount ==1) return new FarmActionResult(FarmActionResult.ResultType.Failed, " seed amount is not enough");
+        seed.SubCount(ref useAmount);
+        if (useAmount == 1) return new FarmActionResult(FarmActionResult.ResultType.Failed, " seed amount is not enough");
 
         return new FarmActionResult(FarmActionResult.ResultType.Success);
     }
@@ -119,7 +119,12 @@ public class PlotProp : Prop
 
     public ref PlotData plotData => ref _plotData; //ref For access _plotData directly
 
+    [SerializeField] public SpriteRenderer PlotTileRenderer;
+
     [SerializeField] public SpriteRenderer FlowerSpriteRenderer;
+
+    [field: SerializeField] public Sprite plotTileSprite { get; private set; }
+
     [field: SerializeField] public Sprite flowerSprite { get; private set; }
 
     private Unity.Mathematics.Random _random;
@@ -391,9 +396,6 @@ public class PlotProp : Prop
     }
     #endregion
 
-
-
-
     private async UniTask changePlotSpr()
     {
         Debug.Log("changePlotSpr has been called");
@@ -401,11 +403,18 @@ public class PlotProp : Prop
             AddressableManager.ReleaseAsset(base.DisplaySprite);
 
         if (isWatered == true)
-            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_WATERED);
+        {
+            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_WATERED);
+            plotTileSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_WATERED);
+        }
         else
-            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOT_DEFAULT);
+        {
+            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_DEFAULT);
+            plotTileSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_DEFAULT);
+        }
 
         base.SpriteRenderer.sprite = base.DisplaySprite;
+        PlotTileRenderer.sprite = plotTileSprite;
     }
 
     private async UniTask changeFlowerSpr()

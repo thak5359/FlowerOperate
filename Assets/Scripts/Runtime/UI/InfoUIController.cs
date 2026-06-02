@@ -52,7 +52,7 @@ public class InfoUIController : MonoBehaviour
 
         // 4. 데이터 적용 (text 속성 변경)
         _yearLabel.text = $"{ProgressManager.getYear()}년";
-        _dateLabel.text = $"{ProgressManager.getMonth():D2}월 {ProgressManager.getDay():D2}일";
+        _dateLabel.text = $"{ProgressManager.getMonth()}월 {ProgressManager.getDay()}일";
         
         //요일과 시간 정보도 추가로 업데이트 가능합니다.
         if (_dayOfWeekLabel != null)
