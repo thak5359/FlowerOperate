@@ -1,5 +1,6 @@
 // 수정 위치: BroadcastMessage.cs 파일 전체
 
+using R3;
 using System;
 using UnityEngine;
 
@@ -12,10 +13,15 @@ namespace Fungus
     {
         // 외부에서 구독할 전역 이벤트
         public static event Action<string> OnFungusMessageBroadcasted;
+        public static event Action<int, int> onItemAdded;
 
         public static void Broadcast(string message)
         {
             OnFungusMessageBroadcasted?.Invoke(message);
+        }
+        public static void BroadcastItemDeliver(int id, int count)
+        {
+            onItemAdded?.Invoke(id, count);
         }
     }
     public enum FungusBroadcastType
