@@ -138,6 +138,8 @@ public class PlotProp : Prop
     {
         disposable = GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDay()).AddTo(GlobalEventManager.disposables);
         plotData.SetPosition(this.transform.position);
+
+        changePlotSpr().Forget();
     }
 
     private void Start()
