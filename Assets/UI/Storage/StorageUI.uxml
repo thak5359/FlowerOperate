@@ -1,16 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Template name="SlotRow" src="project://database/Assets/UI/Storage/SlotRow.uxml?fileID=9197481963319205126&amp;guid=b0f8fe1f068f85042ab5e15d6175f001&amp;type=3#SlotRow" />
+    <ui:Template name="SlotRow10" src="project://database/Assets/UI/Common/SlotRow10.uxml?fileID=9197481963319205126&amp;guid=a1fba23aea46bb24ba8937cb99a765ed&amp;type=3#SlotRow10" />
     <ui:Template name="StorageContainer" src="project://database/Assets/UI/Storage/StorageContainer.uxml?fileID=9197481963319205126&amp;guid=79acece248f90b943be790082ac635d8&amp;type=3#StorageContainer" />
     <Style src="project://database/Assets/UI/Storage/Storage--default.uss?fileID=7433441132597879392&amp;guid=7e42afa278c22e84393a5fb058718bfd&amp;type=3#Storage--default" />
     <Style src="project://database/Assets/UI/Storage/StorageContainer--default.uss?fileID=7433441132597879392&amp;guid=e1129d9bf5acf3546871b937a062bd4d&amp;type=3#StorageContainer--default" />
-    <ui:VisualElement name="rootVisualElement" style="flex-grow: 1; transition-property: all, ignored; transition-duration: 0s, 0s; transition-timing-function: ease, ease; transition-delay: 0s, 0s; display: flex; flex-direction: row;">
+    <ui:VisualElement name="rootVisualElement" style="flex-grow: 1; transition-property: all, ignored; transition-duration: 0s, 0s; transition-timing-function: ease, ease; transition-delay: 0s, 0s; display: flex; flex-direction: row; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold.ttf?fileID=12800000&amp;guid=364da4f09d6bb1c43828e1b1261ec182&amp;type=3#Maplestory Bold&quot;);">
         <ui:VisualElement name="MovableContainer" class="Storage--Default">
             <ui:VisualElement name="InventoryContainer" class="InventoryMode" style="position: relative; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; align-self: center; left: 0; top: 0; display: none;">
-                <ui:Instance template="SlotRow" />
-                <ui:Instance template="SlotRow" />
-                <ui:Instance template="SlotRow" />
-                <ui:Instance template="SlotRow" />
-                <ui:Instance template="SlotRow" />
+                <ui:Instance template="SlotRow10" />
+                <ui:Instance template="SlotRow10" />
+                <ui:Instance template="SlotRow10" />
+                <ui:Instance template="SlotRow10" />
+                <ui:Instance template="SlotRow10" />
             </ui:VisualElement>
             <ui:Instance template="StorageContainer" name="StorageContainer" class="hide-expansion StorageMode" style="position: absolute; display: flex;" />
         </ui:VisualElement>
