@@ -15,16 +15,16 @@ public static partial class ProgressManager
 {
     //13개월, 월 28일
     private static int Day = 999; // 몇일차
-    private static int totalDay = 364;
+    private static int DayInYear = 364;
     // 일정 관리하는 SO 데이터
     // 날짜 관리하는 알고리즘
 
     public static int getYear()
     {
-        return (Day / totalDay) + 3026;
+        return (Day / DayInYear) + 3026;
     }
 
-    public static int getMonth() => ((Day - 1) / 28 + 1);
+    public static int getMonth() => ((Day - 1) % DayInYear / 28 + 1);
     public static int getDay() => (Day - 1) % 28 + 1;
 
     public static int getPlayedDayOnGameSystem()
@@ -39,7 +39,7 @@ public static partial class ProgressManager
 
     public static Season getSeason(int day)  //날씨 enum 반환
     {
-        float dayRatio = (day%totalDay)/totalDay;
+        float dayRatio = (day%DayInYear)/DayInYear;
 
         if (dayRatio > 3.25f && dayRatio <= 6.5f)
             return Season.SUMMER;
