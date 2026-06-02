@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class PlayerFuncUnlock : MonoBehaviour
+[Flags]
+public enum PlayerFuncUnlock
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    Unknown = 0,
+    
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+    Inventory = 2,
+    Shop = 3
 }
