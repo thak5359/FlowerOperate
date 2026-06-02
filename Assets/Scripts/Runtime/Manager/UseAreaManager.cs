@@ -503,6 +503,8 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         if (slot < 0 || slot >= segment.Count) return null;
 
         return segment[slot];
+
+        
     }
 
     // 수정할 위치: UseAreaManager.cs 내부의 StartCharging 메서드 수정
