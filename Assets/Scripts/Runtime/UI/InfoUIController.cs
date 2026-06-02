@@ -35,6 +35,14 @@ public class InfoUIController : MonoBehaviour
         _dayOfWeekLabel = root.Q<Label>("DayOfWeekLabel");
         _timeLabel = root.Q<Label>("TimeLabel");
         _moneyLabel = root.Q<Label>("MoneyLabel");
+        if (_moneyLabel == null)
+        {
+            Debug.LogError("[InfoUIController] MoneyLabel을 UXML에서 찾을 수 없습니다!");
+        }
+        else
+        {
+            Debug.Log("[InfoUIController] MoneyLabel을 성공적으로 찾았습니다.");
+        }
         // 초기값 설정
         UpdateDateTime();
 
@@ -46,7 +54,7 @@ public class InfoUIController : MonoBehaviour
     {
         if (_yearLabel == null || _dateLabel == null)
         {
-            Debug.Log("레이블이 존재하지 않음");
+            Debug.LogError("[InfoUIController] YearLabel 또는 DateLabelDay가 존재하지 않습니다.");
             return;
         }
 
@@ -65,7 +73,15 @@ public class InfoUIController : MonoBehaviour
     private void UpdateMoney()
     {
         if (_moneyLabel != null)
-            _moneyLabel.text = _ownItemManager.GetData.GetMoney.ToString() + "$";
+        {
+            int currentMoney = _ownItemManager.GetData.GetMoney;
+            _moneyLabel.text = currentMoney.ToString() + "$";
+            Debug.Log($"[InfoUIController] MoneyLabel 텍스트를 '{_moneyLabel.text}'로 설정했습니다. (보유 금액: {currentMoney})");
+        }
+        else
+        {
+            Debug.LogWarning("[InfoUIController] UpdateMoney가 호출되었으나 _moneyLabel이 null입니다.");
+        }
     }
 
     public void UpdateDateTime(string Year)

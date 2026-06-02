@@ -42,6 +42,32 @@ public static class AddressableManager
         }
     }
 
+    // 동기 로드 (WaitForCompletion 활용)
+    public static T LoadAssetSync<T>(FixedString128Bytes address, FixedString128Bytes label = default) where T : Object
+    {
+        AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.ToString());
+        T result = handle.WaitForCompletion();
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            if (!label.IsEmpty)
+            {
+                if (!labelHandles.ContainsKey(label))
+                {
+                    labelHandles[label] = new List<AsyncOperationHandle>();
+                }
+                labelHandles[label].Add(handle);
+            }
+            return result;
+        }
+        else
+        {
+            Debug.LogError($"[Addressables] 동기 로드 실패: {address}");
+            Addressables.Release(handle);
+            return null;
+        }
+    }
+
     // 단일 에셋 메모리 해제 
     public static void ReleaseAsset<T>(T asset)
     {
