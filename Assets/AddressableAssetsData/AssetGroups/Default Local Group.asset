@@ -592,12 +592,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 58ec02c1afdac3f4f8bb32ffe76f8ff0
-    m_Address: Black_Lily_Seed
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Seed
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 59376c9974f2f6746b4175668fdc4c66
     m_Address: Purple_Rose_Seed
     m_ReadOnly: 0
