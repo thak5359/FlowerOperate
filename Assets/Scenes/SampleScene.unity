@@ -42071,6 +42071,8 @@ GameObject:
   - component: {fileID: 1618246325}
   - component: {fileID: 1618246332}
   - component: {fileID: 1618246400}
+  - component: {fileID: 1618246402}
+  - component: {fileID: 1618246401}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -43809,7 +43811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: -352.23837
+    x: -350.3153
     y: -467.12277
     width: 84.61536
     height: 40
@@ -43820,6 +43822,8 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1618246402}
+  - {fileID: 1618246401}
   - {fileID: 1618246319}
   - {fileID: 1618246377}
   - {fileID: 1618246365}
@@ -43846,7 +43850,7 @@ MonoBehaviour:
   hideIfVisited: 0
   interactable:
     booleanRef: {fileID: 0}
-    booleanVal: 1
+    booleanVal: 0
   setMenuDialog: {fileID: 0}
   hideThisOption:
     booleanRef: {fileID: 0}
@@ -44706,7 +44710,7 @@ MonoBehaviour:
   hideIfVisited: 0
   interactable:
     booleanRef: {fileID: 0}
-    booleanVal: 1
+    booleanVal: 0
   setMenuDialog: {fileID: 0}
   hideThisOption:
     booleanRef: {fileID: 0}
@@ -45011,7 +45015,7 @@ MonoBehaviour:
   hideIfVisited: 0
   interactable:
     booleanRef: {fileID: 0}
-    booleanVal: 1
+    booleanVal: 0
   setMenuDialog: {fileID: 0}
   hideThisOption:
     booleanRef: {fileID: 0}
@@ -45316,7 +45320,7 @@ MonoBehaviour:
   hideIfVisited: 0
   interactable:
     booleanRef: {fileID: 0}
-    booleanVal: 1
+    booleanVal: 0
   setMenuDialog: {fileID: 0}
   hideThisOption:
     booleanRef: {fileID: 0}
@@ -45899,16 +45903,50 @@ MonoBehaviour:
     _serializedList:
     - Key: 0
       Value:
-        command: {fileID: 1618246212}
+        command: {fileID: 1618246319}
     - Key: 1
       Value:
-        command: {fileID: 1618246212}
+        command: {fileID: 1618246377}
     - Key: 2
       Value:
-        command: {fileID: 1618246212}
+        command: {fileID: 1618246365}
     - Key: 3
       Value:
-        command: {fileID: 1618246212}
+        command: {fileID: 1618246353}
+--- !u!114 &1618246401
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a3172ddcadc0f847b6f04c816a981da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 207
+  indentLevel: 0
+  menuDictionary:
+    dictionaryRef: {fileID: 1618246400}
+    dictionaryVal:
+      _serializedList: []
+  questIds: 00000000
+--- !u!114 &1618246402
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d42648bdceb0547a583c050fd5a88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 206
+  indentLevel: 0
+  messageTarget: 3
 --- !u!1 &1624007580
 GameObject:
   m_ObjectHideFlags: 0

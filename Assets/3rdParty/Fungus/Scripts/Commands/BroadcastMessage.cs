@@ -12,8 +12,14 @@ namespace Fungus
     public static class FungusEventBridge
     {
         // 외부에서 구독할 전역 이벤트
+        public static event Action CallReceivedQuestId; 
         public static event Action<string> OnFungusMessageBroadcasted;
         public static event Action<int, int> onItemAdded;
+
+        private static int[] receivedQuestId;
+
+        public static ref int[] getQuestId => ref receivedQuestId;
+        public static void setQuestId(ref int[] arr) => receivedQuestId = arr;
 
         public static void Broadcast(string message)
         {
@@ -23,12 +29,17 @@ namespace Fungus
         {
             onItemAdded?.Invoke(id, count);
         }
+        public static void BroadcastCallQuestId()
+        {
+            CallReceivedQuestId?.Invoke();
+        }
     }
     public enum FungusBroadcastType
     {
         OpenChatBox,   // 대화창이 열릴 때 쏠 신호
         CloseChatBox,   // 대화창이 닫힐 때 쏠 신호
         OpenShop,   // 상점 오픈 시 사용할 신호
+        CallQuestList   // 수주한 퀘스트 리스트 받아올 때 쏠 신호
 
     }
 
@@ -45,8 +56,16 @@ namespace Fungus
             // ("OpenChatBox" 혹은 "CloseChatBox"라는 string으로 깔끔하게 뽑혀요!)
             string messageKey = messageTarget.ToString();
 
+            switch(messageKey)
+            {
+                case "CallQuestList":
+                    FungusEventBridge.BroadcastCallQuestId();
+                    break;
+                default:
+                    FungusEventBridge.Broadcast(messageKey);
+                    break;
+            }
             // 정적 브릿지를 통해 전역으로 신호를 안전하게 뿜어냅니다.
-            FungusEventBridge.Broadcast(messageKey);
             Debug.Log(messageKey);
 
             Continue();

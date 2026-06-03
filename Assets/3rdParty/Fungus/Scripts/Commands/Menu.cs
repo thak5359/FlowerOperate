@@ -43,6 +43,8 @@ namespace Fungus
 
         public MenuDialog SetMenuDialog  { get { return setMenuDialog; } set { setMenuDialog = value; } }
 
+        public virtual bool Interactable { get { return interactable.Value; } set { interactable.Value = value; } }
+        public virtual bool HideThisOption { get { return hideThisOption.Value; } set { hideThisOption.Value = value; } }
         public override void OnEnter()
         {
             if (setMenuDialog != null)
