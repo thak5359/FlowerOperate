@@ -52,7 +52,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.size
-    value: 31
+    value: 36
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.size
@@ -960,11 +960,71 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[30].m_ActionId
-    value: d8e3d9c2-036e-43f0-a0eb-254b2bd0c1ae
+    value: be90482b-c980-40d0-9a9d-0be12685b4fa
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_ActionEvents.Array.data[30].m_ActionName
-    value: MAP_CHATBOX/New action
+    value: MAP_FARM/SwapHotBarDown[/Keyboard/t]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_ActionId
+    value: eb894246-f68e-43e9-8cb5-c05a44c86c24
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[31].m_ActionName
+    value: MAP_FARM/SwapGearDefaultArea[/Keyboard/ctrl]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[32].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[32].m_ActionId
+    value: edfd7ec7-9d02-4e2e-9ae8-4410827039aa
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[32].m_ActionName
+    value: MAP_STORAGE/ToPrevBox[/Keyboard/q]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[33].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[33].m_ActionId
+    value: 89ca0a94-fc16-497d-83ed-ea2fddc469d2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[33].m_ActionName
+    value: MAP_STORAGE/ToNextBox[/Keyboard/e]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[34].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[34].m_ActionId
+    value: 85282a35-788f-4649-a1b9-93f0dbd9946e
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[34].m_ActionName
+    value: MAP_STORAGE/SortBox[/Keyboard/r]
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[35].m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[35].m_ActionId
+    value: f53bb640-03c6-41d3-86ff-bbda65c65ab2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ActionEvents.Array.data[35].m_ActionName
+    value: MAP_STORAGE/SortAllBox[/Keyboard/w]
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_NeverAutoSwitchControlSchemes
