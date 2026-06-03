@@ -11,18 +11,41 @@ namespace Fungus
     public static class FungusEventBridge
     {
         // 외부에서 구독할 전역 이벤트
+        public static event Action CallReceivedQuestId;
         public static event Action<string> OnFungusMessageBroadcasted;
+
+        public static event Action<int> CallQuestReward;
+        private static int[] receivedAvailableQuestId;
+        private static int[] receivedFinishableQuestId;
+
+        public static ref int[] getAvailableQuestId => ref receivedAvailableQuestId;
+        public static void setAvailableQuestId(ref int[] arr) => receivedAvailableQuestId = arr;
+
+        public static ref int[] getFinishableQuestId => ref receivedFinishableQuestId;
+        public static void setFinishableQuestId(ref int[] arr) => receivedFinishableQuestId = arr;
 
         public static void Broadcast(string message)
         {
             OnFungusMessageBroadcasted?.Invoke(message);
         }
+      
+        public static void BroadcastCallQuestId()
+        {
+            CallReceivedQuestId?.Invoke();
+        }
+
+        public static void BroadcastCallQuestReward(int questID)
+        {
+            CallQuestReward?.Invoke(questID);
+        }
+
     }
     public enum FungusBroadcastType
     {
         OpenChatBox,   // 대화창이 열릴 때 쏠 신호
         CloseChatBox,   // 대화창이 닫힐 때 쏠 신호
         OpenShop,   // 상점 오픈 시 사용할 신호
+        CallQuestList   // 수주한 퀘스트 리스트 받아올 때 쏠 신호
 
     }
 
@@ -39,11 +62,21 @@ namespace Fungus
             // ("OpenChatBox" 혹은 "CloseChatBox"라는 string으로 깔끔하게 뽑혀요!)
             string messageKey = messageTarget.ToString();
 
+            switch (messageKey)
+            {
+                case "CallQuestList":
+                    FungusEventBridge.BroadcastCallQuestId();
+                    break;
+                default:
+                    FungusEventBridge.Broadcast(messageKey);
+                    break;
+            }
             // 정적 브릿지를 통해 전역으로 신호를 안전하게 뿜어냅니다.
-            FungusEventBridge.Broadcast(messageKey);
             Debug.Log(messageKey);
 
             Continue();
+
+
         }
 
         public override string GetSummary()

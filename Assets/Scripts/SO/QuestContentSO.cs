@@ -34,8 +34,13 @@ public struct QuestContent
     public NPC Rewarder; // 퀘스트 보상을 주는 NPC (보통은 Publisher와 같지만, 다를 수도 있음)
 }
 
-[CreateAssetMenu(fileName ="QuestContentSO", menuName = "Quest/QuestContentSO", order = 2)]
+[CreateAssetMenu(fileName = "QuestContentSO", menuName = "Quest/QuestContentSO", order = 2)]
 public class QuestContentSO : ScriptableObject
 {
     [SerializeField] public QuestContent[] questContents;
+
+    public ref QuestContent GetQuestContentById(int questId)
+    {
+        return ref questContents[Array.FindIndex(questContents, qc => qc.QuestId == questId)];
+    }
 }
