@@ -84,11 +84,6 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
         _disposables.Dispose();
     }
-
-    private void OnFungusItemAdded(int id, int count)
-    {
-        AddItem(itemManager.CreateItem(id, count));
-    }
     protected virtual void Initialize(ItemInstantData data)
     {
         _Data = data;
