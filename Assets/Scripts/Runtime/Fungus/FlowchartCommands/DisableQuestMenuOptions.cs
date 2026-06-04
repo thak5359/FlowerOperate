@@ -14,7 +14,7 @@ namespace Fungus
         [SerializeField] protected DictionaryIntCommandData menuDictionary;
 
         [Tooltip("수주받은 퀘스트의 ID 리스트 (int 배열)")]
-        [SerializeField] protected int[] questIds = FungusEventBridge.getQuestId;
+        [SerializeField] protected int[] questIds = FungusEventBridge.getAvailableQuestId;
 
         public override void OnEnter()
         {

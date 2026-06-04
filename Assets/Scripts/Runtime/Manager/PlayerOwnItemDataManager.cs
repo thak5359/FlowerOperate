@@ -71,8 +71,6 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     void IInitializable.Initialize()
     {
-        // NPC 대화 중 아이템 지급 이벤트와 Additem 연결 (구독)
-        Fungus.FungusEventBridge.onItemAdded += OnFungusItemAdded;
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
 
@@ -81,8 +79,6 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     void IDisposable.Dispose()
     {
-        // NPC 대화 중 아이템 지급 이벤트 구독 해제
-        Fungus.FungusEventBridge.onItemAdded -= OnFungusItemAdded;
         
         inventoryRevisionChanged.Dispose();
 

@@ -26,9 +26,6 @@ namespace Fungus
             if (int.TryParse(idStr, out int idInt))
             {
                 int count = Mathf.Max(1, itemCount.Value);
-
-                Fungus.FungusEventBridge.BroadcastItemDeliver(idInt, count);
-                
                 Debug.Log($"[Fungus.AddPlayerItem] Event Fired: Item ID = {idInt}, Count = {count}");
             }
             else
