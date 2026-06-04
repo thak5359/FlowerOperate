@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Linq;
 using static Constant;
 using VContainer.Unity;
+using VContainer;
 
 public enum ContainerType
 {
@@ -29,6 +30,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
 
+    [Inject] private ItemManager itemManager;
 
     /// <summary>
     /// 원본 데이터 접근자 (Ref 반환으로 구조체 복사 방지)
@@ -69,6 +71,8 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     void IInitializable.Initialize()
     {
+        // NPC 대화 중 아이템 지급 이벤트와 Additem 연결 (구독)
+        Fungus.FungusEventBridge.onItemAdded += OnFungusItemAdded;
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
 
@@ -77,9 +81,17 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     void IDisposable.Dispose()
     {
+        // NPC 대화 중 아이템 지급 이벤트 구독 해제
+        Fungus.FungusEventBridge.onItemAdded -= OnFungusItemAdded;
+        
         inventoryRevisionChanged.Dispose();
 
         _disposables.Dispose();
+    }
+
+    private void OnFungusItemAdded(int id, int count)
+    {
+        AddItem(itemManager.CreateItem(id, count));
     }
     protected virtual void Initialize(ItemInstantData data)
     {

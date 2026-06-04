@@ -1,0 +1,73 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd">
+    <Style src="project://database/Assets/UI/Quest/QuestUI.uss?fileID=7433441132597879392&amp;guid=fb0b5613f792a5140976c05b2669659c&amp;type=3#QuestUI" />
+    <ui:VisualElement name="quest-bg-overlay" class="quest-overlay" style="-unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold%201%20SDF.asset?fileID=11400000&amp;guid=1a1ed7525bccd6d4cbb9d93f9f48a3c6&amp;type=2#Maplestory Bold 1 SDF&quot;); top: 0; left: 2px;">
+        <ui:VisualElement name="quest-window" class="quest-window" style="background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A17.png?fileID=2800000&amp;guid=9b804647d63cdd44fbb982b918c82e76&amp;type=3#A17&quot;);">
+            <ui:VisualElement name="quest-header" class="quest-header">
+                <ui:Label text="QUEST JOURNAL" name="quest-header-title" class="quest-header-title" style="color: rgb(130, 1, 66);" />
+                <ui:Button name="close-button" text="✕" class="close-button" />
+            </ui:VisualElement>
+            <ui:VisualElement name="quest-body" class="quest-body">
+                <ui:ScrollView name="quest-list-panel" show-vertical-scroller="true" class="quest-list-panel" style="background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A06.png?fileID=2800000&amp;guid=6f3972ccc06680748844c7e0ebdae043&amp;type=3#A06&quot;);">
+                    <ui:Label text="Active Quests" class="panel-section-title" style="position: relative; white-space: nowrap; margin-left: 11px; color: rgb(212, 79, 0);" />
+                    <ui:Button text="🌸 The Blooming Rose" class="quest-list-item active" style="color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A12.png?fileID=2800000&amp;guid=527718dc6d7ae7949b5031693c7c7104&amp;type=3#A12&quot;); padding-left: 14px; margin-left: 13px;" />
+                    <ui:Button text="💧 Watering the Lily" class="quest-list-item" style="color: rgb(255, 255, 255); margin-left: 13px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A12.png?fileID=2800000&amp;guid=527718dc6d7ae7949b5031693c7c7104&amp;type=3#A12&quot;);" />
+                    <ui:Button text="🪵 Collect Fertilizer" class="quest-list-item" style="margin-left: 13px; background-color: rgba(55, 55, 55, 0.02); background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A12.png?fileID=2800000&amp;guid=527718dc6d7ae7949b5031693c7c7104&amp;type=3#A12&quot;);" />
+                    <ui:Button text="🐝 Defeat Red Wasps" class="quest-list-item" style="margin-left: 13px; background-image: url(&quot;project://database/Assets/Art/Sprites/01.UI/SamplePSD/A12.png?fileID=2800000&amp;guid=527718dc6d7ae7949b5031693c7c7104&amp;type=3#A12&quot;);" />
+                </ui:ScrollView>
+                <ui:VisualElement class="vertical-divider" />
+                <ui:ScrollView name="quest-detail-panel" show-vertical-scroller="true" class="quest-detail-panel">
+                    <ui:VisualElement class="quest-detail-header">
+                        <ui:Label text="The Blooming Rose" name="quest-detail-title" class="quest-detail-title" />
+                        <ui:VisualElement class="npc-proposer-box">
+                            <ui:VisualElement class="npc-avatar" />
+                            <ui:VisualElement class="npc-info-container">
+                                <ui:Label text="Florist Lily" name="npc-name" class="npc-name" />
+                                <ui:Label text="&quot;Our roses seem to be losing their glow. Could you examine the soil and bring me some magical nectar?&quot;" name="npc-speech" class="npc-speech" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="quest-section">
+                        <ui:Label text="Quest Information" class="quest-section-title" />
+                        <ui:Label text="Lily, the town florist, is worried about the garden&apos;s state. The legendary Blooming Rose requires magical soil and pure dew to stay healthy. You must search the Whispering Woods to gather the necessary items before the petals fade." name="quest-description" class="quest-description" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="quest-section">
+                        <ui:Label text="Quest Objectives" class="quest-section-title" />
+                        <ui:VisualElement class="objective-item">
+                            <ui:Toggle value="true" pointer-events="none" class="objective-checkbox" />
+                            <ui:Label text="Examine the soil near the Ancient Tree (1/1)" class="objective-text completed" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="objective-item">
+                            <ui:Toggle value="false" pointer-events="none" class="objective-checkbox" />
+                            <ui:Label text="Gather Shimmering Dew Drops (2/5)" class="objective-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="objective-item">
+                            <ui:Toggle value="false" pointer-events="none" class="objective-checkbox" />
+                            <ui:Label text="Deliver items back to Lily (0/1)" class="objective-text" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="quest-section">
+                        <ui:Label text="Quest Completion Rewards" class="quest-section-title" />
+                        <ui:VisualElement class="rewards-container">
+                            <ui:VisualElement class="reward-slot">
+                                <ui:VisualElement class="reward-icon gold-icon" />
+                                <ui:Label text="500 Gold" class="reward-amount" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="reward-slot">
+                                <ui:VisualElement class="reward-icon exp-icon" />
+                                <ui:Label text="1,200 EXP" class="reward-amount" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="reward-slot item-reward">
+                                <ui:VisualElement class="reward-icon item-icon" />
+                                <ui:Label text="Rose Seed x3" class="reward-amount" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+            <ui:VisualElement name="quest-footer" class="quest-footer">
+                <ui:Button name="abandon-button" text="Abandon" class="footer-button abandon" />
+                <ui:Button name="complete-button" text="Complete Quest" class="footer-button complete" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

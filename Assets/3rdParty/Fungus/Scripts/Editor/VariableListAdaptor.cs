@@ -82,7 +82,31 @@ namespace Fungus.EditorUtils
 
         private float GetElementHeight(int index)
         {
-            return /*EditorGUI.GetPropertyHeight(this[index], null, true) +*/ EditorGUIUtility.singleLineHeight;
+            try
+            {
+                Variable variable = GetVarAt(index);
+                if (variable != null)
+                {
+                    VariableInfoAttribute variableInfo = VariableEditor.GetVariableInfo(variable.GetType());
+                    if (variableInfo != null && !variableInfo.IsPreviewedOnly)
+                    {
+                        SerializedObject variableObject = new SerializedObject(variable);
+                        SerializedProperty defaultProp = variableObject.FindProperty("value");
+                        if (defaultProp != null)
+                        {
+                            float height = EditorGUI.GetPropertyHeight(defaultProp, null, true);
+                            if (height > EditorGUIUtility.singleLineHeight)
+                            {
+                                return height + 4f;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return EditorGUIUtility.singleLineHeight;
         }
 
         private void RemoveItem(ReorderableList list)
@@ -173,6 +197,10 @@ namespace Fungus.EditorUtils
             {
                 itemRects[i] = position;
                 itemRects[i].width = itemWidths[i] - 5;
+                if (i != 2)
+                {
+                    itemRects[i].height = EditorGUIUtility.singleLineHeight;
+                }
 
                 for (int j = 0; j < i; ++j)
                 {
