@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: Character Name
+  nameText: "\uD5E5\uC2A4"
   nameColor: {r: 0.26415092, g: 0, b: 0, a: 1}
   soundEffect: {fileID: 0}
   portraits:
