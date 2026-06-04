@@ -64,8 +64,36 @@ public class QuestContentSO : ScriptableObject
             }
         }
 
+        throw new KeyNotFoundException($"Quest ID {questId}를 데이터셋에서 찾을 수 없습니다.");
+    }
+
+    public NPC GetQuestPublisher(int questId)
+    {
+        int left = 0;
+        int right = questContents.Length - 1;
+
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            int midId = questContents[mid].QuestId;
+
+            if (midId == questId)
+            {
+                return questContents[mid].Publisher; // 구조체 원본 참조 반환
+            }
+            else if (midId < questId)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+
         // ref 반환 구조상 찾지 못했을 때는 null을 줄 수 없으므로 안전하게 예외를 던집니다.
         // (기존 코드에서 -1 인덱스 참조로 에러가 나던 예외 상황을 안전하게 명시적 예외로 대체해요)
         throw new KeyNotFoundException($"Quest ID {questId}를 데이터셋에서 찾을 수 없습니다.");
     }
+
 }
