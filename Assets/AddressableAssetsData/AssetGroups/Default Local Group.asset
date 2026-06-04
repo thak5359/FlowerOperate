@@ -94,6 +94,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Seed
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d3ecd6f13e512f4581e147eda5f2364
+    m_Address: QuestMark_CanReceive
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0d7790362e7085a4a8c579632b853fbb
     m_Address: Pink_Tulip_Seed
     m_ReadOnly: 0
@@ -305,6 +310,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Gear
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2aeefa97988c2b241b377b8361ddd9b8
+    m_Address: Exclamation_mark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2bae57ce4bf5d5e4faab9692279c2c7d
     m_Address: Red_Cosmos
@@ -1160,6 +1170,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9acd8419ae57d5b4993942b82abd3f6d
+    m_Address: QuestMark_Progressing
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9b532ae0214fe834381bff7db7e42cbf
     m_Address: Purple_Lotus_Seed
     m_ReadOnly: 0
@@ -1210,6 +1225,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a142ed8b82cdf854bb28b4f71b5e6e13
     m_Address: Yellow_Carnation
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a15dbdc4f2ed7eb468dbaa6c8964d730
+    m_Address: Escort_Sprite
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
