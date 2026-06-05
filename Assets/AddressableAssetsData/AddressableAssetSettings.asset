@@ -97,6 +97,7 @@ MonoBehaviour:
     - Gem
     - ScriptableObjects
     - Gear
+    - Quest
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: d4758836a0623c84f98807e42f4c5dd4, type: 2}

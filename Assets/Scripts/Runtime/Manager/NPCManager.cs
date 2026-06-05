@@ -33,6 +33,14 @@ public class NPCManager : IInitializable
     public void RegisterQuestState(int id, QuestProgressState state)
     {
         ReceivedQuestState.Add(id, state);
+        if(NpcDict.TryGetValue(state.Publisher, out NpcClass npc))
+        {
+            npc.ChangeSprite(state.State);
+        }
+        else
+        {
+            Debug.LogError("[Error] NPCManager : RegisterQuestState함수에 전달한 NPC Enum이 딕셔너리에 존재하지 않음.");
+        }
     }
 
     public void ChangeQuestState(int id, QuestState state)
@@ -41,6 +49,7 @@ public class NPCManager : IInitializable
         {
             ProgressState.State = state;
             ReceivedQuestState[id] = ProgressState;
+            NpcDict[ProgressState.Publisher].ChangeSprite(state);
         }
         else
         {
@@ -50,6 +59,14 @@ public class NPCManager : IInitializable
 
     public void RemoveQuestState(int id)
     {
+        if(ReceivedQuestState.TryGetValue(id, out QuestProgressState ProgressState))
+        {
+            NpcDict[ProgressState.Publisher].ChangeSprite(QuestState.Unknown);
+        }
+        else
+        {
+            Debug.LogError("[Error] NPCManager : RemoveQuestState함수에 전달한 퀘스트ID가 딕셔너리에 존재하지 않음.");
+        }
         ReceivedQuestState.Remove(id);
     }
 }
