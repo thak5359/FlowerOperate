@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6594668610560439101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6748099731357240719}
+  - component: {fileID: 1751025697208462071}
+  m_Layer: 0
+  m_Name: Cast_Koharu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6748099731357240719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594668610560439101}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6375075, y: -3.9752889, z: 2.1105378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1751025697208462071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6594668610560439101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da24a8af2b255e345a21d64ba12cdfb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: "\uCF54\uD558\uB8E8"
+  nameColor: {r: 0.9725491, g: 0.21568629, b: 0.92549026, a: 1}
+  soundEffect: {fileID: 0}
+  portraits:
+  - {fileID: -713887980, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  portraitsFace: 0
+  setSayDialog: {fileID: 0}
+  description: 
+  effectAudioSource: {fileID: 0}
+  voiceAudioSource: {fileID: 0}
+  facePortraits:
+  - {fileID: -434178728, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -108559335, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -1567287018, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 665652211, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 7488402, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 819837312, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 1132389998, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 1113557126, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -263990028, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -74530819, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 552169550, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -1069996708, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: -1821325154, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  - {fileID: 615759573, guid: 7dcfb1030c00b1a41af3186fb539f7b0, type: 3}
+  faceOffset: {x: -21, y: 211}
+  faceScale: 0.9
+  bodyTargetHeight: 100
