@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 22447ad63a032fc4da27e89f885a436f
+guid: 5c09832cd1c3cc24fa9d64206f99e2b7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -46,8 +46,8 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 7
-  spritePivot: {x: 0.5, y: 0}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -97,22 +97,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spr_C00_LD_0
+      name: Spr_C01_LD_Crop_0
       rect:
         serializedVersion: 2
-        x: 314
-        y: 15
-        width: 683
-        height: 2548
+        x: 114
+        y: 0
+        width: 1194
+        height: 1908
       alignment: 9
-      pivot: {x: 0.26, y: 0}
+      pivot: {x: 0.51, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecbc5655685bae24ba3320f31b639154
-      internalID: -1241970962
+      spriteID: 6c659363377b8a547a4d2bd0c79e4727
+      internalID: -1199871206
       vertices: []
       indices: 
       edges: []
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Spr_C00_LD_0: -1241970962
+      Spr_C01_LD_Crop_0: -1199871206
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
