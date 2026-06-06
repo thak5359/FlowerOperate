@@ -92,6 +92,26 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     protected virtual void Initialize(ItemInstantData data)
     {
         _Data = data;
+
+        // 세이브 데이터 역직렬화 직후, 각 아이템들의 DB/에셋 캐시 데이터를 복구해 줍니다.
+        var invList = _Data.GetItemList(ContainerType.INVENTORY);
+        if (invList != null)
+        {
+            for (int i = 0; i < invList.Count; i++)
+            {
+                invList[i]?.OnLoadAsync();
+            }
+        }
+
+        var gearList = _Data.GetItemList(ContainerType.GEAR);
+        if (gearList != null)
+        {
+            for (int i = 0; i < gearList.Count; i++)
+            {
+                gearList[i]?.OnLoadAsync();
+            }
+        }
+
         PublishDataChanged();
     }
 
@@ -279,12 +299,45 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         return false;
     }
 
+    public void NotifyDataChanged()
+    {
+        var invList = _Data.GetItemList(ContainerType.INVENTORY);
+        if (invList != null)
+        {
+            for (int i = 0; i < invList.Count; i++)
+            {
+                if (invList[i] != null && (invList[i].Id <= 0 || invList[i].Count <= 0))
+                {
+                    invList[i] = null;
+                }
+            }
+        }
+
+        var gearList = _Data.GetItemList(ContainerType.GEAR);
+        if (gearList != null)
+        {
+            for (int i = 0; i < gearList.Count; i++)
+            {
+                if (gearList[i] != null && (gearList[i].Id <= 0 || gearList[i].Count <= 0))
+                {
+                    gearList[i] = null;
+                }
+            }
+        }
+        PublishDataChanged();
+    }
+
     public void CalculateMoneyInSellingBox()
     {
-        var sellingBox = _Data.GetItemList(ContainerType.SELLING).ToList<GameItem>();
-        if (sellingBox.Count == 0 || sellingBox.Count(item => item.Id == 0) == 50) return;
+        var rawList = _Data.GetItemList(ContainerType.SELLING);
+        if (rawList == null) return;
 
-        int totalMoney = sellingBox.Sum(item => GlobalItemDB.GetPrice(item.Id) * item.Count);
+        var sellingBox = rawList.ToList<GameItem>();
+        if (sellingBox.Count == 0 || sellingBox.All(item => item == null || item.Id == 0)) return;
+
+        int totalMoney = sellingBox
+            .Where(item => item != null && item.Id > 0 && item.Count > 0)
+            .Sum(item => GlobalItemDB.GetPrice(item.Id) * item.Count);
         _Data.SetItemList(ContainerType.SELLING, new List<GameItem>(new GameItem[50]));
         _Data.AddMoney(totalMoney);
 

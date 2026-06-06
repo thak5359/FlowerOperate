@@ -18,7 +18,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
     public FlowerState State { get; set; }
     public FlowerGrade Grade { get; set; }
 
-    public int4 GrowthDays;
+    public int4 GrowthDays { get; set; }
 
     public int harvestAmount { get; set; }
     public bool IsAppliedBountyFert { get; private set; }
@@ -91,7 +91,7 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
         }
 
-        ItemId = seed.Id;
+        ItemId = seed.Id + 1000;
 
         if (seed.Grade != FlowerGrade.Unknown)
 
@@ -100,14 +100,63 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
             Grade = FlowerGrade.Lv0;
 
         Growth = FlowerGrowth.Seed;
-        State = FlowerState.Vivid;
+        if (State != FlowerState.Moist)
+        {
+            State = FlowerState.Vivid;
+        }
 
+        if (GlobalItemDB.HasFlower(ItemId) == true)
+        {
+            FlowerItemBlobData data = GlobalItemDB.GetFlowerRef(ItemId);
+            harvestAmount = data.HarvestAmount;
+        }
+        else
+        {
+            harvestAmount = 1;
+        }
 
         int useAmount = 1;
         seed.SubCount(ref useAmount);
         if (useAmount == 1) return new FarmActionResult(FarmActionResult.ResultType.Failed, " seed amount is not enough");
 
         return new FarmActionResult(FarmActionResult.ResultType.Success);
+    }
+
+    public void GrowUp()
+    {
+        // 식물이 이미 시든 상태이거나 ITEMID_DEADCROPS 이면 불필요한 연산 없이 그대로 반환
+        if (State == FlowerState.Wilted || ItemId == ITEMID_DEADCROPS)
+        {
+            return;
+        }
+
+        if (State == FlowerState.Moist)
+        {
+            // 물을 준 상태 -> 성장하고 마른 상태(Vivid)로 변경
+            if (ItemId != 0 && Growth < FlowerGrowth.Bloom && ItemId != ITEMID_DEADCROPS)
+            {
+                Growth++;
+            }
+            State = FlowerState.Vivid;
+        }
+        else
+        {
+            // 물을 주지 않은 상태 -> 작물이 있다면 건조 단계 진행 (Vivid -> Dried -> Wilted)
+            // 단, 밭에 심어진 것이 씨앗(Seed) 상태일 경우에는 건조 악화 및 썩음 단계를 진행하지 않음.
+            if (ItemId != 0 && ItemId != ITEMID_DEADCROPS && Growth != FlowerGrowth.Seed)
+            {
+                if (State != FlowerState.Wilted)
+                {
+                    State = State.Next<FlowerState>();
+                }
+
+                // 이틀 연속 물을 주지 않으면 시든 작물로 사망
+                if (State == FlowerState.Wilted)
+                {
+                    ItemId = ITEMID_DEADCROPS;
+                }
+            }
+        }
     }
 }
 
@@ -119,33 +168,54 @@ public class PlotProp : Prop
 
     public ref PlotData plotData => ref _plotData; //ref For access _plotData directly
 
-    [SerializeField] public SpriteRenderer PlotTileRenderer;
 
-    [SerializeField] public SpriteRenderer FlowerSpriteRenderer;
-
+    // 밭 더미는 base에 존재하는 스프라이트로!
+    [SerializeField] public SpriteRenderer PlotTileRenderer; // 바닥 타일용 스프라이트
+    [SerializeField] public SpriteRenderer FlowerSpriteRenderer; // 꽃 스프라이트 
+    
     [field: SerializeField] public Sprite plotTileSprite { get; private set; }
-
     [field: SerializeField] public Sprite flowerSprite { get; private set; }
 
     private Unity.Mathematics.Random _random;
 
-    private bool isWatered = false;
-    private bool isDried = false; // 물을 주지 않은 채 하루가 경과함.
-
     private IDisposable disposable;
+
+    private FlowerState lastPlotVisualState = FlowerState.Unknown;
+    private int lastFlowerItemId = -1;
+    private FlowerGrowth lastFlowerGrowth = FlowerGrowth.Unknown;
+    private FlowerState lastFlowerState = FlowerState.Unknown;
+
+    private void ResetVisualCache()
+    {
+        lastPlotVisualState = FlowerState.Unknown;
+        lastFlowerItemId = -1;
+        lastFlowerGrowth = FlowerGrowth.Unknown;
+        lastFlowerState = FlowerState.Unknown;
+    }
 
     public void OnEnable()
     {
-        disposable = GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDay()).AddTo(GlobalEventManager.disposables);
-        plotData.SetPosition(this.transform.position);
+        disposable = GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDay().Forget()).AddTo(GlobalEventManager.disposables);
+        if (plotData.Position == Vector3.zero)
+        {
+            plotData.SetPosition(this.transform.position);
+        }
 
         changePlotSpr().Forget();
     }
 
     private void Start()
     {
-        PlotManager.Instance.GetPlotDataDict.Add(this.Id, plotData);
-        _random = new Unity.Mathematics.Random((uint)DateTime.Now.Ticks);
+        var manager = GetComponentInParent<PlotManager>();
+        if (manager != null)
+        {
+            manager.GetPlotDataDict[this.Id] = plotData;
+        }
+        else
+        {
+            Debug.LogWarning($"[PlotProp] 부모 객체에서 PlotManager를 찾을 수 없습니다. ID: {this.Id}");
+        }
+        _random = new Unity.Mathematics.Random((uint)(DateTime.Now.Ticks + this.Id));
     }
 
     public override void OnDisable()
@@ -160,11 +230,13 @@ public class PlotProp : Prop
     /// <summary>
     /// 다음 날이 되기 전에 미리 다음날에 맞춰 성장 단계를 변경한뒤 저장됩니다. (물 주기, 시듦, 성장)
     /// </summary>
-    private async void OnNextDay()
+    private async UniTask OnNextDay()
     {
         if (GrowUp().Result == FarmActionResult.ResultType.Success)
         {
             await changeFlowerSpr();
+            if (this == null) return;
+            await changePlotSpr();
         }
     }
 
@@ -172,24 +244,42 @@ public class PlotProp : Prop
     {
         try
         {
-            if (isWatered == true)
+            // 식물이 이미 시든 상태이거나 ITEMID_DEADCROPS인 경우 성장은 안 하지만 흙은 다음 날 마르도록 처리
+            if (_plotData.State == FlowerState.Wilted || _plotData.ItemId == ITEMID_DEADCROPS)
             {
-                changePlotSpr().Forget();
-                _plotData.State = _plotData.State.Next<FlowerState>();
-                isWatered = false;
+                if (_plotData.State == FlowerState.Moist)
+                {
+                    _plotData.State = FlowerState.Vivid;
+                }
+                return new FarmActionResult(FarmActionResult.ResultType.Success);
+            }
 
-                isDried = false;
-
-                if (plotData.Growth < FlowerGrowth.Bloom && plotData.ItemId != 0) plotData.Growth++;
+            if (_plotData.State == FlowerState.Moist)
+            {
+                // 물을 준 상태 -> 성장하고 마른 상태(Vivid)로 변경
+                if (_plotData.ItemId != 0 && _plotData.Growth < FlowerGrowth.Bloom && _plotData.ItemId != ITEMID_DEADCROPS)
+                {
+                    _plotData.Growth++;
+                }
+                _plotData.State = FlowerState.Vivid;
             }
             else
             {
-                if (isDried == true)
+                // 물을 주지 않은 상태 -> 작물이 있다면 건조 단계 진행 (Vivid -> Dried -> Wilted)
+                // 단, 밭에 심어진 것이 씨앗(Seed) 상태일 경우에는 건조 악화 및 썩음 단계를 진행하지 않음.
+                if (_plotData.ItemId != 0 && _plotData.ItemId != ITEMID_DEADCROPS && _plotData.Growth != FlowerGrowth.Seed)
                 {
-                    // 시든 꽃 ID 로 변경함.
+                    if (_plotData.State != FlowerState.Wilted)
+                    {
+                        _plotData.State = _plotData.State.Next<FlowerState>();
+                    }
+
+                    // 이틀 연속 물을 주지 않으면 시든 작물로 사망
+                    if (_plotData.State == FlowerState.Wilted)
+                    {
+                        _plotData.ItemId = ITEMID_DEADCROPS;
+                    }
                 }
-                else
-                    isDried = true;
             }
             return new FarmActionResult(FarmActionResult.ResultType.Success);
         }
@@ -210,13 +300,17 @@ public class PlotProp : Prop
     {
         try
         {
-            if (plotData.ItemId > 0 || item.Count <= 0)
+            if (plotData.ItemId != 0 || item.Count <= 0)
             {
                 return new FarmActionResult(FarmActionResult.ResultType.Failed); ;
             }
             else if (plotData.ItemId == 0)
             {
                 FarmActionResult result = _plotData.Sowing(in item);
+                if (result.Result == FarmActionResult.ResultType.Success)
+                {
+                    changeFlowerSpr().Forget();
+                }
                 return result;
             }
             else
@@ -240,10 +334,12 @@ public class PlotProp : Prop
         try
         {
             Debug.Log("Watering method is called");
-            if (isWatered == false)
+            // 시든 작물이어도 흙에 물을 줄 수 있도록 허용 (이전의 Wilted / ITEMID_DEADCROPS 시 물주기 차단 조건 제거)
+
+            if (_plotData.State != FlowerState.Moist)
             {
                 Debug.Log("switching sprite...");
-                isWatered = true;
+                _plotData.State = FlowerState.Moist;
                 changePlotSpr().Forget();
                 Debug.Log("switching Clear");
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
@@ -266,6 +362,7 @@ public class PlotProp : Prop
             Debug.Log("Runing has been called");
             if (plotData.ItemId == 0)
             {
+                GetComponentInParent<PlotManager>().GetPlotDataDict.Remove(this.Id);
                 Destroy(this.gameObject);
             }
             else
@@ -291,7 +388,10 @@ public class PlotProp : Prop
     /// </summary>
     public FarmActionResult ApplyBountyFertilizer(in FertilizerGrade FertLV) // 수확 개수를 증가
     {
-
+        if (_plotData.State == FlowerState.Wilted || _plotData.ItemId == ITEMID_DEADCROPS)
+        {
+            return new FarmActionResult(FarmActionResult.ResultType.Failed);
+        }
 
         switch (FertLV)
         {
@@ -328,6 +428,10 @@ public class PlotProp : Prop
     /// </summary>
     public FarmActionResult ApplyQualityFertilizer(in FertilizerGrade FertLV)
     {
+        if (_plotData.State == FlowerState.Wilted || _plotData.ItemId == ITEMID_DEADCROPS)
+        {
+            return new FarmActionResult(FarmActionResult.ResultType.Failed);
+        }
 
         if (_plotData.AppliedQualityFert != FertilizerGrade.Unknown)
         {
@@ -354,28 +458,70 @@ public class PlotProp : Prop
     {
         try
         {
-
-
-            if (_random.NextFloat() < 0.05f)
+            if ( plotData.ItemId != ITEMID_DEADCROPS && plotData.Growth == FlowerGrowth.Bloom)
             {
-                _plotData.harvestAmount++;
-                if (gear.Grade.ToValue() >= 5)
-                    _plotData.Grade = _plotData.Grade.Next<FlowerGrade>();
-            }
+                // 기본 5% 확률로 등급업을 시도함
+                if (_random.NextFloat() < 0.05f)
+                {
+                    _plotData.harvestAmount++;
 
+                }
+                //5% 확률로 장비가 플래티넘 이상일 경우 다음 작물을 등급으로 올림
+                if (_random.NextFloat() < 0.05f)
+                {
+                    if (gear.Grade.ToValue() >= 5)
+                        _plotData.Grade = _plotData.Grade.Next<FlowerGrade>();
+                }
 
-            if (isWatered == true && plotData.Growth == FlowerGrowth.Bloom)
-            {
+               
+
                 for (int i = 0; i < _plotData.harvestAmount; i++)
                 {
-
-
-                    ItemFactory.CreateItemPrefab(new FlowerItem(_plotData.ItemId, 1, TryQualityUp()), _plotData.Position);
+                    ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(_plotData.ItemId, 1, _plotData.Grade), _plotData.Position);
                 }
+
+                _plotData.ItemId = 0;
+                _plotData.Growth = FlowerGrowth.Unknown;
+                _plotData.State = (_plotData.State == FlowerState.Moist) ? FlowerState.Moist : FlowerState.Vivid;
+                _plotData.harvestAmount = 0;
+                _plotData.AppliedQualityFert = FertilizerGrade.Unknown;
+
+                if (flowerSprite != null)
+                {
+                    AddressableManager.ReleaseAsset(flowerSprite);
+                    flowerSprite = null;
+                }
+                FlowerSpriteRenderer.sprite = null;
+
+                changePlotSpr().Forget();
+                changeFlowerSpr().Forget();
+
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
-            else
-                return new FarmActionResult(FarmActionResult.ResultType.Failed);
+            else if (plotData.State == FlowerState.Wilted || plotData.ItemId == ITEMID_DEADCROPS)
+            {
+                ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(ITEMID_DEADCROPS, 1), _plotData.Position);
+
+                // 시든 작물 수확 후 밭 리셋
+                _plotData.ItemId = 0;
+                _plotData.Growth = FlowerGrowth.Unknown;
+                _plotData.State = FlowerState.Vivid;
+                _plotData.harvestAmount = 0;
+                _plotData.AppliedQualityFert = FertilizerGrade.Unknown;
+
+                if (flowerSprite != null)
+                {
+                    AddressableManager.ReleaseAsset(flowerSprite);
+                    flowerSprite = null;
+                }
+                FlowerSpriteRenderer.sprite = null;
+
+                changePlotSpr().Forget();
+                changeFlowerSpr().Forget();
+
+                return new FarmActionResult(FarmActionResult.ResultType.Success);
+            }
+            return new FarmActionResult(FarmActionResult.ResultType.Failed);
         }
         catch (Exception e)
         {
@@ -399,19 +545,43 @@ public class PlotProp : Prop
 
     private async UniTask changePlotSpr()
     {
+        if (this == null) return;
         Debug.Log("changePlotSpr has been called");
+        bool wantWatered = (_plotData.State == FlowerState.Moist);
+        FlowerState targetVisualState = wantWatered ? FlowerState.Moist : FlowerState.Vivid;
+
+        if (lastPlotVisualState == targetVisualState && base.SpriteRenderer.sprite != null && PlotTileRenderer.sprite != null)
+        {
+            return;
+        }
+
+        lastPlotVisualState = targetVisualState;
+
         if (base.DisplaySprite != null)
             AddressableManager.ReleaseAsset(base.DisplaySprite);
+        if (plotTileSprite != null)
+            AddressableManager.ReleaseAsset(plotTileSprite);
 
-        if (isWatered == true)
+
+        if (wantWatered)
         {
-            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_WATERED);
-            plotTileSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_WATERED);
+            var wateredProp = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_WATERED);
+            if (this == null) return;
+            base.DisplaySprite = wateredProp;
+
+            var wateredTile = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_WATERED);
+            if (this == null) return;
+            plotTileSprite = wateredTile;
         }
         else
         {
-            base.DisplaySprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_DEFAULT);
-            plotTileSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_DEFAULT);
+            var defaultProp = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTPROP_DEFAULT);
+            if (this == null) return;
+            base.DisplaySprite = defaultProp;
+
+            var defaultTile = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_PLOTTILE_DEFAULT);
+            if (this == null) return;
+            plotTileSprite = defaultTile;
         }
 
         base.SpriteRenderer.sprite = base.DisplaySprite;
@@ -420,33 +590,81 @@ public class PlotProp : Prop
 
     private async UniTask changeFlowerSpr()
     {
+        if (this == null) return;
         if (_plotData.ItemId == 0)
         {
             Debug.Log("Id is 0 but changeFlowerSpr called");
+            if (flowerSprite != null)
+            {
+                AddressableManager.ReleaseAsset(flowerSprite);
+                flowerSprite = null;
+            }
+            if (FlowerSpriteRenderer != null)
+            {
+                FlowerSpriteRenderer.sprite = null;
+            }
+            lastFlowerItemId = 0;
+            lastFlowerGrowth = FlowerGrowth.Unknown;
+            lastFlowerState = FlowerState.Unknown;
             return;
         }
+
+        bool isWilted = (_plotData.ItemId == ITEMID_DEADCROPS || _plotData.State == FlowerState.Wilted);
+
+        if (lastFlowerItemId == _plotData.ItemId &&
+            lastFlowerGrowth == _plotData.Growth &&
+            lastFlowerState == _plotData.State &&
+            FlowerSpriteRenderer != null && FlowerSpriteRenderer.sprite != null)
+        {
+            return;
+        }
+
+        lastFlowerItemId = _plotData.ItemId;
+        lastFlowerGrowth = _plotData.Growth;
+        lastFlowerState = _plotData.State;
 
         if (flowerSprite != null)
             AddressableManager.ReleaseAsset(flowerSprite);
 
-        switch (_plotData.Growth)
+        Sprite loadedSprite = null;
+
+        if (isWilted)
         {
-            case FlowerGrowth.Unknown:
-                flowerSprite = null;
-                break;
-            case FlowerGrowth.Seed:
-                flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW0);
-                break;
-            case FlowerGrowth.Sprout:
-                flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW1);
-                break;
-            case FlowerGrowth.Stalk:
-                flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW2);
-                break;
-            case FlowerGrowth.Bloom:
-                ItemBaseBlobData data = GlobalItemDB.GetBaseRef(_plotData.ItemId);
-                flowerSprite = await AddressableManager.LoadAssetAsync<Sprite>(data.SpriteAddress);
-                break;
+            loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW4);
+            if (this == null) return;
+        }
+        else
+        {
+            switch (_plotData.Growth)
+            {
+                case FlowerGrowth.Unknown:
+                    loadedSprite = null;
+                    break;
+                case FlowerGrowth.Seed:
+                    loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW0);
+                    break;
+                case FlowerGrowth.Sprout:
+                    loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW1);
+                    break;
+                case FlowerGrowth.Stalk:
+                    loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW2);
+                    break;
+                case FlowerGrowth.Bud:
+                    loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(ADDRESSABLE_SPR_GROW3);
+                    break;
+                case FlowerGrowth.Bloom:
+                    ItemBaseBlobData data = GlobalItemDB.GetBaseRef(_plotData.ItemId);
+                    loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(data.SpriteAddress);
+                    break;
+            }
+            if (this == null) return;
+        }
+
+        flowerSprite = loadedSprite;
+
+        if (FlowerSpriteRenderer != null)
+        {
+            FlowerSpriteRenderer.sprite = flowerSprite;
         }
     }
 
@@ -458,13 +676,19 @@ public class PlotProp : Prop
     {
         this.transform.position = data.Position;
         _plotData = data;
+        ResetVisualCache();
+        changePlotSpr().Forget();
+        changeFlowerSpr().Forget();
     }
 
     public override void OnLoadAsync(IPropData propData)
     {
-        PlotManager.Instance.GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
-        base.OnLoadAsync(propData);
+        GetComponentInParent<PlotManager>().GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
+        ResetVisualCache();
         this.plotData = (PlotData)propData;
         this.transform.position = plotData.Position;
+        GetComponentInParent<PlotManager>().GetPlotDataDict[this.Id] = this.plotData;
+        changePlotSpr().Forget();
+        changeFlowerSpr().Forget();
     }
 }

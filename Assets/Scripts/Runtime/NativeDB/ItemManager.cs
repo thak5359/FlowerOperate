@@ -110,9 +110,10 @@ public sealed class ItemManager : IAsyncStartable, IDisposable
         return baseData.SubType switch
         {
             ItemSubType.Flower => new FlowerItem(itemId, count, grade_F),
+            ItemSubType.Seed => new FlowerItem(itemId, count, grade_F),
             ItemSubType.Equipment => new GearItem(itemId, count, grade_G),
             ItemSubType.Fertilizer => new FertilizerItem(itemId, count),
-            _ => new GameItem(itemId, count)
+            _ => new CommonItem(itemId, count)
         };
     }
 

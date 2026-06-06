@@ -18,8 +18,7 @@ public class HotbarManager : MonoBehaviour
     [SerializeField] List<ItemObjectData> items;
     [SerializeField] List<HotBarSlot> slots;
 
-    private Sprite oldSprite;
-    private Sprite newSprite;
+
 
     private int cachedInt;
     private int pointingSlot = -1;
@@ -160,7 +159,9 @@ public class HotbarManager : MonoBehaviour
         var currentSegment = _itemDataManager.GetInventorySegment(pointingInventoryArray);
 
         // 2. 해당 줄에서 현재 가리키고 있는 슬롯의 아이템을 반환해요 (빈 슬롯이면 null이 반환됩니다).
-        return currentSegment[pointingSlot];
+        GameItem item = currentSegment[pointingSlot];
+        if (item == null || item.Id <= 0 || item.Count <= 0) return null;
+        return item;
     }
 
 
@@ -172,15 +173,15 @@ public class HotbarManager : MonoBehaviour
     private async UniTask UpdateHotSlotItem(int i, GameItem input_item)
     {
         var slot = slots[i];
+        bool isEmpty = input_item == null || input_item.Id <= 0 || input_item.Count <= 0;
 
         // 1. 이미지(스프라이트) 갱신 로직
         if (slot.ItemIcon != null)
         {
-            oldSprite = slot.ItemIcon.sprite;
-            newSprite = null;
+            Sprite newSprite = null;
 
-            // input_item이 null이 아닐 때만 이미지를 로드하거나 가져옵니다.
-            if (input_item != null)
+            // input_item이 비어있지 않을 때만 이미지를 로드하거나 가져옵니다.
+            if (!isEmpty)
             {
                 if (input_item.DisplaySprite != null)
                 {
@@ -189,34 +190,30 @@ public class HotbarManager : MonoBehaviour
                 else if (!string.IsNullOrEmpty(input_item.SpriteAddress.ToString()))
                 {
                     Debug.Log("이미지 로드 시도!");
-                    newSprite = await AddressableManager.LoadAssetAsync<Sprite>(input_item.SpriteAddress);
+                    Sprite spr = await AddressableManager.LoadAssetAsync<Sprite>(input_item.SpriteAddress);
+                    if (spr != null)
+                    {
+                        newSprite = spr;
+                    }
                 }
             }
-
 
             if (newSprite != null)
             {
                 slot.ItemIcon.sprite = newSprite;
                 slot.ItemIcon.enabled = true; // 이미지 활성화
-
-                // 새 이미지로 덮어씌웠으므로, 이전 이미지가 남아있다면 메모리 해제
-                if (oldSprite != null && oldSprite != newSprite)
-                {
-                    Debug.Log("메모리 해제 시도!");
-                    AddressableManager.ReleaseAsset(oldSprite);
-                }
             }
             else
             {
-                // 스프라이트가 없는 경우(빈 슬롯): 어드레서블 해제 시도 없이 깔끔하게 비활성화만 수행
-                slot.ItemIcon.enabled = false;
+                // 스프라이트가 없는 경우(빈 슬롯): 이전 스프라이트를 제거하고 깔끔하게 비활성화
                 slot.ItemIcon.sprite = null; // 남아있는 참조 비우기
+                slot.ItemIcon.enabled = false;
             }
         }
 
         if (slot.Count != null)
         {
-            if (input_item != null && input_item.Count > 1)
+            if (!isEmpty && input_item.Count > 1)
             {
                 slot.Count.text = input_item.Count.ToString();
             }

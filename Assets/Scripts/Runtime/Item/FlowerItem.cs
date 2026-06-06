@@ -28,12 +28,18 @@ public partial class FlowerItem : GameItem
     {
         base.OnLoadAsync(propData);
 
-        if (!GlobalItemDB.HasFlower(Id))
+        int lookupId = Id;
+        if (SubType == ItemSubType.Seed)
         {
-            Debug.LogError($"[FlowerItem] FlowerDB 조회 실패. Id: {Id}");
+            lookupId = Id + 1000;
+        }
+
+        if (!GlobalItemDB.HasFlower(lookupId))
+        {
+            Debug.LogError($"[FlowerItem] FlowerDB 조회 실패. Id: {lookupId}");
             return;
         }
-        ref FlowerItemBlobData flowerData = ref GlobalItemDB.GetFlowerRef(Id);
+        ref FlowerItemBlobData flowerData = ref GlobalItemDB.GetFlowerRef(lookupId);
 
         Species = flowerData.Species;
         Color = flowerData.Color;

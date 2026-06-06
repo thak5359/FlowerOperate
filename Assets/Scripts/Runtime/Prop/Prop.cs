@@ -27,6 +27,11 @@ public partial class Prop : MonoBehaviour, IGameResource
         if (DisplaySprite != null) AddressableManager.ReleaseAsset(DisplaySprite);
     }
 
+    public void SetId(int id)
+    {
+        this.Id = id;
+    }
+
     public virtual  void OnLoadAsync(IPropData propData)
     {
         this.Id = propData.ItemId;

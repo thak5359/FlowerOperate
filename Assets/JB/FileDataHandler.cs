@@ -65,7 +65,15 @@ public static class FileDataHandler
             return default;
         }
 
-        byte[] bytes = File.ReadAllBytes(path);
-        return MemoryPackSerializer.Deserialize<T>(bytes);
+        try
+        {
+            byte[] bytes = File.ReadAllBytes(path);
+            return MemoryPackSerializer.Deserialize<T>(bytes);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[FileDataHandler] Binary 로드 중 에러 발생(버전 불일치 또는 데이터 손상): {e.Message}");
+            return default;
+        }
     }
 }

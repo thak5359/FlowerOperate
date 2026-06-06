@@ -12,7 +12,7 @@ public class SeedMaker : MakerBaseModel, IMaker
             Debug.LogError("반환할 아이템이 없습니다.");
             return null;
         }
-        GameItem itemToReturn = new GameItem(gameItem.Id - 1000, 0);
+        GameItem itemToReturn = ItemFactory.CreateItem(gameItem.Id - 1000, 0);
         int2 ingredientRatio = makerData.GetIngredientRatio;
         while(gameItem.Count >= ingredientRatio.x)
         {

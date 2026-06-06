@@ -13,9 +13,18 @@ public static class AddressableManager
     private static Dictionary<FixedString128Bytes, List<AsyncOperationHandle>> labelHandles
         = new Dictionary<FixedString128Bytes, List<AsyncOperationHandle>>();
 
+    // 로드된 에셋 추적용 캐시셋 (Addressables를 통해 직접 인스턴스화된 것만 보관)
+    private static readonly HashSet<object> loadedAssets = new HashSet<object>();
+
     // [핵심 최적화 2] 반환형을 UniTask로 변경하고, label 매개변수도 FixedString으로 통일
     public static async UniTask<T> LoadAssetAsync<T>(FixedString128Bytes address, FixedString128Bytes label = default) where T : Object
     {
+        if (address.IsEmpty || string.IsNullOrEmpty(address.ToString()))
+        {
+            Debug.LogWarning("[Addressables] LoadAssetAsync: Address key is empty or null. Skipping asset load.");
+            return null;
+        }
+
         // Addressables API 자체는 string을 요구하므로 여기서만 ToString()을 허용합니다.
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.ToString());
 
@@ -23,6 +32,11 @@ public static class AddressableManager
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
+            if (handle.Result != null)
+            {
+                loadedAssets.Add(handle.Result);
+            }
+
             // label이 비어있지 않은(IsEmpty == false) 경우에만 그룹으로 묶습니다.
             if (!label.IsEmpty)
             {
@@ -45,11 +59,22 @@ public static class AddressableManager
     // 동기 로드 (WaitForCompletion 활용)
     public static T LoadAssetSync<T>(FixedString128Bytes address, FixedString128Bytes label = default) where T : Object
     {
+        if (address.IsEmpty || string.IsNullOrEmpty(address.ToString()))
+        {
+            Debug.LogWarning("[Addressables] LoadAssetSync: Address key is empty or null. Skipping asset load.");
+            return null;
+        }
+
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.ToString());
         T result = handle.WaitForCompletion();
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
+            if (result != null)
+            {
+                loadedAssets.Add(result);
+            }
+
             if (!label.IsEmpty)
             {
                 if (!labelHandles.ContainsKey(label))
@@ -71,7 +96,13 @@ public static class AddressableManager
     // 단일 에셋 메모리 해제 
     public static void ReleaseAsset<T>(T asset)
     {
-        if (asset != null) Addressables.Release(asset);
+        if (asset == null) return;
+
+        if (loadedAssets.Contains(asset))
+        {
+            Addressables.Release(asset);
+            loadedAssets.Remove(asset);
+        }
     }
 
     // 라벨 단위의 메모리 일괄 해제
@@ -86,6 +117,10 @@ public static class AddressableManager
             {
                 if (handle.IsValid()) // 핸들 유효성 체크
                 {
+                    if (handle.Result != null)
+                    {
+                        loadedAssets.Remove(handle.Result);
+                    }
                     Addressables.Release(handle);
                 }
             }

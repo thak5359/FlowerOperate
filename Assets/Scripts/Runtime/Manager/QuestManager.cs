@@ -37,9 +37,13 @@ public partial class QuestObjectiveInProgress : IDisposable
 
 
     #region Getter
+    [MemoryPackIgnore]
     public int Progress => progress;
+    [MemoryPackIgnore]
     public int Goal => goal;
+    [MemoryPackIgnore]
     public bool IsCompleted => progress >= goal;
+    [MemoryPackIgnore]
     public string ProgressString => $"{progress} / {goal}";
 
     #endregion
@@ -188,7 +192,9 @@ public partial class QuestInProgress : IDisposable
     public QuestReward[] QuestRewards;
 
     #region Getter
+    [MemoryPackIgnore]
     public int QuestID => questID;
+    [MemoryPackIgnore]
     public QuestState QuestState => questState;
 
     #endregion

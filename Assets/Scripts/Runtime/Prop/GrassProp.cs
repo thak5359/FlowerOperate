@@ -32,7 +32,7 @@ public partial struct GrassData : IPropData
     public void OnDestroy()
     {
         if (ItemId != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(ItemId), Position);
+            ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(ItemId, 1), Position);
     }
 }
 
@@ -74,6 +74,6 @@ public class GrassProp : Prop
     public override void OnDestroy()
     {
         if (grassData.ItemId != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(grassData.ItemId), grassData.Position);
+            ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(grassData.ItemId, 1), grassData.Position);
     }
 }

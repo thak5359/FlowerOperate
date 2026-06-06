@@ -7,7 +7,7 @@ using static Constant;
 
 public interface IUseAreaHoeFunc
 {
-    FarmActionResult DoHoeFunc(ref GearItem gear, GameObject plot);
+    FarmActionResult DoHoeFunc(ref GearItem gear, PlotManager plotManager, GameObject plot);
 }
 public interface IUseAreaWateringCanFunc
 {
@@ -72,9 +72,6 @@ public class UseAreaFunction : MonoBehaviour,
     static readonly uint RandSeed = (uint)DateTime.Now.Ticks;
 
 
-    private PlotManager _plotManager;
-
-
 
     private static int _hoeMask;
     private static int _treatMask;
@@ -102,22 +99,20 @@ public class UseAreaFunction : MonoBehaviour,
         _axeMask = LayerMask.GetMask(LAYER_TREE);
         _sickleMask = LayerMask.GetMask(LAYER_PLOT, LAYER_GRASS);
         _hammerMask = LayerMask.GetMask(LAYER_ORE, LAYER_PLOT);
-
-        _plotManager = PlotManager.Instance;
     }
 
     #region  gameItem기반 동작 함수 분리.
     /// <summary>
     /// 게임 아이템의 분류에 따라 기능을 분리하는 함수. 장비는 별도 함수로 분리.
-    /// </summary
-    public FarmActionResult FireFunc(ref GameItem gameItem, GameObject plot = null)
+    /// </summary>
+    public FarmActionResult FireFunc(ref GameItem gameItem, PlotManager plotManager, GameObject plot = null)
     {
 
         switch (gameItem.SubType)
         {
             case ItemSubType.Equipment:
                 if (gameItem is GearItem gearItem)
-                    return FireGearFunc(ref gearItem, plot);
+                    return FireGearFunc(ref gearItem, plotManager, plot);
                 else
                 {
                     FixedString128Bytes errorCode =
@@ -152,14 +147,14 @@ public class UseAreaFunction : MonoBehaviour,
         }
     }
 
-    private FarmActionResult FireGearFunc(ref GearItem gearItem, GameObject plot = null)
+    private FarmActionResult FireGearFunc(ref GearItem gearItem, PlotManager plotManager, GameObject plot = null)
     {
         Debug.Log($"gear : {gearItem.ItemName}, gear.GearType : {gearItem.GearType}");
 
         return gearItem.GearType switch
         {
             GearType.Hoe =>
-                ((IUseAreaHoeFunc)this).DoHoeFunc(ref gearItem, plot),
+                ((IUseAreaHoeFunc)this).DoHoeFunc(ref gearItem, plotManager, plot),
 
             GearType.WateringCan =>
                 ((IUseAreaWateringCanFunc)this).DoWateringCanFunc(),
@@ -179,7 +174,7 @@ public class UseAreaFunction : MonoBehaviour,
     #endregion
 
 
-    FarmActionResult IUseAreaHoeFunc.DoHoeFunc(ref GearItem gear, GameObject plot)
+    FarmActionResult IUseAreaHoeFunc.DoHoeFunc(ref GearItem gear, PlotManager plotManager, GameObject plot)
     {
         
         try
@@ -190,12 +185,20 @@ public class UseAreaFunction : MonoBehaviour,
                 Debug.LogAssertion(errorCode);
                 return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
             }
+            if (plotManager == null)
+            {
+                FixedString128Bytes errorCode = "DoHoeFunc error. plotManager is null";
+                Debug.LogAssertion(errorCode);
+                return new FarmActionResult(FarmActionResult.ResultType.Error, errorCode);
+            }
 
             Collider[] hits = GetHits(_hoeMask);
 
             if (hits.Length == 0)
             {
-                GameObject created = Instantiate(plot, transform.position, Quaternion.identity);
+                Vector3 spawnPos = transform.position;
+                spawnPos.y = 0f; // Force y to 0 (ground level) instead of UseArea's Y offset (0.15f)
+                GameObject created = Instantiate(plot, spawnPos, Quaternion.identity, plotManager.transform);
                 int IID = created.GetInstanceID();
 
                 Debug.Log($"<color=green>DoHoeFunc success! targetID = {IID}</color>");
