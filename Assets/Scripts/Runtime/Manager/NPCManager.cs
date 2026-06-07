@@ -7,14 +7,14 @@ using VContainer.Unity;
 
 public struct QuestProgressState
 {
-    public NPC Publisher;
+    public NPCname Publisher;
     public QuestState State;
 }
 
 public class NPCManager : IInitializable
 {
     [SerializedDictionary("NPC Enum", "NPC클래스")]
-    private SerializedDictionary<NPC, NpcClass> NpcDict = new SerializedDictionary<NPC, NpcClass>();
+    private SerializedDictionary<NPCname, NpcClass> NpcDict = new SerializedDictionary<NPCname, NpcClass>();
    
     [SerializedDictionary("QuestId", "[NPC], [QuestProgressState]")]
     private SerializedDictionary<int, QuestProgressState> ReceivedQuestState;

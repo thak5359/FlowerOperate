@@ -31,8 +31,8 @@ public struct QuestContent
     public QuestObjective[] QuestObjectives;
     public QuestReward[] QuestRewards;
 
-    public NPC Publisher; // 퀘스트를 주는 NPC
-    public NPC Rewarder; // 퀘스트 보상을 주는 NPC (보통은 Publisher와 같지만, 다를 수도 있음)
+    public NPCname Publisher; // 퀘스트를 주는 NPC
+    public NPCname Rewarder; // 퀘스트 보상을 주는 NPC (보통은 Publisher와 같지만, 다를 수도 있음)
 }
 
 [CreateAssetMenu(fileName = "QuestContentSO", menuName = "Quest/QuestContentSO", order = 2)]
@@ -67,7 +67,7 @@ public class QuestContentSO : ScriptableObject
         throw new KeyNotFoundException($"Quest ID {questId}를 데이터셋에서 찾을 수 없습니다.");
     }
 
-    public NPC GetQuestPublisher(int questId)
+    public NPCname GetQuestPublisher(int questId)
     {
         int left = 0;
         int right = questContents.Length - 1;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum NPC 
+public enum NPCname 
 {
     None = 0,
     Hwaja = 1,
@@ -13,7 +13,7 @@ public enum NPC
 
 public class NpcClass : MonoBehaviour
 {
-    public NPC npcName;
+    public NPCname npcName;
     public SpriteRenderer npcSpriteRenderer {get; private set;}
 
     void Awake()
