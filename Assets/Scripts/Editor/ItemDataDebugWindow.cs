@@ -99,7 +99,7 @@ public class ItemDataDebugWindow : EditorWindow
             if (GUILayout.Button("Add Item to Selling Box", GUILayout.Height(25)))
             {
                 // PlayerOwnItemDataManager를 통해 아이템 추가
-                _itemDataManager.AddItem(ContainerType.SELLING, new GameItem(_testItemId, _testItemCount));
+                _itemDataManager.AddItem(ContainerType.SELLING, ItemFactory.CreateItem(_testItemId, _testItemCount));
                 Debug.Log($"<color=cyan>[Debugger]</color> SellingBox에 아이템 추가: ID {_testItemId} (x{_testItemCount})");
             }
 

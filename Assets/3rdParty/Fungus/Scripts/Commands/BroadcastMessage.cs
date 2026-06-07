@@ -18,6 +18,7 @@ namespace Fungus
         private static int[] receivedAvailableQuestId;
         private static int[] receivedFinishableQuestId;
 
+
         public static ref int[] getAvailableQuestId => ref receivedAvailableQuestId;
         public static void setAvailableQuestId(ref int[] arr) => receivedAvailableQuestId = arr;
 

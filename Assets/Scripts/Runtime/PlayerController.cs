@@ -63,8 +63,12 @@ public class PlayerController : MonoBehaviour, IInteractable
             anim = GetComponentInChildren<Animator>();
     }
 
+
     [Inject]
-    void Construct(UseAreaManager input_UseAreaManager, PlayerStateManager input_playerStateManager)
+    void Construct(
+        UseAreaManager input_UseAreaManager, 
+        PlayerStateManager input_playerStateManager
+    )
     {
         _useAreaManager = input_UseAreaManager;
         _playerState = input_playerStateManager;

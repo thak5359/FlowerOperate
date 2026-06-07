@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using MemoryPack;
 using Unity.Collections;
 using UnityEngine;
+using VContainer;
 using static Constant;
 
 #region Structs : Chunk Data & Result
@@ -144,7 +145,7 @@ public partial struct ChunkDataIngame
 
     private FixedString128Bytes NewResultMessage(string message)
     {
-        Debug.Log(message);
+        //Debug.Log(message);
         return new FixedString128Bytes(message);
     }
 }
@@ -186,6 +187,15 @@ public class ChunkManager : MonoBehaviour
     public ref ChunkDataIngame[] GetMineChunkDatas => ref _MineChunkDatas;
 
     #endregion
+
+    private SaveLoadManager _saveLoadManager;
+
+    // [Inject]
+    // public void Construct(SaveLoadManager saveLoadManager)
+    // {
+    //     _saveLoadManager = saveLoadManager;
+    //     _saveLoadManager.RegisterChunkManager(this);
+    // }
 
     #region Initialization
     private void Awake()

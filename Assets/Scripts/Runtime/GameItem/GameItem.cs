@@ -6,10 +6,11 @@ using UnityEngine;
 
 [MemoryPackable]
 [Serializable]
-//[MemoryPackUnion(0, typeof(GameItem))] 내부적으로 어떤아이템인지 알수 있게 분류할 방법. 저장 로직 확정후에 같이 결정!
-//[MemoryPackUnion(1, typeof(FlowerItem))]
-//[MemoryPackUnion(2, typeof(GearItem))]
-public partial class GameItem : IGameResource
+[MemoryPackUnion(1, typeof(FlowerItem))]
+[MemoryPackUnion(2, typeof(GearItem))]
+[MemoryPackUnion(3, typeof(FertilizerItem))]
+[MemoryPackUnion(4, typeof(CommonItem))]
+public abstract partial class GameItem : IGameResource
 {
     [field: SerializeField]
     public int Id { get; protected set; }
@@ -36,7 +37,7 @@ public partial class GameItem : IGameResource
     {
     }
 
-    public GameItem(int id, int count = 1)
+    protected GameItem(int id, int count = 1)
     {
         Id = id;
         Count = count;
@@ -72,7 +73,11 @@ public partial class GameItem : IGameResource
         if (!SpriteAddress.IsEmpty)
         {
             Debug.Log($"[GameItem] Loading sprite for ItemId: {Id} from address: {SpriteAddress}");
-            DisplaySprite = AddressableManager.LoadAssetSync<Sprite>(SpriteAddress);
+            Sprite spr = AddressableManager.LoadAssetSync<Sprite>(SpriteAddress);
+            if (spr != null)
+            {
+                DisplaySprite = spr;
+            }
         }
     }
 
