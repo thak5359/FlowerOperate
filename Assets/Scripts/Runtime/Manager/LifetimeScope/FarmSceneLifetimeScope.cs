@@ -33,5 +33,8 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<ShopUIController>(shopUIController).AsSelf();
         builder.RegisterComponent<InfoUIController>(infoUIController).AsSelf();
         builder.RegisterComponent<ItemGenTest>(itemGenTest).AsSelf();
+
+        // ChunkManager 씬 컴포넌트 자동 주입 등록
+        builder.RegisterComponentInHierarchy<ChunkManager>().AsSelf();
     }
 }

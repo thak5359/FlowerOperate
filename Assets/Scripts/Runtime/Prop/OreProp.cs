@@ -86,7 +86,10 @@ public class OreProp : Prop
             Debug.Log("Runing has been called");
 
 
-
+            if (oreData.ItemId != 0)
+                ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(oreData.ItemId, 1), oreData.Position);
+            else
+                Debug.Log("OreProp destroyed without item drop. ItemId is 0.");
 
             Destroy(this.gameObject);
 
@@ -108,9 +111,6 @@ public class OreProp : Prop
 
     public override void OnDestroy()
     {
-        if(oreData.ItemId != 0)
-            ItemFactory.CreateItemPrefab(new GameItem(oreData.ItemId), oreData.Position);
-        else
-            Debug.Log("OreProp destroyed without item drop. ItemId is 0.");
+      
     }
 }

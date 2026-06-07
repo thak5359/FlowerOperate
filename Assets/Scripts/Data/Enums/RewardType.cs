@@ -1,10 +1,9 @@
-[System.Flags]
 public enum RewardType
 {
-    Unknown = 0,
-    Currency = 1 << 0,
-    Item = 1 << 1,
-    Reputation = 1 << 2,
-    AbilityUnlock = 1 << 3, // 오타 수정 (Abilitynlock -> AbilityUnlock)
-    ShopUnlock = 1 << 4,
+    Unknown = 1,
+    Currency =2,
+    Item = 3,
+    Reputation = 4,
+    AbilityUnlock =  5, // 오타 수정 (Abilitynlock -> AbilityUnlock)
+    ShopUnlock = 6,
 }

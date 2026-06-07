@@ -14,3 +14,5 @@ public interface IGameResource
     /// </summary>
     public void OnLoadAsync(IPropData propData);
 }
+
+

@@ -52,6 +52,11 @@ public static partial class ProgressManager
         private int day;
         // 그 외에 필요한 인스턴트 데이터
         public int Day => day;
+
+        public ProgressData(int day)
+        {
+            this.day = day;
+        }
     }
 
     public static void LoadData(ProgressData saveData) // 세이브/로드 관리하는 쪽에서 진행 상황 불러오기

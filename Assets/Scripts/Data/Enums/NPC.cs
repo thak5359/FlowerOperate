@@ -1,6 +1,7 @@
+using R3;
 using UnityEngine;
 
-public enum NPC 
+public enum NPCname 
 {
     None = 0,
     Hwaja = 1,
@@ -11,35 +12,49 @@ public enum NPC
     Yuuna = 99
 }
 
-public class NpcClass : MonoBehaviour
+public enum QuestLabel
 {
-    public NPC npcName;
-    public SpriteRenderer QuestStateSpriteRenderer {get; private set;}
+    None = 0,
+    QuestMark_CanReceive = 1,
+    QuestMark_Progressing = 2,
+    Exclamation_mark = 3,
+    Escort_Sprite = 4
+}
 
+public class NPC : MonoBehaviour
+{
+    public NPCname npcName;
+    public SpriteRenderer npcSpriteRenderer {get; private set;}
+
+    Subject<QuestLabel> questLabel = new Subject<QuestLabel>();
     void Awake()
     {
-        QuestStateSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        npcSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        questLabel.Subscribe(label => SetQuestStateSprite(label.ToString()));
     }
 
-    public void ChangeSprite(QuestState state)
+    public void ChangeQuestSign(QuestState questState)
     {
-        Sprite newSprite = null;
-        switch (state)
+        switch(questState)
         {
             case QuestState.Available:
-                newSprite = AddressableManager.LoadAssetAsync<Sprite>("QuestMark_CanReceive").GetAwaiter().GetResult();
+                questLabel.OnNext(QuestLabel.QuestMark_CanReceive);
                 break;
             case QuestState.InProgress:
-                newSprite = AddressableManager.LoadAssetAsync<Sprite>("QuestMark_InProgress").GetAwaiter().GetResult();
+                questLabel.OnNext(QuestLabel.QuestMark_Progressing);
                 break;
             case QuestState.Finishable:
-                newSprite = AddressableManager.LoadAssetAsync<Sprite>("QuestMark_Finishable").GetAwaiter().GetResult();
+                questLabel.OnNext(QuestLabel.Exclamation_mark);
                 break;
             default:
-                Debug.LogError("[Error] NpcClass : ChangeSprite함수에 전달한 퀘스트 상태가 유효하지 않음.");
-                newSprite = null;
+                questLabel.OnNext(QuestLabel.None);
+                npcSpriteRenderer.sprite = null;
                 break;
         }
-        QuestStateSpriteRenderer.sprite = newSprite;
+    }
+
+    void SetQuestStateSprite(string addressLabel)
+    {
+        npcSpriteRenderer.sprite = AddressableManager.LoadAssetAsync<Sprite>(addressLabel).GetAwaiter().GetResult();
     }
 }

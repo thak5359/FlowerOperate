@@ -22,6 +22,8 @@ public class Constant
 
 
 
+    public const int ITEMID_DEADCROPS = 409007;
+
     public const ushort MAX_COUNT_INVENTORY = 999;
     public const ushort MAX_COUNT_STORAGE = 9999;
     public const ushort MAX_SLOT_INVENTORY = 50;

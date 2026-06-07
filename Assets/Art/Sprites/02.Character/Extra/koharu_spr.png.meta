@@ -1,0 +1,444 @@
+fileFormatVersion: 2
+guid: 7dcfb1030c00b1a41af3186fb539f7b0
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: koharu_spr_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 33
+        width: 705
+        height: 990
+      alignment: 9
+      pivot: {x: 0.455, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e5f4c2dd8fdfe04b8163eb561e35d14
+      internalID: -713887980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_1
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 891
+        width: 133
+        height: 98
+      alignment: 9
+      pivot: {x: 0.3318922, y: 0.32827696}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acb2c2c9e172bb2479b55204728671ff
+      internalID: -434178728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_2
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 817
+        width: 119
+        height: 74
+      alignment: 9
+      pivot: {x: 0.40570223, y: 0.3700479}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2ccccaaa2efd554bb7e16f3e2fa3f7c
+      internalID: -108559335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_3
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 738
+        width: 137
+        height: 66
+      alignment: 9
+      pivot: {x: 0.35848844, y: 0.3284829}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 331d1063150f3ed4cb1fccd4c9b73612
+      internalID: -1567287018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_4
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 931
+        width: 102
+        height: 76
+      alignment: 9
+      pivot: {x: 0.44274184, y: 0.42327237}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a292ba50aeb170546ae4ce425c27bbf4
+      internalID: 665652211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_5
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 786
+        width: 97
+        height: 73
+      alignment: 9
+      pivot: {x: 0.38152447, y: 0.29096127}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e3d83fca7a426f47ab3a38b9698fac0
+      internalID: 7488402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_6
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 635
+        width: 135
+        height: 76
+      alignment: 9
+      pivot: {x: 0.34145507, y: 0.3014486}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bd188d3a06509f469ae77f545af338f
+      internalID: 819837312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_7
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 572
+        width: 107
+        height: 70
+      alignment: 9
+      pivot: {x: 0.43785992, y: 0.43392333}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ad8969c6d646524bab4dc04f37cc0ba
+      internalID: 1132389998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_8
+      rect:
+        serializedVersion: 2
+        x: 883
+        y: 504
+        width: 135
+        height: 108
+      alignment: 9
+      pivot: {x: 0.34226075, y: 0.26080492}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b8e0558b4859ba4899c3ba352d668c8
+      internalID: 1113557126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_9
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 418
+        width: 136
+        height: 65
+      alignment: 9
+      pivot: {x: 0.34806868, y: 0.3363469}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d535bd6701e3a9641a5797ad059f6660
+      internalID: -263990028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_10
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 351
+        width: 140
+        height: 67
+      alignment: 9
+      pivot: {x: 0.36138523, y: 0.33901247}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5606414f5b447242b21eadac56a1326
+      internalID: -74530819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_11
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 261
+        width: 112
+        height: 72
+      alignment: 9
+      pivot: {x: 0.43922043, y: 0.29878488}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6b12ca41f2c9b64d9b13570f8c7931d
+      internalID: 552169550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_12
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 222
+        width: 101
+        height: 75
+      alignment: 9
+      pivot: {x: 0.43778583, y: 0.41388917}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9072fb5e47eda9e46b199a693a9cb566
+      internalID: -1069996708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_13
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 141
+        width: 95
+        height: 81
+      alignment: 9
+      pivot: {x: 0.38280416, y: 0.3386434}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4df2426489e902543a60aac4dd4b9184
+      internalID: -1821325154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: koharu_spr_14
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 160
+        width: 109
+        height: 78
+      alignment: 9
+      pivot: {x: 0.42153454, y: 0.30978727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dfaa0b6b9c90de428eec0072f41ae42
+      internalID: 615759573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 367f77422ae42fd488a9f109dda9c2b8
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      koharu_spr_0: -713887980
+      koharu_spr_1: -434178728
+      koharu_spr_10: -74530819
+      koharu_spr_11: 552169550
+      koharu_spr_12: -1069996708
+      koharu_spr_13: -1821325154
+      koharu_spr_14: 615759573
+      koharu_spr_2: -108559335
+      koharu_spr_3: -1567287018
+      koharu_spr_4: 665652211
+      koharu_spr_5: 7488402
+      koharu_spr_6: 819837312
+      koharu_spr_7: 1132389998
+      koharu_spr_8: 1113557126
+      koharu_spr_9: -263990028
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

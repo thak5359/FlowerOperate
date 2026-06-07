@@ -406,6 +406,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
     private PlayerOwnItemDataManager _itemDataManager;
     private PlayerStateManager _playerState;
+    private PlotManager _plotManager;
 
 
     private Transform _originTransform;
@@ -441,10 +442,11 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
 
 
     [Inject]
-    void Constuct(PlayerOwnItemDataManager input_itemDataManager, PlayerStateManager input_playerStateManager)
+    void Constuct(PlayerOwnItemDataManager input_itemDataManager, PlayerStateManager input_playerStateManager, PlotManager input_plotManager)
     {
         _itemDataManager = input_itemDataManager;
         _playerState = input_playerStateManager;
+        _plotManager = input_plotManager;
     }
 
     public async UniTask StartAsync(CancellationToken cancellation)
@@ -635,6 +637,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
         {
             _playerState.IsCharging.Value = false;
             ClearActiveArea();
+            _itemDataManager.NotifyDataChanged();
         }
     }
 
@@ -699,7 +702,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
             UseAreaFunction obj = _activeObjects.Pop();
             if (obj != null)
             {
-                obj.FireFunc(ref _cachedSelectedItem, _plotPrefab);
+                obj.FireFunc(ref _cachedSelectedItem, _plotManager, _plotPrefab);
 
 
 
@@ -755,6 +758,7 @@ public class UseAreaManager : IAsyncStartable, IDisposable, ITickable, IUseItem
     private List<Vector3> GetAreaList()
     {
         if (_cachedSelectedItem is not GearItem gear) return null;
+
 
         float chargeTime = gear.ChargeInfo.ChargeTime > 0 ? gear.ChargeInfo.ChargeTime : 0.1f; // Zero Split 방지
         int maxLevel = Mathf.Max(0, gear.ChargeInfo.ChargeAreas.Length - 1);

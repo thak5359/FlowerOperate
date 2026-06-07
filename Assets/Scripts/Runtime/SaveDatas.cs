@@ -29,6 +29,10 @@ public partial class SaveDatas
     public string GetSaveTime => saveTime;
     public int GetPlayDay => playDay;
     public ItemInstantData GetItemData => itemData;
+    public ChunkDataIngame[] GetFarmChunkDatas => _FarmChunkDatas;
+    public ChunkDataIngame[] GetFieldChunkDatas => _FieldChunkDatas;
+    public ChunkDataIngame[] GetForestChunkDatas => _ForestChunkDatas;
+    public ChunkDataIngame[] GetMineChunkDatas => _MineChunkDatas;
 
     public int GetMoney => money;
     public ref int GetRefMoney => ref money;
@@ -81,7 +85,7 @@ public partial class SaveDatas
         this.money = money;
         this.reputation = reputation;
         plotDataList = FromSerializedDictionary(plotData);
-        plotDataDictCache = plotData;
+        plotDataDictCache = plotData != null ? new SerializedDictionary<int, PlotData>(plotData) : new SerializedDictionary<int, PlotData>();
         _FarmChunkDatas = farmChunkDatas;
         _FieldChunkDatas = fieldChunkDatas;
         _ForestChunkDatas = forestChunkDatas;
@@ -123,13 +127,13 @@ public partial class SaveDatas
     }
 }
 
+[MemoryPackable]
 [Serializable]
 public partial struct PlotSaveEntry
 {
     public int Key;
     public PlotData Value;
 
-    [MemoryPackConstructor]
     public PlotSaveEntry(int key, PlotData value)
     {
         Key = key;

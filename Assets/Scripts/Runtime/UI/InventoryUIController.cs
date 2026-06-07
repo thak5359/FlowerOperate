@@ -18,7 +18,7 @@ public class InventoryUIController : MonoBehaviour
     #region UI 요소
     private List<Button> InventorySlots = new();
     private List<VisualElement> InventorySlotImages = new();
-
+    private List<Label> InventorySlotCounts = new();
     VisualElement root;
     VisualElement _ghostIcon;
     private Button closeButton;
@@ -47,11 +47,18 @@ public class InventoryUIController : MonoBehaviour
 
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+    private ItemManager _itemManager;
+
     [Inject]
-    private void Construct(IMapChangable input_mapChanger, PlayerOwnItemDataManager input_inventoryManager)
+    private void Construct(
+        IMapChangable input_mapChanger, 
+        PlayerOwnItemDataManager input_inventoryManager,
+        ItemManager itemManager
+    )
     {
         _mapChanger = input_mapChanger;
         _inventoryManager = input_inventoryManager;
+        _itemManager = itemManager;
     }
 
     #region Unity Event
@@ -70,6 +77,7 @@ public class InventoryUIController : MonoBehaviour
 
         InventorySlots.Clear();
         InventorySlotImages.Clear();
+        InventorySlotCounts.Clear();
 
         InventorySlots = root.Query<Button>("SlotButton").ToList();
 
@@ -77,6 +85,14 @@ public class InventoryUIController : MonoBehaviour
         {
             var img = InventorySlots[i].Q<VisualElement>("SlotImage");
             InventorySlotImages.Add(img != null ? img : InventorySlots[i]);
+
+            var countLabel = InventorySlots[i].Q<Label>("SlotCount");
+            if (countLabel != null)
+            {
+                countLabel.text = "";
+                countLabel.style.display = DisplayStyle.None;
+                InventorySlotCounts.Add(countLabel);
+            }
         }
 
         closeButton = root.Query<Button>("CloseButton");
@@ -93,6 +109,8 @@ public class InventoryUIController : MonoBehaviour
         _floriography1Container = root.Q<VisualElement>("Floriography1Container");
         _floriography2Container = root.Q<VisualElement>("Floriography2Container");
         _flavorTextLabel = root.Q<Label>("FlavorTextLabel");
+
+        ClearDetailContainer();
 
         for (int i = 0; i < InventorySlots.Count; i++)
         {
@@ -118,7 +136,7 @@ public class InventoryUIController : MonoBehaviour
         }
         InventorySlots.Clear();
         _ghostIcon.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
-
+        InventorySlotCounts.Clear();
         _disposables.Clear();
     }
 
@@ -134,6 +152,11 @@ public class InventoryUIController : MonoBehaviour
     // [수정: 백그라운드 스레드에서 UI를 건드리지 않도록 비동기 대기(await) 구조로 변경]
     private async UniTaskVoid RefreshUI()
     {
+        if (_itemManager != null && !_itemManager.IsInitialized)
+        {
+            await UniTask.WaitUntil(() => _itemManager.IsInitialized);
+        }
+
         for (int i = 0; i < InventorySlots.Count; i++)
         {
             var info = GetSlotInfo(i);
@@ -146,11 +169,22 @@ public class InventoryUIController : MonoBehaviour
             if (ItemInstantData.IsEmpty(itemData))
             {
                 InventorySlotImages[i].style.backgroundImage = null;
-                InventorySlots[i].text = "";
+
+                if (i < InventorySlotCounts.Count && InventorySlotCounts[i] != null)
+                {
+                    InventorySlotCounts[i].text = "";
+                    InventorySlotCounts[i].style.display = DisplayStyle.None;
+                }
+
             }
             else
             {
                 string address = GlobalItemDB.GetSpriteAddress(itemData.Id).ToString();
+                if (string.IsNullOrEmpty(address))
+                {
+                    Debug.LogWarning($"[InventoryUIController] Sprite address is empty for ItemId: {itemData.Id} in slot {i}");
+                    continue;
+                }
                 Debug.Log($"[InventoryUIController] Loading sprite for ItemId: {itemData.Id} from address: {address} into slot index: {i}");
                 // [수정: ContinueWith 대신 await를 사용하여 메인 스레드 렌더링 파이프라인에서 이미지를 할당!]
                 // 파트너의 실제 Addressable 로드 로직에 맞게 메서드 이름은 맞춰주세요.
@@ -158,7 +192,18 @@ public class InventoryUIController : MonoBehaviour
                 if (itemSprite != null)
                 {
                     InventorySlotImages[i].style.backgroundImage = itemSprite;
-                    InventorySlots[i].text = itemData.Count > 1 ? itemData.Count.ToString() : "";
+                    if (i < InventorySlotCounts.Count && InventorySlotCounts[i] != null)
+                    {
+                        if (itemData.Count > 1)
+                        {
+                            InventorySlotCounts[i].text = itemData.Count.ToString();
+                            InventorySlotCounts[i].style.display = DisplayStyle.Flex;
+                        }
+                        else
+                        {
+                            InventorySlotCounts[i].style.display = DisplayStyle.None;
+                        }
+                    }
                 }
             }
         }
@@ -277,6 +322,27 @@ public class InventoryUIController : MonoBehaviour
 
     #region 상세 정보 UI 갱신 (Detail Container)
     // [수정: Addressable 로딩을 위해 UniTaskVoid로 변경]
+
+    private void ClearDetailContainer()
+    {
+        if (_itemNameLabel == null) return; // 초기화 전 방어 코드
+
+        _itemNameLabel.text = "";
+        _categoryLabel.text = "";
+        _qualityLabel.text = "";
+        _growthDaysLabel.text = "";
+        _priceLabel.text = "";
+        _flavorTextLabel.text = "";
+        _itemIcon.style.backgroundImage = null;
+
+        _flowerSpeciesLabel.style.display = DisplayStyle.None;
+        _flowerColorLabel.style.display = DisplayStyle.None;
+        _floriography1Container.style.display = DisplayStyle.None;
+        _floriography2Container.style.display = DisplayStyle.None;
+    }
+
+
+
     private async UniTaskVoid UpdateDetailContainer(int slotIndex)
     {
         var info = GetSlotInfo(slotIndex);

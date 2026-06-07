@@ -25,6 +25,20 @@ public class ShopUIController : MonoBehaviour
     private ScrollView _scrollView;
     private Button _closeButton;
 
+    // 상세 보기 UI 요소
+    private UnityEngine.UIElements.Label _itemNameLabel;
+    private VisualElement _itemIcon;
+    private UnityEngine.UIElements.Label _categoryLabel;
+    private UnityEngine.UIElements.Label _qualityLabel;
+    private UnityEngine.UIElements.Label _growthDaysLabel;
+    private UnityEngine.UIElements.Label _priceLabel;
+    private UnityEngine.UIElements.Label _flowerSpeciesLabel;
+    private UnityEngine.UIElements.Label _flowerColorLabel;
+    private VisualElement _floriography1Container;
+    private VisualElement _floriography2Container;
+    private UnityEngine.UIElements.Label _flavorTextLabel;
+    private Button _mainBuyButton;
+
     // 메세지 박스 관련 UI
     private VisualElement _messageBox;
     private UnityEngine.UIElements.Label _messagePriceLabel;
@@ -40,6 +54,10 @@ public class ShopUIController : MonoBehaviour
     private Button _amount1DownBtn;
     private Button _amount10UpBtn;
     private Button _amount10DownBtn;
+
+    // 현재 선택된 슬롯 정보
+    private VisualElement _selectedSlotElement;
+    private int _selectedIndex = 0;
 
     private readonly FixedString128Bytes _shopImageLabel = new FixedString128Bytes("ShopUI_Images");
 
@@ -76,6 +94,23 @@ public class ShopUIController : MonoBehaviour
         _closeButton = _root.Q<Button>("CloseButton");
         if (_closeButton != null) _closeButton.clicked += CloseShop;
 
+        // === [상세 보기 UI 요소 캐싱 및 연결] ===
+        _itemNameLabel = _root.Q<UnityEngine.UIElements.Label>("ItemNameLabel");
+        _itemIcon = _root.Q<VisualElement>("IteItemIcon"); // UXML의 오타 반영
+        _categoryLabel = _root.Q<UnityEngine.UIElements.Label>("CategoryLabel");
+        _qualityLabel = _root.Q<UnityEngine.UIElements.Label>("QualityLabel");
+        _growthDaysLabel = _root.Q<UnityEngine.UIElements.Label>("GrowthDaysLabel");
+        _priceLabel = _root.Q<UnityEngine.UIElements.Label>("PriceLabel");
+        _flowerSpeciesLabel = _root.Q<UnityEngine.UIElements.Label>("FlowerSpeciesLabel");
+        _flowerColorLabel = _root.Q<UnityEngine.UIElements.Label>("FlowerColorLabel");
+        _floriography1Container = _root.Q<VisualElement>("Floriography1Container");
+        _floriography2Container = _root.Q<VisualElement>("Floriography2Container");
+        _flavorTextLabel = _root.Q<UnityEngine.UIElements.Label>("FlavorTextLabel");
+        
+        // DescriptionView 하위의 메인 구입 버튼 캐싱 및 연결
+        _mainBuyButton = _root.Q<VisualElement>("DescriptionView")?.Q<Button>("BuyButton");
+        if (_mainBuyButton != null) _mainBuyButton.clicked += OnMainBuyButtonClicked;
+
         // === [2. 메세지 박스 UI 요소 캐싱 및 연결] ===
         _messageBox = _root.Q<VisualElement>("ItemShopMessageBox");
         _messagePriceLabel = _messageBox?.Q<UnityEngine.UIElements.Label>("PriceLabel");
@@ -111,6 +146,7 @@ public class ShopUIController : MonoBehaviour
     private void OnDisable()
     {
         if (_closeButton != null) _closeButton.clicked -= CloseShop;
+        if (_mainBuyButton != null) _mainBuyButton.clicked -= OnMainBuyButtonClicked;
         if (_buyButton != null) _buyButton.clicked -= ExecutePurchase;
         if (_cancelButton != null) _cancelButton.clicked -= CloseMessageBox;
 
@@ -142,6 +178,7 @@ public class ShopUIController : MonoBehaviour
             _root.style.display = DisplayStyle.Flex;
             if (_messageBox != null) _messageBox.style.display = DisplayStyle.None;
 
+            _selectedIndex = 0; // 상점이 켜질 때 기본 0번째 선택 초기화
             RefreshShopSlots();
         }
     }
@@ -164,9 +201,11 @@ public class ShopUIController : MonoBehaviour
     private void RefreshShopSlots()
     {
         _scrollView.Clear();
-        AddressableManager.ReleaseAllByLabel(_shopImageLabel);
+        _selectedSlotElement = null; // 슬롯 목록이 파괴되었으므로 하이라이트 참조 초기화
 
         int playerMoney = _playerItemManager.GetData.GetMoney;
+        ProductData selectedProduct = default;
+        VisualElement selectedSlot = null;
 
         for (int i = 0; i < _shopItemListSO.GetLength(); i++)
         {
@@ -189,16 +228,14 @@ public class ShopUIController : MonoBehaviour
             if (priceLabel != null) priceLabel.text = $"{price:N0} $";
 
             FixedString128Bytes spriteAddress = GlobalItemDB.GetSpriteAddress(itemId);
+            _scrollView.Add(newSlot); // Add to scroll view first so targetElement.panel is active during synchronous load completion
             LoadAndSetSpriteAsync(spriteAddress, iconElement).Forget();
 
-            // === [수정됨] 구매 조건 판별 및 확실한 시각적 피드백 ===
             bool canBuy = playerMoney >= price;
 
+            // 소지금 부족 시에도 클릭은 가능해야 상세정보 확인이 되므로 SetEnabled(false)는 생략하고 시각적 투명도 피드백만 제공
             if (!canBuy)
             {
-                newSlot.SetEnabled(false);
-
-                // C# 코드에서 강제로 투명도와 회색조(Tint)를 씌워서 시각적으로 확실하게 못 산다는 걸 보여줍니다!
                 newSlot.style.opacity = 0.5f;
                 if (iconElement != null) iconElement.style.unityBackgroundImageTintColor = Color.gray;
             }
@@ -206,11 +243,22 @@ public class ShopUIController : MonoBehaviour
             {
                 newSlot.style.opacity = 1f;
                 if (iconElement != null) iconElement.style.unityBackgroundImageTintColor = Color.white;
-
-                newSlot.RegisterCallback<ClickEvent>(evt => OpenMessageBox(product));
             }
 
-            _scrollView.Add(newSlot);
+            int index = i; // local copy
+            newSlot.RegisterCallback<ClickEvent>(evt => SelectProduct(product, newSlot, index));
+
+            if (i == _selectedIndex)
+            {
+                selectedProduct = product;
+                selectedSlot = newSlot;
+            }
+        }
+
+        // 초기 또는 이전 인덱스 자동 선택 복원
+        if (selectedSlot != null)
+        {
+            SelectProduct(selectedProduct, selectedSlot, _selectedIndex);
         }
     }
 
@@ -219,9 +267,147 @@ public class ShopUIController : MonoBehaviour
         if (address.IsEmpty) return;
 
         Sprite loadedSprite = await AddressableManager.LoadAssetAsync<Sprite>(address, _shopImageLabel);
-        if (loadedSprite != null && targetElement != null && targetElement.panel != null)
+        if (loadedSprite != null && targetElement != null)
         {
             targetElement.style.backgroundImage = new StyleBackground(loadedSprite);
+        }
+    }
+
+    #endregion
+
+    #region 상세 보기 & 슬롯 선택 로직
+
+    private void OnMainBuyButtonClicked()
+    {
+        if (_currentSelectedProduct.ProductNo > 0)
+        {
+            OpenMessageBox(_currentSelectedProduct);
+        }
+    }
+
+    private void SelectProduct(ProductData product, VisualElement slotElement, int index)
+    {
+        _currentSelectedProduct = product;
+        _selectedIndex = index;
+
+        // 이전 선택 슬롯 하이라이트 원상복구
+        if (_selectedSlotElement != null && _selectedSlotElement.panel != null)
+        {
+            _selectedSlotElement.style.unityBackgroundImageTintColor = Color.white;
+        }
+
+        // 현재 선택된 슬롯에 하이라이트 틴트(연한 파란색 계열) 적용
+        if (slotElement != null && slotElement.childCount > 0)
+        {
+            VisualElement rootSlotElement = slotElement.ElementAt(0);
+            if (rootSlotElement != null)
+            {
+                rootSlotElement.style.unityBackgroundImageTintColor = new Color(0.85f, 0.95f, 1f, 1f);
+                _selectedSlotElement = rootSlotElement;
+            }
+        }
+
+        UpdateProductDetail(product);
+    }
+
+    private void UpdateProductDetail(ProductData product)
+    {
+        int itemId = product.ProductNo;
+        ItemSubType subType = GlobalItemDB.GetSubType(itemId);
+        bool isSeed = subType == ItemSubType.Seed;
+
+        // 이름
+        string itemName = GlobalItemDB.GetItemName(itemId).ToString();
+        if (string.IsNullOrEmpty(itemName))
+        {
+            itemName = product.ProductName;
+        }
+        if (_itemNameLabel != null) _itemNameLabel.text = itemName;
+
+        // 카테고리
+        if (_categoryLabel != null)
+        {
+            _categoryLabel.text = GlobalItemDB.GetMainType(itemId).ToString();
+        }
+
+        // 품질 (씨앗은 기본 등급인 Lv0으로 고정 표기, 그 외 일반 마스터 아이템은 대시 처리)
+        if (_qualityLabel != null)
+        {
+            _qualityLabel.text = isSeed ? FlowerGrade.Lv0.ToString() : "-";
+        }
+
+        // 가격
+        if (_priceLabel != null)
+        {
+            _priceLabel.text = $"{product.Cost:N0} $";
+        }
+
+        // 설명(플레이버 텍스트)
+        if (_flavorTextLabel != null)
+        {
+            _flavorTextLabel.text = GlobalItemDB.GetDescription(itemId).ToString();
+        }
+
+        // 상세 아이콘 이미지 설정
+        if (_itemIcon != null)
+        {
+            FixedString128Bytes spriteAddress = GlobalItemDB.GetSpriteAddress(itemId);
+            LoadAndSetSpriteAsync(spriteAddress, _itemIcon).Forget();
+        }
+
+        // 꽃 또는 씨앗 속성 유무에 따른 동적 레이아웃 처리
+        bool hasFlower = GlobalItemDB.HasFlower(itemId);
+        int flowerLookupId = itemId;
+
+        if (isSeed)
+        {
+            flowerLookupId = itemId + 1000;
+            hasFlower = GlobalItemDB.HasFlower(flowerLookupId);
+        }
+
+        if (hasFlower)
+        {
+            ref FlowerItemBlobData flowerRef = ref GlobalItemDB.GetFlowerRef(flowerLookupId);
+
+            // 성장 기간 계산 (int4 합산)
+            int totalGrowthDays = flowerRef.GrowthDuration.x +
+                                  flowerRef.GrowthDuration.y +
+                                  flowerRef.GrowthDuration.z +
+                                  flowerRef.GrowthDuration.w;
+
+            if (_growthDaysLabel != null) _growthDaysLabel.text = totalGrowthDays.ToString();
+
+            if (_flowerSpeciesLabel != null)
+            {
+                _flowerSpeciesLabel.text = flowerRef.Species.ToString();
+                _flowerSpeciesLabel.style.display = DisplayStyle.Flex;
+            }
+
+            if (_flowerColorLabel != null)
+            {
+                _flowerColorLabel.text = flowerRef.Color.ToString();
+                _flowerColorLabel.style.display = DisplayStyle.Flex;
+            }
+
+            if (_floriography1Container != null) _floriography1Container.style.display = DisplayStyle.Flex;
+            if (_floriography2Container != null) _floriography2Container.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            if (_growthDaysLabel != null) _growthDaysLabel.text = "-";
+
+            if (_flowerSpeciesLabel != null) _flowerSpeciesLabel.style.display = DisplayStyle.None;
+            if (_flowerColorLabel != null) _flowerColorLabel.style.display = DisplayStyle.None;
+            if (_floriography1Container != null) _floriography1Container.style.display = DisplayStyle.None;
+            if (_floriography2Container != null) _floriography2Container.style.display = DisplayStyle.None;
+        }
+
+        // 소지금 비교하여 메인 구매 버튼 활성화 여부 지정
+        int playerMoney = _playerItemManager.GetData.GetMoney;
+        bool canBuy = playerMoney >= product.Cost;
+        if (_mainBuyButton != null)
+        {
+            _mainBuyButton.SetEnabled(canBuy);
         }
     }
 
@@ -242,7 +428,6 @@ public class ShopUIController : MonoBehaviour
 
         if (_amountField.value != validatedAmount)
         {
-            // SetValueWithoutNotify를 써야 이벤트가 무한 반복(StackOverflow)되는 것을 막을 수 있습니다.
             _amountField.SetValueWithoutNotify(validatedAmount);
         }
 
@@ -250,24 +435,18 @@ public class ShopUIController : MonoBehaviour
         UpdateMessageBoxUI();
     }
 
-    // [보너스 최적화] 수량은 "아이템 한도"와 "소지금" 두 가지를 모두 고려하여 Clamp 합니다!
     private int ClampAmount(int amount)
     {
-        // 1. 해당 아이템의 최대 중첩 개수 제한
         int maxStack = GlobalItemDB.GetStackLimit(_currentSelectedProduct.ProductNo);
         if (maxStack <= 0) maxStack = MAX_COUNT_INVENTORY;
 
-        // 2. 현재 소지금으로 살 수 있는 최대 개수 계산
         int maxAffordable = 9999;
         if (_currentSelectedProduct.Cost > 0)
         {
             maxAffordable = _playerItemManager.GetData.GetMoney / _currentSelectedProduct.Cost;
         }
 
-        // 스택 제한과 소지금 제한 중 더 빡빡한 쪽을 진짜 최대치로 잡습니다.
         int actualMax = Mathf.Min(maxStack, maxAffordable);
-
-        // 아무리 돈이 없어도 입력칸 자체는 최소 1개를 유지시킵니다.
         if (actualMax < 1) actualMax = 1;
 
         return Mathf.Clamp(amount, 1, actualMax);
@@ -278,7 +457,6 @@ public class ShopUIController : MonoBehaviour
         _currentSelectedProduct = product;
         _currentBuyAmount = 1;
 
-        // 🚨 [핵심 수정 사항] 메세지 박스가 띄워질 때 UI 입력칸의 숫자도 1로 확실하게 초기화해줍니다!
         if (_amountField != null)
         {
             _amountField.SetValueWithoutNotify(1);

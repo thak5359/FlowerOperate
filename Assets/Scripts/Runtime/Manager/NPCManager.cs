@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using R3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,23 +8,28 @@ using VContainer.Unity;
 
 public struct QuestProgressState
 {
-    public NPC Publisher;
+    public NPCname Publisher;
     public QuestState State;
 }
 
-public class NPCManager : IInitializable
+public class NPCManager : IPostInitializable
 {
     [SerializedDictionary("NPC Enum", "NPC클래스")]
-    private SerializedDictionary<NPC, NpcClass> NpcDict = new SerializedDictionary<NPC, NpcClass>();
+    private SerializedDictionary<NPCname, NPC> NpcDict = new SerializedDictionary<NPCname, NPC>();
    
-    [SerializedDictionary("QuestId", "[NPC], [QuestProgressState]")]
-    private SerializedDictionary<int, QuestProgressState> ReceivedQuestState;
+    [SerializedDictionary("QuestId", "[NPCname], [QuestProgressState]")]
+    private SerializedDictionary<int, QuestProgressState> ReceivedQuestState =  new SerializedDictionary<int, QuestProgressState>();
 
-    NpcClass[] npcClassArr;
+    private ReactiveProperty<NPCname> npcName = new ReactiveProperty<NPCname>();
+    private Subject<QuestProgressState> progress = new Subject<QuestProgressState>();
+    NPC[] npcClassArr;
 
-    void IInitializable.Initialize()
+    CompositeDisposable disposables = new CompositeDisposable();
+
+    void IPostInitializable.PostInitialize()
     {
-        npcClassArr = GameObject.FindObjectsByType<NpcClass>(FindObjectsSortMode.None);
+        progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
+        npcClassArr = GameObject.FindObjectsByType<NPC>(FindObjectsSortMode.None);
         foreach(var npc in npcClassArr)
         {
             NpcDict.Add(npc.npcName, npc);
@@ -33,14 +39,7 @@ public class NPCManager : IInitializable
     public void RegisterQuestState(int id, QuestProgressState state)
     {
         ReceivedQuestState.Add(id, state);
-        if(NpcDict.TryGetValue(state.Publisher, out NpcClass npc))
-        {
-            npc.ChangeSprite(state.State);
-        }
-        else
-        {
-            Debug.LogError("[Error] NPCManager : RegisterQuestState함수에 전달한 NPC Enum이 딕셔너리에 존재하지 않음.");
-        }
+        progress.OnNext(state);
     }
 
     public void ChangeQuestState(int id, QuestState state)
@@ -49,7 +48,7 @@ public class NPCManager : IInitializable
         {
             ProgressState.State = state;
             ReceivedQuestState[id] = ProgressState;
-            NpcDict[ProgressState.Publisher].ChangeSprite(state);
+            progress.OnNext(ProgressState);
         }
         else
         {
@@ -68,5 +67,11 @@ public class NPCManager : IInitializable
             Debug.LogError("[Error] NPCManager : RemoveQuestState함수에 전달한 퀘스트ID가 딕셔너리에 존재하지 않음.");
         }
         ReceivedQuestState.Remove(id);
+    }
+
+    void SyncSprite(QuestProgressState state)
+    {
+        npcName.Value = state.Publisher;
+        NpcDict[npcName.Value].ChangeQuestSign(state.State);
     }
 }
