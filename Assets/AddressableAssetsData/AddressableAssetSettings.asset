@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 77d8ef05cbe2b3e46a6802d82660b02d
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 42aa567d31a00ccb6c0a49ac8bcb79f7
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
     - Gem
     - ScriptableObjects
     - Gear
+    - Quest
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: d4758836a0623c84f98807e42f4c5dd4, type: 2}
