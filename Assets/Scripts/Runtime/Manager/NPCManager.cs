@@ -60,7 +60,7 @@ public class NPCManager : IPostInitializable
     {
         if(ReceivedQuestState.TryGetValue(id, out QuestProgressState ProgressState))
         {
-            NpcDict[ProgressState.Publisher].ChangeSprite(QuestState.Unknown);
+            NpcDict[ProgressState.Publisher].ChangeQuestSign(QuestState.Unknown);
         }
         else
         {
