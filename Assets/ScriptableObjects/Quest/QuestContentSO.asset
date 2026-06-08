@@ -17,11 +17,11 @@ MonoBehaviour:
     QuestTitle: "\uD5E5\uC2A4\uC640 \uB300\uD654"
     QuestDescription: "[\uD5E5\uC2A4]\uC640 \uB300\uD654\uD558\uB77C"
     QuestObjectives:
-    - <ContentType>k__BackingField: 7
+    - <ContentType>k__BackingField: 0
       <TargetID>k__BackingField: 0
       <TargetAmount>k__BackingField: 1
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 201001
       <RewardAmount>k__BackingField: 1
     Publisher: 1
@@ -30,11 +30,11 @@ MonoBehaviour:
     QuestTitle: "\uBC2D\uC744 \uC77C\uAD88\uB77C"
     QuestDescription: "[\uBC2D]\uC744 [10]\uAC1C \uB9CC\uB4E4\uC5B4\uB77C"
     QuestObjectives:
-    - <ContentType>k__BackingField: 63
+    - <ContentType>k__BackingField: 601
       <TargetID>k__BackingField: 0
       <TargetAmount>k__BackingField: 10
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 401001
       <RewardAmount>k__BackingField: 10
     Publisher: 1
@@ -44,11 +44,11 @@ MonoBehaviour:
     QuestDescription: "[\uBC2D]\uC5D0 [\uBE68\uAC04 \uAC70\uBCA0\uB77C \uC528\uC557][10]\uAC1C
       \uC0AC\uC6A9"
     QuestObjectives:
-    - <ContentType>k__BackingField: 51
+    - <ContentType>k__BackingField: 501
       <TargetID>k__BackingField: 0
       <TargetAmount>k__BackingField: 10
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 201009
       <RewardAmount>k__BackingField: 1
     Publisher: 1
@@ -58,11 +58,11 @@ MonoBehaviour:
     QuestDescription: "['\uBE68\uAC04 \uAC70\uBCA0\uB77C \uC528\uC557\uC774 \uC788\uB294'
       \uBC2D]\uC5D0 [\uBB3C\uBFCC\uB9AC\uAC1C] [10]\uBC88 \uC0AC\uC6A9"
     QuestObjectives:
-    - <ContentType>k__BackingField: 52
+    - <ContentType>k__BackingField: 511
       <TargetID>k__BackingField: 0
       <TargetAmount>k__BackingField: 10
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 201025
       <RewardAmount>k__BackingField: 1
     Publisher: 1
@@ -71,11 +71,11 @@ MonoBehaviour:
     QuestTitle: "\uC218\uD655 \uD558\uC790"
     QuestDescription: "[\uBE68\uAC04 \uAC70\uBC30\uB77C] [10]\uBC88 \uC218\uD655"
     QuestObjectives:
-    - <ContentType>k__BackingField: 57
+    - <ContentType>k__BackingField: 551
       <TargetID>k__BackingField: 401001
       <TargetAmount>k__BackingField: 10
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 201017
       <RewardAmount>k__BackingField: 1
     Publisher: 1
@@ -84,11 +84,11 @@ MonoBehaviour:
     QuestTitle: "\uBC2D\uC744 \uBD80\uC154\uB77C"
     QuestDescription: "[\uBC2D]\uC744 [10]\uAC1C \uD30C\uAD34"
     QuestObjectives:
-    - <ContentType>k__BackingField: 54
+    - <ContentType>k__BackingField: 521
       <TargetID>k__BackingField: 0
       <TargetAmount>k__BackingField: 10
     QuestRewards:
-    - <RewardType>k__BackingField: 2
+    - <RewardType>k__BackingField: 3
       <RewardID>k__BackingField: 201001
       <RewardAmount>k__BackingField: 1
     Publisher: 5

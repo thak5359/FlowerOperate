@@ -279,5 +279,74 @@ namespace Fungus
             return EditorGUIUtility.singleLineHeight;
         }
     }
+
+    public class DictionaryVariableEditorWindow : EditorWindow
+    {
+        private DictionaryIntCommandVariable targetVariable;
+        private SerializedObject serializedObject;
+        private SerializedProperty valueProp;
+        private Vector2 scrollPos;
+
+        public static void Open(DictionaryIntCommandVariable variable)
+        {
+            var window = GetWindow<DictionaryVariableEditorWindow>(true, "Dictionary Editor", true);
+            window.targetVariable = variable;
+            if (variable != null)
+            {
+                window.serializedObject = new SerializedObject(variable);
+                window.valueProp = window.serializedObject.FindProperty("value");
+            }
+            window.minSize = new Vector2(300, 250);
+            window.Show();
+        }
+
+        private void OnGUI()
+        {
+            if (targetVariable == null || serializedObject == null || valueProp == null)
+            {
+                EditorGUILayout.HelpBox("Select a Dictionary variable to edit.", MessageType.Info);
+                return;
+            }
+
+            serializedObject.Update();
+
+            EditorGUILayout.LabelField($"Editing Dictionary: {targetVariable.Key}", EditorStyles.boldLabel);
+            GUILayout.Space(5);
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            {
+                EditorGUILayout.PropertyField(valueProp, true);
+            }
+            EditorGUILayout.EndScrollView();
+
+            if (serializedObject.ApplyModifiedProperties())
+            {
+                EditorUtility.SetDirty(targetVariable);
+            }
+        }
+    }
+
+    [InitializeOnLoad]
+    public static class DictionaryVariableDrawerRegister
+    {
+        static DictionaryVariableDrawerRegister()
+        {
+            Fungus.EditorUtils.CustomVariableDrawerLookup.typeToDrawer[typeof(DictionaryIntCommandVariable)] = 
+                (rect, valueProp, con) => {
+                    var variable = valueProp.serializedObject.targetObject as DictionaryIntCommandVariable;
+                    int count = (variable != null && variable.Value != null) ? variable.Value.Count : 0;
+                    string labelText = $"Dict ({count} items)";
+                    
+                    float buttonWidth = 50f;
+                    Rect labelRect = new Rect(rect.x, rect.y, rect.width - buttonWidth - 5, rect.height);
+                    Rect buttonRect = new Rect(rect.x + rect.width - buttonWidth, rect.y, buttonWidth, rect.height);
+                    
+                    EditorGUI.LabelField(labelRect, labelText);
+                    if (GUI.Button(buttonRect, "Edit", EditorStyles.miniButton))
+                    {
+                        DictionaryVariableEditorWindow.Open(variable);
+                    }
+                };
+        }
+    }
 }
 #endif
