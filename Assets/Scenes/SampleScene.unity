@@ -6818,12 +6818,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1374428660}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1 &264458613 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3063873374940779746, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-    type: 3}
-  m_PrefabInstance: {fileID: 2119803557}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &267452617
 GameObject:
   m_ObjectHideFlags: 0
@@ -31504,20 +31498,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 2119803557}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264458613}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98507532aa2f27e4fb7ced9aa16e7ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!81 &1315103415
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264458613}
-  m_Enabled: 1
 --- !u!1 &1345524372
 GameObject:
   m_ObjectHideFlags: 0
@@ -39144,10 +39130,8 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks:
-  - {fileID: 1618246422}
-  selectedCommands:
-  - {fileID: 1618246489}
+  selectedBlocks: []
+  selectedCommands: []
   variables:
   - {fileID: 1618246403}
   description: 
@@ -43344,7 +43328,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -43352,7 +43336,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_14
 --- !u!114 &1618246489
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43372,7 +43356,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -43380,7 +43364,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_1
 --- !u!114 &1618246491
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43396,7 +43380,7 @@ MonoBehaviour:
   emoteType: 3
 --- !u!114 &1618246492
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43412,7 +43396,7 @@ MonoBehaviour:
   animType: 4
 --- !u!114 &1618246493
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43428,7 +43412,7 @@ MonoBehaviour:
   emoteType: 12
 --- !u!114 &1618246494
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43456,7 +43440,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_14
 --- !u!114 &1618246495
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43472,7 +43456,7 @@ MonoBehaviour:
   emoteType: 6
 --- !u!114 &1618246497
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43500,7 +43484,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_13
 --- !u!114 &1618246498
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43516,7 +43500,7 @@ MonoBehaviour:
   emoteType: 7
 --- !u!114 &1618246499
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43532,7 +43516,7 @@ MonoBehaviour:
   animType: 3
 --- !u!114 &1618246500
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43560,7 +43544,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_12
 --- !u!114 &1618246501
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43576,7 +43560,7 @@ MonoBehaviour:
   emoteType: 0
 --- !u!114 &1618246503
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43604,7 +43588,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_11
 --- !u!114 &1618246504
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43620,7 +43604,7 @@ MonoBehaviour:
   emoteType: 11
 --- !u!114 &1618246506
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43648,7 +43632,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_10
 --- !u!114 &1618246507
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43664,7 +43648,7 @@ MonoBehaviour:
   emoteType: 4
 --- !u!114 &1618246508
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43680,7 +43664,7 @@ MonoBehaviour:
   animType: 5
 --- !u!114 &1618246509
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43708,7 +43692,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_9
 --- !u!114 &1618246510
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43724,7 +43708,7 @@ MonoBehaviour:
   emoteType: 9
 --- !u!114 &1618246512
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43752,7 +43736,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_8
 --- !u!114 &1618246514
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43768,7 +43752,7 @@ MonoBehaviour:
   animType: 4
 --- !u!114 &1618246515
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43796,7 +43780,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_7
 --- !u!114 &1618246516
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43812,7 +43796,7 @@ MonoBehaviour:
   emoteType: 3
 --- !u!114 &1618246517
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43828,7 +43812,7 @@ MonoBehaviour:
   animType: 2
 --- !u!114 &1618246518
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43848,7 +43832,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -43856,7 +43840,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_6
 --- !u!114 &1618246519
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43872,7 +43856,7 @@ MonoBehaviour:
   animType: 5
 --- !u!114 &1618246520
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43892,7 +43876,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -43900,7 +43884,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_5
 --- !u!114 &1618246521
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43916,7 +43900,7 @@ MonoBehaviour:
   emoteType: 2
 --- !u!114 &1618246522
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43936,7 +43920,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -43944,7 +43928,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_4
 --- !u!114 &1618246523
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43960,7 +43944,7 @@ MonoBehaviour:
   emoteType: 8
 --- !u!114 &1618246524
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43976,7 +43960,7 @@ MonoBehaviour:
   animType: 2
 --- !u!114 &1618246525
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43996,7 +43980,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -44004,7 +43988,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_3
 --- !u!114 &1618246526
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44020,7 +44004,7 @@ MonoBehaviour:
   emoteType: 10
 --- !u!114 &1618246527
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44040,7 +44024,7 @@ MonoBehaviour:
   showAlways: 1
   showCount: 1
   extendPrevious: 0
-  fadeWhenDone: 1
+  fadeWhenDone: 0
   waitForClick: 1
   stopVoiceover: 1
   waitForVO: 0
@@ -44048,7 +44032,7 @@ MonoBehaviour:
   facePortraitName: koharu_spr_2
 --- !u!114 &1618246528
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44064,7 +44048,7 @@ MonoBehaviour:
   emoteType: 12
 --- !u!114 &1618246529
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44080,7 +44064,7 @@ MonoBehaviour:
   animType: 5
 --- !u!114 &1618246530
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -48416,33 +48400,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1374428660}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1 &1823121324 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1418994448040799425, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-    type: 3}
-  m_PrefabInstance: {fileID: 2119803557}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1823121326
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1823121324}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 288451eb873da08468e9d8aca43d3a39, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1825962057
 GameObject:
   m_ObjectHideFlags: 0
@@ -55093,22 +55050,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2783318267432256488, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: obj
-      value: 
-      objectReference: {fileID: 2020869880897851072, guid: 66f8521fb646adb419de37d5b52980cd,
-        type: 3}
-    - target: {fileID: 2783318267432256488, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: anim
-      value: 
-      objectReference: {fileID: 1823121326}
-    - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3054124649981279660, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -55164,53 +55105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3290102107821693634, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3290102107821693634, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_Center.z
-      value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4213158954082154433, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4294957778500012582, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9659258
-      objectReference: {fileID: 0}
-    - target: {fileID: 4294957778500012582, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.2588191
-      objectReference: {fileID: 0}
-    - target: {fileID: 4294957778500012582, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6062988967756959234, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3063873374940779746, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1315103415}
-    - targetCorrespondingSourceObject: {fileID: 1418994448040799425, guid: 37e5a3cec22ee2e46bc300026cb8d5ab,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1823121326}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37e5a3cec22ee2e46bc300026cb8d5ab, type: 3}
 --- !u!1 &2121643565
 GameObject:
@@ -58748,8 +58646,8 @@ SceneRoots:
   - {fileID: 4122606003150216536}
   - {fileID: 348478589}
   - {fileID: 3228583530057610999}
-  - {fileID: 564172835}
   - {fileID: 3598777553732813658}
+  - {fileID: 564172835}
   - {fileID: 5763560624817251039}
   - {fileID: 4714347412334381061}
   - {fileID: 746047277}

@@ -115,12 +115,12 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
             if (moveInput.x != 0)
             {
+                sprRenderer.flipX = (moveInput.x > 0);
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
                 if (sideSprite != null)
                 {
                     sprRenderer.sprite = sideSprite;
                 }
-                sprRenderer.flipX = (moveInput.x > 0);
             }
             else
             {
