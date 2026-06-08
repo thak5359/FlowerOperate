@@ -63,7 +63,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3471891343406285304}
   - component: {fileID: 4804915813984513521}
-  - component: {fileID: 3699473441499013052}
   m_Layer: 0
   m_Name: Renderer
   m_TagString: Player
@@ -138,27 +137,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &3699473441499013052
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418994448040799425}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 288451eb873da08468e9d8aca43d3a39, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3063873374940779746
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +216,7 @@ MonoBehaviour:
   moveSpeed: 5
   decelereationRate: 0.5
   interactableArea: {fileID: 6364007864105736048}
-  anim: {fileID: 3699473441499013052}
+  anim: {fileID: 0}
   heading: {x: 0, y: 0}
 --- !u!81 &6061688993987198312
 AudioListener:

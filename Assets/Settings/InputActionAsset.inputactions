@@ -169,15 +169,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShowItemDetail",
-                    "type": "Button",
-                    "id": "8fe45dd4-a638-461a-98e5-032b4bd4f6f2",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Phone",
                     "type": "Button",
                     "id": "fe515c57-d18a-428d-be82-bae162cc4c48",
@@ -377,17 +368,6 @@
                     "processors": "",
                     "groups": ";WASD_Scheme;Arrow_Scheme",
                     "action": "ShowBind",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2c8a44c4-378b-4b94-81bf-734a1451e1a6",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse;WASD_Scheme;Arrow_Scheme",
-                    "action": "ShowItemDetail",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
