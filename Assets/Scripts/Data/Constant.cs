@@ -99,10 +99,6 @@ public class Constant
 
     #region 플레이어 Anim 상태 정의명
 
-    public const string ANIM_X = "MoveX";
-    public const string ANIM_Y = "MoveY"; 
-    public const string ANIM_MOVING = "IsMoving";
-
     #endregion
 
     public const float CHUNK_SIZE = 15.0f;

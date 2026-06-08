@@ -17,7 +17,7 @@ public class QuestRequirementSO : ScriptableObject
 {
     [SerializeField] public QuestRequirement[] questRequirements;
 
-    public int GetValidRequirements(int currentDay, QuestRequirement[] resultBuffer)
+    public int GetValidRequirements(int currentDay, QuestRequirement[] resultBuffer, System.Collections.Generic.IReadOnlyList<QuestLog> questLogs)
     {
         int count = 0;
 
@@ -26,23 +26,55 @@ public class QuestRequirementSO : ScriptableObject
             // 구조체 복사를 막기 위해 ref로 참조해서 읽어옵니다.
             ref QuestRequirement req = ref questRequirements[i];
 
-            // if 해금 일자가 현재 일자보다 미래라면
-            if (req.UnlockDate > currentDay)
-            {
-                // 오름차순 정렬되어 있으므로, 이 뒤의 데이터는 생략함
-                break;
-            }
-
-            // 2. 만료 일자가 존재하고 이미 만료일자가 지났다면
+            // 1. 만료 일자가 존재하고 이미 만료일자가 지났다면
             if (req.ExpiredDate != 0 && req.ExpiredDate <= currentDay)
             {
                 // 이 퀘스트는 무효하므로 패스하고 다음 퀘스트를 검사
                 continue;
             }
 
-            // --- 선행 퀘스트 검사 로직이 필요하다면 이 자리에 추가! ---
+            // 2. 선행 퀘스트 조건이 있는 연계 퀘스트인 경우
+            if (req.PrereqQuestId != 0)
+            {
+                if (questLogs == null)
+                    continue;
 
-            // 3. 모든 조건을 통과했다면 버퍼에 담아
+                bool hasPrereqCompleted = false;
+                int completedDay = 0;
+
+                for (int j = 0; j < questLogs.Count; j++)
+                {
+                    var log = questLogs[j];
+                    if (log.QuestId == req.PrereqQuestId && log.State == QuestState.Completed)
+                    {
+                        hasPrereqCompleted = true;
+                        completedDay = log.CompletedDay;
+                        break;
+                    }
+                }
+
+                if (!hasPrereqCompleted)
+                {
+                    // 선행 퀘스트가 미완료되었으므로 제외
+                    continue;
+                }
+
+                // 선행을 완료한 날짜 + 대기 일차(UnlockDate)가 현재 날짜보다 크면 아직 해금되지 않음
+                if (currentDay < completedDay + req.UnlockDate)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                // 3. 선행 퀘스트 조건이 없는 일반 퀘스트인 경우
+                if (req.UnlockDate > currentDay)
+                {
+                    continue;
+                }
+            }
+
+            // 4. 모든 조건을 통과했다면 버퍼에 담아
             if (count < resultBuffer.Length)
             {
                 resultBuffer[count] = req;

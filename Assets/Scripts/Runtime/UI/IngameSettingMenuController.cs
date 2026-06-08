@@ -23,15 +23,16 @@ public class IngameSettingMenuController : MonoBehaviour
     public Button buttonTitle;
     public Button buttonEnd;
     public Button buttonCloseSetting;
+    [SerializeField] public Button resetButton;
 
     [Header("UI switch")]
     public Button soundButton;
     public Button displayButton;
-    public Button etcButton;
+    // public Button etcButton /;
 
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
-    public GameObject etcPanel;         // 기타 설정 판넬
+    // public GameObject etcPanel;         // 기타 설정 판넬
 
 
     [Header("Sound UI References")]
@@ -90,6 +91,14 @@ public class IngameSettingMenuController : MonoBehaviour
         buttonTitle.onClick.AddListener(() => OnClickTitleButton());
         buttonEnd.onClick.AddListener(() => OnClickGameEndButton());
         buttonCloseSetting.onClick.AddListener(() => BackToPauseFromSetting().Forget());
+        if (resetButton != null)
+        {
+            resetButton.onClick.AddListener(() =>
+            {
+                _settingManager.ResetToDefault();
+                SyncUIWithSettings();
+            });
+        }
         #endregion
 
         #region SettingPanel Control
@@ -173,7 +182,7 @@ public class IngameSettingMenuController : MonoBehaviour
                 {
                     soundPanel.SetActive(true);
                     displayPanel.SetActive(false);
-                    etcPanel.SetActive(false);
+                    //etcPanel.SetActive(false);
 
                     uiState.usingPanel = input;
                     break;
@@ -182,11 +191,12 @@ public class IngameSettingMenuController : MonoBehaviour
                 {
                     soundPanel.SetActive(false);
                     displayPanel.SetActive(true);
-                    etcPanel.SetActive(false);
+                    //etcPanel.SetActive(false);
 
                     uiState.usingPanel = input;
                     break;
                 }
+            /*
             case PanelMode.KeyBind:
                 {
                     soundPanel.SetActive(false);
@@ -196,6 +206,7 @@ public class IngameSettingMenuController : MonoBehaviour
                     uiState.usingPanel = input;
                     break;
                 }
+            */
         }
     }
 
@@ -320,7 +331,7 @@ public class IngameSettingMenuController : MonoBehaviour
 
     public void OnClickSoundButton() => PanelChange(PanelMode.Sound);
     public void OnClickDisplayButton() => PanelChange(PanelMode.Display);
-    public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
+    // public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
 
     public void OnClickTitleButton()
     {

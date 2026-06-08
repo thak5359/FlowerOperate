@@ -19,6 +19,7 @@ public partial struct QuestLog
     public int QuestId;
     public QuestState State;
     public int Progress; // 퀘스트 진행 상황 (예: 물주기 10번 중 3번 완료)
+    public int CompletedDay; // 퀘스트를 완료한 날짜 (미완료 시 0)
 }
 
 
@@ -384,7 +385,8 @@ public class QuestManager : IInitializable, IDisposable
 
         int rawCount = _QuestReqs.GetValidRequirements(
             currentDay,
-            availableQuestBuffer
+            availableQuestBuffer,
+            questLogs
         );
 
         List<int> validQuestIds = new List<int>(rawCount);
@@ -511,6 +513,36 @@ public class QuestManager : IInitializable, IDisposable
         SetQuestLogState(questId, QuestState.Completed);
 
         _npcManager.ChangeQuestState(questId, QuestState.Completed);
+        // 정적 구조체 배열 O(N) 순회로 가비지 없이 완료된 questId의 후속 연계 퀘스트들을 찾아 자동 수주 처리
+        int currentDay = ProgressManager.getPlayedDayOnGameSystem();
+        if (_QuestReqs != null && _QuestReqs.questRequirements != null)
+        {
+            for (int i = 0; i < _QuestReqs.questRequirements.Length; i++)
+            {
+                ref var req = ref _QuestReqs.questRequirements[i];
+                if (req.PrereqQuestId == questId)
+                {
+                    // 날짜 해금(완료날짜(오늘) + UnlockDate <= 오늘) 및 만료 조건 확인
+                    if (currentDay >= currentDay + req.UnlockDate && (req.ExpiredDate == 0 || req.ExpiredDate > currentDay))
+                    {
+                        if (_QuestContents != null)
+                        {
+                            ref QuestContent nextContent = ref _QuestContents.GetQuestContentById(req.QuestId);
+                            if (nextContent.QuestId != 0)
+                            {
+                                if (!IsQuestInProgress(req.QuestId) && !HasQuestState(req.QuestId, QuestState.Completed))
+                                {
+                                    QuestInProgress nextInProgress = new QuestInProgress(in nextContent);
+                                    progressingQuests.Add(nextInProgress);
+                                    SetQuestLogState(req.QuestId, QuestState.InProgress);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
 
@@ -537,6 +569,10 @@ public class QuestManager : IInitializable, IDisposable
             if (log.QuestId == questId)
             {
                 log.State = state;
+                if (state == QuestState.Completed)
+                {
+                    log.CompletedDay = ProgressManager.getPlayedDayOnGameSystem();
+                }
                 questLogs[i] = log;
                 return;
             }
@@ -546,7 +582,8 @@ public class QuestManager : IInitializable, IDisposable
         {
             QuestId = questId,
             State = state,
-            Progress = 0
+            Progress = 0,
+            CompletedDay = (state == QuestState.Completed) ? ProgressManager.getPlayedDayOnGameSystem() : 0
         });
     }
 

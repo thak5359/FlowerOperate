@@ -26,10 +26,10 @@ public class PlayerController : MonoBehaviour, IInteractable
     //이동 로직 처리 중 사용할 속도/캐싱용 Vec3
     private Vector3 targetVelocity;
 
-    [SerializeField] private Animator anim;
-    private static readonly int MoveXHash = Animator.StringToHash(ANIM_X);
-    private static readonly int MoveYHash = Animator.StringToHash(ANIM_Y);
-    private static readonly int isMovingHash = Animator.StringToHash(ANIM_MOVING);
+    [Header("Sprites")]
+    [SerializeField] private Sprite frontSprite;
+    [SerializeField] private Sprite rearSprite;
+    [SerializeField] private Sprite sideSprite;
 
     private UseAreaManager _useAreaManager;
     private PlayerStateManager _playerState;
@@ -59,8 +59,7 @@ public class PlayerController : MonoBehaviour, IInteractable
         sprRenderer = GetComponentInChildren<SpriteRenderer>();
         _mask = LayerMask.GetMask(LAYER_INTERACTABLE);
         interactableBoxScale = interactableArea.gameObject.transform.localScale * 0.5f;
-        if (anim == null)
-            anim = GetComponentInChildren<Animator>();
+
     }
 
 
@@ -89,22 +88,17 @@ public class PlayerController : MonoBehaviour, IInteractable
 
     void Move()
     {
-        // 입력이 없는 경우, 이동 애니메이션 끄고 속도 0으로 만들어서 멈추게 하기
+        // 입력이 없는 경우, 속도 0으로 만들어서 멈추게 하기
         if (moveInput == Vector2.zero)
         {
-            anim.SetBool(isMovingHash, false);
             rigidBody.velocity = new Vector3(0f, rigidBody.velocity.y, 0f);
             return;
         }
-
-        anim.SetBool(isMovingHash, true);
 
 
         // Can't Move While Charging    
         if (_playerState.IsCharging.Value == true)
         {
-            anim.SetBool(isMovingHash, false);
-
             targetVelocity.Set(0f, rigidBody.velocity.y, 0f);
             rigidBody.velocity = targetVelocity;
 
@@ -121,20 +115,27 @@ public class PlayerController : MonoBehaviour, IInteractable
         {
             if (moveInput.x != 0)
             {
-                sprRenderer.flipX = (moveInput.x > 0) ? true : false;
+                sprRenderer.flipX = (moveInput.x > 0);
                 heading = (moveInput.x > 0) ? Vector2.right : Vector2.left;
-
-                anim.SetFloat(MoveXHash, heading.x);
-                anim.SetFloat(MoveYHash, .0f);
+                if (sideSprite != null)
+                {
+                    sprRenderer.sprite = sideSprite;
+                }
             }
             else
             {
                 heading = (moveInput.y > 0) ? Vector2.up : Vector2.down;
                 sprRenderer.flipX = false;
-                bool isHeadingFront = (moveInput.y > 0) ? true : false;
-
-                anim.SetFloat(MoveYHash, heading.y);
-                anim.SetFloat(MoveXHash, .0f);
+                if (heading == Vector2.up)
+                {
+                    if (rearSprite != null)
+                        sprRenderer.sprite = rearSprite;
+                }
+                else
+                {
+                    if (frontSprite != null)
+                        sprRenderer.sprite = frontSprite;
+                }
             }
             locateInteractable();
         }
