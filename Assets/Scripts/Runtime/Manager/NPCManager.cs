@@ -30,6 +30,7 @@ public class NPCManager : IPostInitializable
     private Subject<QuestProgressState> progress = new Subject<QuestProgressState>();
     NPC[] npcClassArr;
 
+    public SerializedDictionary<int, QuestProgressState> GetReceivedQuestState => ReceivedQuestState;
     CompositeDisposable disposables = new CompositeDisposable();
 
     void IPostInitializable.PostInitialize()
@@ -44,7 +45,14 @@ public class NPCManager : IPostInitializable
 
     public void RegisterQuestState(int id, QuestProgressState state)
     {
-        ReceivedQuestState.Add(id, state);
+        if (ReceivedQuestState.ContainsKey(id))
+        {
+            return;
+        }
+        else
+        {
+            ReceivedQuestState.Add(id, state);
+        }
         progress.OnNext(state);
     }
 

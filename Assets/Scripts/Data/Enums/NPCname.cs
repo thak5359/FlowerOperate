@@ -58,6 +58,11 @@ public class NPC : MonoBehaviour
 
     async UniTaskVoid SetQuestStateSprite(QuestLabel label)
     {
+        if(label == QuestLabel.None)
+        {
+            npcSpriteRenderer.sprite = null;
+            return;
+        }
         numberOfState[((int)label)-1]++;
         if (numberOfState.z != 0)
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));
@@ -65,7 +70,5 @@ public class NPC : MonoBehaviour
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Dot_InProgress));
         else if(numberOfState.x != 0)
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive));
-        else
-            npcSpriteRenderer.sprite = null;
     }
 }

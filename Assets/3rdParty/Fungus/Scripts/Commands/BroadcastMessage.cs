@@ -19,8 +19,9 @@ namespace Fungus
         public static event Action<int> OnCompleteQuest;
         public static event Action<int> OnFinishableQuest;
 
-        private static int[] receivedAvailableQuestId;
-        private static int[] receivedFinishableQuestId;
+        private static int[] receivedAvailableQuestId = System.Array.Empty<int>();
+        private static int[] receivedFinishableQuestId = System.Array.Empty<int>();
+        private static int[] receivedProgressingQuestId = System.Array.Empty<int>();
 
 
         public static ref int[] getAvailableQuestId => ref receivedAvailableQuestId;
@@ -28,6 +29,9 @@ namespace Fungus
 
         public static ref int[] getFinishableQuestId => ref receivedFinishableQuestId;
         public static void setFinishableQuestId(ref int[] arr) => receivedFinishableQuestId = arr;
+
+        public static ref int[] getProgressingQuestId => ref receivedProgressingQuestId;
+        public static void setProgressingQuestId(ref int[] arr) => receivedProgressingQuestId = arr;
 
         public static void Broadcast(string message)
         {

@@ -37,10 +37,21 @@ public class QuestRequirementSO : ScriptableObject
             if (req.PrereqQuestId != 0)
             {
                 if (questLogs == null)
+                {
+                    Debug.Log($"[QuestRequirementSO] Quest {req.QuestId} skipped because questLogs is null");
                     continue;
+                }
 
                 bool hasPrereqCompleted = false;
                 int completedDay = 0;
+
+                // 디버깅을 위해 현재 로그 리스트를 출력
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                for (int j = 0; j < questLogs.Count; j++)
+                {
+                    sb.Append($"({questLogs[j].QuestId}:{questLogs[j].State}) ");
+                }
+                Debug.Log($"[QuestRequirementSO] Checking Quest {req.QuestId} prereq Quest {req.PrereqQuestId}. Current logs: {sb}");
 
                 for (int j = 0; j < questLogs.Count; j++)
                 {
@@ -55,13 +66,14 @@ public class QuestRequirementSO : ScriptableObject
 
                 if (!hasPrereqCompleted)
                 {
-                    // 선행 퀘스트가 미완료되었으므로 제외
+                    Debug.Log($"[QuestRequirementSO] Quest {req.QuestId} skipped because prereq Quest {req.PrereqQuestId} is not Completed");
                     continue;
                 }
 
-                // 선행을 완료한 날짜 + 대기 일차(UnlockDate)가 현재 날짜보다 크면 아직 해금되지 않음
-                if (currentDay < completedDay + req.UnlockDate)
+                // 현재 날짜가 퀘스트 해금 일차(UnlockDate)보다 작으면 아직 해금되지 않음
+                if (currentDay < req.UnlockDate)
                 {
+                    Debug.Log($"[QuestRequirementSO] Quest {req.QuestId} skipped because of UnlockDate. currentDay: {currentDay}, UnlockDate: {req.UnlockDate}");
                     continue;
                 }
             }
@@ -70,10 +82,12 @@ public class QuestRequirementSO : ScriptableObject
                 // 3. 선행 퀘스트 조건이 없는 일반 퀘스트인 경우
                 if (req.UnlockDate > currentDay)
                 {
+                    Debug.Log($"[QuestRequirementSO] Quest {req.QuestId} (no prereq) skipped because UnlockDate {req.UnlockDate} > currentDay {currentDay}");
                     continue;
                 }
             }
 
+            Debug.Log($"[QuestRequirementSO] Quest {req.QuestId} PASSED requirements check");
             // 4. 모든 조건을 통과했다면 버퍼에 담아
             if (count < resultBuffer.Length)
             {

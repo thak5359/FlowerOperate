@@ -35,8 +35,8 @@ public partial class QuestObjectiveInProgress : IDisposable
     private int goal;
     [MemoryPackIgnore]
     private DisposableBag bag;
-
-
+    [MemoryPackIgnore]
+    private readonly Subject<Unit> onProgressChanged = new();
 
     #region Getter
     [MemoryPackIgnore]
@@ -47,6 +47,8 @@ public partial class QuestObjectiveInProgress : IDisposable
     public bool IsCompleted => progress >= goal;
     [MemoryPackIgnore]
     public string ProgressString => $"{progress} / {goal}";
+    [MemoryPackIgnore]
+    public Observable<Unit> OnProgressChanged => onProgressChanged;
 
     #endregion
 
@@ -75,7 +77,7 @@ public partial class QuestObjectiveInProgress : IDisposable
 
     public void Rebind(in QuestObjective baseData)
     {
-        Dispose();
+        ClearSubscriptions();
 
         goal = baseData.TargetAmount;
         SubscribeR3(in baseData);
@@ -85,6 +87,12 @@ public partial class QuestObjectiveInProgress : IDisposable
 
         if (progress > goal)
             progress = goal;
+    }
+
+    private void ClearSubscriptions()
+    {
+        bag.Dispose();
+        bag = default;
     }
 
     /// <summary>
@@ -115,6 +123,10 @@ public partial class QuestObjectiveInProgress : IDisposable
 
             case QuestContentType.PlotReaping:
                 SubscribeCount(QuestProgressPublisher.PlotReaping, targetItemID);
+                return;
+
+            case QuestContentType.Unknown:
+                IncrementCount();
                 return;
 
             default:
@@ -153,6 +165,7 @@ public partial class QuestObjectiveInProgress : IDisposable
     public void IncrementCount()
     {
         progress++;
+        onProgressChanged.OnNext(Unit.Default);
     }
 
     /// <summary>
@@ -162,14 +175,15 @@ public partial class QuestObjectiveInProgress : IDisposable
     public void SynchronizeCount(int input_progress)
     {
         progress = input_progress;
+        onProgressChanged.OnNext(Unit.Default);
     }
     #endregion
 
 
     public void Dispose()
     {
-        bag.Dispose();
-        bag = default;
+        ClearSubscriptions();
+        onProgressChanged.Dispose();
     }
 }
 
@@ -193,11 +207,19 @@ public partial class QuestInProgress : IDisposable
     [MemoryPackIgnore]
     public QuestReward[] QuestRewards;
 
+    [MemoryPackIgnore]
+    private readonly Subject<QuestState> onStateChanged = new();
+
+    [MemoryPackIgnore]
+    private CompositeDisposable objectivesDisposables = new();
+
     #region Getter
     [MemoryPackIgnore]
     public int QuestID => questID;
     [MemoryPackIgnore]
     public QuestState QuestState => questState;
+    [MemoryPackIgnore]
+    public Observable<QuestState> OnStateChanged => onStateChanged;
 
     #endregion
 
@@ -237,6 +259,7 @@ public partial class QuestInProgress : IDisposable
         }
 
         QuestRewards = inputQuestContent.QuestRewards;
+        SetupObjectiveSubscriptions();
     }
 
     [MemoryPackConstructor]
@@ -250,47 +273,87 @@ public partial class QuestInProgress : IDisposable
         QuestObjectives = questObjectives;
 
         QuestRewards = null;
+        SetupObjectiveSubscriptions();
+    }
+
+    private void SetupObjectiveSubscriptions()
+    {
+        objectivesDisposables.Dispose();
+        objectivesDisposables = new CompositeDisposable();
+
+        if (QuestObjectives == null)
+            return;
+
+        for (int i = 0; i < QuestObjectives.Length; i++)
+        {
+            if (QuestObjectives[i] == null) continue;
+
+            QuestObjectives[i].OnProgressChanged
+                .Subscribe(_ => CheckAndUpdateState())
+                .AddTo(objectivesDisposables);
+        }
+    }
+
+    public void CheckAndUpdateState()
+    {
+        if (questState != QuestState.InProgress && questState != QuestState.Finishable)
+            return;
+
+        QuestState newState = IsCompleted ? QuestState.Finishable : QuestState.InProgress;
+        if (questState != newState)
+        {
+            questState = newState;
+            onStateChanged.OnNext(questState);
+        }
     }
 
     public void Rebind(in QuestContent content)
     {
-        Dispose();
-
         QuestRewards = content.QuestRewards;
 
         if (QuestObjectives == null ||
             QuestObjectives.Length != content.QuestObjectives.Length)
         {
+            ClearSubscriptions(disposeObjectives: true);
+
             QuestObjectives = new QuestObjectiveInProgress[content.QuestObjectives.Length];
 
             for (int i = 0; i < QuestObjectives.Length; i++)
             {
                 QuestObjectives[i] = new QuestObjectiveInProgress(in content.QuestObjectives[i]);
             }
-
-            return;
         }
-
-        for (int i = 0; i < QuestObjectives.Length; i++)
+        else
         {
-            QuestObjectives[i].Rebind(in content.QuestObjectives[i]);
+            ClearSubscriptions(disposeObjectives: false);
+
+            for (int i = 0; i < QuestObjectives.Length; i++)
+            {
+                QuestObjectives[i].Rebind(in content.QuestObjectives[i]);
+            }
         }
+
+        SetupObjectiveSubscriptions();
     }
 
-    public void SetQuestState(QuestState state)
+    private void ClearSubscriptions(bool disposeObjectives)
     {
-        questState = state;
+        objectivesDisposables.Dispose();
+        objectivesDisposables = new CompositeDisposable();
+
+        if (QuestObjectives != null && disposeObjectives)
+        {
+            for (int i = 0; i < QuestObjectives.Length; i++)
+            {
+                QuestObjectives[i]?.Dispose();
+            }
+        }
     }
 
     public void Dispose()
     {
-        if (QuestObjectives == null)
-            return;
-
-        for (int i = 0; i < QuestObjectives.Length; i++)
-        {
-            QuestObjectives[i]?.Dispose();
-        }
+        ClearSubscriptions(disposeObjectives: true);
+        onStateChanged.Dispose();
     }
 
 }
@@ -314,6 +377,7 @@ public class QuestManager : IInitializable, IDisposable
 
     private readonly List<QuestInProgress> progressingQuests = new();
     private readonly List<QuestLog> questLogs = new();
+    private readonly Dictionary<int, IDisposable> questStateSubscriptions = new();
 
     private QuestRequirement[] availableQuestBuffer;
     private int[] availableQuestList = Array.Empty<int>();
@@ -327,8 +391,6 @@ public class QuestManager : IInitializable, IDisposable
     public int[] AvailableQuestList => availableQuestList;
     public int[] FinishableQuestList => finishableQuestList;
 
-    private void IgnoreReceiveQuestReturn(int Id) => _ = ReceiveQuest(Id);
-    private void IgnoreCompleteQuestReturn(int Id) => _ = CompleteQuest(Id);
     [Inject]
     public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM)
     {
@@ -338,9 +400,18 @@ public class QuestManager : IInitializable, IDisposable
     public void Initialize()
     {
         InitAsync().Forget();
-        Fungus.FungusEventBridge.OnReceivedQuest += IgnoreReceiveQuestReturn;
-        Fungus.FungusEventBridge.OnCompleteQuest += IgnoreCompleteQuestReturn;
-        Fungus.FungusEventBridge.OnFinishableQuest += FinishableQuest;
+        Fungus.FungusEventBridge.OnReceivedQuest += IgnoreReceiveReturn();
+        Fungus.FungusEventBridge.OnCompleteQuest += IgnoreCompleteReturn();
+    }
+
+    private Action<int> IgnoreReceiveReturn()
+    {
+        return questId => ReceiveQuest(questId);
+    }
+
+    private Action<int> IgnoreCompleteReturn()
+    {
+        return questId => CompleteQuest(questId);
     }
 
     private async UniTaskVoid InitAsync()
@@ -360,7 +431,11 @@ public class QuestManager : IInitializable, IDisposable
             availableQuestBuffer = Array.Empty<QuestRequirement>();
 
         GlobalEventManager.OnNextDayObservable
-            .Subscribe(_ => UpdateAvailableQuest())
+            .Subscribe(_ => {
+                UpdateAvailableQuest();
+                DoRegisterQuestStateInNpcManager();
+                SynchonizeAvailableQuestListToFungus();
+            })
             .AddTo(ref disposableBag);
 
         UpdateAvailableQuest();
@@ -368,20 +443,36 @@ public class QuestManager : IInitializable, IDisposable
 
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeFinishableQuestListToFungus;
+        Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeProgressingQuestListToFungus;
+
+        SynchonizeAvailableQuestListToFungus();
+        SynchonizeFinishableQuestListToFungus();
+        SynchonizeProgressingQuestListToFungus();
+    }
+
+    private void EnsureQuestRegisteredInNpcManager(int questId, QuestState initialState = QuestState.Available)
+    {
+        if (_npcManager != null && !_npcManager.GetReceivedQuestState.ContainsKey(questId))
+        {
+            string publisher = _QuestContents != null ? _QuestContents.GetQuestPublisher(questId).ToString() : "";
+            _npcManager.RegisterQuestState(questId, new QuestProgressState((NPCname)Enum.Parse(typeof(NPCname), publisher), initialState));
+        }
     }
 
     private void DoRegisterQuestStateInNpcManager()
     {
+        if (_QuestContents == null || _npcManager == null) return;
+
         foreach (int id in availableQuestList)
         {
-            _npcManager.RegisterQuestState(id,
-                new QuestProgressState(_QuestContents.GetQuestPublisher(id), QuestState.Available));
+            EnsureQuestRegisteredInNpcManager(id, QuestState.Available);
+            _npcManager.ChangeQuestState(id, QuestState.Available);
         }
 
         foreach (int id in finishableQuestList)
         {
-            _npcManager.RegisterQuestState(id,
-                new QuestProgressState(_QuestContents.GetQuestPublisher(id), QuestState.Finishable));
+            EnsureQuestRegisteredInNpcManager(id, QuestState.Finishable);
+            _npcManager.ChangeQuestState(id, QuestState.Finishable);
         }
     }
 
@@ -401,13 +492,17 @@ public class QuestManager : IInitializable, IDisposable
             questLogs
         );
 
+        Debug.Log($"[QuestManager] UpdateAvailableQuest - currentDay: {currentDay}, GetValidRequirements count: {rawCount}");
+
         List<int> validQuestIds = new List<int>(rawCount);
 
         for (int i = 0; i < rawCount; i++)
         {
             QuestRequirement req = availableQuestBuffer[i];
+            bool canReceive = CanReceiveQuest(req);
+            Debug.Log($"[QuestManager] Checking Quest {req.QuestId} - PrereqQuestId: {req.PrereqQuestId}, CanReceive: {canReceive}");
 
-            if (!CanReceiveQuest(req))
+            if (!canReceive)
                 continue;
 
             validQuestIds.Add(req.QuestId);
@@ -472,6 +567,29 @@ public class QuestManager : IInitializable, IDisposable
         return false;
     }
 
+    private void SubscribeToQuestState(QuestInProgress quest)
+    {
+        UnsubscribeFromQuestState(quest.QuestID);
+        var sub = quest.OnStateChanged.Subscribe(state => HandleQuestStateChanged(quest.QuestID, state));
+        questStateSubscriptions[quest.QuestID] = sub;
+    }
+
+    private void UnsubscribeFromQuestState(int questId)
+    {
+        if (questStateSubscriptions.TryGetValue(questId, out var sub))
+        {
+            sub.Dispose();
+            questStateSubscriptions.Remove(questId);
+        }
+    }
+
+    private void HandleQuestStateChanged(int questId, QuestState state)
+    {
+        SetQuestLogState(questId, state);
+        _npcManager.ChangeQuestState(questId, state);
+        RefreshFinishableQuestList();
+    }
+
     public bool ReceiveQuest(int questId)
     {
         if (_QuestContents == null)
@@ -489,13 +607,20 @@ public class QuestManager : IInitializable, IDisposable
         ref QuestContent content = ref _QuestContents.GetQuestContentById(questId);
 
         QuestInProgress quest = new QuestInProgress(in content);
+        SubscribeToQuestState(quest);
         progressingQuests.Add(quest);
 
         SetQuestLogState(questId, QuestState.InProgress);
 
+        EnsureQuestRegisteredInNpcManager(questId, QuestState.InProgress);
         _npcManager.ChangeQuestState(questId, QuestState.InProgress);
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
+        DoRegisterQuestStateInNpcManager();
+
+        SynchonizeAvailableQuestListToFungus();
+        SynchonizeFinishableQuestListToFungus();
+        SynchonizeProgressingQuestListToFungus();
 
         return true;
     }
@@ -519,13 +644,16 @@ public class QuestManager : IInitializable, IDisposable
 
         GiveReward(in content);
 
+        UnsubscribeFromQuestState(questId);
+
         quest.Dispose();
         progressingQuests.RemoveAt(index);
 
         SetQuestLogState(questId, QuestState.Completed);
 
+        EnsureQuestRegisteredInNpcManager(questId, QuestState.Completed);
         _npcManager.ChangeQuestState(questId, QuestState.Completed);
-        // 정적 구조체 배열 O(N) 순회로 가비지 없이 완료된 questId의 후속 연계 퀘스트들을 찾아 자동 수주 처리
+        /* [수동 수주 전환] 정적 구조체 배열 O(N) 순회로 완료된 questId의 후속 연계 퀘스트들을 찾아 자동 수주 처리하던 부분을 비활성화합니다.
         int currentDay = ProgressManager.getPlayedDayOnGameSystem();
         if (_QuestReqs != null && _QuestReqs.questRequirements != null)
         {
@@ -545,8 +673,12 @@ public class QuestManager : IInitializable, IDisposable
                                 if (!IsQuestInProgress(req.QuestId) && !HasQuestState(req.QuestId, QuestState.Completed))
                                 {
                                     QuestInProgress nextInProgress = new QuestInProgress(in nextContent);
+                                    SubscribeToQuestState(nextInProgress);
                                     progressingQuests.Add(nextInProgress);
                                     SetQuestLogState(req.QuestId, QuestState.InProgress);
+
+                                    EnsureQuestRegisteredInNpcManager(req.QuestId, QuestState.InProgress);
+                                    _npcManager.ChangeQuestState(req.QuestId, QuestState.InProgress);
                                 }
                             }
                         }
@@ -554,9 +686,15 @@ public class QuestManager : IInitializable, IDisposable
                 }
             }
         }
+        */
 
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
+        DoRegisterQuestStateInNpcManager();
+
+        SynchonizeAvailableQuestListToFungus();
+        SynchonizeFinishableQuestListToFungus();
+        SynchonizeProgressingQuestListToFungus();
 
         return true;
     }
@@ -599,21 +737,6 @@ public class QuestManager : IInitializable, IDisposable
         });
     }
 
-    public void FinishableQuest(int questId)
-    {
-        SetQuestLogState(questId, QuestState.Finishable);
-        _npcManager.ChangeQuestState(questId, QuestState.Finishable);
-
-        int index = FindProgressingQuestIndex(questId);
-        if (index >= 0)
-        {
-            progressingQuests[index].SetQuestState(QuestState.Finishable);
-        }
-
-        UpdateAvailableQuest();
-        RefreshFinishableQuestList();
-    }
-
     public void RefreshFinishableQuestList()
     {
         List<int> result = new List<int>();
@@ -622,7 +745,7 @@ public class QuestManager : IInitializable, IDisposable
         {
             QuestInProgress quest = progressingQuests[i];
 
-            if (quest.IsCompleted || quest.QuestState == QuestState.Finishable)
+            if (quest.IsCompleted)
             {
                 result.Add(quest.QuestID);
             }
@@ -635,12 +758,21 @@ public class QuestManager : IInitializable, IDisposable
     {
         UpdateAvailableQuest();
         Fungus.FungusEventBridge.setAvailableQuestId(ref availableQuestList);
+        DoRegisterQuestStateInNpcManager();
     }
 
     public void SynchonizeFinishableQuestListToFungus()
     {
         RefreshFinishableQuestList();
         Fungus.FungusEventBridge.setFinishableQuestId(ref finishableQuestList);
+        DoRegisterQuestStateInNpcManager();
+    }
+
+    public void SynchonizeProgressingQuestListToFungus()
+    {
+        int[] progressingQuestIds = progressingQuests.Select(q => q.QuestID).ToArray();
+        Fungus.FungusEventBridge.setProgressingQuestId(ref progressingQuestIds);
+        DoRegisterQuestStateInNpcManager();
     }
 
     private void GiveReward(in QuestContent content)
@@ -703,6 +835,7 @@ public class QuestManager : IInitializable, IDisposable
                     ref QuestContent content = ref _QuestContents.GetQuestContentById(quest.QuestID);
                     quest.Rebind(in content);
 
+                    SubscribeToQuestState(quest);
                     progressingQuests.Add(quest);
                     SetQuestLogState(quest.QuestID, QuestState.InProgress);
                 }
@@ -721,6 +854,12 @@ public class QuestManager : IInitializable, IDisposable
 
     private void ClearProgressingQuests()
     {
+        foreach (var sub in questStateSubscriptions.Values)
+        {
+            sub.Dispose();
+        }
+        questStateSubscriptions.Clear();
+
         for (int i = 0; i < progressingQuests.Count; i++)
         {
             progressingQuests[i]?.Dispose();
@@ -735,9 +874,7 @@ public class QuestManager : IInitializable, IDisposable
 
         Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeAvailableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeFinishableQuestListToFungus;
-        Fungus.FungusEventBridge.OnReceivedQuest -= IgnoreReceiveQuestReturn;
-        Fungus.FungusEventBridge.OnCompleteQuest -= IgnoreCompleteQuestReturn;
-        Fungus.FungusEventBridge.OnFinishableQuest -= FinishableQuest;
+        Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeProgressingQuestListToFungus;
 
         ClearProgressingQuests();
 
