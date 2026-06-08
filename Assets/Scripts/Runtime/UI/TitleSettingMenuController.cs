@@ -13,12 +13,12 @@ public class TitleSettingMenuController : MonoBehaviour
     [Header("UI switch")]
     public Button soundButton;
     public Button displayButton;
-    public Button etcButton;
+    // public Button etcButton;
 
 
     public GameObject soundPanel;        // 사운드 설정 판넬
     public GameObject displayPanel;      // 화면 설정 판넬
-    public GameObject keyBindPanel;         // 기타 설정 판넬
+    // public GameObject keyBindPanel;         // 기타 설정 판넬
 
     public Button closeButton;        // 설정 창 닫는 버튼
 
@@ -140,34 +140,36 @@ public class TitleSettingMenuController : MonoBehaviour
         {
             case PanelMode.Sound:
                 {
-                    soundPanel.SetActive(true);
-                    displayPanel.SetActive(false);
-                    keyBindPanel.SetActive(false);
+                    if (soundPanel != null) soundPanel.SetActive(true);
+                    if (displayPanel != null) displayPanel.SetActive(false);
+                    // if (keyBindPanel != null) keyBindPanel.SetActive(false);
 
                     break;
                 }
             case PanelMode.Display:
                 {
-                    soundPanel.SetActive(false);
-                    displayPanel.SetActive(true);
-                    keyBindPanel.SetActive(false);
+                    if (soundPanel != null) soundPanel.SetActive(false);
+                    if (displayPanel != null) displayPanel.SetActive(true);
+                    // if (keyBindPanel != null) keyBindPanel.SetActive(false);
 
                     break;
                 }
+            /*
             case PanelMode.KeyBind:
                 {
-                    soundPanel.SetActive(false);
-                    displayPanel.SetActive(false);
-                    keyBindPanel.SetActive(true);
+                    if (soundPanel != null) soundPanel.SetActive(false);
+                    if (displayPanel != null) displayPanel.SetActive(false);
+                    if (keyBindPanel != null) keyBindPanel.SetActive(true);
 
                     break;
                 }
+            */
         }
     }
 
     public void OnClickSoundButton() => PanelChange(PanelMode.Sound);
     public void OnClickDisplayButton() => PanelChange(PanelMode.Display);
-    public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
+    // public void OnClickKeyBindButton() => PanelChange(PanelMode.KeyBind);
 
 
 
@@ -193,6 +195,7 @@ public class TitleSettingMenuController : MonoBehaviour
         }
     }
 
+    /*
     public void OpenKeyBindPanel(InputAction.CallbackContext context)
     {
         if (context.ReadValueAsButton() && context.performed)
@@ -203,6 +206,7 @@ public class TitleSettingMenuController : MonoBehaviour
             }
         }
     }
+    */
 
     private Coroutine moveCoroutine;
 
