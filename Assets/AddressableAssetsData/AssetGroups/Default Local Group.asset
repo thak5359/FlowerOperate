@@ -1026,6 +1026,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Flower
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a35c04a20c527b4495f3b6c750ea436
+    m_Address: Dot_InProgress
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8a59e017ab57f3044b483b83b91a412a
     m_Address: Obsidian_Ore
     m_ReadOnly: 0

@@ -18,7 +18,7 @@ public enum QuestLabel
 {
     None = 0,
     QuestMark_CanReceive = 1,
-    QuestMark_Progressing = 2,
+    Dot_InProgress = 2,
     QuestMark_Finishable = 3,
     Escort_Sprite = 4
 }
@@ -34,7 +34,7 @@ public class NPC : MonoBehaviour
     void Awake()
     {
         //npcSpriteRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
-        questLabel.Subscribe(label => SetQuestStateSprite(label));
+        questLabel.Subscribe(label => SetQuestStateSprite(label).Forget());
     }
 
     public void ChangeQuestSign(QuestState questState)
@@ -45,7 +45,7 @@ public class NPC : MonoBehaviour
                 questLabel.OnNext(QuestLabel.QuestMark_CanReceive);
                 break;
             case QuestState.InProgress:
-                questLabel.OnNext(QuestLabel.QuestMark_Progressing);
+                questLabel.OnNext(QuestLabel.Dot_InProgress);
                 break;
             case QuestState.Finishable:
                 questLabel.OnNext(QuestLabel.QuestMark_Finishable);
@@ -59,14 +59,13 @@ public class NPC : MonoBehaviour
     async UniTaskVoid SetQuestStateSprite(QuestLabel label)
     {
         numberOfState[((int)label)-1]++;
-        if(numberOfState.x != 0)
+        if (numberOfState.z != 0)
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));
         else if (numberOfState.y != 0)
-            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Progressing));
-        else if (numberOfState.z != 0)
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Dot_InProgress));
+        else if(numberOfState.x != 0)
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive));
         else
             npcSpriteRenderer.sprite = null;
-
     }
 }

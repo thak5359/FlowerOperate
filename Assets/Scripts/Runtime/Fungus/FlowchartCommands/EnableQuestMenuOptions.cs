@@ -9,62 +9,46 @@ namespace Fungus
     [AddComponentMenu("")]
     public class EnableQuestMenuOptions : Command
     {
-        [Tooltip("Flowchart에서 선언된 Dictionary(Int, Command) 변수 참조")]
-        [SerializeField] protected DictionaryIntCommandData menuDictionary;
+        [Tooltip("수주 가능 퀘스트 Dictionary(Int, Command) 변수 참조")]
+        [SerializeField] protected DictionaryIntCommandData availableQuestDictionary;
+
+        [Tooltip("완료 가능 퀘스트 Dictionary(Int, Command) 변수 참조")]
+        [SerializeField] protected DictionaryIntCommandData finishableQuestDictionary;
 
         public override void OnEnter()
         {
             Flowchart flowchart = GetFlowchart();
             if (flowchart != null)
             {
-                var dict = menuDictionary.Value;
-                if (dict != null)
+                int[] availableQuestIds = FungusEventBridge.getAvailableQuestId;
+                int[] finishableQuestIds = FungusEventBridge.getFinishableQuestId;
+
+                // 1. 수주 가능 퀘스트 처리
+                var availableDict = availableQuestDictionary.Value;
+                if (availableDict != null && availableQuestIds != null)
                 {
-                    int[] availableQuestIds = FungusEventBridge.getAvailableQuestId;
-                    int[] finishableQuestIds = FungusEventBridge.getFinishableQuestId;
-
-                    // 중복 조회를 방지하고 처리 대상을 합치기 위해 HashSet 사용
-                    HashSet<int> questIdsToEnable = new HashSet<int>();
-
-                    if (availableQuestIds != null)
+                    foreach (int id in availableQuestIds)
                     {
-                        foreach (int id in availableQuestIds)
+                        if (availableDict.ContainsKey(id))
                         {
-                            questIdsToEnable.Add(id);
+                            CommandReference cmdRef = availableDict[id];
+                            EnableCommandOption(cmdRef.command);
                         }
                     }
+                }
 
-                    if (finishableQuestIds != null)
+                // 2. 완료 가능 퀘스트 처리
+                var finishableDict = finishableQuestDictionary.Value;
+                Debug.Log(finishableQuestIds.Length);
+                if (finishableDict != null && finishableQuestIds != null)
+                {
+                    foreach (int id in finishableQuestIds)
                     {
-                        foreach (int id in finishableQuestIds)
+                        Debug.Log(id);
+                        if (finishableDict.ContainsKey(id))
                         {
-                            questIdsToEnable.Add(id);
-                        }
-                    }
-
-                    foreach (int id in questIdsToEnable)
-                    {
-                        if (dict.ContainsKey(id))
-                        {
-                            CommandReference cmdRef = dict[id];
-                            Command cmd = cmdRef.command;
-                            if (cmd != null)
-                            {
-                                // 1. Menu 타입의 커맨드인 경우 직접 HideThisOption 속성 변경
-                                if (cmd is Menu menuCommand)
-                                {
-                                    menuCommand.HideThisOption = false;
-                                }
-                                // 2. 다른 타입의 커맨드인 경우 리플렉션을 통해 HideThisOption 속성 설정 시도
-                                else
-                                {
-                                    var hideProp = cmd.GetType().GetProperty("HideThisOption", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                                    if (hideProp != null && hideProp.CanWrite)
-                                    {
-                                        hideProp.SetValue(cmd, false);
-                                    }
-                                }
-                            }
+                            CommandReference cmdRef = finishableDict[id];
+                            EnableCommandOption(cmdRef.command);
                         }
                     }
                 }
@@ -73,16 +57,38 @@ namespace Fungus
             Continue();
         }
 
+        protected virtual void EnableCommandOption(Command cmd)
+        {
+            if (cmd != null)
+            {
+                // 1. Menu 타입의 커맨드인 경우 직접 HideThisOption 속성 변경
+                if (cmd is Menu menuCommand)
+                {
+                    menuCommand.HideThisOption = false;
+                }
+                // 2. 다른 타입의 커맨드인 경우 리플렉션을 통해 HideThisOption 속성 설정 시도
+                else
+                {
+                    var hideProp = cmd.GetType().GetProperty("HideThisOption", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                    if (hideProp != null && hideProp.CanWrite)
+                    {
+                        hideProp.SetValue(cmd, false);
+                    }
+                }
+            }
+        }
+
         public override string GetSummary()
         {
-            int dictCount = (menuDictionary.Value != null) ? menuDictionary.Value.Count : 0;
+            int availableDictCount = (availableQuestDictionary.Value != null) ? availableQuestDictionary.Value.Count : 0;
+            int finishableDictCount = (finishableQuestDictionary.Value != null) ? finishableQuestDictionary.Value.Count : 0;
 
             int[] availableQuestIds = FungusEventBridge.getAvailableQuestId;
             int[] finishableQuestIds = FungusEventBridge.getFinishableQuestId;
             int availableCount = availableQuestIds != null ? availableQuestIds.Length : 0;
             int finishableCount = finishableQuestIds != null ? finishableQuestIds.Length : 0;
 
-            return $"Enable options from available ({availableCount}) & finishable ({finishableCount}) in '{menuDictionary.GetDescription()}' ({dictCount} items)";
+            return $"Available: {availableCount}/{availableDictCount} ({availableQuestDictionary.GetDescription()}), Finishable: {finishableCount}/{finishableDictCount} ({finishableQuestDictionary.GetDescription()})";
         }
 
         public override Color GetButtonColor()

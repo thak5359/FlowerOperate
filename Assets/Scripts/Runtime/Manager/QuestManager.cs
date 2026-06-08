@@ -276,6 +276,12 @@ public partial class QuestInProgress : IDisposable
             QuestObjectives[i].Rebind(in content.QuestObjectives[i]);
         }
     }
+
+    public void SetQuestState(QuestState state)
+    {
+        questState = state;
+    }
+
     public void Dispose()
     {
         if (QuestObjectives == null)
@@ -321,6 +327,8 @@ public class QuestManager : IInitializable, IDisposable
     public int[] AvailableQuestList => availableQuestList;
     public int[] FinishableQuestList => finishableQuestList;
 
+    private void IgnoreReceiveQuestReturn(int Id) => _ = ReceiveQuest(Id);
+    private void IgnoreCompleteQuestReturn(int Id) => _ = CompleteQuest(Id);
     [Inject]
     public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM)
     {
@@ -330,6 +338,9 @@ public class QuestManager : IInitializable, IDisposable
     public void Initialize()
     {
         InitAsync().Forget();
+        Fungus.FungusEventBridge.OnReceivedQuest += IgnoreReceiveQuestReturn;
+        Fungus.FungusEventBridge.OnCompleteQuest += IgnoreCompleteQuestReturn;
+        Fungus.FungusEventBridge.OnFinishableQuest += FinishableQuest;
     }
 
     private async UniTaskVoid InitAsync()
@@ -356,6 +367,7 @@ public class QuestManager : IInitializable, IDisposable
         DoRegisterQuestStateInNpcManager();
 
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;
+        Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeFinishableQuestListToFungus;
     }
 
     private void DoRegisterQuestStateInNpcManager()
@@ -587,6 +599,21 @@ public class QuestManager : IInitializable, IDisposable
         });
     }
 
+    public void FinishableQuest(int questId)
+    {
+        SetQuestLogState(questId, QuestState.Finishable);
+        _npcManager.ChangeQuestState(questId, QuestState.Finishable);
+
+        int index = FindProgressingQuestIndex(questId);
+        if (index >= 0)
+        {
+            progressingQuests[index].SetQuestState(QuestState.Finishable);
+        }
+
+        UpdateAvailableQuest();
+        RefreshFinishableQuestList();
+    }
+
     public void RefreshFinishableQuestList()
     {
         List<int> result = new List<int>();
@@ -595,7 +622,7 @@ public class QuestManager : IInitializable, IDisposable
         {
             QuestInProgress quest = progressingQuests[i];
 
-            if (quest.IsCompleted)
+            if (quest.IsCompleted || quest.QuestState == QuestState.Finishable)
             {
                 result.Add(quest.QuestID);
             }
@@ -613,7 +640,7 @@ public class QuestManager : IInitializable, IDisposable
     public void SynchonizeFinishableQuestListToFungus()
     {
         RefreshFinishableQuestList();
-        Fungus.FungusEventBridge.setAvailableQuestId(ref finishableQuestList);
+        Fungus.FungusEventBridge.setFinishableQuestId(ref finishableQuestList);
     }
 
     private void GiveReward(in QuestContent content)
@@ -707,6 +734,10 @@ public class QuestManager : IInitializable, IDisposable
         disposableBag.Dispose();
 
         Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeAvailableQuestListToFungus;
+        Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeFinishableQuestListToFungus;
+        Fungus.FungusEventBridge.OnReceivedQuest -= IgnoreReceiveQuestReturn;
+        Fungus.FungusEventBridge.OnCompleteQuest -= IgnoreCompleteQuestReturn;
+        Fungus.FungusEventBridge.OnFinishableQuest -= FinishableQuest;
 
         ClearProgressingQuests();
 
