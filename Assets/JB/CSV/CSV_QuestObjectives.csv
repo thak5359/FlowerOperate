@@ -1,0 +1,7 @@
+QuestId,ObjectiveIndex,ContentType,TargetID,TargetAmount
+1,1,7,0,1
+2,1,63,0,10
+3,1,51,0,10
+4,1,52,0,10
+5,1,57,401001,10
+6,1,54,0,10

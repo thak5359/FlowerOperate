@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using VContainer;
 using VContainer.Unity;
 
@@ -300,7 +301,7 @@ public partial class QuestInProgress : IDisposable
 public class QuestManager : IInitializable, IDisposable
 {
     private PlayerOwnItemDataManager _playerItemManager;
-
+    private NPCManager _npcManager;
     private QuestRequirementSO _QuestReqs;
     private QuestContentSO _QuestContents;
 
@@ -320,22 +321,26 @@ public class QuestManager : IInitializable, IDisposable
     public int[] FinishableQuestList => finishableQuestList;
 
     [Inject]
-    public void Construct(PlayerOwnItemDataManager input_POITDM)
+    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM)
     {
         _playerItemManager = input_POITDM;
+        _npcManager = input_NPCM;
     }
-
     public void Initialize()
     {
-        _QuestReqs = AddressableManager
-            .LoadAssetAsync<QuestRequirementSO>("QuestRequirementSO")
-            .GetAwaiter()
-            .GetResult();
+        InitAsync().Forget();
+    }
 
-        _QuestContents = AddressableManager
-            .LoadAssetAsync<QuestContentSO>("QuestContentSO")
-            .GetAwaiter()
-            .GetResult();
+    private async UniTaskVoid InitAsync()
+    {
+
+        await Addressables.InitializeAsync();   
+
+        _QuestReqs = await AddressableManager
+                    .LoadAssetAsync<QuestRequirementSO>("QuestRequirementSO");
+
+        _QuestContents = await AddressableManager
+            .LoadAssetAsync<QuestContentSO>("QuestContentSO");
 
         if (_QuestReqs != null && _QuestReqs.questRequirements != null)
             availableQuestBuffer = new QuestRequirement[_QuestReqs.questRequirements.Length];
@@ -347,8 +352,24 @@ public class QuestManager : IInitializable, IDisposable
             .AddTo(ref disposableBag);
 
         UpdateAvailableQuest();
+        DoRegisterQuestStateInNpcManager();
 
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;
+    }
+
+    private void DoRegisterQuestStateInNpcManager()
+    {
+        foreach (int id in availableQuestList)
+        {
+            _npcManager.RegisterQuestState(id,
+                new QuestProgressState(_QuestContents.GetQuestPublisher(id), QuestState.Available));
+        }
+
+        foreach (int id in finishableQuestList)
+        {
+            _npcManager.RegisterQuestState(id,
+                new QuestProgressState(_QuestContents.GetQuestPublisher(id), QuestState.Finishable));
+        }
     }
 
     public void UpdateAvailableQuest()
@@ -378,8 +399,10 @@ public class QuestManager : IInitializable, IDisposable
             validQuestIds.Add(req.QuestId);
         }
 
+
         availableQuestList = validQuestIds.ToArray();
     }
+
 
 
     private bool CanReceiveQuest(QuestRequirement req)
@@ -456,6 +479,7 @@ public class QuestManager : IInitializable, IDisposable
 
         SetQuestLogState(questId, QuestState.InProgress);
 
+        _npcManager.ChangeQuestState(questId, QuestState.InProgress);
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
 
@@ -486,6 +510,7 @@ public class QuestManager : IInitializable, IDisposable
 
         SetQuestLogState(questId, QuestState.Completed);
 
+        _npcManager.ChangeQuestState(questId, QuestState.Completed);
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
 
@@ -534,7 +559,9 @@ public class QuestManager : IInitializable, IDisposable
             QuestInProgress quest = progressingQuests[i];
 
             if (quest.IsCompleted)
+            {
                 result.Add(quest.QuestID);
+            }
         }
 
         finishableQuestList = result.ToArray();
@@ -625,6 +652,7 @@ public class QuestManager : IInitializable, IDisposable
 
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
+        DoRegisterQuestStateInNpcManager();
     }
 
     private void ClearProgressingQuests()

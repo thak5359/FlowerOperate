@@ -10,6 +10,12 @@ public struct QuestProgressState
 {
     public NPCname Publisher;
     public QuestState State;
+
+    public QuestProgressState(NPCname name, QuestState state)
+    {
+        this.Publisher = name;
+        this.State = state;
+    }
 }
 
 public class NPCManager : IPostInitializable

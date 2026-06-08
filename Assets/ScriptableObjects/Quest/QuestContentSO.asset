@@ -13,16 +13,83 @@ MonoBehaviour:
   m_Name: QuestContentSO
   m_EditorClassIdentifier: 
   questContents:
-  - QuestId: 0
-    QuestTitle: 
-    QuestDescription: 
+  - QuestId: 1
+    QuestTitle: "\uD5E5\uC2A4\uC640 \uB300\uD654"
+    QuestDescription: "[\uD5E5\uC2A4]\uC640 \uB300\uD654\uD558\uB77C"
     QuestObjectives:
-    - <ContentType>k__BackingField: 0
+    - <ContentType>k__BackingField: 7
       <TargetID>k__BackingField: 0
-      <TargetAmount>k__BackingField: 0
+      <TargetAmount>k__BackingField: 1
     QuestRewards:
-    - <RewardType>k__BackingField: 0
-      <RewardID>k__BackingField: 0
-      <RewardAmount>k__BackingField: 0
-    Publisher: 0
-    Rewarder: 0
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 201001
+      <RewardAmount>k__BackingField: 1
+    Publisher: 1
+    Rewarder: 5
+  - QuestId: 2
+    QuestTitle: "\uBC2D\uC744 \uC77C\uAD88\uB77C"
+    QuestDescription: "[\uBC2D]\uC744 [10]\uAC1C \uB9CC\uB4E4\uC5B4\uB77C"
+    QuestObjectives:
+    - <ContentType>k__BackingField: 63
+      <TargetID>k__BackingField: 0
+      <TargetAmount>k__BackingField: 10
+    QuestRewards:
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 401001
+      <RewardAmount>k__BackingField: 10
+    Publisher: 1
+    Rewarder: 1
+  - QuestId: 3
+    QuestTitle: "\uC528\uC557 \uBFCC\uB9AC\uAE30"
+    QuestDescription: "[\uBC2D]\uC5D0 [\uBE68\uAC04 \uAC70\uBCA0\uB77C \uC528\uC557][10]\uAC1C
+      \uC0AC\uC6A9"
+    QuestObjectives:
+    - <ContentType>k__BackingField: 51
+      <TargetID>k__BackingField: 0
+      <TargetAmount>k__BackingField: 10
+    QuestRewards:
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 201009
+      <RewardAmount>k__BackingField: 1
+    Publisher: 1
+    Rewarder: 1
+  - QuestId: 4
+    QuestTitle: "\uBB3C\uC744 \uC8FC\uC790"
+    QuestDescription: "['\uBE68\uAC04 \uAC70\uBCA0\uB77C \uC528\uC557\uC774 \uC788\uB294'
+      \uBC2D]\uC5D0 [\uBB3C\uBFCC\uB9AC\uAC1C] [10]\uBC88 \uC0AC\uC6A9"
+    QuestObjectives:
+    - <ContentType>k__BackingField: 52
+      <TargetID>k__BackingField: 0
+      <TargetAmount>k__BackingField: 10
+    QuestRewards:
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 201025
+      <RewardAmount>k__BackingField: 1
+    Publisher: 1
+    Rewarder: 1
+  - QuestId: 5
+    QuestTitle: "\uC218\uD655 \uD558\uC790"
+    QuestDescription: "[\uBE68\uAC04 \uAC70\uBC30\uB77C] [10]\uBC88 \uC218\uD655"
+    QuestObjectives:
+    - <ContentType>k__BackingField: 57
+      <TargetID>k__BackingField: 401001
+      <TargetAmount>k__BackingField: 10
+    QuestRewards:
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 201017
+      <RewardAmount>k__BackingField: 1
+    Publisher: 1
+    Rewarder: 1
+  - QuestId: 6
+    QuestTitle: "\uBC2D\uC744 \uBD80\uC154\uB77C"
+    QuestDescription: "[\uBC2D]\uC744 [10]\uAC1C \uD30C\uAD34"
+    QuestObjectives:
+    - <ContentType>k__BackingField: 54
+      <TargetID>k__BackingField: 0
+      <TargetAmount>k__BackingField: 10
+    QuestRewards:
+    - <RewardType>k__BackingField: 2
+      <RewardID>k__BackingField: 201001
+      <RewardAmount>k__BackingField: 1
+    Publisher: 5
+    Rewarder: 5

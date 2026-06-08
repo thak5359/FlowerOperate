@@ -580,6 +580,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Gear
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56f3d35617f63d143bbb5147b7ea0617
+    m_Address: QuestRequirementSO
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 571f9f95e2ea04c4e8d2b805055963a5
     m_Address: Yellow_Sunflower
     m_ReadOnly: 0
@@ -1682,6 +1688,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Flower
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e89dbd418d464384cba246d61965b7d3
+    m_Address: QuestContentSO
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Quest
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e8f457ba98ec69e4392d78bdb76c1f82
     m_Address: Silver_Ore

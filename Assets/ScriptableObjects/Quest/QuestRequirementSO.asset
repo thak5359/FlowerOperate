@@ -13,8 +13,33 @@ MonoBehaviour:
   m_Name: QuestRequirementSO
   m_EditorClassIdentifier: 
   questRequirements:
-  - QuestId: 0
-    UnlockDate: 0
+  - QuestId: 1
+    UnlockDate: 1
     ExpiredDate: 0
     PrereqQuestId: 0
     PrereqQuestState: 0
+  - QuestId: 2
+    UnlockDate: 1
+    ExpiredDate: 0
+    PrereqQuestId: 1
+    PrereqQuestState: 4
+  - QuestId: 3
+    UnlockDate: 1
+    ExpiredDate: 0
+    PrereqQuestId: 2
+    PrereqQuestState: 4
+  - QuestId: 4
+    UnlockDate: 1
+    ExpiredDate: 0
+    PrereqQuestId: 3
+    PrereqQuestState: 4
+  - QuestId: 5
+    UnlockDate: 1
+    ExpiredDate: 0
+    PrereqQuestId: 4
+    PrereqQuestState: 4
+  - QuestId: 6
+    UnlockDate: 1
+    ExpiredDate: 0
+    PrereqQuestId: 5
+    PrereqQuestState: 4

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using R3;
 using Unity.Mathematics;
 using UnityEngine;
@@ -18,20 +19,21 @@ public enum QuestLabel
     None = 0,
     QuestMark_CanReceive = 1,
     QuestMark_Progressing = 2,
-    Exclamation_mark = 3,
+    QuestMark_Finishable = 3,
     Escort_Sprite = 4
 }
 
 public class NPC : MonoBehaviour
 {
     public NPCname npcName;
-    public SpriteRenderer npcSpriteRenderer {get; private set;}
+    [field:SerializeField]
+    public SpriteRenderer npcSpriteRenderer {get; set;}
     // int3(Available, InProgress,Finishable) 퀘스트상태의 갯수 저장
     int3 numberOfState = new int3(0, 0, 0);
     Subject<QuestLabel> questLabel = new Subject<QuestLabel>();
     void Awake()
     {
-        npcSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //npcSpriteRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
         questLabel.Subscribe(label => SetQuestStateSprite(label));
     }
 
@@ -46,7 +48,7 @@ public class NPC : MonoBehaviour
                 questLabel.OnNext(QuestLabel.QuestMark_Progressing);
                 break;
             case QuestState.Finishable:
-                questLabel.OnNext(QuestLabel.Exclamation_mark);
+                questLabel.OnNext(QuestLabel.QuestMark_Finishable);
                 break;
             default:
                 questLabel.OnNext(QuestLabel.None);
@@ -54,15 +56,15 @@ public class NPC : MonoBehaviour
         }
     }
 
-    void SetQuestStateSprite(QuestLabel label)
+    async UniTaskVoid SetQuestStateSprite(QuestLabel label)
     {
         numberOfState[((int)label)-1]++;
         if(numberOfState.x != 0)
-            npcSpriteRenderer.sprite = AddressableManager.LoadAssetAsync<Sprite>("Exclamation_mark").GetAwaiter().GetResult();
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));
         else if (numberOfState.y != 0)
-            npcSpriteRenderer.sprite = AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Progressing)).GetAwaiter().GetResult();
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Progressing));
         else if (numberOfState.z != 0)
-            npcSpriteRenderer.sprite = AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive)).GetAwaiter().GetResult();
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive));
         else
             npcSpriteRenderer.sprite = null;
 
