@@ -344,11 +344,34 @@ GameObject:
   - component: {fileID: 288413102}
   - component: {fileID: 288413101}
   - component: {fileID: 288413100}
-  - component: {fileID: 288413107}
-  - component: {fileID: 288413106}
-  - component: {fileID: 288413105}
   - component: {fileID: 288413104}
   - component: {fileID: 288413108}
+  - component: {fileID: 288413112}
+  - component: {fileID: 288413123}
+  - component: {fileID: 288413122}
+  - component: {fileID: 288413121}
+  - component: {fileID: 288413120}
+  - component: {fileID: 288413119}
+  - component: {fileID: 288413118}
+  - component: {fileID: 288413117}
+  - component: {fileID: 288413116}
+  - component: {fileID: 288413115}
+  - component: {fileID: 288413114}
+  - component: {fileID: 288413113}
+  - component: {fileID: 288413137}
+  - component: {fileID: 288413136}
+  - component: {fileID: 288413135}
+  - component: {fileID: 288413134}
+  - component: {fileID: 288413133}
+  - component: {fileID: 288413132}
+  - component: {fileID: 288413131}
+  - component: {fileID: 288413130}
+  - component: {fileID: 288413129}
+  - component: {fileID: 288413128}
+  - component: {fileID: 288413127}
+  - component: {fileID: 288413126}
+  - component: {fileID: 288413125}
+  - component: {fileID: 288413124}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -385,8 +408,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 69
-    y: 71
+    x: 34
+    y: -19
     width: 111
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -396,11 +419,34 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 288413100}
   commandList:
-  - {fileID: 288413107}
-  - {fileID: 288413106}
   - {fileID: 288413104}
-  - {fileID: 288413105}
+  - {fileID: 288413112}
+  - {fileID: 288413115}
   - {fileID: 288413108}
+  - {fileID: 288413113}
+  - {fileID: 288413114}
+  - {fileID: 288413117}
+  - {fileID: 288413116}
+  - {fileID: 288413119}
+  - {fileID: 288413118}
+  - {fileID: 288413121}
+  - {fileID: 288413120}
+  - {fileID: 288413123}
+  - {fileID: 288413122}
+  - {fileID: 288413129}
+  - {fileID: 288413128}
+  - {fileID: 288413131}
+  - {fileID: 288413130}
+  - {fileID: 288413133}
+  - {fileID: 288413132}
+  - {fileID: 288413135}
+  - {fileID: 288413134}
+  - {fileID: 288413137}
+  - {fileID: 288413136}
+  - {fileID: 288413125}
+  - {fileID: 288413124}
+  - {fileID: 288413127}
+  - {fileID: 288413126}
   suppressAllAutoSelections: 0
 --- !u!114 &288413102
 MonoBehaviour:
@@ -418,7 +464,7 @@ MonoBehaviour:
   scrollPos: {x: 116.27449, y: 125.43571}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
-  blockViewHeight: 442
+  blockViewHeight: 671
   zoom: 1
   scrollViewRect:
     serializedVersion: 2
@@ -428,8 +474,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 288413101}
-  selectedCommands:
-  - {fileID: 288413108}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -486,92 +531,6 @@ MonoBehaviour:
   move: 0
   shiftIntoPlace: 0
   waitUntilFinished: 0
---- !u!114 &288413105
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288413099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ac5ce55bc698fa4290939ef6e426501, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 3
-  indentLevel: 0
-  display: 1
-  stage: {fileID: 0}
-  character: {fileID: 1446128825}
-  replacedCharacter: {fileID: 0}
-  portrait: {fileID: -1199871206, guid: 5c09832cd1c3cc24fa9d64206f99e2b7, type: 3}
-  offset: 0
-  fromPosition: {fileID: 0}
-  toPosition: {fileID: 652590608}
-  facing: 0
-  useDefaultSettings: 1
-  fadeDuration: 0.5
-  moveDuration: 1
-  shiftOffset: {x: 0, y: 0}
-  move: 0
-  shiftIntoPlace: 0
-  waitUntilFinished: 0
---- !u!114 &288413106
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288413099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ac5ce55bc698fa4290939ef6e426501, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 2
-  indentLevel: 0
-  display: 1
-  stage: {fileID: 0}
-  character: {fileID: 1668019464}
-  replacedCharacter: {fileID: 0}
-  portrait: {fileID: -1241970962, guid: 22447ad63a032fc4da27e89f885a436f, type: 3}
-  offset: 0
-  fromPosition: {fileID: 0}
-  toPosition: {fileID: 652590610}
-  facing: 2
-  useDefaultSettings: 1
-  fadeDuration: 0.5
-  moveDuration: 1
-  shiftOffset: {x: 0, y: 0}
-  move: 0
-  shiftIntoPlace: 0
-  waitUntilFinished: 0
---- !u!114 &288413107
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288413099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5316d953c7abe498799575550c973535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 1
-  indentLevel: 0
-  animator:
-    animatorRef: {fileID: 0}
-    animatorVal: {fileID: 0}
-  stateName:
-    stringRef: {fileID: 0}
-    stringVal: 
-  layer:
-    integerRef: {fileID: 0}
-    integerVal: -1
-  time:
-    floatRef: {fileID: 0}
-    floatVal: 0
 --- !u!114 &288413108
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -586,11 +545,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 5
   indentLevel: 0
-  storyText: "\uC800\uC9C8! \uC655\uBCC0\uD0DC!"
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
   description: 
   character: {fileID: 4806037287429503739}
   portrait: {fileID: 0}
-  voiceOverClip: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
   showAlways: 1
   showCount: 1
   extendPrevious: 0
@@ -600,6 +559,566 @@ MonoBehaviour:
   waitForVO: 0
   setSayDialog: {fileID: 0}
   facePortraitName: koharu_spr_8
+--- !u!114 &288413112
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93315bfed21fe34c94ace1e971a284a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 7
+  indentLevel: 0
+  character: {fileID: 4806037287429503739}
+  animType: 5
+--- !u!114 &288413113
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 21
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 1
+--- !u!114 &288413114
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 20
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413115
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 19
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 0
+--- !u!114 &288413116
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 18
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413117
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 17
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 3
+--- !u!114 &288413118
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 16
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413119
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 15
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 2
+--- !u!114 &288413120
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 14
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413121
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 13
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 4
+--- !u!114 &288413122
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 12
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413123
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 5
+--- !u!114 &288413124
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 35
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413125
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 34
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 11
+--- !u!114 &288413126
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 33
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413127
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 32
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 12
+--- !u!114 &288413128
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 31
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413129
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 30
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 6
+--- !u!114 &288413130
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 29
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413131
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 28
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 7
+--- !u!114 &288413132
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 27
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413133
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 26
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 8
+--- !u!114 &288413134
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 25
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413135
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 24
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 9
+--- !u!114 &288413136
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673d76133d8494386801a5efa9dd6b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 23
+  indentLevel: 0
+  storyText: "\xB7\xB7\xB7\xB7\xB7."
+  description: 
+  character: {fileID: 4806037287429503739}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 8300000, guid: c29eccaff1f861843a2deb94911f46de, type: 3}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+  facePortraitName: koharu_spr_8
+--- !u!114 &288413137
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288413099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1713f0159a6002649ba7347ab4e0f50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 22
+  indentLevel: 0
+  targetCharacter: {fileID: 4806037287429503739}
+  emoteType: 10
 --- !u!1001 &460248717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -687,6 +1206,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 6090470017347379696, guid: 66489b379c2ce024eb8f56a00d091a58,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6791238374059690476, guid: 66489b379c2ce024eb8f56a00d091a58,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -742,21 +1266,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66489b379c2ce024eb8f56a00d091a58, type: 3}
---- !u!224 &652590608 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6090470017347379696, guid: 66489b379c2ce024eb8f56a00d091a58,
-    type: 3}
-  m_PrefabInstance: {fileID: 652590607}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &652590609 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4256167837748820533, guid: 66489b379c2ce024eb8f56a00d091a58,
-    type: 3}
-  m_PrefabInstance: {fileID: 652590607}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &652590610 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4721035419501657768, guid: 66489b379c2ce024eb8f56a00d091a58,
     type: 3}
   m_PrefabInstance: {fileID: 652590607}
   m_PrefabAsset: {fileID: 0}
@@ -846,18 +1358,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1446128823}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1446128825 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5616789586433790609, guid: 4a270844dfd304246af8bcf7010429b4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1446128823}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1668019462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -944,18 +1444,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1668019462}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1668019464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5500668833325903254, guid: 81e198b3b8d85a941b2edbf5129ed91c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1668019462}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1698240462
 GameObject:
   m_ObjectHideFlags: 1

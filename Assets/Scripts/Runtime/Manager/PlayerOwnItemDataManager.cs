@@ -74,7 +74,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
 
-        this._Data.AddMoney(10000); /// 상점 UI 테스트용 용돈.
+        //this._Data.AddMoney(10000); /// 상점 UI 테스트용 용돈.
     }
 
     void IDisposable.Dispose()
