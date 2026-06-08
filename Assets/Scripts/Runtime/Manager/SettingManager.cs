@@ -139,6 +139,7 @@ public class SettingManager : IStartable, IDisposable
         {
             Resolution res = allResolutions[i];
 
+            if (res.width < 1600) continue;
             if (resOptions.Exists(r => r.w == res.width && r.h == res.height)) continue;
             options.Add($"{res.width} x {res.height}");
             resOptions.Add(new ResOption { w = res.width, h = res.height});
