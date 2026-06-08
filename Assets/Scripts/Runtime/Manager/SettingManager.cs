@@ -158,6 +158,18 @@ public class SettingManager : IStartable, IDisposable
             _settings.screenMode = FullScreenMode.FullScreenWindow;
         }
     }
+
+    public void ResetToDefault()
+    {
+        _settings.masterVol = 100.0f;
+        _settings.bgmVol = 100.0f;
+        _settings.sfxVol = 100.0f;
+        _settings.voiceVol = 100.0f;
+
+        SetDefaultHighestResolution();
+        ApplyAllSettings();
+        SaveSettings();
+    }
     #endregion
 
     #region 실제 설정 적용 (Apply Logic)

@@ -414,6 +414,7 @@ public class InventoryUIController : MonoBehaviour
             _flavorTextLabel.text = textAsset.text;
         }
         */
+        await UniTask.CompletedTask;
     }
     #endregion
 }

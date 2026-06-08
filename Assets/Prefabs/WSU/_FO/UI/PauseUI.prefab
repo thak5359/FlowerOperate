@@ -723,12 +723,11 @@ MonoBehaviour:
   buttonTitle: {fileID: 4267137857659543049}
   buttonEnd: {fileID: 1247721987872907062}
   buttonCloseSetting: {fileID: 55675407822846768}
+  resetButton: {fileID: 4412243821376128021}
   soundButton: {fileID: 3365176511089016516}
   displayButton: {fileID: 9125679945715177223}
-  etcButton: {fileID: 0}
   soundPanel: {fileID: 3329266189251202371}
   displayPanel: {fileID: 1116618072751449612}
-  etcPanel: {fileID: 0}
   masterVolumeSlider: {fileID: 7530549158943760311}
   bgmVolumeSlider: {fileID: 3783318093659135991}
   sfxVolumeSlider: {fileID: 347217994069243325}

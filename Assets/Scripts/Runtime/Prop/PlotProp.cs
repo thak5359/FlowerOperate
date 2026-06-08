@@ -184,6 +184,7 @@ public class PlotProp : Prop
     private int lastFlowerItemId = -1;
     private FlowerGrowth lastFlowerGrowth = FlowerGrowth.Unknown;
     private FlowerState lastFlowerState = FlowerState.Unknown;
+    private bool isLoaded = false;
 
     private void ResetVisualCache()
     {
@@ -216,6 +217,11 @@ public class PlotProp : Prop
             Debug.LogWarning($"[PlotProp] 부모 객체에서 PlotManager를 찾을 수 없습니다. ID: {this.Id}");
         }
         _random = new Unity.Mathematics.Random((uint)(DateTime.Now.Ticks + this.Id));
+
+        if (!isLoaded)
+        {
+            QuestProgressPublisher.PlowPlot.OnNext(Unit.Default);
+        }
     }
 
     public override void OnDisable()
@@ -310,6 +316,7 @@ public class PlotProp : Prop
                 if (result.Result == FarmActionResult.ResultType.Success)
                 {
                     changeFlowerSpr().Forget();
+                    QuestProgressPublisher.PlotSowing.OnNext(_plotData.ItemId);
                 }
                 return result;
             }
@@ -342,6 +349,7 @@ public class PlotProp : Prop
                 _plotData.State = FlowerState.Moist;
                 changePlotSpr().Forget();
                 Debug.Log("switching Clear");
+                QuestProgressPublisher.PlotWatering.OnNext(_plotData.ItemId);
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
             return new FarmActionResult(FarmActionResult.ResultType.Failed);
@@ -363,6 +371,7 @@ public class PlotProp : Prop
             if (plotData.ItemId == 0)
             {
                 GetComponentInParent<PlotManager>().GetPlotDataDict.Remove(this.Id);
+                QuestProgressPublisher.PlotHammeringPlot.OnNext(Unit.Default);
                 Destroy(this.gameObject);
             }
             else
@@ -480,6 +489,8 @@ public class PlotProp : Prop
                     ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(_plotData.ItemId, 1, _plotData.Grade), _plotData.Position);
                 }
 
+                int harvestedItemId = _plotData.ItemId;
+
                 _plotData.ItemId = 0;
                 _plotData.Growth = FlowerGrowth.Unknown;
                 _plotData.State = (_plotData.State == FlowerState.Moist) ? FlowerState.Moist : FlowerState.Vivid;
@@ -495,6 +506,8 @@ public class PlotProp : Prop
 
                 changePlotSpr().Forget();
                 changeFlowerSpr().Forget();
+
+                QuestProgressPublisher.PlotReaping.OnNext(harvestedItemId);
 
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
@@ -674,6 +687,7 @@ public class PlotProp : Prop
     }
     public void LoadFromData(PlotData data)
     {
+        isLoaded = true;
         this.transform.position = data.Position;
         _plotData = data;
         ResetVisualCache();
@@ -683,6 +697,7 @@ public class PlotProp : Prop
 
     public override void OnLoadAsync(IPropData propData)
     {
+        isLoaded = true;
         GetComponentInParent<PlotManager>().GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
         ResetVisualCache();
         this.plotData = (PlotData)propData;
