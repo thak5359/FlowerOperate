@@ -18,7 +18,7 @@ public struct QuestProgressState
     }
 }
 
-public class NPCManager : IPostInitializable
+public class NPCManager
 {
     [SerializedDictionary("NPC Enum", "NPC클래스")]
     private SerializedDictionary<NPCname, NPC> NpcDict = new SerializedDictionary<NPCname, NPC>();
@@ -28,18 +28,34 @@ public class NPCManager : IPostInitializable
 
     private ReactiveProperty<NPCname> npcName = new ReactiveProperty<NPCname>();
     private Subject<QuestProgressState> progress = new Subject<QuestProgressState>();
-    NPC[] npcClassArr;
 
     public SerializedDictionary<int, QuestProgressState> GetReceivedQuestState => ReceivedQuestState;
     CompositeDisposable disposables = new CompositeDisposable();
 
-    void IPostInitializable.PostInitialize()
+    public NPCManager()
     {
         progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
-        npcClassArr = GameObject.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-        foreach(var npc in npcClassArr)
+    }
+
+    public void RegisterNPC(NPCname name, NPC npc)
+    {
+        NpcDict[name] = npc;
+
+        // 등록 시 해당 NPC가 퍼블리셔인 활성화된 퀘스트의 최신 상태를 즉시 동기화
+        foreach (var pair in ReceivedQuestState)
         {
-            NpcDict.Add(npc.npcName, npc);
+            if (pair.Value.Publisher == name)
+            {
+                npc.ChangeQuestSign(pair.Value.State);
+            }
+        }
+    }
+
+    public void UnregisterNPC(NPCname name)
+    {
+        if (NpcDict.ContainsKey(name))
+        {
+            NpcDict.Remove(name);
         }
     }
 
@@ -74,7 +90,10 @@ public class NPCManager : IPostInitializable
     {
         if(ReceivedQuestState.TryGetValue(id, out QuestProgressState ProgressState))
         {
-            NpcDict[ProgressState.Publisher].ChangeQuestSign(QuestState.Unknown);
+            if (NpcDict.TryGetValue(ProgressState.Publisher, out var npc))
+            {
+                npc.ChangeQuestSign(QuestState.Unknown);
+            }
         }
         else
         {
@@ -86,6 +105,9 @@ public class NPCManager : IPostInitializable
     void SyncSprite(QuestProgressState state)
     {
         npcName.Value = state.Publisher;
-        NpcDict[npcName.Value].ChangeQuestSign(state.State);
+        if (NpcDict.TryGetValue(state.Publisher, out var npc))
+        {
+            npc.ChangeQuestSign(state.State);
+        }
     }
 }
