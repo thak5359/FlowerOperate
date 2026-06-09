@@ -79,6 +79,9 @@ public class NPC : MonoBehaviour
             case QuestState.Finishable:
                 questLabel.OnNext(QuestLabel.QuestMark_Finishable);
                 break;
+            case QuestState.Completed:
+                questLabel.OnNext(QuestLabel.None);
+                break;
             default:
                 questLabel.OnNext(QuestLabel.None);
                 break;
@@ -90,6 +93,7 @@ public class NPC : MonoBehaviour
         if(label == QuestLabel.None)
         {
             npcSpriteRenderer.sprite = null;
+            numberOfState[2]--;
             return;
         }
         if(label != QuestLabel.QuestMark_CanReceive)
