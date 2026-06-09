@@ -27,12 +27,8 @@ public partial class ProgressManager
 {
     public static void GoNextDay()
     {
-        Debug.Log("ProgressManager 0: Invoke NextDay Event");
-        GlobalEventManager.InvokeNextDay();
-        Debug.Log("ProgressManager 1: Increase Day");
         nextDay();
-
-        Debug.Log("ProgressManager 2: Load Farm Scene");
+        GlobalEventManager.InvokeNextDay();
         SceneManager.LoadScene(FARM_SCENE_NAME.ToString());
     }
 }

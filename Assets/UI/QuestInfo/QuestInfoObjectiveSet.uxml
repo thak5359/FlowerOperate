@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="QuestObjetiveSet" style="flex-grow: 1; -unity-font-definition: url(&quot;project://database/Assets/Art/Fonts/Maplestory%20Bold%201%20SDF.asset?fileID=11400000&amp;guid=1a1ed7525bccd6d4cbb9d93f9f48a3c6&amp;type=2#Maplestory Bold 1 SDF&quot;); font-size: 20px; flex-direction: row; justify-content: space-between;">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuestDescriptionLabel" />
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuestProgressStringLabel" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -3,6 +3,7 @@ using UnityEngine.UIElements;
 using Cysharp.Threading.Tasks;
 using VContainer;
 using Fungus;
+using R3;
 using Unity.Collections;
 using static Constant;
 
@@ -19,6 +20,9 @@ public class ShopUIController : MonoBehaviour
     private PlayerOwnItemDataManager _playerItemManager;
     private ItemManager _itemManager;
     private IMapChangable _mapChanger;
+    // 인벤토리 가득 여부 플래그
+    private bool _isInventoryFull = false;
+    private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     // UI 요소
     private VisualElement _root;
@@ -94,6 +98,22 @@ public class ShopUIController : MonoBehaviour
         _closeButton = _root.Q<Button>("CloseButton");
         if (_closeButton != null) _closeButton.clicked += CloseShop;
 
+        //// === [인벤토리 가득 이벤트 구독] ===
+        //_disposables.Add(
+        //        GlobalEventManager.InventoryFullObservable
+        //            .Subscribe(isFull =>
+        //            {
+        //                _isInventoryFull = isFull;
+        //                // 현재 선택된 제품에 대해 버튼 상태를 즉시 적용
+        //                UpdateBuyButtonState();
+        //            }));
+
+        // === [2. 메세지 박스 UI 요소 캐싱 및 연결] ===
+        _messageBox = _root.Q<VisualElement>("ItemShopMessageBox");
+        _messagePriceLabel = _messageBox?.Q<UnityEngine.UIElements.Label>("PriceLabel");
+        _buyButton = _messageBox?.Q<Button>("BuyButton");
+        _cancelButton = _messageBox?.Q<Button>("CancelButton");
+
         // === [상세 보기 UI 요소 캐싱 및 연결] ===
         _itemNameLabel = _root.Q<UnityEngine.UIElements.Label>("ItemNameLabel");
         _itemIcon = _root.Q<VisualElement>("IteItemIcon"); // UXML의 오타 반영
@@ -151,6 +171,9 @@ public class ShopUIController : MonoBehaviour
         if (_cancelButton != null) _cancelButton.clicked -= CloseMessageBox;
 
         if (_amountField != null) _amountField.UnregisterValueChangedCallback(evt => OnAmountFieldChanged(evt.newValue));
+
+        // UI 피드백 필요 시 여기서 구현 (예: 인벤토리 가득 토스트) // 현재는 ShopUIController에서 처리 구독 해제
+        _disposables.Dispose();
 
         Fungus.FungusEventBridge.OnFungusMessageBroadcasted -= HandleFungusBroadcast;
         AddressableManager.ReleaseAllByLabel(_shopImageLabel);
@@ -404,7 +427,8 @@ public class ShopUIController : MonoBehaviour
 
         // 소지금 비교하여 메인 구매 버튼 활성화 여부 지정
         int playerMoney = _playerItemManager.GetData.GetMoney;
-        bool canBuy = playerMoney >= product.Cost;
+        // 인벤토리 가득 여부와 금액을 모두 고려해 구매 버튼 활성화 결정
+        bool canBuy = playerMoney >= product.Cost && !_isInventoryFull;
         if (_mainBuyButton != null)
         {
             _mainBuyButton.SetEnabled(canBuy);

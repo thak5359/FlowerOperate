@@ -58,6 +58,11 @@ public class PlotManager : MonoBehaviour, IPlotManager
     {
         foreach (var plot in this.GetComponentsInChildren<PlotProp>())
         {
+            // 0609 15시 밭에 심은 작물이 없다면 다음날에 자동 삭제
+            if(plot._plotData.ItemId == 0)
+            continue;
+
+            
             plotDataDict[plot.Id] = plot.GetPlotData();
         }
     }
