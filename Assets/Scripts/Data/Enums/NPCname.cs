@@ -92,6 +92,8 @@ public class NPC : MonoBehaviour
             npcSpriteRenderer.sprite = null;
             return;
         }
+        if(label != QuestLabel.QuestMark_CanReceive)
+            numberOfState[((int)label)-2]--;
         numberOfState[((int)label)-1]++;
         if (numberOfState.z != 0)
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));

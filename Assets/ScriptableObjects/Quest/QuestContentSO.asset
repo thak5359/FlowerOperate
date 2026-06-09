@@ -72,7 +72,7 @@ MonoBehaviour:
     QuestDescription: "[\uBE68\uAC04 \uAC70\uBC30\uB77C] [10]\uBC88 \uC218\uD655"
     QuestObjectives:
     - <ContentType>k__BackingField: 551
-      <TargetID>k__BackingField: 401001
+      <TargetID>k__BackingField: 402001
       <TargetAmount>k__BackingField: 10
     QuestRewards:
     - <RewardType>k__BackingField: 3

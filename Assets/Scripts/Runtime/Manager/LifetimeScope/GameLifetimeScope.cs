@@ -17,7 +17,6 @@ public class GameLifetimeScope : LifetimeScope
         Debug.Log("<color=green>@@@ GameLifetimeScope: Configure 실행됨! @@@</color>");
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
-        //builder.RegisterEntryPoint<FungusDependencyResolver>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
         builder.RegisterEntryPoint<PlayerOwnItemDataManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QuestManager>(Lifetime.Singleton).AsSelf();
@@ -27,8 +26,6 @@ public class GameLifetimeScope : LifetimeScope
            .As<IAsyncStartable>()
            .As<IDisposable>();
         builder.RegisterEntryPoint<SaveLoadManager>().AsSelf();
-        builder.RegisterEntryPoint<QuestManager>().AsSelf();
-        builder.Register<NPCManager>(Lifetime.Singleton).AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
         
