@@ -48,6 +48,7 @@ public class InfoUIController : MonoBehaviour
 
         // 이벤트 구독
         _ownItemManager.InventoryRevisionChanged.Subscribe(_ => UpdateMoney()).AddTo(this);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => UpdateDateTime()).AddTo(this);
     }
 
     private void UpdateDateTime()

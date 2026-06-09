@@ -15,6 +15,8 @@ public class FarmSceneLifetimeScope : LifetimeScope
     [SerializeField] private ShopUIController shopUIController;
     [SerializeField] private InfoUIController infoUIController;
     [SerializeField] private ItemGenTest itemGenTest;
+    [SerializeField] private MoneyGenTest moneyGenTest;
+    [SerializeField] private QuestInfoTabUIController questInfoUI;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -32,8 +34,11 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<ShopUIController>(shopUIController).AsSelf();
         builder.RegisterComponent<InfoUIController>(infoUIController).AsSelf();
         builder.RegisterComponent<ItemGenTest>(itemGenTest).AsSelf();
+        builder.RegisterComponent<MoneyGenTest>(moneyGenTest).AsSelf();
+        builder.RegisterComponent<QuestInfoTabUIController>(questInfoUI).AsSelf();
 
         // ChunkManager 씬 컴포넌트 자동 주입 등록
-        builder.RegisterComponentInHierarchy<ChunkManager>().AsSelf();
+        //builder.RegisterComponentInHierarchy<ChunkManager>().AsSelf();
+
     }
 }

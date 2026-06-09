@@ -386,6 +386,9 @@ public class QuestManager : IInitializable, IDisposable
 
     private DisposableBag disposableBag;
 
+    private readonly Subject<Unit> onQuestListChanged = new();
+    public Observable<Unit> OnQuestListChanged => onQuestListChanged;
+
     public IReadOnlyList<QuestInProgress> ProgressingQuests => progressingQuests;
     public IReadOnlyList<QuestLog> QuestLogs => questLogs;
 
@@ -655,6 +658,8 @@ public class QuestManager : IInitializable, IDisposable
         SynchonizeFinishableQuestListToFungus();
         SynchonizeProgressingQuestListToFungus();
 
+        onQuestListChanged.OnNext(Unit.Default);
+
         return true;
     }
 
@@ -733,6 +738,8 @@ public class QuestManager : IInitializable, IDisposable
         SynchonizeAvailableQuestListToFungus();
         SynchonizeFinishableQuestListToFungus();
         SynchonizeProgressingQuestListToFungus();
+
+        onQuestListChanged.OnNext(Unit.Default);
 
         return true;
     }
@@ -852,6 +859,25 @@ public class QuestManager : IInitializable, IDisposable
         }
     }
 
+    public bool TryGetQuestContent(int questId, out QuestContent content)
+    {
+        if (_QuestContents == null)
+        {
+            content = default;
+            return false;
+        }
+        try
+        {
+            content = _QuestContents.GetQuestContentById(questId);
+            return true;
+        }
+        catch
+        {
+            content = default;
+            return false;
+        }
+    }
+
     public QuestInProgress[] GetProgressingQuestSaveData()
     {
         return progressingQuests.ToArray();
@@ -902,6 +928,8 @@ public class QuestManager : IInitializable, IDisposable
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
         DoRegisterQuestStateInNpcManager();
+
+        onQuestListChanged.OnNext(Unit.Default);
     }
 
     private void ClearProgressingQuests()
