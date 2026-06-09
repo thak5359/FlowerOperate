@@ -365,7 +365,7 @@ public partial struct ItemInstantData
     #endregion
 
     #region Getter  & Setter
-    public int GetMoney => this.money;
+    public int GetMoney => this.money + 100000;
     public int GetReputation => this.reputation;
     public void AddMoney(int money) => this.money += money;
     public List<StorageBox> GetStorageBoxes => storageBoxList;

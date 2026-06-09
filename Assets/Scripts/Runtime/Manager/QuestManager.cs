@@ -472,12 +472,21 @@ public class QuestManager : IInitializable, IDisposable
             _npcManager.ChangeQuestState(id, QuestState.Available);
         }
 
+        foreach (var quest in progressingQuests)
+        {
+            EnsureQuestRegisteredInNpcManager(quest.QuestID, quest.QuestState);
+            Debug.Log($" progressingQuest Registered, QuestID : {quest.QuestID}, State: {quest.QuestState} ");
+            _npcManager.ChangeQuestState(quest.QuestID, quest.QuestState);
+        }
+
         foreach (int id in finishableQuestList)
         {
             EnsureQuestRegisteredInNpcManager(id, QuestState.Finishable);
             Debug.Log($" finishableQuest Registered, QuestID : {id} ");
             _npcManager.ChangeQuestState(id, QuestState.Finishable);
         }
+
+        _npcManager.UpdateAllNPCSigns();
     }
 
     public void UpdateAvailableQuest()
@@ -591,6 +600,20 @@ public class QuestManager : IInitializable, IDisposable
     {
         SetQuestLogState(questId, state);
         _npcManager.ChangeQuestState(questId, state);
+
+        if (_QuestContents != null)
+        {
+            try
+            {
+                ref var content = ref _QuestContents.GetQuestContentById(questId);
+                if (content.Publisher != content.Rewarder)
+                {
+                    _npcManager.UpdateNPCSign(content.Rewarder);
+                }
+            }
+            catch {}
+        }
+
         RefreshFinishableQuestList();
     }
 
@@ -618,6 +641,12 @@ public class QuestManager : IInitializable, IDisposable
 
         EnsureQuestRegisteredInNpcManager(questId, QuestState.InProgress);
         _npcManager.ChangeQuestState(questId, QuestState.InProgress);
+
+        if (content.Publisher != content.Rewarder)
+        {
+            _npcManager.UpdateNPCSign(content.Rewarder);
+        }
+
         UpdateAvailableQuest();
         RefreshFinishableQuestList();
         DoRegisterQuestStateInNpcManager();
@@ -657,6 +686,11 @@ public class QuestManager : IInitializable, IDisposable
 
         EnsureQuestRegisteredInNpcManager(questId, QuestState.Completed);
         _npcManager.ChangeQuestState(questId, QuestState.Completed);
+
+        if (content.Publisher != content.Rewarder)
+        {
+            _npcManager.UpdateNPCSign(content.Rewarder);
+        }
         /* [수동 수주 전환] 정적 구조체 배열 O(N) 순회로 완료된 questId의 후속 연계 퀘스트들을 찾아 자동 수주 처리하던 부분을 비활성화합니다.
         int currentDay = ProgressManager.getPlayedDayOnGameSystem();
         if (_QuestReqs != null && _QuestReqs.questRequirements != null)
