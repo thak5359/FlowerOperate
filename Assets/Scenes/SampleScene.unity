@@ -39961,9 +39961,8 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1618246571}
-  selectedCommands:
-  - {fileID: 1618246591}
+  - {fileID: 1618246536}
+  selectedCommands: []
   variables:
   - {fileID: 1618246403}
   - {fileID: 1618246531}
@@ -43800,7 +43799,10 @@ MonoBehaviour:
   availableQuestDictionary:
     dictionaryRef: {fileID: 0}
     dictionaryVal:
-      _serializedList: []
+      _serializedList:
+      - Key: 7
+        Value:
+          command: {fileID: 1618246535}
   finishableQuestDictionary:
     dictionaryRef: {fileID: 0}
     dictionaryVal:
@@ -43808,9 +43810,6 @@ MonoBehaviour:
       - Key: 1
         Value:
           command: {fileID: 1618246537}
-      - Key: 6
-        Value:
-          command: {fileID: 1618246535}
 --- !u!114 &1618246543
 MonoBehaviour:
   m_ObjectHideFlags: 2
