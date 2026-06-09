@@ -804,6 +804,20 @@ public class QuestManager : IInitializable, IDisposable
         }
     }
 
+    public (NPCname publisher, NPCname rewarder) GetQuestNpcs(int questId)
+    {
+        if (_QuestContents == null) return (NPCname.None, NPCname.None);
+        try
+        {
+            ref var content = ref _QuestContents.GetQuestContentById(questId);
+            return (content.Publisher, content.Rewarder);
+        }
+        catch
+        {
+            return (NPCname.None, NPCname.None);
+        }
+    }
+
     public QuestInProgress[] GetProgressingQuestSaveData()
     {
         return progressingQuests.ToArray();

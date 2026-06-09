@@ -30,17 +30,15 @@ public class NPC : MonoBehaviour
     public NPCname npcName;
     [field:SerializeField]
     public SpriteRenderer npcSpriteRenderer {get; set;}
-    // int3(Available, InProgress,Finishable) 퀘스트상태의 갯수 저장
-    int3 numberOfState = new int3(0, 0, 0);
-    Subject<QuestLabel> questLabel = new Subject<QuestLabel>();
 
     [Inject]
     private NPCManager _npcManager;
 
+    [Inject]
+    private QuestManager _questManager;
+
     void Awake()
     {
-        //npcSpriteRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
-        questLabel.Subscribe(label => SetQuestStateSprite(label).Forget());
     }
 
     void Start()
@@ -55,6 +53,7 @@ public class NPC : MonoBehaviour
         if (_npcManager != null)
         {
             _npcManager.RegisterNPC(npcName, this);
+            UpdateQuestSign();
         }
     }
 
@@ -68,42 +67,88 @@ public class NPC : MonoBehaviour
 
     public void ChangeQuestSign(QuestState questState)
     {
-        switch(questState)
-        {
-            case QuestState.Available:
-                questLabel.OnNext(QuestLabel.QuestMark_CanReceive);
-                break;
-            case QuestState.InProgress:
-                questLabel.OnNext(QuestLabel.Dot_InProgress);
-                break;
-            case QuestState.Finishable:
-                questLabel.OnNext(QuestLabel.QuestMark_Finishable);
-                break;
-            case QuestState.Completed:
-                questLabel.OnNext(QuestLabel.None);
-                break;
-            default:
-                questLabel.OnNext(QuestLabel.None);
-                break;
-        }
+        UpdateQuestSign();
     }
 
-    async UniTaskVoid SetQuestStateSprite(QuestLabel label)
+    public void UpdateQuestSign()
     {
-        if(label == QuestLabel.None)
+        if (_npcManager == null) return;
+
+        QuestState highestState = QuestState.Unknown;
+        bool showEscortSprite = false;
+
+        // 1. Check active progressing quests in QuestManager to see if this NPC is a different Rewarder
+        if (_questManager != null)
         {
-            npcSpriteRenderer.sprite = null;
-            numberOfState[2]--;
-            return;
+            foreach (var progressingQuest in _questManager.ProgressingQuests)
+            {
+                var (publisher, rewarder) = _questManager.GetQuestNpcs(progressingQuest.QuestID);
+                if (publisher != rewarder && rewarder == npcName)
+                {
+                    if (progressingQuest.QuestState == QuestState.InProgress)
+                    {
+                        showEscortSprite = true;
+                    }
+                    else if (progressingQuest.QuestState == QuestState.Finishable)
+                    {
+                        highestState = QuestState.Finishable;
+                    }
+                }
+            }
         }
-        if(label != QuestLabel.QuestMark_CanReceive)
-            numberOfState[((int)label)-2]--;
-        numberOfState[((int)label)-1]++;
-        if (numberOfState.z != 0)
+
+        // 2. Check general quest states where this NPC is the publisher
+        foreach (var pair in _npcManager.GetReceivedQuestState)
+        {
+            if (pair.Value.Publisher == npcName)
+            {
+                QuestState state = pair.Value.State;
+                
+                // Priority: Finishable > Available > InProgress > Others
+                if (state == QuestState.Finishable)
+                {
+                    highestState = QuestState.Finishable;
+                }
+                else if (state == QuestState.Available && highestState != QuestState.Finishable)
+                {
+                    highestState = QuestState.Available;
+                }
+                else if (state == QuestState.InProgress && highestState != QuestState.Finishable && highestState != QuestState.Available)
+                {
+                    highestState = QuestState.InProgress;
+                }
+            }
+        }
+
+        SetQuestSignSprite(highestState, showEscortSprite).Forget();
+    }
+
+    private async UniTaskVoid SetQuestSignSprite(QuestState state, bool showEscortSprite)
+    {
+        if (npcSpriteRenderer == null) return;
+
+        if (state == QuestState.Finishable)
+        {
             npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));
-        else if (numberOfState.y != 0)
-            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Dot_InProgress));
-        else if(numberOfState.x != 0)
-            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive));
+        }
+        else if (showEscortSprite)
+        {
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Escort_Sprite));
+        }
+        else
+        {
+            switch (state)
+            {
+                case QuestState.InProgress:
+                    npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Dot_InProgress));
+                    break;
+                case QuestState.Available:
+                    npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_CanReceive));
+                    break;
+                default:
+                    npcSpriteRenderer.sprite = null;
+                    break;
+            }
+        }
     }
 }

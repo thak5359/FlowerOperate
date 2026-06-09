@@ -86,10 +86,10 @@ MonoBehaviour:
     QuestObjectives:
     - <ContentType>k__BackingField: 521
       <TargetID>k__BackingField: 0
-      <TargetAmount>k__BackingField: 10
+      <TargetAmount>k__BackingField: 1
     QuestRewards:
     - <RewardType>k__BackingField: 3
-      <RewardID>k__BackingField: 201001
+      <RewardID>k__BackingField: 201033
       <RewardAmount>k__BackingField: 1
     Publisher: 5
     Rewarder: 5
