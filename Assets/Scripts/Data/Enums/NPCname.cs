@@ -2,6 +2,8 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Unity.Mathematics;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 public enum NPCname 
 {
@@ -31,10 +33,37 @@ public class NPC : MonoBehaviour
     // int3(Available, InProgress,Finishable) 퀘스트상태의 갯수 저장
     int3 numberOfState = new int3(0, 0, 0);
     Subject<QuestLabel> questLabel = new Subject<QuestLabel>();
+
+    [Inject]
+    private NPCManager _npcManager;
+
     void Awake()
     {
         //npcSpriteRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
         questLabel.Subscribe(label => SetQuestStateSprite(label).Forget());
+    }
+
+    void Start()
+    {
+        // VContainer 수동 주입 (자동 주입 설정이 안 되어 있을 경우를 대비)
+        var scope = LifetimeScope.Find<LifetimeScope>();
+        if (scope != null && scope.Container != null)
+        {
+            scope.Container.Inject(this);
+        }
+
+        if (_npcManager != null)
+        {
+            _npcManager.RegisterNPC(npcName, this);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_npcManager != null)
+        {
+            _npcManager.UnregisterNPC(npcName);
+        }
     }
 
     public void ChangeQuestSign(QuestState questState)

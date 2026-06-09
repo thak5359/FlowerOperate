@@ -27,6 +27,8 @@ public class GameLifetimeScope : LifetimeScope
            .As<IAsyncStartable>()
            .As<IDisposable>();
         builder.RegisterEntryPoint<SaveLoadManager>().AsSelf();
+        builder.RegisterEntryPoint<QuestManager>().AsSelf();
+        builder.Register<NPCManager>(Lifetime.Singleton).AsSelf();
 
         builder.RegisterComponent<PlayerInput>(playerInput);
         

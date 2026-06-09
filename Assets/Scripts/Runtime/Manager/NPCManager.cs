@@ -30,29 +30,34 @@ public class NPCManager
 
     private ReactiveProperty<NPCname> npcName = new ReactiveProperty<NPCname>();
     private Subject<QuestProgressState> progress = new Subject<QuestProgressState>();
-    NPC[] npcClassArr;
 
     public SerializedDictionary<int, QuestProgressState> GetReceivedQuestState => ReceivedQuestState;
     CompositeDisposable disposables = new CompositeDisposable();
 
-    void Init()
+    public NPCManager()
     {
-      //Debug.Log($"<color=red>PostInitialize has been called. Scenename :  {SceneManager.GetActiveScene().name} </color>");   
-        if (SceneManager.GetActiveScene().name == FARM_SCENE_NAME) // TODO :: NPC 매니저가 사용되는 씬 있으면 추가
-        {
-           
-            progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
-            npcClassArr = GameObject.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
+    }
 
-            if(npcClassArr == null)
+    public void RegisterNPC(NPCname name, NPC npc)
+    {
+        NpcDict[name] = npc;
+
+        // 등록 시 해당 NPC가 퍼블리셔인 활성화된 퀘스트의 최신 상태를 즉시 동기화
+        foreach (var pair in ReceivedQuestState)
+        {
+            if (pair.Value.Publisher == name)
             {
-                Debug.Log("npcClassArr is NULL");
-                return;
+                npc.ChangeQuestSign(pair.Value.State);
             }
-            foreach (var npc in npcClassArr)
-            {
-                NpcDict.Add(npc.npcName, npc);
-            }
+        }
+    }
+
+    public void UnregisterNPC(NPCname name)
+    {
+        if (NpcDict.ContainsKey(name))
+        {
+            NpcDict.Remove(name);
         }
     }
 
@@ -87,7 +92,10 @@ public class NPCManager
     {
         if(ReceivedQuestState.TryGetValue(id, out QuestProgressState ProgressState))
         {
-            NpcDict[ProgressState.Publisher].ChangeQuestSign(QuestState.Unknown);
+            if (NpcDict.TryGetValue(ProgressState.Publisher, out var npc))
+            {
+                npc.ChangeQuestSign(QuestState.Unknown);
+            }
         }
         else
         {
@@ -100,6 +108,9 @@ public class NPCManager
     {
         Debug.Log($"<color=red>SyncSpritea has been called : {state} </color>");
         npcName.Value = state.Publisher;
-        NpcDict[npcName.Value].ChangeQuestSign(state.State);
+        if (NpcDict.TryGetValue(state.Publisher, out var npc))
+        {
+            npc.ChangeQuestSign(state.State);
+        }
     }
 }
