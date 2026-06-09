@@ -372,6 +372,7 @@ public class QuestManager : IInitializable, IDisposable
 {
     private PlayerOwnItemDataManager _playerItemManager;
     private NPCManager _npcManager;
+    private ItemManager _itemManager;
     private QuestRequirementSO _QuestReqs;
     private QuestContentSO _QuestContents;
 
@@ -392,10 +393,11 @@ public class QuestManager : IInitializable, IDisposable
     public int[] FinishableQuestList => finishableQuestList;
 
     [Inject]
-    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM)
+    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM, ItemManager input_ITM)
     {
         _playerItemManager = input_POITDM;
         _npcManager = input_NPCM;
+        _itemManager = input_ITM;
     }
     public void Initialize()
     {
@@ -466,12 +468,14 @@ public class QuestManager : IInitializable, IDisposable
         foreach (int id in availableQuestList)
         {
             EnsureQuestRegisteredInNpcManager(id, QuestState.Available);
+            Debug.Log($" availableQuest Registered, QuestID : {id} ");
             _npcManager.ChangeQuestState(id, QuestState.Available);
         }
 
         foreach (int id in finishableQuestList)
         {
             EnsureQuestRegisteredInNpcManager(id, QuestState.Finishable);
+            Debug.Log($" finishableQuest Registered, QuestID : {id} ");
             _npcManager.ChangeQuestState(id, QuestState.Finishable);
         }
     }
@@ -790,7 +794,7 @@ public class QuestManager : IInitializable, IDisposable
 
                 case RewardType.Item:
                     // TODO:
-                    // _playerItemManager.AddItem(reward.RewardID, reward.RewardAmount);
+                    _playerItemManager.AddItem(ContainerType.INVENTORY, _itemManager.CreateItem(reward.RewardID, reward.RewardAmount));
                     break;
 
                 default:

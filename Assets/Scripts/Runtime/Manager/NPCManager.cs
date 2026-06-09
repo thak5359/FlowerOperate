@@ -4,7 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer.Unity;
+using static Constant;
 
 public struct QuestProgressState
 {
@@ -18,7 +20,7 @@ public struct QuestProgressState
     }
 }
 
-public class NPCManager : IPostInitializable
+public class NPCManager
 {
     [SerializedDictionary("NPC Enum", "NPC클래스")]
     private SerializedDictionary<NPCname, NPC> NpcDict = new SerializedDictionary<NPCname, NPC>();
@@ -33,13 +35,24 @@ public class NPCManager : IPostInitializable
     public SerializedDictionary<int, QuestProgressState> GetReceivedQuestState => ReceivedQuestState;
     CompositeDisposable disposables = new CompositeDisposable();
 
-    void IPostInitializable.PostInitialize()
+    void Init()
     {
-        progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
-        npcClassArr = GameObject.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-        foreach(var npc in npcClassArr)
+      //Debug.Log($"<color=red>PostInitialize has been called. Scenename :  {SceneManager.GetActiveScene().name} </color>");   
+        if (SceneManager.GetActiveScene().name == FARM_SCENE_NAME) // TODO :: NPC 매니저가 사용되는 씬 있으면 추가
         {
-            NpcDict.Add(npc.npcName, npc);
+           
+            progress.Subscribe(state => SyncSprite(state)).AddTo(disposables);
+            npcClassArr = GameObject.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+
+            if(npcClassArr == null)
+            {
+                Debug.Log("npcClassArr is NULL");
+                return;
+            }
+            foreach (var npc in npcClassArr)
+            {
+                NpcDict.Add(npc.npcName, npc);
+            }
         }
     }
 
@@ -85,6 +98,7 @@ public class NPCManager : IPostInitializable
 
     void SyncSprite(QuestProgressState state)
     {
+        Debug.Log($"<color=red>SyncSpritea has been called : {state} </color>");
         npcName.Value = state.Publisher;
         NpcDict[npcName.Value].ChangeQuestSign(state.State);
     }
