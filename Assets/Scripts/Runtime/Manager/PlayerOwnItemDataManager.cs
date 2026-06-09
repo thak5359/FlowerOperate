@@ -64,8 +64,27 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     {
         inventoryRevision++;
         inventoryRevisionChanged.OnNext(inventoryRevision);
+        // TODO: UI 피드백 필요 시 여기서 구현 (예: 인벤토리 가득 토스트)
+        CheckInventoryFull();
     }
     #endregion
+
+    // 인벤토리 가득 여부를 판단하고 전파하는 헬퍼 메서드
+    private void CheckInventoryFull()
+    {
+        var invList = _Data.GetItemList(ContainerType.INVENTORY);
+        if (invList == null) return;
+        int occupied = 0;
+        for (int i = 0; i < invList.Count; i++)
+        {
+            var item = invList[i];
+            if (item != null && item.Id > 0 && item.Count > 0)
+                occupied++;
+        }
+        bool isFull = occupied >= Constant.MAX_SLOT_INVENTORY;
+        // 전역 이벤트로 상태 전파
+        GlobalEventManager.SetInventoryFull(isFull);
+    }
 
     #region Initialization & Lifecycle
 
