@@ -39883,7 +39883,6 @@ GameObject:
   - component: {fileID: 1618246536}
   - component: {fileID: 1618246537}
   - component: {fileID: 1618246535}
-  - component: {fileID: 1618246539}
   - component: {fileID: 1618246540}
   - component: {fileID: 1618246541}
   - component: {fileID: 1618246546}
@@ -39956,6 +39955,8 @@ GameObject:
   - component: {fileID: 1618246612}
   - component: {fileID: 1618246620}
   - component: {fileID: 1618246621}
+  - component: {fileID: 1618246622}
+  - component: {fileID: 1618246623}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -39988,9 +39989,8 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1618246606}
-  selectedCommands:
-  - {fileID: 1618246608}
+  - {fileID: 1618246329}
+  selectedCommands: []
   variables:
   - {fileID: 1618246403}
   - {fileID: 1618246531}
@@ -41388,6 +41388,7 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 1618246339}
+  - {fileID: 1618246623}
   - {fileID: 1618246337}
   - {fileID: 1618246335}
   - {fileID: 1618246330}
@@ -42238,7 +42239,6 @@ MonoBehaviour:
   - {fileID: 1618246398}
   - {fileID: 1618246397}
   - {fileID: 1618246396}
-  - {fileID: 1618246539}
   - {fileID: 1618246533}
   suppressAllAutoSelections: 0
 --- !u!114 &1618246396
@@ -43777,27 +43777,12 @@ MonoBehaviour:
   commandList:
   - {fileID: 1618246546}
   - {fileID: 1618246545}
+  - {fileID: 1618246622}
   - {fileID: 1618246540}
   - {fileID: 1618246547}
   - {fileID: 1618246544}
   - {fileID: 1618246543}
   suppressAllAutoSelections: 0
---- !u!114 &1618246539
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618246201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d42648bdceb0547a583c050fd5a88f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 366
-  indentLevel: 0
-  messageTarget: 6
-  questId: 1
 --- !u!114 &1618246540
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -45528,6 +45513,38 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &1618246622
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d42648bdceb0547a583c050fd5a88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 462
+  indentLevel: 0
+  messageTarget: 6
+  questId: 1
+--- !u!114 &1618246623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618246201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d42648bdceb0547a583c050fd5a88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 463
+  indentLevel: 0
+  messageTarget: 6
+  questId: 1
 --- !u!1 &1624007580
 GameObject:
   m_ObjectHideFlags: 0

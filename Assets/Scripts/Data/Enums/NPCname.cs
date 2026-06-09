@@ -72,26 +72,36 @@ public class NPC : MonoBehaviour
 
     public void UpdateQuestSign()
     {
-        if (_npcManager == null) return;
+        if (_npcManager == null)
+        {
+            Debug.Log($"[NPC:{npcName}] UpdateQuestSign: _npcManager is null!");
+            return;
+        }
 
         QuestState highestState = QuestState.Unknown;
         bool showEscortSprite = false;
 
+        Debug.Log($"[NPC:{npcName}] UpdateQuestSign called. _questManager is {(_questManager != null ? "not null" : "null")}");
+
         // 1. Check active progressing quests in QuestManager to see if this NPC is a different Rewarder
         if (_questManager != null)
         {
+            Debug.Log($"[NPC:{npcName}] ProgressingQuests count: {_questManager.ProgressingQuests.Count}");
             foreach (var progressingQuest in _questManager.ProgressingQuests)
             {
                 var (publisher, rewarder) = _questManager.GetQuestNpcs(progressingQuest.QuestID);
+                Debug.Log($"[NPC:{npcName}] Checking progressing Quest {progressingQuest.QuestID}: publisher={publisher}, rewarder={rewarder}, state={progressingQuest.QuestState}");
                 if (publisher != rewarder && rewarder == npcName)
                 {
                     if (progressingQuest.QuestState == QuestState.InProgress)
                     {
                         showEscortSprite = true;
+                        Debug.Log($"[NPC:{npcName}] Setting showEscortSprite to true for Quest {progressingQuest.QuestID}");
                     }
                     else if (progressingQuest.QuestState == QuestState.Finishable)
                     {
                         highestState = QuestState.Finishable;
+                        Debug.Log($"[NPC:{npcName}] Setting highestState to Finishable for Quest {progressingQuest.QuestID}");
                     }
                 }
             }
@@ -103,6 +113,7 @@ public class NPC : MonoBehaviour
             if (pair.Value.Publisher == npcName)
             {
                 QuestState state = pair.Value.State;
+                Debug.Log($"[NPC:{npcName}] General received quest {pair.Key}: publisher={pair.Value.Publisher}, state={state}");
                 
                 // Priority: Finishable > Available > InProgress > Others
                 if (state == QuestState.Finishable)
@@ -120,6 +131,7 @@ public class NPC : MonoBehaviour
             }
         }
 
+        Debug.Log($"[NPC:{npcName}] Final quest sign: highestState={highestState}, showEscortSprite={showEscortSprite}");
         SetQuestSignSprite(highestState, showEscortSprite).Forget();
     }
 

@@ -61,6 +61,25 @@ public class NPCManager
         }
     }
 
+    public void UpdateNPCSign(NPCname name)
+    {
+        if (NpcDict.TryGetValue(name, out var npc))
+        {
+            npc.UpdateQuestSign();
+        }
+    }
+
+    public void UpdateAllNPCSigns()
+    {
+        foreach (var npc in NpcDict.Values)
+        {
+            if (npc != null)
+            {
+                npc.UpdateQuestSign();
+            }
+        }
+    }
+
     public void RegisterQuestState(int id, QuestProgressState state)
     {
         if (ReceivedQuestState.ContainsKey(id))
