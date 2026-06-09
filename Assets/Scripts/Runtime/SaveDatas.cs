@@ -71,7 +71,7 @@ public partial class SaveDatas
         int day,
         ItemInstantData itemData,
         SerializedDictionary<int, PlotData> plotData,
-        int money = 0,
+        int money = 100000,
         int reputation = 0,
         ChunkDataIngame[] farmChunkDatas = null,
         ChunkDataIngame[] fieldChunkDatas = null,

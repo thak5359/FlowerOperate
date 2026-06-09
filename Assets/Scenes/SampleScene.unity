@@ -16495,18 +16495,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5520514571793238479}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &604211019 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5500668833325903254, guid: 81e198b3b8d85a941b2edbf5129ed91c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5520514571793238479}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &610200188
 GameObject:
   m_ObjectHideFlags: 0
@@ -39988,7 +39976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 1083.8628, y: 790.11255}
+  scrollPos: {x: 974.0259, y: 752.40765}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 350
@@ -39999,8 +39987,10 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks: []
-  selectedCommands: []
+  selectedBlocks:
+  - {fileID: 1618246606}
+  selectedCommands:
+  - {fileID: 1618246608}
   variables:
   - {fileID: 1618246403}
   - {fileID: 1618246531}
@@ -43720,8 +43710,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: -177.1863
-    y: 196.39294
+    x: -191.94038
+    y: 183.2782
     width: 182.78685
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -45193,7 +45183,7 @@ MonoBehaviour:
   indentLevel: 0
   display: 2
   stage: {fileID: 0}
-  character: {fileID: 604211019}
+  character: {fileID: 1617802855}
   replacedCharacter: {fileID: 0}
   portrait: {fileID: 0}
   offset: 0
@@ -45317,7 +45307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 56.10118
+    x: 54.461838
     y: 301.341
     width: 99.18031
     height: 40
