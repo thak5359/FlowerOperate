@@ -22,6 +22,8 @@ public partial class SaveDatas
     [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _FieldChunkDatas;
     [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _ForestChunkDatas;
     [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _MineChunkDatas;
+    [MemoryPackInclude, SerializeField] private QuestInProgress[] progressingQuests = Array.Empty<QuestInProgress>();
+    [MemoryPackInclude, SerializeField] private QuestLog[] questLogs = Array.Empty<QuestLog>();
 
     [MemoryPackIgnore]
     private SerializedDictionary<int, PlotData> plotDataDictCache;
@@ -33,6 +35,8 @@ public partial class SaveDatas
     public ChunkDataIngame[] GetFieldChunkDatas => _FieldChunkDatas;
     public ChunkDataIngame[] GetForestChunkDatas => _ForestChunkDatas;
     public ChunkDataIngame[] GetMineChunkDatas => _MineChunkDatas;
+    public QuestInProgress[] GetProgressingQuests => progressingQuests ?? Array.Empty<QuestInProgress>();
+    public QuestLog[] GetQuestLogs => questLogs ?? Array.Empty<QuestLog>();
 
     public int GetMoney => money;
     public ref int GetRefMoney => ref money;
@@ -76,7 +80,9 @@ public partial class SaveDatas
         ChunkDataIngame[] farmChunkDatas = null,
         ChunkDataIngame[] fieldChunkDatas = null,
         ChunkDataIngame[] forestChunkDatas = null,
-        ChunkDataIngame[] mineChunkDatas = null
+        ChunkDataIngame[] mineChunkDatas = null,
+        QuestInProgress[] progressingQuests = null,
+        QuestLog[] questLogs = null
     )
     {
         saveTime = DateTime.Now.ToString("yyyy/MM/dd \n HH : mm");
@@ -90,6 +96,8 @@ public partial class SaveDatas
         _FieldChunkDatas = fieldChunkDatas;
         _ForestChunkDatas = forestChunkDatas;
         _MineChunkDatas = mineChunkDatas;
+        this.progressingQuests = progressingQuests ?? Array.Empty<QuestInProgress>();
+        this.questLogs = questLogs ?? Array.Empty<QuestLog>();
     }
 
     private static List<PlotSaveEntry> FromSerializedDictionary(

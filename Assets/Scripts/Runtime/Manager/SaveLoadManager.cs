@@ -11,6 +11,7 @@ public class SaveLoadManager : IStartable, IDisposable
     private PlayerOwnItemDataManager _storageManager;
     private PlotManager _plotManager;
     private ChunkManager _chunkManager;
+    private QuestManager _questManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     public SaveDatas saveData;
     private SerializedDictionary<int, PlotData> _plotDataCache = new();
@@ -27,10 +28,12 @@ public class SaveLoadManager : IStartable, IDisposable
 
     [Inject]
     public void Construct(
-        PlayerOwnItemDataManager storageParent
+        PlayerOwnItemDataManager storageParent,
+        QuestManager questManager
     )
     {
         _storageManager = storageParent;
+        _questManager = questManager;
         if (_storageManager == null)
         {
             Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
@@ -101,7 +104,9 @@ public class SaveLoadManager : IStartable, IDisposable
             farmChunks,
             fieldChunks,
             forestChunks,
-            mineChunks
+            mineChunks,
+            _questManager != null ? _questManager.GetProgressingQuestSaveData() : null,
+            _questManager != null ? _questManager.GetQuestLogSaveData() : null
         );
     }
 
@@ -174,6 +179,9 @@ public class SaveLoadManager : IStartable, IDisposable
 
             if (_storageManager != null)
                 _storageManager.Load(saveData);
+
+            if (_questManager != null)
+                _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
 
             if (_plotManager != null)
                 _plotManager.Load(saveData);

@@ -14,12 +14,14 @@ using VContainer.Unity;
 /// <summary>
 /// 세이브 데이터 저장용 및 퀘스트 진척도 관리용 구조체입니다
 /// </summary>
+[MemoryPackable]
+[Serializable]
 public partial struct QuestLog
 {
-    public int QuestId;
-    public QuestState State;
-    public int Progress; // 퀘스트 진행 상황 (예: 물주기 10번 중 3번 완료)
-    public int CompletedDay; // 퀘스트를 완료한 날짜 (미완료 시 0)
+    [MemoryPackInclude] public int QuestId;
+    [MemoryPackInclude] public QuestState State;
+    [MemoryPackInclude] public int Progress; // 퀘스트 진행 상황 (예: 물주기 10번 중 3번 완료)
+    [MemoryPackInclude] public int CompletedDay; // 퀘스트를 완료한 날짜 (미완료 시 0)
 }
 
 
@@ -437,11 +439,24 @@ public class QuestManager : IInitializable, IDisposable
 
         GlobalEventManager.OnNextDayObservable
             .Subscribe(_ => {
+                ProcessDayChangeQuestStatus();
                 UpdateAvailableQuest();
                 DoRegisterQuestStateInNpcManager();
                 SynchonizeAvailableQuestListToFungus();
             })
             .AddTo(ref disposableBag);
+
+        if (_playerItemManager != null)
+        {
+            _playerItemManager.InventoryRevisionChanged
+                .Subscribe(_ => {
+                    for (int i = 0; i < progressingQuests.Count; i++)
+                    {
+                        SynchronizePassiveObjectives(progressingQuests[i]);
+                    }
+                })
+                .AddTo(ref disposableBag);
+        }
 
         UpdateAvailableQuest();
         DoRegisterQuestStateInNpcManager();
@@ -637,6 +652,7 @@ public class QuestManager : IInitializable, IDisposable
         ref QuestContent content = ref _QuestContents.GetQuestContentById(questId);
 
         QuestInProgress quest = new QuestInProgress(in content);
+        SynchronizePassiveObjectives(quest);
         SubscribeToQuestState(quest);
         progressingQuests.Add(quest);
 
@@ -878,6 +894,118 @@ public class QuestManager : IInitializable, IDisposable
         }
     }
 
+    public int GetItemCount(int itemId)
+    {
+        if (_playerItemManager == null) return 0;
+        var list = _playerItemManager.GetData.GetItemList(ContainerType.INVENTORY);
+        if (list == null) return 0;
+
+        int total = 0;
+        for (int i = 0; i < list.Count; i++)
+        {
+            var item = list[i];
+            if (item != null && item.Id == itemId)
+            {
+                total += item.Count;
+            }
+        }
+        return total;
+    }
+
+    private void SynchronizePassiveObjectives(QuestInProgress quest)
+    {
+        if (_QuestContents == null || quest == null || quest.QuestObjectives == null) return;
+        try
+        {
+            ref var content = ref _QuestContents.GetQuestContentById(quest.QuestID);
+            for (int i = 0; i < quest.QuestObjectives.Length; i++)
+            {
+                var objInProgress = quest.QuestObjectives[i];
+                if (objInProgress == null) continue;
+
+                if (content.QuestObjectives != null && i < content.QuestObjectives.Length)
+                {
+                    var baseObj = content.QuestObjectives[i];
+                    switch (baseObj.ContentType)
+                    {
+                        case QuestContentType.OwnItemSpecific:
+                        case QuestContentType.SubmissionItem:
+                            int itemCount = GetItemCount(baseObj.TargetID);
+                            objInProgress.SynchronizeCount(itemCount);
+                            break;
+                    }
+                }
+            }
+        }
+        catch {}
+    }
+
+    private void ProcessDayChangeQuestStatus()
+    {
+        int currentDay = ProgressManager.getPlayedDayOnGameSystem();
+
+        // 1. 진행 중인 퀘스트 중 만료일 지난 것 Failed 처리
+        for (int i = progressingQuests.Count - 1; i >= 0; i--)
+        {
+            QuestInProgress quest = progressingQuests[i];
+            if (_QuestReqs != null && _QuestReqs.questRequirements != null)
+            {
+                for (int j = 0; j < _QuestReqs.questRequirements.Length; j++)
+                {
+                    ref var req = ref _QuestReqs.questRequirements[j];
+                    if (req.QuestId == quest.QuestID)
+                    {
+                        if (req.ExpiredDate != 0 && currentDay >= req.ExpiredDate)
+                        {
+                            Debug.LogWarning($"[QuestManager] 퀘스트 {quest.QuestID}의 기간이 만료되어 실패 처리됩니다.");
+                            UnsubscribeFromQuestState(quest.QuestID);
+                            quest.Dispose();
+                            progressingQuests.RemoveAt(i);
+
+                            EnsureQuestRegisteredInNpcManager(req.QuestId, QuestState.Failed);
+                            SetQuestLogState(req.QuestId, QuestState.Failed);
+                            _npcManager.ChangeQuestState(req.QuestId, QuestState.Failed);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 2. 수주 대기(Available) 퀘스트 중 만료일이 지난 것 Expired 처리
+        if (_QuestReqs != null && _QuestReqs.questRequirements != null)
+        {
+            for (int i = 0; i < _QuestReqs.questRequirements.Length; i++)
+            {
+                ref var req = ref _QuestReqs.questRequirements[i];
+                if (req.ExpiredDate != 0 && currentDay >= req.ExpiredDate)
+                {
+                    bool isLogged = false;
+                    for (int j = 0; j < questLogs.Count; j++)
+                    {
+                        if (questLogs[j].QuestId == req.QuestId)
+                        {
+                            isLogged = true;
+                            if (questLogs[j].State == QuestState.Available || questLogs[j].State == QuestState.Unknown)
+                            {
+                                EnsureQuestRegisteredInNpcManager(req.QuestId, QuestState.Expired);
+                                SetQuestLogState(req.QuestId, QuestState.Expired);
+                                _npcManager.ChangeQuestState(req.QuestId, QuestState.Expired);
+                            }
+                            break;
+                        }
+                    }
+                    if (!isLogged)
+                    {
+                        EnsureQuestRegisteredInNpcManager(req.QuestId, QuestState.Expired);
+                        SetQuestLogState(req.QuestId, QuestState.Expired);
+                        _npcManager.ChangeQuestState(req.QuestId, QuestState.Expired);
+                    }
+                }
+            }
+        }
+    }
+
     public QuestInProgress[] GetProgressingQuestSaveData()
     {
         return progressingQuests.ToArray();
@@ -912,6 +1040,8 @@ public class QuestManager : IInitializable, IDisposable
                 {
                     ref QuestContent content = ref _QuestContents.GetQuestContentById(quest.QuestID);
                     quest.Rebind(in content);
+
+                    SynchronizePassiveObjectives(quest);
 
                     SubscribeToQuestState(quest);
                     progressingQuests.Add(quest);
