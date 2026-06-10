@@ -145,7 +145,7 @@ public class NPC : MonoBehaviour
         }
         else if (showEscortSprite)
         {
-            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.Escort_Sprite));
+            npcSpriteRenderer.sprite = await AddressableManager.LoadAssetAsync<Sprite>(nameof(QuestLabel.QuestMark_Finishable));
         }
         else
         {
