@@ -5,11 +5,11 @@ public static class GlobalEventManager
 {
     private static readonly Subject<GameItem> OnItemPickedUp = new Subject<GameItem>();
     private static readonly Subject<Unit> NextDay = new Subject<Unit>();
-    private static readonly Subject<bool> InventoryFull = new Subject<bool>();
+    private static readonly ReactiveProperty<bool> InventoryFull = new ReactiveProperty<bool>(false);
     public static event Action<string> OnLoadScene;
 
     public static Observable<bool> InventoryFullObservable => InventoryFull;
-    public static void SetInventoryFull(bool isFull) => InventoryFull.OnNext(isFull);
+    public static void SetInventoryFull(bool isFull) => InventoryFull.Value = isFull;
 
     public static Observable<GameItem> OnItemPickedUpObservable => OnItemPickedUp;
     public static Observable<Unit> OnNextDayObservable => NextDay;
@@ -36,5 +36,6 @@ public static class GlobalEventManager
     {
         disposables.Dispose();
         disposables = null;
+        InventoryFull.Dispose();
     }
 }

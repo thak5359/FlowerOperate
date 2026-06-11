@@ -828,7 +828,7 @@ public class QuestManager : IInitializable, IDisposable
 
                 case RewardType.Item:
                     // TODO:
-                    _playerItemManager.AddItem(ContainerType.INVENTORY, _itemManager.CreateItem(reward.RewardID, reward.RewardAmount));
+                        _playerItemManager.AddItem(ContainerType.INVENTORY, _itemManager.CreateItem(reward.RewardID, reward.RewardAmount));
                     break;
 
                 default:

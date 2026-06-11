@@ -8,6 +8,7 @@ using System.Linq;
 using static Constant;
 using VContainer.Unity;
 using VContainer;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public enum ContainerType
 {
@@ -70,7 +71,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     #endregion
 
     // 인벤토리 가득 여부를 판단하고 전파하는 헬퍼 메서드
-    private void CheckInventoryFull()
+    private void CheckInventoryFull(GameItem dropItem = null)
     {
         var invList = _Data.GetItemList(ContainerType.INVENTORY);
         if (invList == null) return;
@@ -78,6 +79,9 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         for (int i = 0; i < invList.Count; i++)
         {
             var item = invList[i];
+            if(dropItem != null)
+                if(item != null && item.CanStackWith(dropItem))
+                    break;
             if (item != null && item.Id > 0 && item.Count > 0)
                 occupied++;
         }
@@ -214,6 +218,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     public virtual void AddItem(ContainerType type, GameItem item, int boxNum = 0)
     {
+        CheckInventoryFull(item);
         _Data.AddItem(type, item, boxNum);
         PublishDataChanged();
     }
@@ -469,7 +474,11 @@ public partial struct ItemInstantData
     #region Item Internal Operations (추가, 이동, 정렬)
     public void AddItem(ContainerType type, GameItem item, int boxNum = 0)
     {
-        if (IsEmpty(item)) return;
+        if (IsEmpty(item) || GlobalEventManager.InventoryFullObservable.ToReadOnlyReactiveProperty(default).CurrentValue) 
+        {
+            Debug.Log("드롭 아이템 데이터가 없거나 인벤토리가 꽉 차있음");
+            return;
+        }
 
         IList<GameItem> targetList = GetItemList(type, boxNum);
         if (targetList == null) return;

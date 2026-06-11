@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using R3;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -9,15 +10,18 @@ public class DropItemData : MonoBehaviour
     private GameItem data;
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+    
     //[SerializeField]
     //private int waitMilliSeconds = 1000;
 
     private bool isPickingUp;
+    private DisposableBag bag = new();
 
     public GameItem GetData => data;
     public int GetItemId => data != null ? data.Id : 0;
     public int GetCount => data != null ? data.Count : 0;
 
+    
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -60,11 +64,27 @@ public class DropItemData : MonoBehaviour
         if (isPickingUp)
             return;
 
-        DoOnTrigger();
+        GlobalEventManager.InvokeItemPickedUp(data);
+        GlobalEventManager.InventoryFullObservable.Subscribe(DoOnTrigger).AddTo(ref bag);
     }
 
-    private void DoOnTrigger()
+    private void OnTriggerExit(Collider other)
     {
+        if (!other.CompareTag("Player"))
+            return;
+
+        bag.Dispose();
+        bag = new DisposableBag();
+    }
+
+    private void DoOnTrigger(bool IsInvenFull)
+    {
+        if (IsInvenFull)
+        {
+            isPickingUp = false;
+            return;
+        }
+
         isPickingUp = true;
 
         if (data == null || data.Count <= 0)
@@ -73,7 +93,6 @@ public class DropItemData : MonoBehaviour
             return;
         }
 
-        GlobalEventManager.InvokeItemPickedUp(data);
         Destroy(gameObject);
     }
 }
