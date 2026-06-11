@@ -8,7 +8,6 @@ using System.Linq;
 using static Constant;
 using VContainer.Unity;
 using VContainer;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public enum ContainerType
 {
