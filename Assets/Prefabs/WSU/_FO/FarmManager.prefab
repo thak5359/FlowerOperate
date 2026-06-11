@@ -51,3 +51,9 @@ MonoBehaviour:
   playerController: {fileID: 0}
   hotbarManager: {fileID: 0}
   pauseMenu: {fileID: 0}
+  inventoryUI: {fileID: 0}
+  plotManager: {fileID: 0}
+  shopUIController: {fileID: 0}
+  infoUIController: {fileID: 0}
+  itemGenTest: {fileID: 0}
+  questInfoUI: {fileID: 0}

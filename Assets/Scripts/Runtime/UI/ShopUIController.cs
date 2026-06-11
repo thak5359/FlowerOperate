@@ -126,7 +126,7 @@ public class ShopUIController : MonoBehaviour
         _floriography1Container = _root.Q<VisualElement>("Floriography1Container");
         _floriography2Container = _root.Q<VisualElement>("Floriography2Container");
         _flavorTextLabel = _root.Q<UnityEngine.UIElements.Label>("FlavorTextLabel");
-        
+
         // DescriptionView 하위의 메인 구입 버튼 캐싱 및 연결
         _mainBuyButton = _root.Q<VisualElement>("DescriptionView")?.Q<Button>("BuyButton");
         if (_mainBuyButton != null) _mainBuyButton.clicked += OnMainBuyButtonClicked;
@@ -441,7 +441,15 @@ public class ShopUIController : MonoBehaviour
 
     private void ModifyAmount(int offset)
     {
+        // 여기에 만약 
         if (_amountField == null) return;
+
+        if (_amountField.value == 1 && offset == 10)
+        {
+            _amountField.value = offset;
+            return;
+        }
+
         int targetAmount = _amountField.value + offset;
         _amountField.value = ClampAmount(targetAmount);
     }
