@@ -497,6 +497,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Gem
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4acd3e0dbfd8fc14cbb36e0a98aa5a2f
+    m_Address: Spr_Seed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b268b11158190541b9fee23a6c46c10
     m_Address: Iron_Ingot
     m_ReadOnly: 0
@@ -1135,7 +1140,8 @@ MonoBehaviour:
   - m_GUID: 9737464bd0eb3aa4389c3e2bee64be97
     m_Address: Yellow_Cosmos_Seed
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Seed
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 97c9c4eebb10c724fa6175ee119eba6c
     m_Address: Purple_Chrysanthemum
@@ -1278,11 +1284,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Seed
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a70afa970b0fdbf4c928a0f9bfd4c156
-    m_Address: Spr_Seed
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a8cb6ebad9f530b4cbfdaae9ce4e9a1b
     m_Address: Green_Ranunculus_Seed
