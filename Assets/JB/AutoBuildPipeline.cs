@@ -56,6 +56,7 @@ class AutoBuildPipeline
             else
             {
                 Debug.LogError($"Build Failed! Result: {summary.result}");
+                throw new Exception($"Build failed with result: {summary.result}");
             }
         }
         finally
