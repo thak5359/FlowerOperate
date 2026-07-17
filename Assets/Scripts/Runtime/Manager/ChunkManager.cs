@@ -152,6 +152,22 @@ public partial struct ChunkDataIngame
 #endregion
 
 
+public struct ChunkDataSet
+{
+    public ChunkDataIngame[] FarmChunks;
+    public ChunkDataIngame[] FieldChunks;
+    public ChunkDataIngame[] ForestChunks;
+    public ChunkDataIngame[] MineChunks;
+
+    public ChunkDataSet(ChunkDataIngame[] farm, ChunkDataIngame[] field, ChunkDataIngame[] forest, ChunkDataIngame[] mine)
+    {
+        FarmChunks = farm;
+        FieldChunks = field;
+        ForestChunks = forest;
+        MineChunks = mine;
+    }
+}
+
 /// <summary>
 /// 인게임의 모든 청크 상태(데이터)를 중앙에서 관리하는 매니저 클래스입니다.
 /// VContainer에 등록되어 다른 시스템(예: 플레이어 상호작용, 씬 오브젝트 제어)에서 Inject 받아 사용합니다.
@@ -185,8 +201,9 @@ public class ChunkManager : MonoBehaviour
     public ref ChunkDataIngame[] GetFieldChunkDatas => ref _FieldChunkDatas;
     public ref ChunkDataIngame[] GetForestChunkDatas => ref _ForestChunkDatas;
     public ref ChunkDataIngame[] GetMineChunkDatas => ref _MineChunkDatas;
-
     #endregion
+
+    public ChunkDataSet GetRefAllChunkDatas => new ChunkDataSet(GetFarmChunkDatas, GetFieldChunkDatas, GetForestChunkDatas, GetMineChunkDatas);
 
     private SaveLoadManager _saveLoadManager;
 
