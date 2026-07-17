@@ -188,7 +188,7 @@ public class ChunkManager : MonoBehaviour
 
     #endregion
 
-    private SaveLoadManager _saveLoadManager;   // 이거 없애야 하는거 아닌가?
+    private SaveLoadManager _saveLoadManager;
 
     // [Inject]
     // public void Construct(SaveLoadManager saveLoadManager)
