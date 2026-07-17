@@ -5,10 +5,21 @@ using VContainer.Unity;
 using R3;
 using System;
 using AYellowpaper.SerializedCollections;
+using System.Linq;
 
-public class SaveLoadManager : IStartable, IDisposable
+public interface ISaveLoadManager
 {
-    private PlayerOwnItemDataManager _storageManager;
+    public SaveDatas GetSaveDatas { get; }
+    public void SyncSaveData(ItemInstantData itemData);
+    public void SyncSaveData(SerializedDictionary<int, PlotData> plotData);
+    public void SyncSaveData(ChunkDataSet chunkDatas);
+    public void SyncSaveData(QuestInProgress[] quests, QuestLog[] logs);
+    public void Load(string file = null);
+}
+
+public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
+{
+    private PlayerOwnItemDataManager _playerStorageManager;
     private PlotManager _plotManager;
     private ChunkManager _chunkManager;
     private QuestManager _questManager;
@@ -32,19 +43,19 @@ public class SaveLoadManager : IStartable, IDisposable
         QuestManager questManager
     )
     {
-        _storageManager = storageParent;
+        _playerStorageManager = storageParent;
         _questManager = questManager;
-        if (_storageManager == null)
+        if (_playerStorageManager == null)
         {
             Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
         }
         else
         {
-            Debug.Log($"SaveLoadManager: storageParent injected successfully. Type: {_storageManager.GetType().Name}");
+            Debug.Log($"SaveLoadManager: storageParent injected successfully. Type: {_playerStorageManager.GetType().Name}");
         }
 
         // 의존성 주입 완료 후 구독
-        _storageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
+        _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
 
         Debug.Log("SaveLoadManager 전역 의존성 주입 완료");
@@ -71,6 +82,36 @@ public class SaveLoadManager : IStartable, IDisposable
     {
         disposableBag.Dispose();
     }
+    #region SyncSaveData
+
+    // 1. 아이템 데이터 동기화                                                                            
+    public void SyncSaveData(ItemInstantData itemData)                                                    
+    {                                                                                                     
+        saveData.SetItemData(itemData);                                                                   
+    }                                                                                                     
+                                                                                                          
+    // 2. 플롯 데이터 동기화                                                                              
+    public void SyncSaveData(SerializedDictionary<int, PlotData> plotData)                                
+    {                                                                                                     
+        saveData.SetPlotDataListCache(plotData);                                                          
+    }                                                                                                     
+                                                                                                          
+    // 3. 청크 데이터 동기화                                    
+    public void SyncSaveData(ChunkDataSet chunkDatas)                                                                                                  
+    {                                                                                          
+        saveData.SetFarmChunkDatas(chunkDatas.FarmChunks);                                                
+        saveData.SetFieldChunkDatas(chunkDatas.FieldChunks);                                              
+        saveData.SetForestChunkDatas(chunkDatas.ForestChunks);                                            
+        saveData.SetMineChunkDatas(chunkDatas.MineChunks);                                                
+    }                                                                                               
+                                                                                                          
+    // 4. 퀘스트 데이터 동기화                                                                            
+    public void SyncSaveData(QuestInProgress[] quests, QuestLog[] logs)                                   
+    {                                                                                                     
+        saveData.SetProgressingQuests(quests);                                                            
+        saveData.SetQuestLogs(logs);                                                                      
+    }    
+    #endregion
 
     private void SyncSaveData(bool syncPlotManager = true)
     {
@@ -82,9 +123,9 @@ public class SaveLoadManager : IStartable, IDisposable
             _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
         }
 
-        if (_storageManager == null)
+        if (_playerStorageManager == null)
         {
-            Debug.Log("SaveLoadManager : storageManager가 null임");
+            Debug.Log("SaveLoadManager : playerStorageManager가 null임");
             return;
         }
 
@@ -97,10 +138,10 @@ public class SaveLoadManager : IStartable, IDisposable
 
         saveData = new SaveDatas(
             day,
-            _storageManager.GetData,
+            _playerStorageManager.GetData,
             _plotDataCache,
-            _storageManager.GetData.GetMoney,
-            _storageManager.GetData.GetReputation,
+            _playerStorageManager.GetData.GetMoney,
+            _playerStorageManager.GetData.GetReputation,
             farmChunks,
             fieldChunks,
             forestChunks,
@@ -177,8 +218,8 @@ public class SaveLoadManager : IStartable, IDisposable
             ProgressManager.LoadData(new ProgressManager.ProgressData(saveData.GetPlayDay));
             Debug.Log($"SaveLoadManager: 날짜 복원 완료 -> {saveData.GetPlayDay}일차");
 
-            if (_storageManager != null)
-                _storageManager.Load(saveData);
+            if (_playerStorageManager != null)
+                _playerStorageManager.Load(saveData);
 
             if (_questManager != null)
                 _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);

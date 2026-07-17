@@ -28,6 +28,8 @@ public partial class SaveDatas
     [MemoryPackIgnore]
     private SerializedDictionary<int, PlotData> plotDataDictCache;
 
+
+#region Properties_Getter
     public string GetSaveTime => saveTime;
     public int GetPlayDay => playDay;
     public ItemInstantData GetItemData => itemData;
@@ -41,6 +43,24 @@ public partial class SaveDatas
     public int GetMoney => money;
     public ref int GetRefMoney => ref money;
     public int GetReputation => reputation;
+#endregion
+
+#region Properties_Setter
+    public void SetSaveTime(string time) => saveTime = time;
+    public void SetPlayDay(int day) => playDay = day;
+    public void SetItemData(ItemInstantData data) => itemData = data;
+    public void SetPlotDataListCache(SerializedDictionary<int, PlotData> data)
+    {
+        plotDataDictCache = data;
+        plotDataList = FromSerializedDictionary(data);
+    }
+    public void SetFarmChunkDatas(ChunkDataIngame[] datas) => _FarmChunkDatas = datas;
+    public void SetFieldChunkDatas(ChunkDataIngame[] datas) => _FieldChunkDatas = datas;
+    public void SetForestChunkDatas(ChunkDataIngame[] datas) => _ForestChunkDatas = datas;
+    public void SetMineChunkDatas(ChunkDataIngame[] datas) => _MineChunkDatas = datas;
+    public void SetProgressingQuests(QuestInProgress[] quests) => progressingQuests = quests;
+    public void SetQuestLogs(QuestLog[] logs) => questLogs = logs;
+#endregion
 
     [MemoryPackIgnore]
     public ref SerializedDictionary<int, PlotData> GetRefPlotData
