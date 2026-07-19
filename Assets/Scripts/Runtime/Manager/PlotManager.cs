@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using System.Linq;
 using VContainer;
 using Cysharp.Threading.Tasks;
+using R3;
 
 public class PlotManager : MonoBehaviour
 {
@@ -17,32 +18,26 @@ public class PlotManager : MonoBehaviour
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
-    private SaveLoadManager _saveLoadManager;
+    [Inject]private ISaveLoadManager _saveLoadManager;
+
+    private DisposableBag disposableBag = new();
 
     private void Awake()
     {
-        RefreshPlotCache();
-    }
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(ref disposableBag);
 
-    [Inject]
-    public void Construct(SaveLoadManager saveLoadManager)
-    {
-        _saveLoadManager = saveLoadManager;
+        RefreshPlotCache();
     }
 
     private void Start()
     {
-        if (_saveLoadManager != null)
-        {
-            _saveLoadManager.RegisterPlotManager(this);
-            LoadSaveDataAfterDBInit().Forget();
-        }
+        LoadSaveDataAfterDBInit().Forget();
     }
 
     private async UniTaskVoid LoadSaveDataAfterDBInit()
     {
         await UniTask.WaitUntil(() => GlobalItemDB.IsInitialized);
-        _saveLoadManager.Load("SaveData");
+        Load(_saveLoadManager.GetSaveDatas);
     }
 
     /// <summary>
@@ -104,5 +99,6 @@ public class PlotManager : MonoBehaviour
     {
         plotDataDict.Clear();
         RefreshPlotCache();
+        _saveLoadManager.SyncSaveData(GetPlotDataDict);
     }
 }
