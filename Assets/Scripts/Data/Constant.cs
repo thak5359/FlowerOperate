@@ -20,7 +20,11 @@ public class Constant
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW3 = "Spr_Grow[Spr_Grow3]";
     public static readonly FixedString64Bytes ADDRESSABLE_SPR_GROW4 = "Spr_Grow[Spr_Grow4]";
 
-
+    public static readonly  FixedString64Bytes ADDRESSABLE_DROPTABLE_FLOWER = "DropTable_Flower";
+    public static readonly FixedString64Bytes ADDRESSABLE_DROPTABLE_ORE = "DropTable_Ore";
+    public static readonly FixedString64Bytes ADDRESSABLE_DROPTABLE_TREE = "DropTable_Tree";
+    public static readonly FixedString64Bytes ADDRESSABLE_DROPTABLE_GRASS = "DropTable_Grass";
+    public static readonly FixedString64Bytes ADDRESSABLE_DROPTABLE_GEMSTONE = "DropTable_Gemstone";
 
     public const int ITEMID_DEADCROPS = 409007;
 

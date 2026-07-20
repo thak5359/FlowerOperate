@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cad85232268cca5458b540828b24fb01, type: 3}
+  m_Name: "\uB4DC\uB78D\uD14C\uC774\uBE14_\uAD11\uB9E5"
+  m_EditorClassIdentifier: 
+  gemstoneDropdatas:
+  - DropItemID: 0
+    MinAmount: 0
+    MaxAmount: 0
+  - DropItemID: 403001
+    MinAmount: 2
+    MaxAmount: 3
+  - DropItemID: 403002
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403003
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403004
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403005
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403006
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403007
+    MinAmount: 2
+    MaxAmount: 4
+  - DropItemID: 403008
+    MinAmount: 2
+    MaxAmount: 4

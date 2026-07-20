@@ -45,6 +45,11 @@ public static class EnumExtensions
     }
 
     
+    public static int ToValue(this FlowerSpecies species)
+    {
+        return (int)species;
+    }
+
 
     public static int ToValue(this FertilizerGrade fertGrade)
     {
@@ -59,5 +64,18 @@ public static class EnumExtensions
     {
         return (int)grade;
     }
+    public static int ToValue(this OreType oreType)
+    {
+        return (int)oreType;
+    }
 
+    public static int ToValue(this TreeGrade grade)
+    {
+        return (int)grade;
+    }
+
+    public static int ToValue(this GrassGrade grade)
+    {
+        return (int)grade;
+    }
 }

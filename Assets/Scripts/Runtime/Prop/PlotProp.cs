@@ -58,20 +58,17 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         Growth = FlowerGrowth.Unknown;
         State = FlowerState.Vivid;
         Grade = FlowerGrade.Unknown;
-        harvestAmount = 0;
         IsAppliedBountyFert = false;
         AppliedQualityFert = FertilizerGrade.Unknown;
+        harvestAmount = 0;
 
         if (GlobalItemDB.HasFlower(ItemId) == true)
         {
             FlowerItemBlobData data = GlobalItemDB.GetFlowerRef(ItemId);
-            harvestAmount = data.HarvestAmount;
-            GrowthDays = int4.zero;
+            GrowthDays = data.GrowthDuration;
         }
         else
         {
-            harvestAmount = 0;
-
             GrowthDays = int4.zero;
             //Debug.LogAssertion($"PlotData Constructor Error. itemID : {Id}");
         }
@@ -103,16 +100,6 @@ public partial struct PlotData : IPropData // 저장용 데이터 바구니
         if (State != FlowerState.Moist)
         {
             State = FlowerState.Vivid;
-        }
-
-        if (GlobalItemDB.HasFlower(ItemId) == true)
-        {
-            FlowerItemBlobData data = GlobalItemDB.GetFlowerRef(ItemId);
-            harvestAmount = data.HarvestAmount;
-        }
-        else
-        {
-            harvestAmount = 1;
         }
 
         int useAmount = 1;
@@ -467,28 +454,46 @@ public class PlotProp : Prop
     {
         try
         {
+            // 대상이 수확가능한 꽃일 경우
             if ( plotData.ItemId != ITEMID_DEADCROPS && plotData.Growth == FlowerGrowth.Bloom)
             {
-                // 기본 5% 확률로 등급업을 시도함
+                #region 기본 5% 확률로 등급업을 시도함
                 if (_random.NextFloat() < 0.05f)
                 {
-                    _plotData.harvestAmount++;
+                    _plotData.Grade = _plotData.Grade.Next<FlowerGrade>();
 
                 }
-                //5% 확률로 장비가 플래티넘 이상일 경우 다음 작물을 등급으로 올림
+
+                #endregion
+
+                #region 5% 확률로 장비가 플래티넘 이상일 경우 다음 작물을 등급으로 올림
+                //
                 if (_random.NextFloat() < 0.05f)
                 {
                     if (gear.Grade.ToValue() >= 5)
                         _plotData.Grade = _plotData.Grade.Next<FlowerGrade>();
                 }
 
-               
+                #endregion
 
+                #region 작물 종류에 따라 기본 수확량(랜덤)을 가져옴
+
+                FlowerDropTable dropTable = AddressableManager.LoadAssetSync<FlowerDropTable>(ADDRESSABLE_DROPTABLE_FLOWER);
+                FlowerSpecies species =  GlobalItemDB.GetFlowerRef(_plotData.ItemId).Species;
+
+                _plotData.harvestAmount += _random.NextInt(dropTable.GetDropData(species).MinAmount, dropTable.GetDropData(species).MaxAmount);
+                AddressableManager.ReleaseAsset<FlowerDropTable>(dropTable);
+
+                #endregion
+
+                #region harvestAmount만큼 아이템 드랍
                 for (int i = 0; i < _plotData.harvestAmount; i++)
                 {
                     ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(_plotData.ItemId, 1, _plotData.Grade), _plotData.Position);
                 }
+                #endregion
 
+                #region 수확후 밭 리셋
                 int harvestedItemId = _plotData.ItemId;
 
                 _plotData.ItemId = 0;
@@ -507,10 +512,13 @@ public class PlotProp : Prop
                 changePlotSpr().Forget();
                 changeFlowerSpr().Forget();
 
+                #endregion
+                //스트림으로 퀘스트 진행도 갱신
                 QuestProgressPublisher.PlotReaping.OnNext(harvestedItemId);
 
                 return new FarmActionResult(FarmActionResult.ResultType.Success);
             }
+            // 대상이 시든 작물일 경우
             else if (plotData.State == FlowerState.Wilted || plotData.ItemId == ITEMID_DEADCROPS)
             {
                 ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(ITEMID_DEADCROPS, 1), _plotData.Position);
