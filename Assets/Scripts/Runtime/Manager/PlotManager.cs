@@ -101,4 +101,15 @@ public class PlotManager : MonoBehaviour
         RefreshPlotCache();
         _saveLoadManager.SyncSaveData(GetPlotDataDict);
     }
+
+    private void OnNextDayTransition()
+    {
+        foreach (var key in plotDataDict.Keys)
+        {
+
+            var data = plotDataDict[key];
+            data.GrowUp();
+            plotDataDict[key] = data;
+        }
+    }
 }
