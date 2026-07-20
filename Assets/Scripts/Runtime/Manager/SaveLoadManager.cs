@@ -19,8 +19,6 @@ public interface ISaveLoadManager
 
 public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 {
-    private ChunkManager _chunkManager;
-    private QuestManager _questManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     private SerializedDictionary<int, PlotData> _plotDataCache = new();
 
@@ -35,22 +33,9 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     {
     }
 
-    [Inject]
-    public void Construct(
-        QuestManager questManager
-    )
-    {
-        _questManager = questManager;
-
-        // 의존성 주입 완료 후 구독
-        // _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
-
-        Debug.Log("SaveLoadManager 전역 의존성 주입 완료");
-    }
-
     void IStartable.Start()
     {
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
         Debug.Log("SaveLoadManager: Start EntryPoint initialized (Lazy loading avoided).");
     }
 
@@ -60,11 +45,11 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     //     Debug.Log("SaveLoadManager: PlotManager registered successfully.");
     // }
 
-    public void RegisterChunkManager(ChunkManager chunkManager)
-    {
-        _chunkManager = chunkManager;
-        Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
-    }
+    //public void RegisterChunkManager(ChunkManager chunkManager)
+    //{
+    //    _chunkManager = chunkManager;
+    //    Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
+    //}
 
     public void Dispose()
     {
@@ -205,8 +190,9 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
             // if (_playerStorageManager != null)
             //     _playerStorageManager.Load(saveData);
 
-            if (_questManager != null)
-                _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
+            // TODO : 퀘스트 매니저에 자체적으로 퀘스트 데이터 로드하는 기능 이관
+            //if (_questManager != null)
+            //    _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
 
             // if (_plotManager != null)
             //     _plotManager.Load(saveData);
