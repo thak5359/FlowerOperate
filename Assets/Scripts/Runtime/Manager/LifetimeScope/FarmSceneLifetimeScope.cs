@@ -22,6 +22,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
     {
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
+        builder.RegisterEntryPoint<SaveLoadManager>().As<ISaveLoadManager>().AsSelf();
 
 
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();

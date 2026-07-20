@@ -5,14 +5,9 @@ using AYellowpaper.SerializedCollections;
 using System.Linq;
 using VContainer;
 using Cysharp.Threading.Tasks;
+using R3;
 
-public interface IPlotManager
-{
-    SerializedDictionary<int, PlotData> GetPlotDataDict { get; }
-    void Load(SaveDatas saveDatas);
-}
-
-public class PlotManager : MonoBehaviour, IPlotManager
+public class PlotManager : MonoBehaviour
 {
     // [플롯ID : 플롯데이터] 꼴의 해시테이블. 아이디로 플롯이 담고 있는 데이터에 접근할 수 있음
     [SerializedDictionary("PlotID", "PlotData")]
@@ -23,32 +18,26 @@ public class PlotManager : MonoBehaviour, IPlotManager
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
-    private SaveLoadManager _saveLoadManager;
+    [Inject]private ISaveLoadManager _saveLoadManager;
+
+    private DisposableBag disposableBag = new();
 
     private void Awake()
     {
-        RefreshPlotCache();
-    }
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(ref disposableBag);
 
-    [Inject]
-    public void Construct(SaveLoadManager saveLoadManager)
-    {
-        _saveLoadManager = saveLoadManager;
+        RefreshPlotCache();
     }
 
     private void Start()
     {
-        if (_saveLoadManager != null)
-        {
-            _saveLoadManager.RegisterPlotManager(this);
-            LoadSaveDataAfterDBInit().Forget();
-        }
+        LoadSaveDataAfterDBInit().Forget();
     }
 
     private async UniTaskVoid LoadSaveDataAfterDBInit()
     {
         await UniTask.WaitUntil(() => GlobalItemDB.IsInitialized);
-        _saveLoadManager.Load("SaveData");
+        Load(_saveLoadManager.GetSaveDatas);
     }
 
     /// <summary>
@@ -110,5 +99,6 @@ public class PlotManager : MonoBehaviour, IPlotManager
     {
         plotDataDict.Clear();
         RefreshPlotCache();
+        _saveLoadManager.SyncSaveData(GetPlotDataDict);
     }
 }
