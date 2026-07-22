@@ -377,6 +377,7 @@ public class QuestManager : IInitializable, IDisposable
     private ItemManager _itemManager;
     private QuestRequirementSO _QuestReqs;
     private QuestContentSO _QuestContents;
+    private SaveLoadManager _SaveLoadManager;
 
     private readonly List<QuestInProgress> progressingQuests = new();
     private readonly List<QuestLog> questLogs = new();
@@ -398,11 +399,13 @@ public class QuestManager : IInitializable, IDisposable
     public int[] FinishableQuestList => finishableQuestList;
 
     [Inject]
-    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM, ItemManager input_ITM)
+    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM
+        , ItemManager input_ITM, SaveLoadManager input_SLM)
     {
         _playerItemManager = input_POITDM;
         _npcManager = input_NPCM;
         _itemManager = input_ITM;
+        _SaveLoadManager = input_SLM;
     }
     public void Initialize()
     {
