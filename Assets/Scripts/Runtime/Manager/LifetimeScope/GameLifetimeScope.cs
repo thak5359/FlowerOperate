@@ -18,6 +18,7 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<ActionMapChanger>().As<IMapChangable>().AsSelf();
         builder.RegisterEntryPoint<SettingManager>().WithParameter(masterMixer).AsSelf();
+        builder.RegisterEntryPoint<SaveLoadManager>().As<ISaveLoadManager>().AsSelf();
         builder.RegisterEntryPoint<PlayerOwnItemDataManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QuestManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<NPCManager>(Lifetime.Singleton).AsSelf();
@@ -25,9 +26,9 @@ public class GameLifetimeScope : LifetimeScope
            .AsSelf()
            .As<IAsyncStartable>()
            .As<IDisposable>();
-        builder.RegisterEntryPoint<SaveLoadManager>().AsSelf();
-
         builder.RegisterComponent<PlayerInput>(playerInput);
-        
+
+        builder.RegisterEntryPoint<ChunkManager>().AsSelf();
+
     }
 }

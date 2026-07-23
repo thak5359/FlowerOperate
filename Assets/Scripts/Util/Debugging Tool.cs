@@ -7,6 +7,9 @@ public static class EasyDebug
     public static void LogDebug(string message) { Debug.Log(message); }
 
     [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+    public static void Log(string message) { Debug.Log(message); }
+
+    [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
     public static void LogError(string message) { Debug.LogError(message); }
 
     [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]

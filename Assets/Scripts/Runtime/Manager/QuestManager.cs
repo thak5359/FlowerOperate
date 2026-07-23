@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -370,11 +371,12 @@ public partial class QuestInProgress : IDisposable
 
 
 
-public class QuestManager : IInitializable, IDisposable
+public class QuestManager : IAsyncStartable, IDisposable
 {
     private PlayerOwnItemDataManager _playerItemManager;
     private NPCManager _npcManager;
     private ItemManager _itemManager;
+    private ISaveLoadManager _saveLoadManager;
     private QuestRequirementSO _QuestReqs;
     private QuestContentSO _QuestContents;
 
@@ -398,15 +400,16 @@ public class QuestManager : IInitializable, IDisposable
     public int[] FinishableQuestList => finishableQuestList;
 
     [Inject]
-    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM, ItemManager input_ITM)
+    public void Construct(PlayerOwnItemDataManager input_POITDM, NPCManager input_NPCM, ItemManager input_ITM, ISaveLoadManager saveLoadManager)
     {
         _playerItemManager = input_POITDM;
         _npcManager = input_NPCM;
         _itemManager = input_ITM;
+        _saveLoadManager = saveLoadManager;
     }
-    public void Initialize()
+    public async UniTask StartAsync(CancellationToken cancellationToken)
     {
-        InitAsync().Forget();
+        await InitAsync(cancellationToken);
         Fungus.FungusEventBridge.OnReceivedQuest += IgnoreReceiveReturn();
         Fungus.FungusEventBridge.OnCompleteQuest += IgnoreCompleteReturn();
     }
@@ -421,16 +424,18 @@ public class QuestManager : IInitializable, IDisposable
         return questId => CompleteQuest(questId);
     }
 
-    private async UniTaskVoid InitAsync()
+    private async UniTask InitAsync(CancellationToken cancellationToken)
     {
 
-        await Addressables.InitializeAsync();   
+        await Addressables.InitializeAsync().WithCancellation(cancellationToken);
 
         _QuestReqs = await AddressableManager
-                    .LoadAssetAsync<QuestRequirementSO>("QuestRequirementSO");
+                    .LoadAssetAsync<QuestRequirementSO>("QuestRequirementSO")
+                    .AttachExternalCancellation(cancellationToken);
 
         _QuestContents = await AddressableManager
-            .LoadAssetAsync<QuestContentSO>("QuestContentSO");
+            .LoadAssetAsync<QuestContentSO>("QuestContentSO")
+            .AttachExternalCancellation(cancellationToken);
 
         if (_QuestReqs != null && _QuestReqs.questRequirements != null)
             availableQuestBuffer = new QuestRequirement[_QuestReqs.questRequirements.Length];
@@ -464,6 +469,12 @@ public class QuestManager : IInitializable, IDisposable
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeFinishableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeProgressingQuestListToFungus;
+
+        SaveDatas saveDatas = _saveLoadManager.GetSaveDatas;
+        if (saveDatas != null)
+        {
+            LoadQuestData(saveDatas.GetProgressingQuests, saveDatas.GetQuestLogs);
+        }
 
         SynchonizeAvailableQuestListToFungus();
         SynchonizeFinishableQuestListToFungus();
@@ -1080,6 +1091,7 @@ public class QuestManager : IInitializable, IDisposable
 
     public void Dispose()
     {
+        // TODO: 담당 개발자 확인 후 OnReceivedQuest/OnCompleteQuest도 등록 때 사용한 동일 delegate 인스턴스로 구독 해제해야 합니다.
         disposableBag.Dispose();
 
         Fungus.FungusEventBridge.CallReceivedQuestId -= SynchonizeAvailableQuestListToFungus;

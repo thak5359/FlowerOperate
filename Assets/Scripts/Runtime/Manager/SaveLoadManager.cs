@@ -1,3 +1,4 @@
+// TODO: 다음 날 처리 순서를 판매 정산/작물·퀘스트 갱신/스냅샷 수집/파일 저장 순으로 보장하는 coordinator가 필요합니다.
 using Fungus;
 using UnityEngine;
 using VContainer;
@@ -17,10 +18,9 @@ public interface ISaveLoadManager
     public void Load(string file = null);
 }
 
-public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
+public class SaveLoadManager : IInitializable, IDisposable, ISaveLoadManager
 {
     private ChunkManager _chunkManager;
-    private QuestManager _questManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     private SerializedDictionary<int, PlotData> _plotDataCache = new();
 
@@ -35,35 +35,42 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     {
     }
 
-    [Inject]
-    public void Construct(
-        QuestManager questManager
-    )
+    void IInitializable.Initialize()
     {
-        _questManager = questManager;
+        try
+        {
+            Load(SAVE_FILE_NAME);
+
+            if (saveData == null)
+            {
+                saveData = new SaveDatas();
+                EasyDebug.Log("SaveLoadManager: 저장 파일이 없어 기본 세이브 데이터를 생성했습니다.");
+            }
+        }
+        catch (Exception exception)
+        {
+            EasyDebug.LogError($"SaveLoadManager: 세이브 데이터 초기화에 실패해 기본 데이터를 사용합니다.\n{exception}");
+            loadedData = null;
+            saveData = new SaveDatas();
+        }
 
         // 의존성 주입 완료 후 구독
         // _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
 
-        Debug.Log("SaveLoadManager 전역 의존성 주입 완료");
-    }
-
-    void IStartable.Start()
-    {
-        Debug.Log("SaveLoadManager: Start EntryPoint initialized (Lazy loading avoided).");
+        EasyDebug.Log("SaveLoadManager 전역 의존성 주입 완료");
     }
 
     // public void RegisterPlotManager(PlotManager plotManager)
     // {
     //     _plotManager = plotManager;
-    //     Debug.Log("SaveLoadManager: PlotManager registered successfully.");
+    //     EasyDebug.Log("SaveLoadManager: PlotManager registered successfully.");
     // }
 
     public void RegisterChunkManager(ChunkManager chunkManager)
     {
         _chunkManager = chunkManager;
-        Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
+        EasyDebug.Log("SaveLoadManager: ChunkManager registered successfully.");
     }
 
     public void Dispose()
@@ -146,12 +153,12 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 
         if (saveData == null)
         {
-            Debug.LogError("저장할 데이터가 생성되지 않았습니다.");
+            EasyDebug.LogError("저장할 데이터가 생성되지 않았습니다.");
             return;
         }
 
         FileDataHandler.SaveBinary(saveData, SAVE_FILE_NAME);
-        Debug.Log($"데이터 저장 완료: {SAVE_FILE_NAME}");
+        EasyDebug.Log($"데이터 저장 완료: {SAVE_FILE_NAME}");
     }
 
     //TODO: 이 함수의 기능을 완전히 PlotManager로 옮기고, SaveLoadManager는 단순히 저장만 담당하도록 리팩토링 필요.
@@ -191,7 +198,7 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 
             if (saveData == null)
             {
-                Debug.LogWarning("SaveLoadManager: 로드할 세이브 데이터가 존재하지 않아 Load를 건너뜁니다.");
+                EasyDebug.LogWarning("SaveLoadManager: 로드할 세이브 데이터가 존재하지 않아 Load를 건너뜁니다.");
                 return;
             }
 
@@ -200,13 +207,10 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 
             // 날짜 데이터 복구
             ProgressManager.LoadData(new ProgressManager.ProgressData(saveData.GetPlayDay));
-            Debug.Log($"SaveLoadManager: 날짜 복원 완료 -> {saveData.GetPlayDay}일차");
+            EasyDebug.Log($"SaveLoadManager: 날짜 복원 완료 -> {saveData.GetPlayDay}일차");
 
             // if (_playerStorageManager != null)
             //     _playerStorageManager.Load(saveData);
-
-            if (_questManager != null)
-                _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
 
             // if (_plotManager != null)
             //     _plotManager.Load(saveData);

@@ -3,9 +3,13 @@
 
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using R3;
+using System;
+using System.Threading;
 using Unity.Collections;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 using static Constant;
 
 #region Structs : Chunk Data & Result
@@ -178,7 +182,7 @@ public struct ChunkDataSet
 /// 3. 해금 성공 시, 실제 씬에 있는 벽 Collider의 IsTrigger를 true로 바꾸어 이동을 허용하고, 
 ///    해당 영역의 LayerMask를 갱신하여 농사/건축 등의 상호작용이 가능하도록 물리적 처리를 추가해주세요.
 /// </summary>
-public class ChunkManager : MonoBehaviour
+public class ChunkManager : IAsyncStartable, IDisposable
 {
     #region Scriptable Object Datasets (SO 원본 데이터)
     private FarmChunkDataSet _FarmChunkDataSet;
@@ -194,7 +198,11 @@ public class ChunkManager : MonoBehaviour
     private ChunkDataIngame[] _MineChunkDatas;
 
     private int cachedDatasetLength;
+    private readonly UniTaskCompletionSource _initializationCompletionSource = new();
     #endregion
+
+    public readonly Subject<(int input1, ChunkType type)> ChunkUnlockedSubject = new();
+    public UniTask Initialization => _initializationCompletionSource.Task;
 
     #region Getter
     public ref ChunkDataIngame[] GetFarmChunkDatas => ref _FarmChunkDatas;
@@ -207,28 +215,48 @@ public class ChunkManager : MonoBehaviour
 
     private SaveLoadManager _saveLoadManager;
 
-    // [Inject]
-    // public void Construct(SaveLoadManager saveLoadManager)
-    // {
-    //     _saveLoadManager = saveLoadManager;
-    //     _saveLoadManager.RegisterChunkManager(this);
-    // }
+    [Inject]
+    public void Construct(SaveLoadManager saveLoadManager)
+    {
+        _saveLoadManager = saveLoadManager;
+        _saveLoadManager.RegisterChunkManager(this);
+    }
 
     #region Initialization
-    private void Awake()
+    async UniTask IAsyncStartable.StartAsync(CancellationToken cancellationToken)
     {
-        initalizeScriptableObjectDataset().Forget();
+        try
+        {
+            await InitializeScriptableObjectDatasetsAsync(cancellationToken);
+            _initializationCompletionSource.TrySetResult();
+        }
+        catch (OperationCanceledException)
+        {
+            _initializationCompletionSource.TrySetCanceled(cancellationToken);
+            throw;
+        }
+        catch (Exception exception)
+        {
+            _initializationCompletionSource.TrySetException(exception);
+            throw;
+        }
     }
+
+
 
     /// <summary>
     /// Addressable을 통해 각 청크 타입별 SO 데이터를 로드하고 인게임 데이터를 초기화합니다.
     /// </summary>
-    private async UniTaskVoid initalizeScriptableObjectDataset()
+    private async UniTask InitializeScriptableObjectDatasetsAsync(CancellationToken cancellationToken)
     {
-        _FarmChunkDataSet = await AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET);
-        _FieldChunkDataSet = await AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET);
-        _ForestChunkDataSet = await AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET);
-        _MineChunkDataSet = await AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET    );
+        _FarmChunkDataSet = await AddressableManager.LoadAssetAsync<FarmChunkDataSet>(FARM_CHUNK_DATASET)
+            .AttachExternalCancellation(cancellationToken);
+        _FieldChunkDataSet = await AddressableManager.LoadAssetAsync<FieldChunkDataSet>(FIELD_CHUNK_DATASET)
+            .AttachExternalCancellation(cancellationToken);
+        _ForestChunkDataSet = await AddressableManager.LoadAssetAsync<ForestChunkDataSet>(FOREST_CHUNK_DATASET)
+            .AttachExternalCancellation(cancellationToken);
+        _MineChunkDataSet = await AddressableManager.LoadAssetAsync<MineChunkDataSet>(MINE_CHUNK_DATASET)
+            .AttachExternalCancellation(cancellationToken);
 
         if (_FarmChunkDataSet != null) initializeChunkDatas_Farm();
         if (_FieldChunkDataSet != null) initializeChunkDatas_Field();
@@ -308,12 +336,14 @@ public class ChunkManager : MonoBehaviour
     public ChunkActionResult UnlockChunk(int input_Id, ChunkType input_type)
     {
         ChunkActionResult result;
+        bool targetUnlocked;
 
         switch (input_type)
         {
             case ChunkType.Farm:
                 {
                     result = _FarmChunkDatas[input_Id - 1].Unlock();
+                    targetUnlocked = result.Result == ResultType.Success;
 
                     if (result.Result == ResultType.Success)
                     {
@@ -329,12 +359,14 @@ public class ChunkManager : MonoBehaviour
                             }
                         }
                     }
-                    return result;
+
+                    break;
                 }
 
             case ChunkType.Field:
                 {
                     result = _FieldChunkDatas[input_Id - 1].Unlock();
+                    targetUnlocked = result.Result == ResultType.Success;
 
                     if (result.Result == ResultType.Success)
                     {
@@ -349,12 +381,13 @@ public class ChunkManager : MonoBehaviour
                             }
                         }
                     }
-                    return result;
+                    break;
                 }
 
             case ChunkType.Forest:
                 {
                     result = _ForestChunkDatas[input_Id - 1].Unlock();
+                    targetUnlocked = result.Result == ResultType.Success;
 
                     if (result.Result == ResultType.Success)
                     {
@@ -369,12 +402,13 @@ public class ChunkManager : MonoBehaviour
                             }
                         }
                     }
-                    return result;
+                    break;
                 }
 
             case ChunkType.Mine:
                 {
                     result = _MineChunkDatas[input_Id - 1].Unlock();
+                    targetUnlocked = result.Result == ResultType.Success;
 
                     if (result.Result == ResultType.Success)
                     {
@@ -389,12 +423,19 @@ public class ChunkManager : MonoBehaviour
                             }
                         }
                     }
-                    return result;
+                    break;
                 }
 
             default:
                 return new ChunkActionResult(ResultType.Error, NewResultMessage($"Unexpected Error on UnlockChunk. target ChunkType :{input_type}, targetNo : {input_Id} "));
         }
+
+        if (targetUnlocked)
+        {
+            ChunkUnlockedSubject.OnNext((input_Id, input_type));
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -408,4 +449,8 @@ public class ChunkManager : MonoBehaviour
         return new FixedString128Bytes(message);
     }
     #endregion
+
+    public void Dispose()
+    {
+    }
 }

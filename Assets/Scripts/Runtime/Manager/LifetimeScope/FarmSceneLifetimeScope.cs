@@ -22,9 +22,6 @@ public class FarmSceneLifetimeScope : LifetimeScope
     {
         builder.RegisterEntryPoint<ActionKeyMapper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<UseAreaManager>().As<IUseItem>().AsSelf();
-        builder.RegisterEntryPoint<SaveLoadManager>().As<ISaveLoadManager>().AsSelf();
-
-
         builder.Register<ActionKeyChanger>(Lifetime.Singleton).AsSelf();
         builder.Register<PlayerStateManager>(Lifetime.Singleton).AsSelf();
         builder.RegisterComponent<PlotManager>(plotManager).AsImplementedInterfaces().AsSelf();
@@ -37,9 +34,7 @@ public class FarmSceneLifetimeScope : LifetimeScope
         builder.RegisterComponent<ItemGenTest>(itemGenTest).AsSelf();
         builder.RegisterComponent<MoneyGenTest>(moneyGenTest).AsSelf();
         builder.RegisterComponent<QuestInfoTabUIController>(questInfoUI).AsSelf();
-
-        // ChunkManager 씬 컴포넌트 자동 주입 등록
-        //builder.RegisterComponentInHierarchy<ChunkManager>().AsSelf();
+        builder.RegisterComponentInHierarchy<FarmSceneChunkController>();
 
     }
 }
