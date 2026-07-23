@@ -13,18 +13,19 @@ public class PlotManager : MonoBehaviour
     [SerializedDictionary("PlotID", "PlotData")]
     [SerializeField] 
     private SerializedDictionary<int, PlotData> plotDataDict = new();
+    [Inject]private ISaveLoadManager _saveLoadManager;
 
     [SerializeField]
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
-    [Inject]private ISaveLoadManager _saveLoadManager;
 
-    private DisposableBag disposableBag = new();
+    private CompositeDisposable disposableBag = new();
 
     private void Awake()
     {
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(ref disposableBag);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(disposableBag);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(disposableBag);
 
         RefreshPlotCache();
     }
@@ -106,7 +107,6 @@ public class PlotManager : MonoBehaviour
     {
         foreach (var key in plotDataDict.Keys)
         {
-
             var data = plotDataDict[key];
             data.GrowUp();
             plotDataDict[key] = data;

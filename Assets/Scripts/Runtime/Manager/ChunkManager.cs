@@ -205,7 +205,7 @@ public class ChunkManager : MonoBehaviour
 
     public ChunkDataSet GetRefAllChunkDatas => new ChunkDataSet(GetFarmChunkDatas, GetFieldChunkDatas, GetForestChunkDatas, GetMineChunkDatas);
 
-    private SaveLoadManager _saveLoadManager;
+    private ISaveLoadManager _saveLoadManager;
 
     // [Inject]
     // public void Construct(SaveLoadManager saveLoadManager)

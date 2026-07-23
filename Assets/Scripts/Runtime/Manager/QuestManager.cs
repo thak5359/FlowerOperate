@@ -461,9 +461,11 @@ public class QuestManager : IInitializable, IDisposable
                 .AddTo(ref disposableBag);
         }
 
-        UpdateAvailableQuest();
-        DoRegisterQuestStateInNpcManager();
-
+        LoadQuestData(
+            _SaveLoadManager.saveData.GetProgressingQuests,
+            _SaveLoadManager.saveData.GetQuestLogs
+        );
+    
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeFinishableQuestListToFungus;
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeProgressingQuestListToFungus;
