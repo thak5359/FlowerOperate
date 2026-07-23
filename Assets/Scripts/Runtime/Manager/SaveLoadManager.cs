@@ -1,9 +1,11 @@
+using Fungus;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using R3;
 using System;
 using AYellowpaper.SerializedCollections;
+using System.Linq;
 
 public interface ISaveLoadManager
 {
@@ -17,6 +19,8 @@ public interface ISaveLoadManager
 
 public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 {
+    private ChunkManager _chunkManager;
+    private QuestManager _questManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
     private SerializedDictionary<int, PlotData> _plotDataCache = new();
 
@@ -31,10 +35,22 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     {
     }
 
+    [Inject]
+    public void Construct(
+        QuestManager questManager
+    )
+    {
+        _questManager = questManager;
+
+        // 의존성 주입 완료 후 구독
+        // _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
+
+        Debug.Log("SaveLoadManager 전역 의존성 주입 완료");
+    }
+
     void IStartable.Start()
     {
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => Save(SAVE_FILE_NAME)).AddTo(ref disposableBag);
-
         Debug.Log("SaveLoadManager: Start EntryPoint initialized (Lazy loading avoided).");
     }
 
@@ -44,11 +60,11 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     //     Debug.Log("SaveLoadManager: PlotManager registered successfully.");
     // }
 
-    //public void RegisterChunkManager(ChunkManager chunkManager)
-    //{
-    //    _chunkManager = chunkManager;
-    //    Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
-    //}
+    public void RegisterChunkManager(ChunkManager chunkManager)
+    {
+        _chunkManager = chunkManager;
+        Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
+    }
 
     public void Dispose()
     {
@@ -138,28 +154,29 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
         Debug.Log($"데이터 저장 완료: {SAVE_FILE_NAME}");
     }
 
-    // private void OnNextDayTransition()
-    // {
-    //      1. 현재 씬에 PlotManager가 활성화되어 있다면, 밭 데이터를 최종 싱크하여 최신 상태로 캐시를 채웁니다.
-    //      if (_plotManager != null)
-    //      {
-    //          _plotManager.SyncItemState();
-    //          _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
-    //      }
+    //TODO: 이 함수의 기능을 완전히 PlotManager로 옮기고, SaveLoadManager는 단순히 저장만 담당하도록 리팩토링 필요.
+    private void OnNextDayTransition()
+    {
+        // 1. 현재 씬에 PlotManager가 활성화되어 있다면, 밭 데이터를 최종 싱크하여 최신 상태로 캐시를 채웁니다.
+        // if (_plotManager != null)
+        // {
+        //     _plotManager.SyncItemState();
+        //     _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
+        // }
 
-    //      2. 메모리 캐시 상의 모든 밭(PlotData)에 대해 GrowUp(하루 성장/시듦 연산)을 적용합니다.
-    //      var keys = new System.Collections.Generic.List<int>(_plotDataCache.Keys);
-    //      foreach (var key in keys)
-    //      {
-    //          var data = _plotDataCache[key];
-    //          data.GrowUp();
-    //          _plotDataCache[key] = data;
-    //      }
+        // 2. 메모리 캐시 상의 모든 밭(PlotData)에 대해 GrowUp(하루 성장/시듦 연산)을 적용합니다.
+        // var keys = new System.Collections.Generic.List<int>(_plotDataCache.Keys);
+        // foreach (var key in keys)
+        // {
+        //     var data = _plotDataCache[key];
+        //     data.GrowUp();
+        //     _plotDataCache[key] = data;
+        // }
 
 
-    //      3. 성장이 완료된 데이터를 파일에 저장합니다. 이때 PlotManager의 밭 데이터 수집은 패스합니다(이미 메모리 캐시를 최신 성장 데이터로 업그레이드했기 때문).
-    //      Save("SaveData", syncPlotManager: false); 
-    // }
+        // 3. 성장이 완료된 데이터를 파일에 저장합니다. 이때 PlotManager의 밭 데이터 수집은 패스합니다(이미 메모리 캐시를 최신 성장 데이터로 업그레이드했기 때문).
+        Save("SaveData", syncPlotManager: false);
+    }
 
     public void Load(string file = null)
     {
@@ -188,9 +205,8 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
             // if (_playerStorageManager != null)
             //     _playerStorageManager.Load(saveData);
 
-            // 퀘스트 매니저에 자체적으로 퀘스트 데이터 로드하는 기능 이관 -> COMPLETE
-            //if (_questManager != null)
-            //    _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
+            if (_questManager != null)
+                _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
 
             // if (_plotManager != null)
             //     _plotManager.Load(saveData);
