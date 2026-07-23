@@ -5,6 +5,7 @@ using AYellowpaper.SerializedCollections;
 using System.Linq;
 using VContainer;
 using Cysharp.Threading.Tasks;
+using R3;
 
 public class PlotManager : MonoBehaviour
 {
@@ -12,37 +13,32 @@ public class PlotManager : MonoBehaviour
     [SerializedDictionary("PlotID", "PlotData")]
     [SerializeField] 
     private SerializedDictionary<int, PlotData> plotDataDict = new();
+    [Inject]private ISaveLoadManager _saveLoadManager;
 
     [SerializeField]
     private GameObject plotPrefab;
     public SerializedDictionary<int, PlotData> GetPlotDataDict => this.plotDataDict;
 
-    private SaveLoadManager _saveLoadManager;
+
+    private CompositeDisposable disposableBag = new();
 
     private void Awake()
     {
-        RefreshPlotCache();
-    }
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(disposableBag);
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(disposableBag);
 
-    [Inject]
-    public void Construct(SaveLoadManager saveLoadManager)
-    {
-        _saveLoadManager = saveLoadManager;
+        RefreshPlotCache();
     }
 
     private void Start()
     {
-        if (_saveLoadManager != null)
-        {
-            _saveLoadManager.RegisterPlotManager(this);
-            LoadSaveDataAfterDBInit().Forget();
-        }
+        LoadSaveDataAfterDBInit().Forget();
     }
 
     private async UniTaskVoid LoadSaveDataAfterDBInit()
     {
         await UniTask.WaitUntil(() => GlobalItemDB.IsInitialized);
-        _saveLoadManager.Load("SaveData");
+        Load(_saveLoadManager.GetSaveDatas);
     }
 
     /// <summary>
@@ -104,5 +100,16 @@ public class PlotManager : MonoBehaviour
     {
         plotDataDict.Clear();
         RefreshPlotCache();
+        _saveLoadManager.SyncSaveData(GetPlotDataDict);
+    }
+
+    private void OnNextDayTransition()
+    {
+        foreach (var key in plotDataDict.Keys)
+        {
+            var data = plotDataDict[key];
+            data.GrowUp();
+            plotDataDict[key] = data;
+        }
     }
 }

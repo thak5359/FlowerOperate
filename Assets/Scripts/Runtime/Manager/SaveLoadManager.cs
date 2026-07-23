@@ -1,11 +1,9 @@
-using Fungus;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using R3;
 using System;
 using AYellowpaper.SerializedCollections;
-using System.Linq;
 
 public interface ISaveLoadManager
 {
@@ -19,14 +17,10 @@ public interface ISaveLoadManager
 
 public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
 {
-    private PlayerOwnItemDataManager _playerStorageManager;
-    private PlotManager _plotManager;
-    private ChunkManager _chunkManager;
-    private QuestManager _questManager;
     private string SAVE_FILE_NAME = "SaveData.bytes";
-    public SaveDatas saveData;
     private SerializedDictionary<int, PlotData> _plotDataCache = new();
 
+    public SaveDatas saveData;
     private SaveDatas loadedData;
     private bool isLoading = false;
 
@@ -37,46 +31,24 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     {
     }
 
-    [Inject]
-    public void Construct(
-        PlayerOwnItemDataManager storageParent,
-        QuestManager questManager
-    )
-    {
-        _playerStorageManager = storageParent;
-        _questManager = questManager;
-        if (_playerStorageManager == null)
-        {
-            Debug.LogError("<color=red>SaveLoadManager: storageParent (PlayerOwnItemDataManager) is NULL during Construct!</color>");
-        }
-        else
-        {
-            Debug.Log($"SaveLoadManager: storageParent injected successfully. Type: {_playerStorageManager.GetType().Name}");
-        }
-
-        // 의존성 주입 완료 후 구독
-        _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
-
-        Debug.Log("SaveLoadManager 전역 의존성 주입 완료");
-    }
-
     void IStartable.Start()
     {
+        GlobalEventManager.OnNextDayObservable.Subscribe(_ => Save(SAVE_FILE_NAME)).AddTo(ref disposableBag);
+
         Debug.Log("SaveLoadManager: Start EntryPoint initialized (Lazy loading avoided).");
     }
 
-    public void RegisterPlotManager(PlotManager plotManager)
-    {
-        _plotManager = plotManager;
-        Debug.Log("SaveLoadManager: PlotManager registered successfully.");
-    }
+    // public void RegisterPlotManager(PlotManager plotManager)
+    // {
+    //     _plotManager = plotManager;
+    //     Debug.Log("SaveLoadManager: PlotManager registered successfully.");
+    // }
 
-    public void RegisterChunkManager(ChunkManager chunkManager)
-    {
-        _chunkManager = chunkManager;
-        Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
-    }
+    //public void RegisterChunkManager(ChunkManager chunkManager)
+    //{
+    //    _chunkManager = chunkManager;
+    //    Debug.Log("SaveLoadManager: ChunkManager registered successfully.");
+    //}
 
     public void Dispose()
     {
@@ -113,7 +85,7 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     }    
     #endregion
 
-    private void SyncSaveData(bool syncPlotManager = true)
+    /*private void SyncSaveData(bool syncPlotManager = true)
     {
         if (isLoading) return;
 
@@ -121,12 +93,6 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
         {
             _plotManager.SyncItemState();
             _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
-        }
-
-        if (_playerStorageManager == null)
-        {
-            Debug.Log("SaveLoadManager : playerStorageManager가 null임");
-            return;
         }
 
         int day = (ProgressManager.getDay() != 0) ? ProgressManager.getPlayedDayOnGameSystem() : 0;
@@ -149,7 +115,7 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
             _questManager != null ? _questManager.GetProgressingQuestSaveData() : null,
             _questManager != null ? _questManager.GetQuestLogSaveData() : null
         );
-    }
+    }*/
 
     public void Save(string file)
     {
@@ -160,7 +126,7 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     {
         SAVE_FILE_NAME = NormalizeBinaryFileName(file);
 
-        SyncSaveData(syncPlotManager);
+        // SyncSaveData(syncPlotManager);
 
         if (saveData == null)
         {
@@ -172,27 +138,28 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
         Debug.Log($"데이터 저장 완료: {SAVE_FILE_NAME}");
     }
 
-    private void OnNextDayTransition()
-    {
-        // 1. 현재 씬에 PlotManager가 활성화되어 있다면, 밭 데이터를 최종 싱크하여 최신 상태로 캐시를 채웁니다.
-        if (_plotManager != null)
-        {
-            _plotManager.SyncItemState();
-            _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
-        }
+    // private void OnNextDayTransition()
+    // {
+    //      1. 현재 씬에 PlotManager가 활성화되어 있다면, 밭 데이터를 최종 싱크하여 최신 상태로 캐시를 채웁니다.
+    //      if (_plotManager != null)
+    //      {
+    //          _plotManager.SyncItemState();
+    //          _plotDataCache = new SerializedDictionary<int, PlotData>(_plotManager.GetPlotDataDict);
+    //      }
 
-        // 2. 메모리 캐시 상의 모든 밭(PlotData)에 대해 GrowUp(하루 성장/시듦 연산)을 적용합니다.
-        var keys = new System.Collections.Generic.List<int>(_plotDataCache.Keys);
-        foreach (var key in keys)
-        {
-            var data = _plotDataCache[key];
-            data.GrowUp();
-            _plotDataCache[key] = data;
-        }
+    //      2. 메모리 캐시 상의 모든 밭(PlotData)에 대해 GrowUp(하루 성장/시듦 연산)을 적용합니다.
+    //      var keys = new System.Collections.Generic.List<int>(_plotDataCache.Keys);
+    //      foreach (var key in keys)
+    //      {
+    //          var data = _plotDataCache[key];
+    //          data.GrowUp();
+    //          _plotDataCache[key] = data;
+    //      }
 
-        // 3. 성장이 완료된 데이터를 파일에 저장합니다. 이때 PlotManager의 밭 데이터 수집은 패스합니다(이미 메모리 캐시를 최신 성장 데이터로 업그레이드했기 때문).
-        Save("SaveData", syncPlotManager: false);
-    }
+
+    //      3. 성장이 완료된 데이터를 파일에 저장합니다. 이때 PlotManager의 밭 데이터 수집은 패스합니다(이미 메모리 캐시를 최신 성장 데이터로 업그레이드했기 때문).
+    //      Save("SaveData", syncPlotManager: false); 
+    // }
 
     public void Load(string file = null)
     {
@@ -218,14 +185,15 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
             ProgressManager.LoadData(new ProgressManager.ProgressData(saveData.GetPlayDay));
             Debug.Log($"SaveLoadManager: 날짜 복원 완료 -> {saveData.GetPlayDay}일차");
 
-            if (_playerStorageManager != null)
-                _playerStorageManager.Load(saveData);
+            // if (_playerStorageManager != null)
+            //     _playerStorageManager.Load(saveData);
 
-            if (_questManager != null)
-                _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
+            // 퀘스트 매니저에 자체적으로 퀘스트 데이터 로드하는 기능 이관 -> COMPLETE
+            //if (_questManager != null)
+            //    _questManager.LoadQuestData(saveData.GetProgressingQuests, saveData.GetQuestLogs);
 
-            if (_plotManager != null)
-                _plotManager.Load(saveData);
+            // if (_plotManager != null)
+            //     _plotManager.Load(saveData);
 
             Debug.Log("데이터 로드 및 통합 매니저 분배 완료");
         }

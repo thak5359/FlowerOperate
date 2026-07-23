@@ -29,7 +29,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     #region Fields & Properties
     [SerializeField]
     protected ItemInstantData _Data = new ItemInstantData();
-
+    [Inject] private ISaveLoadManager saveLoadManager;
     [Inject] private ItemManager itemManager;
 
     /// <summary>
@@ -97,13 +97,14 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
 
         //this._Data.AddMoney(10000); /// 상점 UI 테스트용 용돈.
+        Load(saveLoadManager.GetSaveDatas);
     }
 
     void IDisposable.Dispose()
     {
         
         inventoryRevisionChanged.Dispose();
-
+    
         _disposables.Dispose();
     }
     protected virtual void Initialize(ItemInstantData data)
@@ -129,6 +130,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
             }
         }
 
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
     }
 
@@ -187,6 +189,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         a.Count += amountToMove;
         b.Count -= amountToMove;
 
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
     }
 
@@ -210,6 +213,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
         // 합친 후 발생한 빈 공간을 메꾸기 위해 다시 정렬
         _Data.SortList(type, boxNum);
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
     }
 
@@ -255,6 +259,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
                 break;
         }
 
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
         return true;
     }
@@ -342,6 +347,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
                 }
             }
         }
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
     }
 
@@ -359,6 +365,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         _Data.SetItemList(ContainerType.SELLING, new List<GameItem>(new GameItem[50]));
         _Data.AddMoney(totalMoney);
 
+        saveLoadManager.SyncSaveData(_Data);
         PublishDataChanged();
         Debug.Log($"하루가 지나 판매 완료. 총 수익: {totalMoney}골드");
     }
