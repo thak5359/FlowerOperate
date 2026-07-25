@@ -55,7 +55,6 @@ public class SaveLoadManager : IInitializable, IDisposable, ISaveLoadManager
 
         // 의존성 주입 완료 후 구독
         // _playerStorageManager.InventoryRevisionChanged.Subscribe(_ => SyncSaveData(true)).AddTo(ref disposableBag);
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(ref disposableBag);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => Save(SAVE_FILE_NAME)).AddTo(ref disposableBag);
 
         EasyDebug.Log("SaveLoadManager 전역 의존성 주입 완료");
@@ -67,11 +66,11 @@ public class SaveLoadManager : IInitializable, IDisposable, ISaveLoadManager
     //     EasyDebug.Log("SaveLoadManager: PlotManager registered successfully.");
     // }
 
-    public void RegisterChunkManager(ChunkManager chunkManager)
-    {
-        _chunkManager = chunkManager;
-        EasyDebug.Log("SaveLoadManager: ChunkManager registered successfully.");
-    }
+    // public void RegisterChunkManager(ChunkManager chunkManager)
+    // {
+    //     _chunkManager = chunkManager;
+    //     EasyDebug.Log("SaveLoadManager: ChunkManager registered successfully.");
+    // }
 
     public void Dispose()
     {

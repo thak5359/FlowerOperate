@@ -219,7 +219,6 @@ public class ChunkManager : IAsyncStartable, IDisposable
     public void Construct(SaveLoadManager saveLoadManager)
     {
         _saveLoadManager = saveLoadManager;
-        _saveLoadManager.RegisterChunkManager(this);
     }
 
     #region Initialization

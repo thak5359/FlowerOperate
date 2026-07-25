@@ -464,8 +464,8 @@ public class QuestManager : IAsyncStartable, IDisposable
         }
 
         LoadQuestData(
-            _SaveLoadManager.saveData.GetProgressingQuests,
-            _SaveLoadManager.saveData.GetQuestLogs
+            _saveLoadManager.GetSaveDatas.GetProgressingQuests,
+            _saveLoadManager.GetSaveDatas.GetQuestLogs
         );
     
         Fungus.FungusEventBridge.CallReceivedQuestId += SynchonizeAvailableQuestListToFungus;

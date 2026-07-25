@@ -25,7 +25,6 @@ public class PlotManager : MonoBehaviour
     private void Awake()
     {
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => SyncItemState()).AddTo(disposableBag);
-        GlobalEventManager.OnNextDayObservable.Subscribe(_ => OnNextDayTransition()).AddTo(disposableBag);
 
         RefreshPlotCache();
     }
