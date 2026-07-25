@@ -21,10 +21,18 @@ public partial class FertilizerItem : GameItem
     {
     }
 
-    public override void OnLoadAsync(IPropData propData = default)
+    // 수정: 기반 아이템 로드가 성공한 뒤에만 비료 전용 DB를 조회
+    public override async UniTask OnLoadAsync(IPropData propData = default)
     {
-        base.OnLoadAsync(propData);
+        if (!await TryLoadBaseDataAsync())
+            return;
 
+        LoadFertilizerData();
+    }
+
+    // 수정: Blob ref 접근은 await가 없는 동기 구간으로 격리
+    private void LoadFertilizerData()
+    {
         if (!GlobalItemDB.HasFertilizer(Id))
         {
             Debug.LogError($"[GearItem] GearDB 조회 실패. Id: {Id}");
@@ -37,7 +45,4 @@ public partial class FertilizerItem : GameItem
         FertilizerType = FertilizerData.FertilizerType;
 
     }
-
-
-
 }

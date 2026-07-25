@@ -22,12 +22,20 @@ public partial class FlowerItem : GameItem
     public FlowerItem(int id, int count, FlowerGrade grade = FlowerGrade.Lv0) : base(id, count)
     {
         Grade = grade;
-        OnLoadAsync();
     }
-    public override void OnLoadAsync(IPropData propData = default)
-    {
-        base.OnLoadAsync(propData);
 
+    // 수정: 기반 아이템 로드가 성공한 뒤에만 꽃 전용 DB를 조회
+    public override async UniTask OnLoadAsync(IPropData propData = default)
+    {
+        if (!await TryLoadBaseDataAsync())
+            return;
+
+        LoadFlowerData();
+    }
+
+    // 수정: Blob ref 접근은 await가 없는 동기 구간으로 격리
+    private void LoadFlowerData()
+    {
         int lookupId = Id;
         if (SubType == ItemSubType.Seed)
         {

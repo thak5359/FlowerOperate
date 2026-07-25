@@ -1,10 +1,5 @@
-using Fungus;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using System.Linq;
-using System.Linq.Expressions;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class FertilizerMaker : MakerBaseModel, IMaker
@@ -30,7 +25,7 @@ public class FertilizerMaker : MakerBaseModel, IMaker
         }
     }
 
-    public GameItem ReturnGameItem()
+    public async UniTask<GameItem> ReturnGameItemAsync()
     {
         ReturnTimes = CalculateMixableTimes();
         FertilizerItem outputFertilizer = MixFertilizerItem();
@@ -39,6 +34,11 @@ public class FertilizerMaker : MakerBaseModel, IMaker
             Debug.LogError("반환할 아이템이 없습니다.");
             return null;
         }
+
+        if (outputFertilizer == null)
+            return null;
+
+        await outputFertilizer.OnLoadAsync();
         SubElementCount(grassSlot);
         SubElementCount(flowerSlot);
 

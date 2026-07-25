@@ -1,3 +1,5 @@
+// 수정 위치: 비동기 드롭 아이템 생성을 fire-and-forget 경계에서 실행해요.
+using Cysharp.Threading.Tasks;
 using MemoryPack;
 using System;
 using System.Collections;
@@ -32,7 +34,8 @@ public partial struct GrassData : IPropData
     public void OnDestroy()
     {
         if (ItemId != 0)
-            ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(ItemId, 1), Position);
+            // 수정 위치: 드롭 아이템 로드 완료 후 프리팹을 생성해요.
+            ItemFactory.CreateItemPrefabAsync(ItemId, 1, Position).Forget();
     }
 }
 
@@ -74,6 +77,7 @@ public class GrassProp : Prop
     public override void OnDestroy()
     {
         if (grassData.ItemId != 0)
-            ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(grassData.ItemId, 1), grassData.Position);
+            // 수정 위치: 드롭 아이템 로드 완료 후 프리팹을 생성해요.
+            ItemFactory.CreateItemPrefabAsync(grassData.ItemId, 1, grassData.Position).Forget();
     }
 }

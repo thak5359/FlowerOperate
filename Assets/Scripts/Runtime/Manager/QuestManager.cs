@@ -707,7 +707,8 @@ public class QuestManager : IAsyncStartable, IDisposable
 
         ref QuestContent content = ref _QuestContents.GetQuestContentById(questId);
 
-        GiveReward(in content);
+        // 수정 위치: 퀘스트 완료 이벤트 경계에서 비동기 보상 지급을 시작해요.
+        GiveRewardAsync(content).Forget();
 
         UnsubscribeFromQuestState(questId);
 
@@ -847,7 +848,8 @@ public class QuestManager : IAsyncStartable, IDisposable
         DoRegisterQuestStateInNpcManager();
     }
 
-    private void GiveReward(in QuestContent content)
+    // 수정 위치: 보상 아이템 로드 완료 후 인벤토리에 지급해요.
+    private async UniTask GiveRewardAsync(QuestContent content)
     {
         for (int i = 0; i < content.QuestRewards.Length; i++)
         {
@@ -861,8 +863,9 @@ public class QuestManager : IAsyncStartable, IDisposable
                     break;
 
                 case RewardType.Item:
-                    // TODO:
-                        _playerItemManager.AddItem(ContainerType.INVENTORY, _itemManager.CreateItem(reward.RewardID, reward.RewardAmount));
+                    GameItem rewardItem = await _itemManager.CreateItemAsync(reward.RewardID, reward.RewardAmount);
+                    if (rewardItem != null)
+                        _playerItemManager.AddItem(ContainerType.INVENTORY, rewardItem);
                     break;
 
                 default:

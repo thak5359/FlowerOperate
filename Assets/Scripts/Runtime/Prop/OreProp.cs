@@ -1,3 +1,5 @@
+// 수정 위치: 비동기 드롭 아이템 생성을 fire-and-forget 경계에서 실행해요.
+using Cysharp.Threading.Tasks;
 using Fungus;
 using MemoryPack;
 using System;
@@ -85,7 +87,8 @@ public class OreProp : Prop
 
 
             if (oreData.ItemId != 0)
-                ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(oreData.ItemId, 1), oreData.Position);
+                // 수정 위치: 드롭 아이템 로드 완료 후 프리팹을 생성해요.
+                ItemFactory.CreateItemPrefabAsync(oreData.ItemId, 1, oreData.Position).Forget();
             else
                 Debug.Log("OreProp destroyed without item drop. ItemId is 0.");
 

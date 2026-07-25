@@ -91,7 +91,8 @@ public class PlotManager : MonoBehaviour
             var plotComponent = plot.GetComponent<PlotProp>();
 
             plotComponent.SetId(data.Key); // 고유 ID 복원
-            plotComponent.OnLoadAsync(data.Value); // 상태 로드
+            // 수정 위치: 비동기 로드 계약의 예외가 유실되지 않도록 UniTask로 실행해요.
+            plotComponent.OnLoadAsync(data.Value).Forget(); // 상태 로드
         }
     }
 

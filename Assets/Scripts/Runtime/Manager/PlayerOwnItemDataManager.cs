@@ -1,3 +1,5 @@
+// 수정 위치: 플레이어 아이템 초기화를 UniTask 기반으로 전환해요.
+using Cysharp.Threading.Tasks;
 using MemoryPack;
 using R3;
 using System;
@@ -5,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Linq;
+using System.Threading;
 using static Constant;
 using VContainer.Unity;
 using VContainer;
@@ -24,7 +27,7 @@ public enum ContainerType
 /// 데이터의 변경(추가, 삭제, 이동 등)이 발생하면 스트림을 통해 UI 등에 변경 사항을 알립니다.
 /// </summary>
 [Serializable]
-public class PlayerOwnItemDataManager : IInitializable, IDisposable
+public class PlayerOwnItemDataManager : IAsyncStartable, IDisposable
 {
     #region Fields & Properties
     [SerializeField]
@@ -91,13 +94,15 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 
     #region Initialization & Lifecycle
 
-    void IInitializable.Initialize()
+    // 수정 위치: Item DB 초기화를 직접 기다린 뒤 저장 아이템 캐시를 복구해요.
+    async UniTask IAsyncStartable.StartAsync(CancellationToken cancellationToken)
     {
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
         GlobalEventManager.OnNextDayObservable.Subscribe(_ => CalculateMoneyInSellingBox()).AddTo(_disposables);
 
         //this._Data.AddMoney(10000); /// 상점 UI 테스트용 용돈.
-        Load(saveLoadManager.GetSaveDatas);
+        await itemManager.InitializeAsync(cancellationToken);
+        await LoadAsync(saveLoadManager.GetSaveDatas);
     }
 
     void IDisposable.Dispose()
@@ -107,7 +112,8 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     
         _disposables.Dispose();
     }
-    protected virtual void Initialize(ItemInstantData data)
+    // 수정 위치: 역직렬화된 각 아이템의 비동기 캐시 복구를 순서대로 완료해요.
+    protected virtual async UniTask InitializeAsync(ItemInstantData data)
     {
         _Data = data;
         _Data.EnsureSlotLists();
@@ -118,7 +124,8 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         {
             for (int i = 0; i < invList.Count; i++)
             {
-                invList[i]?.OnLoadAsync();
+                if (invList[i] != null)
+                    await invList[i].OnLoadAsync();
             }
         }
 
@@ -127,7 +134,8 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         {
             for (int i = 0; i < gearList.Count; i++)
             {
-                gearList[i]?.OnLoadAsync();
+                if (gearList[i] != null)
+                    await gearList[i].OnLoadAsync();
             }
         }
 
@@ -135,9 +143,10 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     }
 
 
-    public virtual void Load(SaveDatas saveDatas)
+    // 수정 위치: 저장 데이터 로드 완료를 상위 초기화 흐름이 기다릴 수 있게 해요.
+    public virtual UniTask LoadAsync(SaveDatas saveDatas)
     {
-        Initialize(saveDatas.GetItemData);
+        return InitializeAsync(saveDatas.GetItemData);
     }
     #endregion
 

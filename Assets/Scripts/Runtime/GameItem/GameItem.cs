@@ -1,3 +1,5 @@
+// 수정 위치: GameItem 비동기 로드 계약에 UniTask를 사용해요.
+using Cysharp.Threading.Tasks;
 using MemoryPack;
 using System;
 using Unity.Collections;
@@ -41,26 +43,31 @@ public abstract partial class GameItem : IGameResource
     {
         Id = id;
         Count = count;
-        OnLoadAsync();
     }
 
 
+    // 수정 위치: 생성과 로드를 분리하고 파생 클래스가 기반 로드 실패를 확인할 수 있게 해요.
+    public virtual async UniTask OnLoadAsync(IPropData propData = default)
+    {
+        await TryLoadBaseDataAsync();
+    }
 
-    public virtual void OnLoadAsync(IPropData propData = default)
+    // 수정 위치: 기반 DB와 비동기 스프라이트 로드 성공 여부를 파생 클래스에 전달해요.
+    protected async UniTask<bool> TryLoadBaseDataAsync()
     {
         if (!GlobalItemDB.IsInitialized)
         {
             Debug.LogError("[GameItem] GlobalItemDB가 초기화되지 않았습니다.");
-            return;
+            return false;
         }
 
         if (!GlobalItemDB.HasBase(Id))
         {
             Debug.LogError($"[GameItem] ItemBaseDB 조회 실패. Id: {Id}");
-            return;
+            return false;
         }
 
-        ref ItemBaseBlobData baseData = ref GlobalItemDB.GetBaseRef(Id);
+        ItemBaseBlobData baseData = GlobalItemDB.GetBaseRef(Id);
 
 
         MainType = baseData.MainType;
@@ -73,12 +80,14 @@ public abstract partial class GameItem : IGameResource
         if (!SpriteAddress.IsEmpty)
         {
             Debug.Log($"[GameItem] Loading sprite for ItemId: {Id} from address: {SpriteAddress}");
-            Sprite spr = AddressableManager.LoadAssetSync<Sprite>(SpriteAddress);
+            Sprite spr = await AddressableManager.LoadAssetAsync<Sprite>(SpriteAddress);
             if (spr != null)
             {
                 DisplaySprite = spr;
             }
         }
+
+        return true;
     }
 
     public bool CanStackWith(GameItem other)

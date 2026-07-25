@@ -32,9 +32,11 @@ public partial class Prop : MonoBehaviour, IGameResource
         this.Id = id;
     }
 
-    public virtual  void OnLoadAsync(IPropData propData)
+    // 수정 위치: IGameResource의 비동기 로드 계약을 구현해요.
+    public virtual UniTask OnLoadAsync(IPropData propData)
     {
         this.Id = propData.ItemId;
+        return UniTask.CompletedTask;
     }
 
     public virtual void OnDestroy() 

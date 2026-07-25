@@ -489,7 +489,8 @@ public class PlotProp : Prop
                 #region harvestAmount만큼 아이템 드랍
                 for (int i = 0; i < _plotData.harvestAmount; i++)
                 {
-                    ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(_plotData.ItemId, 1, _plotData.Grade), _plotData.Position);
+                    // 수정 위치: 드롭 아이템의 비동기 데이터·스프라이트 로드 후 프리팹을 생성해요.
+                    ItemFactory.CreateItemPrefabAsync(_plotData.ItemId, 1, _plotData.Position, _plotData.Grade).Forget();
                 }
                 #endregion
 
@@ -521,7 +522,8 @@ public class PlotProp : Prop
             // 대상이 시든 작물일 경우
             else if (plotData.State == FlowerState.Wilted || plotData.ItemId == ITEMID_DEADCROPS)
             {
-                ItemFactory.CreateItemPrefab(ItemFactory.CreateItem(ITEMID_DEADCROPS, 1), _plotData.Position);
+                // 수정 위치: 드롭 아이템 로드 완료 후 프리팹을 생성해요.
+                ItemFactory.CreateItemPrefabAsync(ITEMID_DEADCROPS, 1, _plotData.Position).Forget();
 
                 // 시든 작물 수확 후 밭 리셋
                 _plotData.ItemId = 0;
@@ -703,7 +705,8 @@ public class PlotProp : Prop
         changeFlowerSpr().Forget();
     }
 
-    public override void OnLoadAsync(IPropData propData)
+    // 수정 위치: IGameResource의 비동기 로드 계약을 구현해요.
+    public override UniTask OnLoadAsync(IPropData propData)
     {
         isLoaded = true;
         GetComponentInParent<PlotManager>().GetPlotDataDict.Remove(this.Id); // 기존 데이터 제거
@@ -713,5 +716,6 @@ public class PlotProp : Prop
         GetComponentInParent<PlotManager>().GetPlotDataDict[this.Id] = this.plotData;
         changePlotSpr().Forget();
         changeFlowerSpr().Forget();
+        return UniTask.CompletedTask;
     }
 }

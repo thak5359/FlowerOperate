@@ -1,3 +1,5 @@
+// 수정 위치: 에디터 테스트 아이템도 비동기 로드 완료 후 추가해요.
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using VContainer;
@@ -99,7 +101,7 @@ public class ItemDataDebugWindow : EditorWindow
             if (GUILayout.Button("Add Item to Selling Box", GUILayout.Height(25)))
             {
                 // PlayerOwnItemDataManager를 통해 아이템 추가
-                _itemDataManager.AddItem(ContainerType.SELLING, ItemFactory.CreateItem(_testItemId, _testItemCount));
+                AddTestItemAsync().Forget();
                 Debug.Log($"<color=cyan>[Debugger]</color> SellingBox에 아이템 추가: ID {_testItemId} (x{_testItemCount})");
             }
 
@@ -133,5 +135,13 @@ public class ItemDataDebugWindow : EditorWindow
                 EditorGUILayout.LabelField($"Slot {i}", itemName);
             }
         }
+    }
+
+    // 수정 위치: 판매 상자에 완전히 로드된 테스트 아이템만 추가해요.
+    private async UniTask AddTestItemAsync()
+    {
+        GameItem item = await ItemFactory.CreateItemAsync(_testItemId, _testItemCount);
+        if (item != null)
+            _itemDataManager.AddItem(ContainerType.SELLING, item);
     }
 }

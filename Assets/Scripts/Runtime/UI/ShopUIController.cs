@@ -511,14 +511,24 @@ public class ShopUIController : MonoBehaviour
 
     private void ExecutePurchase()
     {
+        // 수정 위치: UI 콜백 경계에서 구매 비동기 흐름을 시작해요.
+        ExecutePurchaseAsync().Forget();
+    }
+
+    // 수정 위치: 아이템 로드가 끝난 뒤에만 인벤토리에 추가해요.
+    private async UniTask ExecutePurchaseAsync()
+    {
         int totalCost = _currentSelectedProduct.Cost * _currentBuyAmount;
         int currentMoney = _playerItemManager.GetData.GetMoney;
 
         if (currentMoney >= totalCost)
         {
-            _playerItemManager.GetData.AddMoney(-totalCost);
+            GameItem purchasedItem = await _itemManager.CreateItemAsync(_currentSelectedProduct.ProductNo, _currentBuyAmount);
+            if (purchasedItem == null)
+                return;
 
-            GameItem purchasedItem = _itemManager.CreateItem(_currentSelectedProduct.ProductNo, _currentBuyAmount);
+            // 수정 위치: 아이템 생성이 성공한 뒤에만 구매 금액을 차감해요.
+            _playerItemManager.GetData.AddMoney(-totalCost);
             _playerItemManager.AddItem(ContainerType.INVENTORY, purchasedItem);
 
             Debug.Log($"[Shop] {_currentSelectedProduct.ProductName} {_currentBuyAmount}개 구매 완료. (잔여 금액: {_playerItemManager.GetData.GetMoney} $)");
