@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae31739aef1412c97f5b4ff450ba6f4, type: 3}
+  m_Name: QuestScaleProbabilitySO
+  m_EditorClassIdentifier: 
+  probabilitiesByQuestLevel:
+  - Scale1Weight: 40
+    Scale2Weight: 25
+    Scale3Weight: 20
+    Scale4Weight: 15
+  - Scale1Weight: 35
+    Scale2Weight: 25
+    Scale3Weight: 25
+    Scale4Weight: 15
+  - Scale1Weight: 30
+    Scale2Weight: 30
+    Scale3Weight: 25
+    Scale4Weight: 15
+  - Scale1Weight: 30
+    Scale2Weight: 25
+    Scale3Weight: 25
+    Scale4Weight: 20
+  - Scale1Weight: 25
+    Scale2Weight: 30
+    Scale3Weight: 25
+    Scale4Weight: 20
+  - Scale1Weight: 25
+    Scale2Weight: 25
+    Scale3Weight: 25
+    Scale4Weight: 25
+  - Scale1Weight: 20
+    Scale2Weight: 25
+    Scale3Weight: 30
+    Scale4Weight: 25
+  - Scale1Weight: 20
+    Scale2Weight: 20
+    Scale3Weight: 30
+    Scale4Weight: 30
+  - Scale1Weight: 15
+    Scale2Weight: 20
+    Scale3Weight: 35
+    Scale4Weight: 30
+  - Scale1Weight: 15
+    Scale2Weight: 15
+    Scale3Weight: 35
+    Scale4Weight: 35

@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e397208661147129d70a257d56f3dca, type: 3}
+  m_Name: ReputationLevelDataSO
+  m_EditorClassIdentifier: 
+  levelData:
+  - RequiredExperienceForNextLevel: 100
+    DailyQuestCount: 2
+    MaxAcceptedQuestCount: 2
+    MinQuestLevel: 1
+    MaxQuestLevel: 1
+    QuestLevelProbability:
+      CurrentLevelWeight: 100
+      OneLevelBelowWeight: 0
+      TwoLevelsBelowWeight: 0
+  - RequiredExperienceForNextLevel: 300
+    DailyQuestCount: 2
+    MaxAcceptedQuestCount: 2
+    MinQuestLevel: 1
+    MaxQuestLevel: 2
+    QuestLevelProbability:
+      CurrentLevelWeight: 70
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 0
+  - RequiredExperienceForNextLevel: 700
+    DailyQuestCount: 3
+    MaxAcceptedQuestCount: 4
+    MinQuestLevel: 1
+    MaxQuestLevel: 3
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 1300
+    DailyQuestCount: 3
+    MaxAcceptedQuestCount: 4
+    MinQuestLevel: 2
+    MaxQuestLevel: 4
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 2200
+    DailyQuestCount: 3
+    MaxAcceptedQuestCount: 6
+    MinQuestLevel: 3
+    MaxQuestLevel: 5
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 3500
+    DailyQuestCount: 4
+    MaxAcceptedQuestCount: 6
+    MinQuestLevel: 4
+    MaxQuestLevel: 6
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 5300
+    DailyQuestCount: 4
+    MaxAcceptedQuestCount: 8
+    MinQuestLevel: 5
+    MaxQuestLevel: 7
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 7500
+    DailyQuestCount: 4
+    MaxAcceptedQuestCount: 8
+    MinQuestLevel: 6
+    MaxQuestLevel: 8
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 10000
+    DailyQuestCount: 5
+    MaxAcceptedQuestCount: 10
+    MinQuestLevel: 7
+    MaxQuestLevel: 9
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10
+  - RequiredExperienceForNextLevel: 0
+    DailyQuestCount: 5
+    MaxAcceptedQuestCount: 10
+    MinQuestLevel: 8
+    MaxQuestLevel: 10
+    QuestLevelProbability:
+      CurrentLevelWeight: 60
+      OneLevelBelowWeight: 30
+      TwoLevelsBelowWeight: 10

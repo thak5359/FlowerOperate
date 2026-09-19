@@ -37,6 +37,21 @@ public static class EnumExtensions
         return value;
     }
 
+    public static TrustLevel Next(this TrustLevel level)
+    {
+        return Next<TrustLevel>(level);
+    }
+
+    public static QuestLevel Next(this QuestLevel level)
+    {
+        return Next<QuestLevel>(level);
+    }
+
+    public static ReputationLevel Next(this ReputationLevel level)
+    {
+        return Next<ReputationLevel>(level);
+    }
+
 
 
     public static int ToValue(this GearEfficiency efficiency)

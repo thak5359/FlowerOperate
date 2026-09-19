@@ -46,13 +46,13 @@ public abstract partial class GameItem : IGameResource
     }
 
 
-    // 수정 위치: 생성과 로드를 분리하고 파생 클래스가 기반 로드 실패를 확인할 수 있게 해요.
+    // 수정: 생성과 로드를 분리하고 파생 클래스가 기반 로드 실패를 확인할 수 있게 변경.
     public virtual async UniTask OnLoadAsync(IPropData propData = default)
     {
         await TryLoadBaseDataAsync();
     }
 
-    // 수정 위치: 기반 DB와 비동기 스프라이트 로드 성공 여부를 파생 클래스에 전달해요.
+    // 수정: 기반 DB와 비동기 스프라이트 로드 성공 여부를 파생 클래스에 전달.
     protected async UniTask<bool> TryLoadBaseDataAsync()
     {
         if (!GlobalItemDB.IsInitialized)

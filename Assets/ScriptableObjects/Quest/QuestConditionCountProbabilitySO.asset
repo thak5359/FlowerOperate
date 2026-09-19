@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4252590e4de44362b1ca675b37634043, type: 3}
+  m_Name: QuestConditionCountProbabilitySO
+  m_EditorClassIdentifier: 
+  probabilitiesByQuestLevel:
+  - OneCountWeight: 55
+    TwoCountWeight: 30
+    ThreeCountWeight: 15
+  - OneCountWeight: 50
+    TwoCountWeight: 35
+    ThreeCountWeight: 15
+  - OneCountWeight: 45
+    TwoCountWeight: 35
+    ThreeCountWeight: 20
+  - OneCountWeight: 40
+    TwoCountWeight: 40
+    ThreeCountWeight: 20
+  - OneCountWeight: 35
+    TwoCountWeight: 40
+    ThreeCountWeight: 25
+  - OneCountWeight: 30
+    TwoCountWeight: 40
+    ThreeCountWeight: 30
+  - OneCountWeight: 25
+    TwoCountWeight: 40
+    ThreeCountWeight: 35
+  - OneCountWeight: 20
+    TwoCountWeight: 40
+    ThreeCountWeight: 40
+  - OneCountWeight: 15
+    TwoCountWeight: 40
+    ThreeCountWeight: 45
+  - OneCountWeight: 15
+    TwoCountWeight: 35
+    ThreeCountWeight: 50

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bba1d9c3554e2a9003d6c24af63c55, type: 3}
+  m_Name: QuestLevelDataSO
+  m_EditorClassIdentifier: 
+  levelData:
+  - Scale: 5
+    Experience: 1
+    BaseRequestFee: 10
+  - Scale: 10
+    Experience: 2
+    BaseRequestFee: 20
+  - Scale: 15
+    Experience: 3
+    BaseRequestFee: 30
+  - Scale: 20
+    Experience: 5
+    BaseRequestFee: 40
+  - Scale: 30
+    Experience: 7
+    BaseRequestFee: 60
+  - Scale: 40
+    Experience: 10
+    BaseRequestFee: 80
+  - Scale: 60
+    Experience: 13
+    BaseRequestFee: 120
+  - Scale: 80
+    Experience: 16
+    BaseRequestFee: 160
+  - Scale: 100
+    Experience: 20
+    BaseRequestFee: 200
+  - Scale: 125
+    Experience: 0
+    BaseRequestFee: 250

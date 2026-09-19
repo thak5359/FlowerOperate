@@ -1,4 +1,4 @@
-// 수정 위치: 플레이어 아이템 초기화를 UniTask 기반으로 전환해요.
+// 수정 위치: 플레이어 아이템 초기화를 UniTask 기반으로 전환
 using Cysharp.Threading.Tasks;
 using MemoryPack;
 using R3;
@@ -94,7 +94,7 @@ public class PlayerOwnItemDataManager : IAsyncStartable, IDisposable
 
     #region Initialization & Lifecycle
 
-    // 수정 위치: Item DB 초기화를 직접 기다린 뒤 저장 아이템 캐시를 복구해요.
+    // 수정: Item DB 초기화를 직접 기다린 뒤 저장 아이템 캐시를 복구
     async UniTask IAsyncStartable.StartAsync(CancellationToken cancellationToken)
     {
         GlobalEventManager.OnItemPickedUpObservable.Subscribe(AddItem).AddTo(_disposables);
@@ -112,7 +112,7 @@ public class PlayerOwnItemDataManager : IAsyncStartable, IDisposable
     
         _disposables.Dispose();
     }
-    // 수정 위치: 역직렬화된 각 아이템의 비동기 캐시 복구를 순서대로 완료해요.
+    // 수정: 역직렬화된 각 아이템의 비동기 캐시 복구를 순서대로 완료
     protected virtual async UniTask InitializeAsync(ItemInstantData data)
     {
         _Data = data;
@@ -143,7 +143,7 @@ public class PlayerOwnItemDataManager : IAsyncStartable, IDisposable
     }
 
 
-    // 수정 위치: 저장 데이터 로드 완료를 상위 초기화 흐름이 기다릴 수 있게 해요.
+    // 수정: 저장 데이터 로드 완료를 상위 초기화 흐름이 기다릴 수 있게
     public virtual UniTask LoadAsync(SaveDatas saveDatas)
     {
         return InitializeAsync(saveDatas.GetItemData);

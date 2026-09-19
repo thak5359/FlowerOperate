@@ -1,4 +1,3 @@
-// 수정 위치: 에디터 테스트 아이템도 비동기 로드 완료 후 추가해요.
 using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -137,7 +136,7 @@ public class ItemDataDebugWindow : EditorWindow
         }
     }
 
-    // 수정 위치: 판매 상자에 완전히 로드된 테스트 아이템만 추가해요.
+    // 수정 : 판매 상자에 완전히 로드된 테스트 아이템만 추가
     private async UniTask AddTestItemAsync()
     {
         GameItem item = await ItemFactory.CreateItemAsync(_testItemId, _testItemCount);
