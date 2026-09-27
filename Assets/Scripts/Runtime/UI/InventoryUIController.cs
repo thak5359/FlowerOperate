@@ -166,7 +166,7 @@ public class InventoryUIController : MonoBehaviour
             if (itemList == null || info.internalIndex >= itemList.Count) continue;
 
             var itemData = itemList[info.internalIndex];
-            if (ItemInstantData.IsEmpty(itemData))
+            if (PlayerProfile.IsEmpty(itemData))
             {
                 InventorySlotImages[i].style.backgroundImage = null;
 
@@ -285,7 +285,7 @@ public class InventoryUIController : MonoBehaviour
             var dragItem = _inventoryManager.GetData.GetItemList(startInfo.type)[startInfo.internalIndex];
 
             // 장비 칸으로 드래그 했을 때 타입 검사
-            if (endInfo.type == ContainerType.GEAR && dragItem != null && !ItemInstantData.IsEmpty(dragItem))
+            if (endInfo.type == ContainerType.GEAR && dragItem != null && !PlayerProfile.IsEmpty(dragItem))
             {
                 if (dragItem.MainType != ItemMainType.Equipment)
                 {
@@ -352,7 +352,7 @@ public class InventoryUIController : MonoBehaviour
         var item = itemList[info.internalIndex];
 
         // 빈 슬롯 클릭 시 화면 비우기
-        if (ItemInstantData.IsEmpty(item))
+        if (PlayerProfile.IsEmpty(item))
         {
             _itemNameLabel.text = "";
             _categoryLabel.text = "";

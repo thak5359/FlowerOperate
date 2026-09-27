@@ -8,7 +8,7 @@ using AYellowpaper.SerializedCollections;
 public interface ISaveLoadManager
 {
     public SaveDatas GetSaveDatas { get; }
-    public void SyncSaveData(ItemInstantData itemData);
+    public void SyncSaveData(PlayerProfile itemData);
     public void SyncSaveData(SerializedDictionary<int, PlotData> plotData);
     public void SyncSaveData(ChunkDataSet chunkDatas);
     public void SyncSaveData(QuestInProgress[] quests, QuestLog[] logs);
@@ -57,7 +57,7 @@ public class SaveLoadManager : IStartable, IDisposable, ISaveLoadManager
     #region SyncSaveData
 
     // 1. 아이템 데이터 동기화                                                                            
-    public void SyncSaveData(ItemInstantData itemData)                                                    
+    public void SyncSaveData(PlayerProfile itemData)                                                    
     {                                                                                                     
         saveData.SetItemData(itemData);                                                                   
     }                                                                                                     

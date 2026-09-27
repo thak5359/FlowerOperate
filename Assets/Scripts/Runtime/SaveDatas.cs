@@ -15,7 +15,7 @@ public partial class SaveDatas
     [MemoryPackInclude, SerializeField] private int money;
     [MemoryPackInclude, SerializeField] private int reputation;
 
-    [MemoryPackInclude, SerializeField] private ItemInstantData itemData;
+    [MemoryPackInclude, SerializeField] private PlayerProfile itemData;
 
     [MemoryPackInclude, SerializeField] private List<PlotSaveEntry> plotDataList = new();
     [MemoryPackInclude, SerializeField] private ChunkDataIngame[] _FarmChunkDatas;
@@ -32,7 +32,7 @@ public partial class SaveDatas
 #region Properties_Getter
     public string GetSaveTime => saveTime;
     public int GetPlayDay => playDay;
-    public ItemInstantData GetItemData => itemData;
+    public PlayerProfile GetItemData => itemData;
     public ChunkDataIngame[] GetFarmChunkDatas => _FarmChunkDatas;
     public ChunkDataIngame[] GetFieldChunkDatas => _FieldChunkDatas;
     public ChunkDataIngame[] GetForestChunkDatas => _ForestChunkDatas;
@@ -48,7 +48,7 @@ public partial class SaveDatas
 #region Properties_Setter
     public void SetSaveTime(string time) => saveTime = time;
     public void SetPlayDay(int day) => playDay = day;
-    public void SetItemData(ItemInstantData data) => itemData = data;
+    public void SetItemData(PlayerProfile data) => itemData = data;
     public void SetPlotDataListCache(SerializedDictionary<int, PlotData> data)
     {
         plotDataDictCache = data;
@@ -93,7 +93,7 @@ public partial class SaveDatas
 
     public SaveDatas(
         int day,
-        ItemInstantData itemData,
+        PlayerProfile itemData,
         SerializedDictionary<int, PlotData> plotData,
         int money = 100000,
         int reputation = 0,
