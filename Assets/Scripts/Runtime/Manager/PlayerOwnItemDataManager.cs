@@ -28,14 +28,14 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 {
     #region Fields & Properties
     [SerializeField]
-    protected ItemInstantData _Data = new ItemInstantData();
+    protected PlayerProfile _Data = new PlayerProfile();
     [Inject] private ISaveLoadManager saveLoadManager;
     [Inject] private ItemManager itemManager;
 
     /// <summary>
     /// 원본 데이터 접근자 (Ref 반환으로 구조체 복사 방지)
     /// </summary>
-    public ref ItemInstantData GetData => ref _Data;
+    public ref PlayerProfile GetData => ref _Data;
 
 
     /// <summary>
@@ -107,7 +107,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     
         _disposables.Dispose();
     }
-    protected virtual void Initialize(ItemInstantData data)
+    protected virtual void Initialize(PlayerProfile data)
     {
         _Data = data;
 
@@ -147,7 +147,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
     /// 인벤토리 원본 리스트에서 특정 구간만 잘라서 볼 수 있는 무할당(Zero-Allocation) View를 반환합니다.
     /// (예: segmentIndex 0 => [0..9], 1 => [10..19])
     /// </summary>
-    public ItemInstantData.InventoryRangeView GetInventorySegment(int segmentIndex)
+    public PlayerProfile.InventoryRangeView GetInventorySegment(int segmentIndex)
     {
         return _Data.GetInventorySegment(segmentIndex);
     }
@@ -207,7 +207,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
         {
             EngraftItem(list[i], list[i + 1]);
 
-            if (ItemInstantData.IsEmpty(list[i + 1]))
+            if (PlayerProfile.IsEmpty(list[i + 1]))
                 list[i + 1] = null;
         }
 
@@ -382,7 +382,7 @@ public class PlayerOwnItemDataManager : IInitializable, IDisposable
 [MemoryPackable]
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]
-public partial struct ItemInstantData
+public partial struct PlayerProfile
 {
     #region Fields
     [MemoryPackInclude, SerializeField] private int money;
@@ -682,8 +682,8 @@ public readonly struct GameItemComparer : IComparer<GameItem>
 {
     public int Compare(GameItem x, GameItem y)
     {
-        bool xEmpty = ItemInstantData.IsEmpty(x);
-        bool yEmpty = ItemInstantData.IsEmpty(y);
+        bool xEmpty = PlayerProfile.IsEmpty(x);
+        bool yEmpty = PlayerProfile.IsEmpty(y);
 
         // 1순위: 빈칸 밀어내기 (!IsEmpty)
         if (xEmpty && yEmpty) return 0;       // 둘 다 비었으면 순서 유지

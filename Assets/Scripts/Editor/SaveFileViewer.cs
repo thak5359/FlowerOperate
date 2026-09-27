@@ -91,7 +91,7 @@ public class SaveFileViewer : EditorWindow
         }
     }
 
-    private void DrawItemData(ItemInstantData data)
+    private void DrawItemData(PlayerProfile data)
     {
         EditorGUILayout.LabelField("Item Data", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
